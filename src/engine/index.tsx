@@ -1,5 +1,5 @@
 import React from 'react'
-import {Config, Brick, EngineMode} from '@/types'
+import { Config, Brick, EngineMode } from '@/types'
 import Context, { RenderConfigForm } from '@/engine/context'
 import BrickRenderer from '@/engine/brick-renderer'
 
@@ -36,7 +36,7 @@ class Engine extends React.Component<EngineProps, EnginState> {
     this.bricks[brick.name] = brick
   }
   handleSetState = (config: Config): void => {
-    this.setState(state => ({
+    this.setState((state) => ({
       ...state,
       config,
     }))
@@ -45,7 +45,12 @@ class Engine extends React.Component<EngineProps, EnginState> {
     return (
       <Context.Provider value={{ renderConfigForm: this.renderConfigForm }}>
         {this.state.config && (
-          <BrickRenderer mode={this.mode} config={this.state.config} bricks={this.bricks} setState={this.handleSetState} />
+          <BrickRenderer
+            mode={this.mode}
+            config={this.state.config}
+            bricks={this.bricks}
+            setState={this.handleSetState}
+          />
         )}
       </Context.Provider>
     )

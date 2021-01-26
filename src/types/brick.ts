@@ -10,7 +10,6 @@ export enum ChildrenType {
   NONE = 'none',
 }
 
-
 interface RenderProps {
   value: PropsObject
   children?: JSX.Element | JSX.Element[]

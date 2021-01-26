@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react'
-import {Brick, PropsObject, Config} from '@/types'
+import { Brick, PropsObject, Config } from '@/types'
 import Context from '@/engine/context'
 
 interface PropsFormProps {
@@ -9,7 +9,13 @@ interface PropsFormProps {
   configFormVisible: boolean
   hideConfigForm: () => void
 }
-const PropsForm: React.FC<PropsFormProps> = ({ config, bricks, onChange, configFormVisible, hideConfigForm }: PropsFormProps) => {
+const PropsForm: React.FC<PropsFormProps> = ({
+  config,
+  bricks,
+  onChange,
+  configFormVisible,
+  hideConfigForm,
+}: PropsFormProps) => {
   const context = useContext(Context)
   const brick = useMemo(() => {
     return bricks[config.name]

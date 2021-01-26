@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react'
-import {Config, Brick, PropsObject, EngineMode} from '@/types'
+import { Config, Brick, PropsObject, EngineMode } from '@/types'
 import ConfigFormWrapper from '@/engine/config-form-wrapper'
 
 interface BrickRenderProps {
@@ -9,7 +9,7 @@ interface BrickRenderProps {
   setState: (config: Config) => void
 }
 
-const BrickRenderer:React.FC<BrickRenderProps> = ({ config, bricks, setState, mode }: BrickRenderProps) => {
+const BrickRenderer: React.FC<BrickRenderProps> = ({ config, bricks, setState, mode }: BrickRenderProps) => {
   const [props, setProps] = useState<PropsObject>(config.props)
   const handleChange = useCallback(
     (newProps: PropsObject) => {

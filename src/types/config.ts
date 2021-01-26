@@ -1,4 +1,4 @@
-import {PropsObject} from "./brick"
+import { PropsObject } from './brick'
 
 export enum NodeName {
   ROOT = 'root',
