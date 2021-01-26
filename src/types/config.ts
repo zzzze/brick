@@ -1,10 +1,10 @@
-import {PropsObject} from "@/interfaces/brick";
+import {PropsObject} from "./brick"
 
 export enum NodeName {
   ROOT = 'root',
 }
 
-export default interface Config {
+export interface Config {
   name: NodeName | string
   props: PropsObject
   children: Config[]

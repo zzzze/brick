@@ -26,7 +26,7 @@ interface ConfigFormRenderProps {
 
 export type PropsObject = Record<string, unknown>
 
-export default interface Brick {
+export interface Brick {
   name: string
   icon: string
   propTypes: Record<string, PropType>

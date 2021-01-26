@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import Brick, {PropsObject} from '@/interfaces/brick'
-import Config, { NodeName } from '@/interfaces/config'
+import {Config, Brick, PropsObject, NodeName} from '@/types'
 import PropsForm from '@/engine/props-form'
 
 interface ConfigFormWrapperProps {

@@ -1,7 +1,6 @@
 import React, { useContext, useMemo } from 'react'
-import Brick, {PropsObject} from '@/interfaces/brick'
+import {Brick, PropsObject, Config} from '@/types'
 import Context from '@/engine/context'
-import Config from '@/interfaces/config'
 
 interface PropsFormProps {
   config: Config

@@ -1,13 +1,11 @@
 import React from 'react'
-import Config from '@/interfaces/config'
-import Brick from '@/interfaces/brick'
-import { EngineMode } from '@/interfaces/engine'
+import {Config, Brick, EngineMode} from '@/types'
 import Context, { RenderConfigForm } from '@/engine/context'
 import BrickRenderer from '@/engine/brick-renderer'
 
 interface EngineProps {
   config: Config | null
-  renderConfigForm?: (element: JSX.Element) => JSX.Element | null
+  renderConfigForm?: RenderConfigForm
   mode?: EngineMode
 }
 
