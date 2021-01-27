@@ -1,9 +1,9 @@
-import React, { useState, useCallback } from 'react'
-import { Config, Brick, PropsObject, NodeName } from '@/types'
+import React from 'react'
+import { Config, Brick, PropsObject } from '@/types'
 import PropsForm from '@/engine/props-form'
 
 interface ConfigFormWrapperProps {
-  children: JSX.Element
+  children: React.ReactNode
   config: Config
   bricks: Record<string, Brick>
   onChange: (newProps: PropsObject) => void
@@ -15,27 +15,9 @@ const ConfigFormWrapper: React.FC<ConfigFormWrapperProps> = ({
   bricks,
   onChange,
 }: ConfigFormWrapperProps) => {
-  const [configFormVisible, setConfigFormVisible] = useState(false)
-  const handleShowConfigForm = useCallback(() => {
-    setConfigFormVisible(true)
-  }, [])
-  const handleHideConfigForm = useCallback(() => {
-    setConfigFormVisible(false)
-  }, [])
   return (
     <div>
-      {config.name !== NodeName.ROOT && (
-        <>
-          <button onClick={handleShowConfigForm}>编辑</button>
-          <PropsForm
-            config={config}
-            bricks={bricks}
-            onChange={onChange}
-            configFormVisible={configFormVisible}
-            hideConfigForm={handleHideConfigForm}
-          />
-        </>
-      )}
+      <PropsForm config={config} bricks={bricks} onChange={onChange} />
       {children}
     </div>
   )

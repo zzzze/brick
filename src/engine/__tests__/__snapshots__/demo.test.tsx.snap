@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders ./src/engine/demo/basic.md correctly 1`] = `
+<div>
+  <div>
+    <button>
+      edit
+    </button>
+  </div>
+  <span>
+    hello world
+  </span>
+</div>
+`;
+
+exports[`renders ./src/engine/demo/children.md correctly 1`] = `
+<div>
+  <div>
+    <button>
+      edit
+    </button>
+  </div>
+  <div>
+    <div>
+      <div>
+        <button>
+          edit
+        </button>
+      </div>
+      <span>
+        hello
+      </span>
+    </div>
+    <div>
+      <div>
+        <button>
+          edit
+        </button>
+      </div>
+      <span>
+        world
+      </span>
+    </div>
+  </div>
+</div>
+`;

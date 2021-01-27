@@ -10,24 +10,24 @@ export enum ChildrenType {
   NONE = 'none',
 }
 
-interface RenderProps {
+export interface RenderProps {
   value: PropsObject
-  children?: JSX.Element | JSX.Element[]
+  children?: React.ReactNode
 }
 
-interface ConfigFormRenderProps {
+export interface ConfigFormRenderProps {
   value: PropsObject
   onChange: (value: PropsObject) => void
   configFormVisible?: boolean
   hideConfigForm?: () => void
-  children?: JSX.Element | JSX.Element[]
+  children?: React.ReactNode
 }
 
 export type PropsObject = Record<string, unknown>
 
 export interface Brick {
   name: string
-  icon: string
+  icon?: string
   propTypes: Record<string, PropType>
   defaultProps: PropsObject
   childrenType: ChildrenType

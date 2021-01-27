@@ -1,16 +1,16 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import { Config, Brick, EngineMode } from '@/types'
 import Context, { RenderConfigForm } from '@/engine/context'
 import BrickRenderer from '@/engine/brick-renderer'
 
 interface EngineProps {
-  config: Config | null
+  config: Config | Config[] | null
   renderConfigForm?: RenderConfigForm
   mode?: EngineMode
 }
 
 interface EnginState {
-  config: Config | null
+  config: Config | Config[] | null
 }
 
 class Engine extends React.Component<EngineProps, EnginState> {
@@ -27,13 +27,31 @@ class Engine extends React.Component<EngineProps, EnginState> {
     }
   }
   mode = EngineMode.EDIT
-  renderConfigForm: RenderConfigForm = (element: JSX.Element) => element
+  renderConfigForm: RenderConfigForm = (node: JSX.Element) => {
+    const [configFormVisible, setConfigFormVisible] = useState(false)
+    const handleShowConfigForm = useCallback(() => {
+      setConfigFormVisible(true)
+    }, [])
+    const handleHideConfigForm = useCallback(() => {
+      setConfigFormVisible(false)
+    }, [])
+    return (
+      <div>
+        {configFormVisible ? (
+          <button onClick={handleHideConfigForm}>close</button>
+        ) : (
+          <button onClick={handleShowConfigForm}>edit</button>
+        )}
+        {configFormVisible && node}
+      </div>
+    )
+  }
   state: EnginState = {
     config: null,
   }
-  bricks: Record<string, Brick> = {}
-  registerBrick(brick: Brick): void {
-    this.bricks[brick.name] = brick
+  static bricks: Record<string, Brick> = {}
+  static registerBrick(brick: Brick): void {
+    Engine.bricks[brick.name] = brick
   }
   handleSetState = (config: Config): void => {
     this.setState((state) => ({
@@ -41,14 +59,19 @@ class Engine extends React.Component<EngineProps, EnginState> {
       config,
     }))
   }
-  render(): JSX.Element {
+  render(): React.ReactNode {
     return (
       <Context.Provider value={{ renderConfigForm: this.renderConfigForm }}>
-        {this.state.config && (
+        {this.state.config &&
+          Array.isArray(this.state.config) &&
+          this.state.config.map((item) => (
+            <BrickRenderer mode={this.mode} config={item} bricks={Engine.bricks} setState={this.handleSetState} />
+          ))}
+        {this.state.config && !Array.isArray(this.state.config) && (
           <BrickRenderer
             mode={this.mode}
             config={this.state.config}
-            bricks={this.bricks}
+            bricks={Engine.bricks}
             setState={this.handleSetState}
           />
         )}

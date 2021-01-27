@@ -23,7 +23,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, bricks, setState, m
   )
   const handleSetStateForChildren = useCallback(
     (childConfig: Config, index: number) => {
-      if (!config.children.length) {
+      if (!config.children || !config.children.length) {
         return
       }
       const children = config.children.slice()
@@ -39,16 +39,18 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, bricks, setState, m
   return (
     <ConfigFormWrapper config={config} bricks={bricks} onChange={handleChange}>
       <Component value={props}>
-        {config.children.map((child, index) => {
-          return (
-            <BrickRenderer
-              mode={mode}
-              config={child}
-              bricks={bricks}
-              setState={(config: Config) => handleSetStateForChildren(config, index)}
-            />
-          )
-        })}
+        {Array.isArray(config.children) &&
+          config.children.map((child, index) => {
+            return (
+              <BrickRenderer
+                key={index}
+                mode={mode}
+                config={child}
+                bricks={bricks}
+                setState={(config: Config) => handleSetStateForChildren(config, index)}
+              />
+            )
+          })}
       </Component>
     </ConfigFormWrapper>
   )

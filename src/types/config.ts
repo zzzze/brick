@@ -1,12 +1,8 @@
 import { PropsObject } from './brick'
 
-export enum NodeName {
-  ROOT = 'root',
-}
-
 export interface Config {
-  name: NodeName | string
+  name: string
   props: PropsObject
-  children: Config[]
+  children?: Config[]
   version: string
 }

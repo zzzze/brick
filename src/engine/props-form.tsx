@@ -6,16 +6,8 @@ interface PropsFormProps {
   config: Config
   bricks: Record<string, Brick>
   onChange: (newProps: PropsObject) => void
-  configFormVisible: boolean
-  hideConfigForm: () => void
 }
-const PropsForm: React.FC<PropsFormProps> = ({
-  config,
-  bricks,
-  onChange,
-  configFormVisible,
-  hideConfigForm,
-}: PropsFormProps) => {
+const PropsForm = ({ config, bricks, onChange }: PropsFormProps): JSX.Element | null => {
   const context = useContext(Context)
   const brick = useMemo(() => {
     return bricks[config.name]
@@ -26,14 +18,11 @@ const PropsForm: React.FC<PropsFormProps> = ({
   const initialValues = useMemo(() => {
     const values: PropsObject = {}
     keys.forEach((key) => {
-      values[key] = typeof brick.propTypes[key] === 'undefined' ? brick.defaultProps[key] : brick.propTypes[key]
+      values[key] = typeof config.props[key] === 'undefined' ? brick.defaultProps[key] : config.props[key]
     })
     return values
   }, [keys])
-  return context.renderConfigForm(<brick.renderConfigForm value={initialValues} onChange={onChange} />, {
-    visible: configFormVisible,
-    hide: hideConfigForm,
-  })
+  return context.renderConfigForm(<brick.renderConfigForm value={initialValues} onChange={onChange} />)
 }
 
 export default PropsForm

@@ -1,12 +1,7 @@
 import React from 'react'
 
-export interface RenderConfigFormOptions {
-  visible: boolean
-  hide: () => void
-}
-
 export interface RenderConfigForm {
-  (element: JSX.Element, options: RenderConfigFormOptions): JSX.Element | null
+  (node: JSX.Element): JSX.Element | null
 }
 
 interface ContextType {
