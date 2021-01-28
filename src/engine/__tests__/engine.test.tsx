@@ -95,7 +95,6 @@ describe('Engine', () => {
           version: '0.0.1',
         },
       ],
-      props: {},
       version: '0.0.1',
     }
     const wrapper = mount(<Engine config={config} />)
@@ -133,7 +132,6 @@ describe('Engine', () => {
           version: '0.0.1',
         },
       ],
-      props: {},
       version: '0.0.1',
     }
     const wrapper = mount(<Engine config={config} />)
@@ -152,7 +150,6 @@ describe('Engine', () => {
           version: '0.0.1',
         },
       ],
-      props: {},
       version: '0.0.1',
     }
     const ref = React.createRef<Engine>()
@@ -180,5 +177,44 @@ describe('Engine', () => {
       props: {},
       version: '0.0.1',
     })
+  })
+
+  test('multiple brick at root', () => {
+    const config = [
+      {
+        name: 'Text',
+        props: {
+          content: 'foo',
+        },
+        version: '0.0.1',
+      },
+      {
+        name: 'TextWithDefaultValue',
+        props: {},
+        version: '0.0.1',
+      },
+      {
+        name: 'View',
+        children: [
+          {
+            name: 'Text',
+            props: {
+              content: 'hello',
+            },
+            version: '0.0.1',
+          },
+          {
+            name: 'Text',
+            props: {
+              content: 'world',
+            },
+            version: '0.0.1',
+          },
+        ],
+        version: '0.0.1',
+      },
+    ]
+    const wrapper = mount(<Engine config={config} />)
+    expect(wrapper.html()).toContain('hello world')
   })
 })

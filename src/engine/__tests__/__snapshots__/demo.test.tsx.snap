@@ -36,3 +36,47 @@ exports[`renders ./src/engine/demo/children.md correctly 1`] = `
   </span>
 </div>
 `;
+
+exports[`renders ./src/engine/demo/config-tree-array.md correctly 1`] = `
+Array [
+  <span>
+    <div>
+      <button>
+        edit
+      </button>
+    </div>
+    hello
+  </span>,
+  <span>
+    <div>
+      <button>
+        edit
+      </button>
+    </div>
+    world
+  </span>,
+  <div>
+    <div>
+      <button>
+        edit
+      </button>
+    </div>
+    <span>
+      <div>
+        <button>
+          edit
+        </button>
+      </div>
+      hello
+    </span>
+    <span>
+      <div>
+        <button>
+          edit
+        </button>
+      </div>
+      world
+    </span>
+  </div>,
+]
+`;
