@@ -10,7 +10,7 @@ const View: Brick = {
   defaultProps: {},
   childrenType: ChildrenType.MULTIPLE,
   renderConfigForm(props: ConfigFormRenderProps) {
-    return <BrickContainer>edit View: {props.children}</BrickContainer>
+    return <div>edit View: {props.children}</div>
   },
   render(props: RenderProps) {
     return <BrickContainer>{props.children}</BrickContainer>
@@ -28,7 +28,7 @@ const Text: Brick = {
   },
   childrenType: ChildrenType.NONE,
   renderConfigForm(props: ConfigFormRenderProps) {
-    return <BrickContainer tag="span">edit Text: {props.value.content as string}</BrickContainer>
+    return <div>edit Text: {props.value.content as string}</div>
   },
   render(props: RenderProps) {
     return <BrickContainer tag="span">{props.value.content as string}</BrickContainer>

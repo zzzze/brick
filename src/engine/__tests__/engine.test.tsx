@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ChangeEvent, useCallback } from 'react'
 import { mount } from 'enzyme'
 import 'jest-enzyme'
 import Engine from '@/engine'
@@ -11,7 +11,7 @@ const View: Brick = {
   defaultProps: {},
   childrenType: ChildrenType.MULTIPLE,
   renderConfigForm(props: ConfigFormRenderProps) {
-    return <BrickContainer>edit View: {props.children}</BrickContainer>
+    return <div>edit View: {props.children}</div>
   },
   render(props: RenderProps) {
     return <BrickContainer>{props.children}</BrickContainer>
@@ -29,7 +29,21 @@ const Text: Brick = {
   },
   childrenType: ChildrenType.NONE,
   renderConfigForm(props: ConfigFormRenderProps) {
-    return <BrickContainer tag="span">edit Text: {props.value.content as string}</BrickContainer>
+    const handleChange = useCallback(
+      (event: ChangeEvent<HTMLInputElement>) => {
+        props.onChange({
+          ...props.value,
+          content: event.target.value,
+        })
+      },
+      [props.value]
+    )
+    return (
+      <div>
+        edit Text: {props.value.content as string}
+        <input name="content" value={props.value.content as string} onChange={handleChange} />
+      </div>
+    )
   },
   render(props: RenderProps) {
     return <BrickContainer tag="span">{props.value.content as string}</BrickContainer>
@@ -37,34 +51,53 @@ const Text: Brick = {
   version: '0.0.1',
 }
 
+const TextWithDefaultValue: Brick = {
+  name: 'TextWithDefaultValue',
+  propTypes: {
+    content: PropType.STRING,
+  },
+  defaultProps: {
+    content: 'hello world',
+  },
+  childrenType: ChildrenType.NONE,
+  renderConfigForm(props) {
+    return <div>edit Text: {props.value.content}</div>
+  },
+  render(props) {
+    return <BrickContainer tag="span">{props.value.content as string}</BrickContainer>
+  },
+  version: '0.0.1',
+}
+
 describe('Engine', () => {
-  const config = {
-    name: 'View',
-    children: [
-      {
-        name: 'Text',
-        props: {
-          content: 'hello',
-        },
-        version: '0.0.1',
-      },
-      {
-        name: 'Text',
-        props: {
-          content: 'world',
-        },
-        version: '0.0.1',
-      },
-    ],
-    props: {},
-    version: '0.0.1',
-  }
   beforeEach(() => {
     Engine.registerBrick(View)
     Engine.registerBrick(Text)
+    Engine.registerBrick(TextWithDefaultValue)
   })
 
   test('toggle config form', () => {
+    const config = {
+      name: 'View',
+      children: [
+        {
+          name: 'Text',
+          props: {
+            content: 'hello',
+          },
+          version: '0.0.1',
+        },
+        {
+          name: 'Text',
+          props: {
+            content: 'world',
+          },
+          version: '0.0.1',
+        },
+      ],
+      props: {},
+      version: '0.0.1',
+    }
     const wrapper = mount(<Engine config={config} />)
     // show
     wrapper.find('button').at(0).simulate('click')
@@ -81,5 +114,71 @@ describe('Engine', () => {
     expect(wrapper.html()).not.toContain('edit Text: hello')
     wrapper.find('button').at(2).simulate('click')
     expect(wrapper.html()).not.toContain('edit Text: world')
+  })
+
+  test('default props', () => {
+    const config = {
+      name: 'View',
+      children: [
+        {
+          name: 'Text',
+          props: {
+            content: 'foo',
+          },
+          version: '0.0.1',
+        },
+        {
+          name: 'TextWithDefaultValue',
+          props: {},
+          version: '0.0.1',
+        },
+      ],
+      props: {},
+      version: '0.0.1',
+    }
+    const wrapper = mount(<Engine config={config} />)
+    expect(wrapper.html()).toContain('hello world')
+  })
+
+  test('update value', () => {
+    const config = {
+      name: 'View',
+      children: [
+        {
+          name: 'Text',
+          props: {
+            content: 'foo',
+          },
+          version: '0.0.1',
+        },
+      ],
+      props: {},
+      version: '0.0.1',
+    }
+    const ref = React.createRef<Engine>()
+    const wrapper = mount(
+      <>
+        <Engine ref={ref} config={config} />
+      </>
+    )
+    wrapper.find('button').at(1).simulate('click')
+    wrapper
+      .find('input')
+      .at(0)
+      .simulate('change', { target: { name: 'content', value: 'bar' } })
+    expect(ref.current?.getConfig()).toEqual({
+      name: 'View',
+      children: [
+        {
+          name: 'Text',
+          props: {
+            content: 'bar',
+          },
+          version: '0.0.1',
+        },
+      ],
+      props: {},
+      version: '0.0.1',
+    })
   })
 })

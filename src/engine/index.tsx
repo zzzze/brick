@@ -27,6 +27,9 @@ class Engine extends React.Component<EngineProps, EnginState> {
     }
   }
   mode = EngineMode.EDIT
+  getConfig(): Config | Config[] | null {
+    return this.state.config
+  }
   renderConfigForm: RenderConfigForm = (node: JSX.Element) => {
     const [configFormVisible, setConfigFormVisible] = useState(false)
     const handleShowConfigForm = useCallback(() => {
