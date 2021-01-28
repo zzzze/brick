@@ -31,7 +31,7 @@ export interface Brick {
   propTypes: Record<string, PropType>
   defaultProps: PropsObject
   childrenType: ChildrenType
-  renderConfigForm: React.FC<ConfigFormRenderProps> | React.ComponentType<ConfigFormRenderProps>
-  render: React.FC<RenderProps> | React.ComponentType<RenderProps>
+  renderConfigForm: (props: ConfigFormRenderProps) => React.ReactElement
+  render: (props: RenderProps) => React.ReactElement
   version: string
 }

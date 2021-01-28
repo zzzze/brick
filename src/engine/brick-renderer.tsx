@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import { Config, Brick, PropsObject, EngineMode } from '@/types'
-import ConfigFormWrapper from '@/engine/config-form-wrapper'
+import BrickWrapper from '@/engine/brick-wrapper'
 
 interface BrickRenderProps {
   config: Config
@@ -11,6 +11,23 @@ interface BrickRenderProps {
 
 const BrickRenderer: React.FC<BrickRenderProps> = ({ config, bricks, setState, mode }: BrickRenderProps) => {
   const [props, setProps] = useState<PropsObject>(config.props)
+  const brick = useMemo(() => {
+    return bricks[config.name]
+  }, [bricks, config])
+  const keys = useMemo(() => {
+    return Object.keys(brick.propTypes)
+  }, [brick])
+  useEffect(() => {
+    const values: PropsObject = {}
+    keys.forEach((key) => {
+      values[key] = typeof config.props[key] === 'undefined' ? brick.defaultProps[key] : config.props[key]
+    })
+    setProps(values)
+    setState({
+      ...config,
+      props: values,
+    })
+  }, [])
   const handleChange = useCallback(
     (newProps: PropsObject) => {
       setProps(newProps)
@@ -35,11 +52,12 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, bricks, setState, m
     },
     [config]
   )
-  const Component = useMemo(() => bricks[config.name].render, [bricks, config.name])
   return (
-    <ConfigFormWrapper config={config} bricks={bricks} onChange={handleChange}>
-      <Component value={props}>
-        {Array.isArray(config.children) &&
+    <BrickWrapper config={config} bricks={bricks} onChange={handleChange}>
+      {bricks[config.name].render({
+        value: props,
+        children:
+          Array.isArray(config.children) &&
           config.children.map((child, index) => {
             return (
               <BrickRenderer
@@ -50,9 +68,9 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, bricks, setState, m
                 setState={(config: Config) => handleSetStateForChildren(config, index)}
               />
             )
-          })}
-      </Component>
-    </ConfigFormWrapper>
+          }),
+      })}
+    </BrickWrapper>
   )
 }
 

@@ -1,16 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders ./src/engine/demo/basic.md correctly 1`] = `
-<div>
+<span>
   <div>
     <button>
       edit
     </button>
   </div>
-  <span>
-    hello world
-  </span>
-</div>
+  hello world
+</span>
 `;
 
 exports[`renders ./src/engine/demo/children.md correctly 1`] = `
@@ -20,27 +18,21 @@ exports[`renders ./src/engine/demo/children.md correctly 1`] = `
       edit
     </button>
   </div>
-  <div>
+  <span>
     <div>
-      <div>
-        <button>
-          edit
-        </button>
-      </div>
-      <span>
-        hello
-      </span>
+      <button>
+        edit
+      </button>
     </div>
+    hello
+  </span>
+  <span>
     <div>
-      <div>
-        <button>
-          edit
-        </button>
-      </div>
-      <span>
-        world
-      </span>
+      <button>
+        edit
+      </button>
     </div>
-  </div>
+    world
+  </span>
 </div>
 `;
