@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders ./src/components/object-key-value-input/demo/basic.md correctly 1`] = `
+<div>
+  <button>
+    add
+  </button>
+</div>
+`;
+
+exports[`renders ./src/components/object-key-value-input/demo/with-props.md correctly 1`] = `
+<div>
+  <button>
+    add
+  </button>
+  <div>
+    <input
+      name="0-label"
+      type="text"
+      value="foo"
+    />
+    <input
+      name="0-value"
+      type="text"
+      value="bar"
+    />
+    <button
+      data-index="0"
+    >
+      delete
+    </button>
+  </div>
+  <div>
+    <input
+      name="1-label"
+      type="text"
+      value="baz"
+    />
+    <input
+      name="1-value"
+      type="text"
+      value="123"
+    />
+    <button
+      data-index="1"
+    >
+      delete
+    </button>
+  </div>
+</div>
+`;
