@@ -2,14 +2,19 @@ import React from 'react'
 
 export interface BrickContainerProps extends React.HTMLAttributes<HTMLElement> {
   tag?: keyof React.ReactHTML
-  propsForm?: React.ReactElement
+  configForm?: React.ReactElement | null
 }
 
-const BrickContainer: React.FC<BrickContainerProps> = ({ tag, children, propsForm, ...props }: BrickContainerProps) => {
+const BrickContainer: React.FC<BrickContainerProps> = ({
+  tag,
+  children,
+  configForm,
+  ...props
+}: BrickContainerProps) => {
   const Tag = tag || 'div'
   return (
     <Tag {...props}>
-      {propsForm}
+      {configForm}
       {children}
     </Tag>
   )

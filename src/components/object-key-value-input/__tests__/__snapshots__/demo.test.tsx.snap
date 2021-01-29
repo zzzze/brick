@@ -2,7 +2,9 @@
 
 exports[`renders ./src/components/object-key-value-input/demo/basic.md correctly 1`] = `
 <div>
-  <button>
+  <button
+    data-testid="add-item"
+  >
     add
   </button>
 </div>
@@ -10,7 +12,9 @@ exports[`renders ./src/components/object-key-value-input/demo/basic.md correctly
 
 exports[`renders ./src/components/object-key-value-input/demo/with-props.md correctly 1`] = `
 <div>
-  <button>
+  <button
+    data-testid="add-item"
+  >
     add
   </button>
   <div>
@@ -26,6 +30,7 @@ exports[`renders ./src/components/object-key-value-input/demo/with-props.md corr
     />
     <button
       data-index="0"
+      data-testid="remove-btn-0"
     >
       delete
     </button>
@@ -43,6 +48,7 @@ exports[`renders ./src/components/object-key-value-input/demo/with-props.md corr
     />
     <button
       data-index="1"
+      data-testid="remove-btn-1"
     >
       delete
     </button>

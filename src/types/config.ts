@@ -8,3 +8,11 @@ export interface Config {
   supply?: Record<string, unknown> // provide data for child brick
   children?: Config[]
 }
+
+export interface SetConfigFn {
+  (config: Readonly<Config>): Config
+}
+
+export interface SetConfig {
+  (fn: SetConfigFn): void
+}

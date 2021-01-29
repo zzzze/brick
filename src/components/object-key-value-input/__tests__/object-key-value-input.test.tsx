@@ -22,15 +22,11 @@ describe('ObjectKeyValueInput', () => {
     }
     const handleChange = jest.fn()
     const wrapper = mount(<ObjectKeyValueInput name="object" value={defaultValue} onChange={handleChange} />)
-    wrapper.find('input').forEach((item) => {
-      if (item.props().name === '0-value') {
-        item.simulate('change', {
-          target: {
-            name: '0-value',
-            value: 'hello-world',
-          },
-        })
-      }
+    wrapper.find('input[name="0-value"]').simulate('change', {
+      target: {
+        name: '0-value',
+        value: 'hello-world',
+      },
     })
     expect(handleChange).toBeCalledWith({
       target: {
@@ -48,15 +44,11 @@ describe('ObjectKeyValueInput', () => {
     }
     const handleChange = jest.fn()
     const wrapper = mount(<ObjectKeyValueInput name="object" value={defaultValue} onChange={handleChange} />)
-    wrapper.find('input').forEach((item) => {
-      if (item.props().name === '0-label') {
-        item.simulate('change', {
-          target: {
-            name: '0-label',
-            value: 'baz',
-          },
-        })
-      }
+    wrapper.find('input[name="0-label"]').simulate('change', {
+      target: {
+        name: '0-label',
+        value: 'baz',
+      },
     })
     expect(handleChange).toBeCalledWith({
       target: {
@@ -76,28 +68,18 @@ describe('ObjectKeyValueInput', () => {
       value = data.target.value
     }
     const wrapper = mount(<ObjectKeyValueInput name="object" value={value} onChange={handleChange} />)
-    wrapper.find('button').forEach((item) => {
-      if (item.props().children === 'add') {
-        item.simulate('click')
-      }
+    wrapper.find('button[data-testid="add-item"]').simulate('click')
+    wrapper.find('input[name="1-label"]').simulate('change', {
+      target: {
+        name: '1-label',
+        value: 'baz',
+      },
     })
-    wrapper.find('input').forEach((item) => {
-      if (item.props().name === '1-label') {
-        item.simulate('change', {
-          target: {
-            name: '1-label',
-            value: 'baz',
-          },
-        })
-      }
-      if (item.props().name === '1-value') {
-        item.simulate('change', {
-          target: {
-            name: '1-value',
-            value: '123',
-          },
-        })
-      }
+    wrapper.find('input[name="1-value"]').simulate('change', {
+      target: {
+        name: '1-value',
+        value: '123',
+      },
     })
     expect(value).toEqual({
       foo: 'bar',
@@ -114,7 +96,7 @@ describe('ObjectKeyValueInput', () => {
       value = data.target.value
     }
     const wrapper = mount(<ObjectKeyValueInput name="object" value={value} onChange={handleChange} />)
-    wrapper.find('button').at(1).simulate('click')
+    wrapper.find('button[data-testid="remove-btn-0"]').simulate('click')
     expect(value).toEqual({
       baz: '123',
     })

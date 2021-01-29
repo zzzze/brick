@@ -4,6 +4,7 @@ import 'jest-enzyme'
 import Engine from '@/engine'
 import BrickContainer from '@/engine/brick-containter'
 import { Brick, ChildrenType, ConfigFormRenderProps, PropType, RenderProps } from '@/types'
+import ObjectStringInput from '@/components/object-string-input'
 
 const View: Brick = {
   name: 'View',
@@ -41,7 +42,12 @@ const Text: Brick = {
     return (
       <div>
         edit Text: {props.value.content as string}
-        <input name="content" value={props.value.content as string} onChange={handleChange} />
+        <input
+          data-testid="content-input"
+          name="content"
+          value={props.value.content as string}
+          onChange={handleChange}
+        />
       </div>
     )
   },
@@ -158,11 +164,8 @@ describe('Engine', () => {
         <Engine ref={ref} config={config} />
       </>
     )
-    wrapper.find('button').at(1).simulate('click')
-    wrapper
-      .find('input')
-      .at(0)
-      .simulate('change', { target: { name: 'content', value: 'bar' } })
+    wrapper.find('button[data-testid="edit-btn"]').at(1).simulate('click')
+    wrapper.find('input[data-testid="content-input"]').simulate('change', { target: { name: 'content', value: 'bar' } })
     expect(ref.current?.getConfig()).toEqual({
       name: 'View',
       children: [
@@ -216,5 +219,101 @@ describe('Engine', () => {
     ]
     const wrapper = mount(<Engine config={config} />)
     expect(wrapper.html()).toContain('hello world')
+  })
+
+  test('update id', () => {
+    const config = {
+      name: 'View',
+      children: [
+        {
+          name: 'Text',
+          props: {
+            content: 'foo',
+          },
+          version: '0.0.1',
+        },
+      ],
+      version: '0.0.1',
+    }
+    const ref = React.createRef<Engine>()
+    const wrapper = mount(
+      <>
+        <Engine ref={ref} config={config} />
+      </>
+    )
+    wrapper.find('button[data-testid="edit-btn"]').at(1).simulate('click')
+    wrapper.find('input[name="id"]').simulate('change', {
+      target: {
+        name: 'id',
+        value: 'baz',
+      },
+    })
+    expect(ref.current?.getConfig()).toEqual({
+      name: 'View',
+      children: [
+        {
+          name: 'Text',
+          props: {
+            content: 'foo',
+          },
+          id: 'baz',
+          version: '0.0.1',
+        },
+      ],
+      props: {},
+      version: '0.0.1',
+    })
+  })
+
+  test('update supply', () => {
+    const config = {
+      name: 'View',
+      children: [
+        {
+          name: 'Text',
+          props: {
+            content: 'foo',
+          },
+          version: '0.0.1',
+        },
+      ],
+      version: '0.0.1',
+    }
+    const ref = React.createRef<Engine>()
+    const wrapper = mount(
+      <>
+        <Engine ref={ref} config={config} />
+      </>
+    )
+    wrapper.find('button[data-testid="edit-btn"]').at(0).simulate('click')
+    const onChange = wrapper.find(ObjectStringInput).props().onChange
+    onChange &&
+      onChange({
+        target: {
+          name: 'supply',
+          value: {
+            baz: '123',
+            bar: '456',
+          },
+        },
+      })
+    expect(ref.current?.getConfig()).toEqual({
+      name: 'View',
+      children: [
+        {
+          name: 'Text',
+          props: {
+            content: 'foo',
+          },
+          version: '0.0.1',
+        },
+      ],
+      props: {},
+      supply: {
+        baz: '123',
+        bar: '456',
+      },
+      version: '0.0.1',
+    })
   })
 })

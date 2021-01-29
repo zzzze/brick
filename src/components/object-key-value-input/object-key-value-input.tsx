@@ -59,7 +59,8 @@ const ObjectKeyValueInput: React.FC<ObjectInputProps> = (props: ObjectInputProps
           result[key] = props.value?.[key] || ''
         } else {
           if (inputType === 'label') {
-            const newKeys = keys.splice(i, 1, event.target.value)
+            const newKeys = keys.slice()
+            newKeys.splice(i, 1, event.target.value)
             setKeys(newKeys)
             result[event.target.value] = props.value?.[key] || ''
           } else {
@@ -96,7 +97,7 @@ const ObjectKeyValueInput: React.FC<ObjectInputProps> = (props: ObjectInputProps
   )
   return (
     <div>
-      <button disabled={isAddBtnDisabled} onClick={handleAddItem}>
+      <button data-testid="add-item" disabled={isAddBtnDisabled} onClick={handleAddItem}>
         add
       </button>
       {keys.map((key, index) => {
@@ -104,7 +105,7 @@ const ObjectKeyValueInput: React.FC<ObjectInputProps> = (props: ObjectInputProps
           <div key={index}>
             <input name={`${index}-label`} type="text" value={key} onChange={handleChange} />
             <input name={`${index}-value`} type="text" value={props.value?.[key] || ''} onChange={handleChange} />
-            <button data-index={index} onClick={handleDeleteItem}>
+            <button data-testid={`remove-btn-${index}`} data-index={index} onClick={handleDeleteItem}>
               delete
             </button>
           </div>

@@ -1,15 +1,15 @@
 import React, { useCallback, useMemo, useEffect } from 'react'
-import { Config, Brick, PropsObject, EngineMode } from '@/types'
+import { Config, Brick, PropsObject, EngineMode, SetConfig, SetConfigFn } from '@/types'
 import BrickWrapper from '@/engine/brick-wrapper'
 
 interface BrickRenderProps {
   config: Config
   bricks: Record<string, Brick>
   mode: EngineMode
-  setConfig: (fn: (config: Readonly<Config>) => Config) => void
+  setConfig: SetConfig
 }
 
-const BrickRenderer: React.FC<BrickRenderProps> = ({ config, bricks, setConfig: setState, mode }: BrickRenderProps) => {
+const BrickRenderer: React.FC<BrickRenderProps> = ({ config, bricks, setConfig, mode }: BrickRenderProps) => {
   const brick = useMemo(() => {
     return bricks[config.name]
   }, [bricks, config])
@@ -17,21 +17,17 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, bricks, setConfig: 
     return Object.keys(brick.propTypes)
   }, [brick])
   useEffect(() => {
-    const values: PropsObject = {}
-    keys.forEach((key) => {
-      values[key] =
-        !config.props || typeof config?.props[key] === 'undefined' ? brick.defaultProps[key] : config.props[key]
+    setConfig((config) => {
+      const values: PropsObject = {}
+      keys.forEach((key) => {
+        values[key] =
+          !config.props || typeof config?.props[key] === 'undefined' ? brick.defaultProps[key] : config.props[key]
+      })
+      return {
+        ...config,
+        props: values,
+      }
     })
-    setState((config) => ({
-      ...config,
-      props: values,
-    }))
-  }, [])
-  const handleChange = useCallback((newProps: PropsObject) => {
-    setState((config) => ({
-      ...config,
-      props: newProps,
-    }))
   }, [])
   const handleSetStateForChildren = useCallback(
     (fn: (config: Readonly<Config>) => Config, index: number) => {
@@ -40,7 +36,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, bricks, setConfig: 
       }
       const children = config.children.slice()
       children.splice(index, 1, fn(config.children[index]))
-      setState((config) => ({
+      setConfig((config) => ({
         ...config,
         children,
       }))
@@ -48,7 +44,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, bricks, setConfig: 
     [config]
   )
   return (
-    <BrickWrapper config={config} bricks={bricks} onChange={handleChange}>
+    <BrickWrapper config={config} bricks={bricks} onConfigChange={setConfig}>
       {bricks[config.name].render({
         value: config.props || {},
         children:
@@ -60,7 +56,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, bricks, setConfig: 
                 mode={mode}
                 config={child}
                 bricks={bricks}
-                setConfig={(fn: (config: Readonly<Config>) => Config) => handleSetStateForChildren(fn, index)}
+                setConfig={(fn: SetConfigFn) => handleSetStateForChildren(fn, index)}
               />
             )
           }),

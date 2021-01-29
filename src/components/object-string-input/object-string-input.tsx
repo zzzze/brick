@@ -4,13 +4,13 @@ import { isPlainObject } from 'lodash'
 export interface ObjectInputEventData {
   target: {
     name: string
-    value: Record<string, string>
+    value: Record<string, unknown>
   }
 }
 
 interface ObjectInputProps {
   name?: string
-  value?: Record<string, string>
+  value?: Record<string, unknown>
   onChange?: (data: ObjectInputEventData) => void
 }
 

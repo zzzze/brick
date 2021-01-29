@@ -1,27 +1,43 @@
-import React, { Children, cloneElement } from 'react'
-import { Config, Brick, PropsObject } from '@/types'
-import ConfigForm from '@/engine/config-form'
-import { BrickContainerProps } from './brick-containter'
+import React, { Children, cloneElement, useCallback, useContext } from 'react'
+import { Config, Brick, PropsObject, SetConfig } from '@/types'
+import PropsConfigForm from '@/engine/props-config-form'
+import { BrickContainerProps } from '@/engine/brick-containter'
+import CommonConfigForm from '@/engine/common-config-form'
+import Context from '@/engine/context'
 
 interface ConfigFormWrapperProps {
   children: React.ReactElement<React.PropsWithChildren<unknown>>
   config: Config
   bricks: Record<string, Brick>
-  onChange: (newProps: PropsObject) => void
+  onConfigChange: SetConfig
 }
 
 const ConfigFormWrapper: React.FC<ConfigFormWrapperProps> = ({
   children,
   config,
   bricks,
-  onChange,
+  onConfigChange,
 }: ConfigFormWrapperProps) => {
+  const context = useContext(Context)
+  const handleChange = useCallback((newProps: PropsObject) => {
+    onConfigChange((config: Config) => {
+      return {
+        ...config,
+        props: newProps,
+      }
+    })
+  }, [])
   const child: React.ReactElement<React.PropsWithChildren<unknown>> = Children.only(children)
-  const propsForm = <ConfigForm config={config} bricks={bricks} onChange={onChange} />
+  const configForm = context.renderConfigForm(
+    <>
+      <CommonConfigForm config={config} bricks={bricks} onConfigChange={onConfigChange} />
+      <PropsConfigForm config={config} bricks={bricks} onPropsChange={handleChange} />
+    </>
+  )
   return cloneElement<BrickContainerProps>(
     child,
     {
-      propsForm,
+      configForm,
     },
     ...Children.toArray(child.props.children)
   )

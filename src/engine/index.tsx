@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { Config, Brick, EngineMode } from '@/types'
+import { Config, Brick, EngineMode, SetConfigFn } from '@/types'
 import Context, { RenderConfigForm } from '@/engine/context'
 import BrickRenderer from '@/engine/brick-renderer'
 
@@ -41,9 +41,13 @@ class Engine extends React.Component<EngineProps, EngineState> {
     return (
       <div>
         {configFormVisible ? (
-          <button onClick={handleHideConfigForm}>close</button>
+          <button data-testid="close-btn" onClick={handleHideConfigForm}>
+            close
+          </button>
         ) : (
-          <button onClick={handleShowConfigForm}>edit</button>
+          <button data-testid="edit-btn" onClick={handleShowConfigForm}>
+            edit
+          </button>
         )}
         {configFormVisible && node}
       </div>
@@ -56,18 +60,26 @@ class Engine extends React.Component<EngineProps, EngineState> {
   static registerBrick(brick: Brick): void {
     Engine.bricks[brick.name] = brick
   }
-  handleSetConfig = (fn: (config: Readonly<Config>) => Config): void => {
-    this.setState((state) => ({
-      ...state,
-      config: {
-        ...state.config,
-        ...fn(state.config as Config),
-      },
-    }))
-  }
-  handleSetConfigForArrayItem = (fn: (config: Readonly<Config>) => Config, index: number): void => {
+  handleSetConfig = (fn: SetConfigFn): void => {
     this.setState((state) => {
-      const config = (state.config as Config[]).slice()
+      if (!state.config || Array.isArray(state.config)) {
+        return state
+      }
+      return {
+        ...state,
+        config: {
+          ...state.config,
+          ...fn(state.config),
+        },
+      }
+    })
+  }
+  handleSetConfigForArrayItem = (fn: SetConfigFn, index: number): void => {
+    this.setState((state) => {
+      if (!Array.isArray(state.config)) {
+        return state
+      }
+      const config = state.config.slice()
       config.splice(index, 1, fn(config[index]))
       return {
         ...state,
