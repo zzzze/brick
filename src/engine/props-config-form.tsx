@@ -1,15 +1,16 @@
-import { useMemo } from 'react'
-import { Brick, DataObject, Config } from '@/types'
+import { useMemo, useContext } from 'react'
+import { DataObject, Config } from '@/types'
+import Context from '@/engine/context'
 
 interface PropsConfigFormProps {
   config: Config
-  bricks: Record<string, Brick>
   onPropsChange: (newProps: DataObject) => void
 }
-const PropsConfigForm = ({ config, bricks, onPropsChange }: PropsConfigFormProps): JSX.Element | null => {
+const PropsConfigForm = ({ config, onPropsChange }: PropsConfigFormProps): JSX.Element | null => {
+  const context = useContext(Context)
   const brick = useMemo(() => {
-    return bricks[config.name]
-  }, [bricks, config])
+    return context.bricks[config.name]
+  }, [context.bricks, config])
   return brick.renderConfigForm({
     data: config.data || {},
     onChange: onPropsChange,

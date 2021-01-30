@@ -1,10 +1,9 @@
 import React, { ChangeEvent, useCallback } from 'react'
-import { Brick, Config, SetConfig } from '@/types'
+import { Config, SetConfig } from '@/types'
 import ObjectStringInput, { ObjectInputEventData } from '@/components/object-string-input'
 
 interface PropsConfigFormProps {
   config: Config
-  bricks: Record<string, Brick>
   onConfigChange: SetConfig
 }
 const CommonConfigForm = ({ config, onConfigChange }: PropsConfigFormProps): JSX.Element | null => {

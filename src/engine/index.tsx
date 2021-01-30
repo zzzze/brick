@@ -89,7 +89,11 @@ class Engine extends React.Component<EngineProps, EngineState> {
   }
   render(): React.ReactNode {
     return (
-      <Context.Provider value={{ renderConfigForm: this.renderConfigForm }}>
+      <Context.Provider
+        value={{
+          renderConfigForm: this.renderConfigForm,
+          bricks: Engine.bricks,
+        }}>
         {this.state.config &&
           Array.isArray(this.state.config) &&
           this.state.config.map((item, index) => (
@@ -98,18 +102,11 @@ class Engine extends React.Component<EngineProps, EngineState> {
               supply={{}}
               mode={this.mode}
               config={item}
-              bricks={Engine.bricks}
-              setConfig={(fn: (config: Readonly<Config>) => Config) => this.handleSetConfigForArrayItem(fn, index)}
+              setConfig={(fn: SetConfigFn) => this.handleSetConfigForArrayItem(fn, index)}
             />
           ))}
         {this.state.config && !Array.isArray(this.state.config) && (
-          <BrickRenderer
-            mode={this.mode}
-            supply={{}}
-            config={this.state.config}
-            bricks={Engine.bricks}
-            setConfig={this.handleSetConfig}
-          />
+          <BrickRenderer mode={this.mode} supply={{}} config={this.state.config} setConfig={this.handleSetConfig} />
         )}
       </Context.Provider>
     )

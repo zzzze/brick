@@ -1,21 +1,11 @@
-import React, { useCallback, useMemo, useEffect, useState } from 'react'
-import {
-  Config,
-  Brick,
-  DataObject,
-  EngineMode,
-  SetConfig,
-  SetConfigFn,
-  SetDataFn,
-  SetData,
-  SetDataOptions,
-} from '@/types'
+import React, { useCallback, useMemo, useEffect, useState, useContext } from 'react'
+import { Config, DataObject, EngineMode, SetConfig, SetConfigFn, SetDataFn, SetData, SetDataOptions } from '@/types'
 import BrickWrapper from '@/engine/brick-wrapper'
 import { interpreteParam } from '@/utils'
+import Context from '@/engine/context'
 
 interface BrickRenderProps {
   config: Config
-  bricks: Record<string, Brick>
   supply: Record<string, unknown>
   mode: EngineMode
   setConfig: SetConfig
@@ -32,16 +22,11 @@ function getData(keys: string[], config: Config, pSupply: Record<string, unknown
   }, {})
 }
 
-const BrickRenderer: React.FC<BrickRenderProps> = ({
-  config,
-  supply: pSupply,
-  bricks,
-  setConfig,
-  mode,
-}: BrickRenderProps) => {
+const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, setConfig, mode }: BrickRenderProps) => {
+  const context = useContext(Context)
   const brick = useMemo(() => {
-    return bricks[config.name]
-  }, [bricks, config])
+    return context.bricks[config.name]
+  }, [context.bricks, config])
   const keys = useMemo(() => {
     return Object.keys(brick.dataTypes)
   }, [brick])
@@ -129,8 +114,8 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
     )
   }, [config.actions])
   return (
-    <BrickWrapper config={config} bricks={bricks} onConfigChange={setConfig}>
-      {bricks[config.name].render({
+    <BrickWrapper config={config} onConfigChange={setConfig}>
+      {context.bricks[config.name].render({
         data,
         setData: handleSetData,
         actions,
@@ -143,7 +128,6 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
                 mode={mode}
                 config={child}
                 supply={supply}
-                bricks={bricks}
                 setConfig={(fn: SetConfigFn) => handleSetStateForChildren(fn, index)}
               />
             )
