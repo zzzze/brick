@@ -30,10 +30,10 @@ const Text: Brick = {
   },
   childrenType: ChildrenType.NONE,
   renderConfigForm(args: ConfigFormRenderArgs) {
-    return <div>edit Text: {args.value.content as string}</div>
+    return <div>edit Text: {args.data.content as string}</div>
   },
   render(args: RenderArgs) {
-    return <BrickContainer tag="span">{args.value.content as string}</BrickContainer>
+    return <BrickContainer tag="span">{args.data.content as string}</BrickContainer>
   },
   version: '0.0.1',
 }

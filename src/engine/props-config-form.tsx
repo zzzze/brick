@@ -11,7 +11,7 @@ const PropsConfigForm = ({ config, bricks, onPropsChange }: PropsConfigFormProps
     return bricks[config.name]
   }, [bricks, config])
   return brick.renderConfigForm({
-    value: config.data || {},
+    data: config.data || {},
     onChange: onPropsChange,
   })
 }

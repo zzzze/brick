@@ -5,6 +5,7 @@ export interface Config {
   version: string
   id?: string
   data?: DataObject
+  actions?: Record<string, string>
   supply?: Record<string, unknown> // provide data for child brick
   children?: Config[]
 }

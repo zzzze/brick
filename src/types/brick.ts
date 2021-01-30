@@ -10,13 +10,23 @@ export enum ChildrenType {
   NONE = 'none',
 }
 
+export interface SetDataFn {
+  (data: DataObject): DataObject
+}
+
+export interface SetData {
+  (fn: SetDataFn): void
+}
+
 export interface RenderArgs {
-  value: DataObject
+  data: DataObject
+  actions: Record<string, (setData: SetData) => void>
+  setData: SetData
   children?: React.ReactNode
 }
 
 export interface ConfigFormRenderArgs {
-  value: DataObject
+  data: DataObject
   onChange: (value: DataObject) => void
   configFormVisible?: boolean
   hideConfigForm?: () => void
@@ -29,6 +39,8 @@ export interface Brick {
   name: string
   icon?: string
   dataTypes: Record<string, DataType>
+  actionNames?: string[]
+  defaultActions?: Record<string, string>
   defaultData: DataObject
   childrenType: ChildrenType
   renderConfigForm: (args: ConfigFormRenderArgs) => React.ReactElement

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useEffect } from 'react'
-import { Config, Brick, DataObject, EngineMode, SetConfig, SetConfigFn } from '@/types'
+import { Config, Brick, DataObject, EngineMode, SetConfig, SetConfigFn, SetDataFn, SetData } from '@/types'
 import BrickWrapper from '@/engine/brick-wrapper'
 import { interpreteParam } from '@/utils'
 
@@ -85,10 +85,33 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
     },
     [config]
   )
+  const handleSetData = useCallback(
+    (fn: SetDataFn): void => {
+      const newData = fn(data)
+      setConfig((config) => ({
+        ...config,
+        data: newData,
+      }))
+    },
+    [data]
+  )
+  const actions = useMemo<Record<string, (setData: SetData) => void>>(() => {
+    return (
+      brick.actionNames?.reduce<Record<string, (setData: SetData) => void>>((result, name) => {
+        let action = () => {} // eslint-disable-line prefer-const, @typescript-eslint/no-empty-function
+        const functionStr = config.actions?.[name] || brick.defaultActions?.[name] || 'function(){}'
+        eval(`action = ${functionStr}`) // TODO: compile in build mode
+        result[name] = action
+        return result
+      }, {}) || {}
+    )
+  }, [config.actions])
   return (
     <BrickWrapper config={config} bricks={bricks} onConfigChange={setConfig}>
       {bricks[config.name].render({
-        value: data,
+        data,
+        setData: handleSetData,
+        actions,
         children:
           Array.isArray(config.children) &&
           config.children.map((child, index) => {
