@@ -1,4 +1,4 @@
-export enum PropType {
+export enum DataType {
   STRING = 'string',
   NUMBER = 'number',
   BOOLEAN = 'boolean',
@@ -10,28 +10,28 @@ export enum ChildrenType {
   NONE = 'none',
 }
 
-export interface RenderProps {
-  value: PropsObject
+export interface RenderArgs {
+  value: DataObject
   children?: React.ReactNode
 }
 
-export interface ConfigFormRenderProps {
-  value: PropsObject
-  onChange: (value: PropsObject) => void
+export interface ConfigFormRenderArgs {
+  value: DataObject
+  onChange: (value: DataObject) => void
   configFormVisible?: boolean
   hideConfigForm?: () => void
   children?: React.ReactNode
 }
 
-export type PropsObject = Record<string, unknown>
+export type DataObject = Record<string, unknown>
 
 export interface Brick {
   name: string
   icon?: string
-  propTypes: Record<string, PropType>
-  defaultProps: PropsObject
+  dataTypes: Record<string, DataType>
+  defaultData: DataObject
   childrenType: ChildrenType
-  renderConfigForm: (props: ConfigFormRenderProps) => React.ReactElement
-  render: (props: RenderProps) => React.ReactElement
+  renderConfigForm: (args: ConfigFormRenderArgs) => React.ReactElement
+  render: (args: RenderArgs) => React.ReactElement
   version: string
 }

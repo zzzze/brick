@@ -3,7 +3,7 @@ import Engine from '@/engine'
 
 const config = {
   name: 'Text',
-  props: {
+  data: {
     content: 'hello world',
   },
   version: '0.0.1',

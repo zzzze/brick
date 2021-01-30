@@ -95,6 +95,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
           this.state.config.map((item, index) => (
             <BrickRenderer
               key={index}
+              supply={{}}
               mode={this.mode}
               config={item}
               bricks={Engine.bricks}
@@ -104,6 +105,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
         {this.state.config && !Array.isArray(this.state.config) && (
           <BrickRenderer
             mode={this.mode}
+            supply={{}}
             config={this.state.config}
             bricks={Engine.bricks}
             setConfig={this.handleSetConfig}

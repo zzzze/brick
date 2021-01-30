@@ -1,10 +1,10 @@
-import { PropsObject } from './brick'
+import { DataObject } from './brick'
 
 export interface Config {
   name: string
   version: string
   id?: string
-  props?: PropsObject
+  data?: DataObject
   supply?: Record<string, unknown> // provide data for child brick
   children?: Config[]
 }

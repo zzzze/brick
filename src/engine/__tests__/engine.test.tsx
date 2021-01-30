@@ -3,74 +3,74 @@ import { mount } from 'enzyme'
 import 'jest-enzyme'
 import Engine from '@/engine'
 import BrickContainer from '@/engine/brick-containter'
-import { Brick, ChildrenType, ConfigFormRenderProps, PropType, RenderProps } from '@/types'
+import { Brick, ChildrenType, ConfigFormRenderArgs, DataType, RenderArgs } from '@/types'
 import ObjectStringInput from '@/components/object-string-input'
 
 const View: Brick = {
   name: 'View',
-  propTypes: {},
-  defaultProps: {},
+  dataTypes: {},
+  defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
-  renderConfigForm(props: ConfigFormRenderProps) {
-    return <div>edit View: {props.children}</div>
+  renderConfigForm(args: ConfigFormRenderArgs) {
+    return <div>edit View: {args.children}</div>
   },
-  render(props: RenderProps) {
-    return <BrickContainer>{props.children}</BrickContainer>
+  render(args: RenderArgs) {
+    return <BrickContainer>{args.children}</BrickContainer>
   },
   version: '0.0.1',
 }
 
 const Text: Brick = {
   name: 'Text',
-  propTypes: {
-    content: PropType.STRING,
+  dataTypes: {
+    content: DataType.STRING,
   },
-  defaultProps: {
+  defaultData: {
     content: '',
   },
   childrenType: ChildrenType.NONE,
-  renderConfigForm(props: ConfigFormRenderProps) {
+  renderConfigForm(args: ConfigFormRenderArgs) {
     const handleChange = useCallback(
       (event: ChangeEvent<HTMLInputElement>) => {
-        props.onChange({
-          ...props.value,
+        args.onChange({
+          ...args.value,
           content: event.target.value,
         })
       },
-      [props.value]
+      [args.value]
     )
     return (
       <div>
-        edit Text: {props.value.content as string}
+        edit Text: {args.value.content as string}
         <input
           data-testid="content-input"
           name="content"
-          value={props.value.content as string}
+          value={args.value.content as string}
           onChange={handleChange}
         />
       </div>
     )
   },
-  render(props: RenderProps) {
-    return <BrickContainer tag="span">{props.value.content as string}</BrickContainer>
+  render(args: RenderArgs) {
+    return <BrickContainer tag="span">{args.value.content as string}</BrickContainer>
   },
   version: '0.0.1',
 }
 
 const TextWithDefaultValue: Brick = {
   name: 'TextWithDefaultValue',
-  propTypes: {
-    content: PropType.STRING,
+  dataTypes: {
+    content: DataType.STRING,
   },
-  defaultProps: {
+  defaultData: {
     content: 'hello world',
   },
   childrenType: ChildrenType.NONE,
-  renderConfigForm(props) {
-    return <div>edit Text: {props.value.content}</div>
+  renderConfigForm(args) {
+    return <div>edit Text: {args.value.content}</div>
   },
-  render(props) {
-    return <BrickContainer tag="span">{props.value.content as string}</BrickContainer>
+  render(args) {
+    return <BrickContainer tag="span">{args.value.content as string}</BrickContainer>
   },
   version: '0.0.1',
 }
@@ -88,14 +88,14 @@ describe('Engine', () => {
       children: [
         {
           name: 'Text',
-          props: {
+          data: {
             content: 'hello',
           },
           version: '0.0.1',
         },
         {
           name: 'Text',
-          props: {
+          data: {
             content: 'world',
           },
           version: '0.0.1',
@@ -121,20 +121,20 @@ describe('Engine', () => {
     expect(wrapper.html()).not.toContain('edit Text: world')
   })
 
-  test('default props', () => {
+  test('default data', () => {
     const config = {
       name: 'View',
       children: [
         {
           name: 'Text',
-          props: {
+          data: {
             content: 'foo',
           },
           version: '0.0.1',
         },
         {
           name: 'TextWithDefaultValue',
-          props: {},
+          data: {},
           version: '0.0.1',
         },
       ],
@@ -150,7 +150,7 @@ describe('Engine', () => {
       children: [
         {
           name: 'Text',
-          props: {
+          data: {
             content: 'foo',
           },
           version: '0.0.1',
@@ -171,13 +171,13 @@ describe('Engine', () => {
       children: [
         {
           name: 'Text',
-          props: {
+          data: {
             content: 'bar',
           },
           version: '0.0.1',
         },
       ],
-      props: {},
+      data: {},
       version: '0.0.1',
     })
   })
@@ -186,14 +186,14 @@ describe('Engine', () => {
     const config = [
       {
         name: 'Text',
-        props: {
+        data: {
           content: 'foo',
         },
         version: '0.0.1',
       },
       {
         name: 'TextWithDefaultValue',
-        props: {},
+        data: {},
         version: '0.0.1',
       },
       {
@@ -201,14 +201,14 @@ describe('Engine', () => {
         children: [
           {
             name: 'Text',
-            props: {
+            data: {
               content: 'hello',
             },
             version: '0.0.1',
           },
           {
             name: 'Text',
-            props: {
+            data: {
               content: 'world',
             },
             version: '0.0.1',
@@ -227,7 +227,7 @@ describe('Engine', () => {
       children: [
         {
           name: 'Text',
-          props: {
+          data: {
             content: 'foo',
           },
           version: '0.0.1',
@@ -253,14 +253,14 @@ describe('Engine', () => {
       children: [
         {
           name: 'Text',
-          props: {
+          data: {
             content: 'foo',
           },
           id: 'baz',
           version: '0.0.1',
         },
       ],
-      props: {},
+      data: {},
       version: '0.0.1',
     })
   })
@@ -271,7 +271,7 @@ describe('Engine', () => {
       children: [
         {
           name: 'Text',
-          props: {
+          data: {
             content: 'foo',
           },
           version: '0.0.1',
@@ -302,18 +302,51 @@ describe('Engine', () => {
       children: [
         {
           name: 'Text',
-          props: {
+          data: {
             content: 'foo',
           },
           version: '0.0.1',
         },
       ],
-      props: {},
+      data: {},
       supply: {
         baz: '123',
         bar: '456',
       },
       version: '0.0.1',
     })
+  })
+
+  test('use supply', () => {
+    const config = {
+      name: 'View',
+      supply: {
+        text: 'foo',
+      },
+      children: [
+        {
+          name: 'View',
+          children: [
+            {
+              name: 'Text',
+              data: {
+                content: '{{text}}',
+              },
+              version: '0.0.1',
+            },
+          ],
+          version: '0.0.1',
+        },
+      ],
+      version: '0.0.1',
+    }
+    const ref = React.createRef<Engine>()
+    const wrapper = mount(
+      <>
+        <Engine ref={ref} config={config} />
+      </>
+    )
+    expect(wrapper.html()).toContain('foo')
+    expect(ref.current?.getConfig()).toMatchObject(config)
   })
 })

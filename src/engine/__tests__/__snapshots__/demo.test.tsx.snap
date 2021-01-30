@@ -98,3 +98,127 @@ Array [
   </div>,
 ]
 `;
+
+exports[`renders ./src/engine/demo/supply.md correctly 1`] = `
+<div>
+  <div>
+    <button
+      data-testid="edit-btn"
+    >
+      edit
+    </button>
+  </div>
+  <div>
+    <div>
+      <button
+        data-testid="edit-btn"
+      >
+        edit
+      </button>
+    </div>
+    <span>
+      <div>
+        <button
+          data-testid="edit-btn"
+        >
+          edit
+        </button>
+      </div>
+      foo
+    </span>
+  </div>
+</div>
+`;
+
+exports[`renders ./src/engine/demo/supply-from-data.md correctly 1`] = `
+<div>
+  <div>
+    <button
+      data-testid="edit-btn"
+    >
+      edit
+    </button>
+  </div>
+  <div>
+    <div>
+      <button
+        data-testid="edit-btn"
+      >
+        edit
+      </button>
+    </div>
+    <span>
+      <div>
+        <button
+          data-testid="edit-btn"
+        >
+          edit
+        </button>
+      </div>
+      bar
+    </span>
+  </div>
+</div>
+`;
+
+exports[`renders ./src/engine/demo/supply-with-id.md correctly 1`] = `
+<div>
+  <div>
+    <button
+      data-testid="edit-btn"
+    >
+      edit
+    </button>
+  </div>
+  <div>
+    <div>
+      <button
+        data-testid="edit-btn"
+      >
+        edit
+      </button>
+    </div>
+    <span>
+      <div>
+        <button
+          data-testid="edit-btn"
+        >
+          edit
+        </button>
+      </div>
+      foo
+    </span>
+  </div>
+</div>
+`;
+
+exports[`renders ./src/engine/demo/supply-without-id.md correctly 1`] = `
+<div>
+  <div>
+    <button
+      data-testid="edit-btn"
+    >
+      edit
+    </button>
+  </div>
+  <div>
+    <div>
+      <button
+        data-testid="edit-btn"
+      >
+        edit
+      </button>
+    </div>
+    <span>
+      <div>
+        <button
+          data-testid="edit-btn"
+        >
+          edit
+        </button>
+      </div>
+      baz
+    </span>
+  </div>
+</div>
+`;

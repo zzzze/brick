@@ -2,36 +2,38 @@ import React from 'react'
 import demoTest from '@/tools/tests/demoTest'
 import Engine from '@/engine'
 import BrickContainer from '@/engine/brick-containter'
-import { Brick, ChildrenType, ConfigFormRenderProps, PropType, RenderProps } from '@/types'
+import { Brick, ChildrenType, ConfigFormRenderArgs, DataType, RenderArgs } from '@/types'
 
 const View: Brick = {
   name: 'View',
-  propTypes: {},
-  defaultProps: {},
-  childrenType: ChildrenType.MULTIPLE,
-  renderConfigForm(props: ConfigFormRenderProps) {
-    return <div>edit View: {props.children}</div>
+  dataTypes: {
+    name: DataType.STRING,
   },
-  render(props: RenderProps) {
-    return <BrickContainer>{props.children}</BrickContainer>
+  defaultData: {},
+  childrenType: ChildrenType.MULTIPLE,
+  renderConfigForm(args: ConfigFormRenderArgs) {
+    return <div>edit View: {args.children}</div>
+  },
+  render(args: RenderArgs) {
+    return <BrickContainer>{args.children}</BrickContainer>
   },
   version: '0.0.1',
 }
 
 const Text: Brick = {
   name: 'Text',
-  propTypes: {
-    content: PropType.STRING,
+  dataTypes: {
+    content: DataType.STRING,
   },
-  defaultProps: {
+  defaultData: {
     content: '',
   },
   childrenType: ChildrenType.NONE,
-  renderConfigForm(props: ConfigFormRenderProps) {
-    return <div>edit Text: {props.value.content as string}</div>
+  renderConfigForm(args: ConfigFormRenderArgs) {
+    return <div>edit Text: {args.value.content as string}</div>
   },
-  render(props: RenderProps) {
-    return <BrickContainer tag="span">{props.value.content as string}</BrickContainer>
+  render(args: RenderArgs) {
+    return <BrickContainer tag="span">{args.value.content as string}</BrickContainer>
   },
   version: '0.0.1',
 }

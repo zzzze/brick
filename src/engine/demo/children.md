@@ -6,14 +6,14 @@ const config = {
   children: [
     {
       name: 'Text',
-      props: {
+      data: {
         content: 'hello',
       },
       version: '0.0.1',
     },
     {
       name: 'Text',
-      props: {
+      data: {
         content: 'world',
       },
       version: '0.0.1',
