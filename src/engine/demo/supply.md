@@ -4,7 +4,9 @@ import Engine from '@/engine'
 const config = {
   name: 'View',
   supply: {
-    text: 'foo',
+    data: {
+      text: 'foo',
+    },
   },
   children: [
     {

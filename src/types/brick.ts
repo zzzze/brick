@@ -10,6 +10,12 @@ export enum ChildrenType {
   NONE = 'none',
 }
 
+export interface Action {
+  (...args: unknown[]): void
+}
+
+export type Actions = Record<string, Action>
+
 export interface SetDataFn {
   (data: DataObject): DataObject
 }
@@ -22,9 +28,15 @@ export interface SetData {
   (fn: SetDataFn, options: SetDataOptions): void
 }
 
+export interface SupplyInRender {
+  data?: Record<string, unknown>
+  actions?: Record<string, unknown>
+}
+
 export interface RenderArgs {
   data: DataObject
-  actions: Record<string, (setData: SetData) => void>
+  actions: Record<string, Action>
+  supply: SupplyInRender
   setData: SetData
   children?: React.ReactNode
 }

@@ -19,7 +19,17 @@ const CommonConfigForm = ({ config, onConfigChange }: PropsConfigFormProps): JSX
     onConfigChange((config) => {
       return {
         ...config,
-        supply: data.target.value,
+        supply: {
+          ...config.supply,
+          data: {
+            ...config.supply?.data,
+            ...(data.target.name === 'supply.data' ? data.target.value : {}),
+          },
+          actions: {
+            ...config.supply?.actions,
+            ...(data.target.name === 'supply.actions' ? (data.target.value as Record<string, string>) : {}),
+          },
+        },
       }
     })
   }, [])
@@ -30,8 +40,12 @@ const CommonConfigForm = ({ config, onConfigChange }: PropsConfigFormProps): JSX
         <input type="text" name="id" value={config.id || ''} onChange={handleChange} />
       </div>
       <div>
-        <label htmlFor="supply">Supply: </label>
-        <ObjectStringInput name="supply" value={config.supply || {}} onChange={handleSupplyChange} />
+        <label htmlFor="supply.data">Supply Data: </label>
+        <ObjectStringInput name="supply.data" value={config.supply?.data || {}} onChange={handleSupplyChange} />
+      </div>
+      <div>
+        <label htmlFor="supply.actions">Supply Actions: </label>
+        <ObjectStringInput name="supply.actions" value={config.supply?.actions || {}} onChange={handleSupplyChange} />
       </div>
     </>
   )

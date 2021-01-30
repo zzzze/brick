@@ -7,7 +7,9 @@ const config = {
     name: 'bar',
   },
   supply: {
-    text: '{{data.name}}',
+    data: {
+      text: '{{data.name}}',
+    },
   },
   children: [
     {

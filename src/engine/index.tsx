@@ -99,14 +99,19 @@ class Engine extends React.Component<EngineProps, EngineState> {
           this.state.config.map((item, index) => (
             <BrickRenderer
               key={index}
-              supply={{}}
+              supply={{ data: {}, actions: {} }}
               mode={this.mode}
               config={item}
               setConfig={(fn: SetConfigFn) => this.handleSetConfigForArrayItem(fn, index)}
             />
           ))}
         {this.state.config && !Array.isArray(this.state.config) && (
-          <BrickRenderer mode={this.mode} supply={{}} config={this.state.config} setConfig={this.handleSetConfig} />
+          <BrickRenderer
+            mode={this.mode}
+            supply={{ data: {}, actions: {} }}
+            config={this.state.config}
+            setConfig={this.handleSetConfig}
+          />
         )}
       </Context.Provider>
     )

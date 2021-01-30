@@ -111,7 +111,47 @@ const TextWithAction: Brick = {
     const handleClick = useCallback(() => {
       const onClick = args.actions['onClick']
       if (onClick) {
-        onClick(args.setData)
+        onClick()
+      }
+    }, [])
+    return (
+      <BrickContainer tag="span">
+        <span data-testid="element-with-action" onClick={handleClick}>
+          {args.data.content as string}
+        </span>
+      </BrickContainer>
+    )
+  },
+  version: '0.0.1',
+}
+
+const TextWithAction2: Brick = {
+  name: 'TextWithAction2',
+  dataTypes: {
+    content: DataType.STRING,
+  },
+  defaultData: {
+    content: 'hello world',
+  },
+  childrenType: ChildrenType.NONE,
+  actionNames: ['onClick'],
+  defaultActions: {
+    onClick: `function (setData) {
+      setData(function(data) {
+        return Object.assign({}, data, {
+          content: 'foo',
+        })
+      })
+    }`,
+  },
+  renderConfigForm(args) {
+    return <div>edit Text: {args.data.content}</div>
+  },
+  render(args) {
+    const handleClick = useCallback(() => {
+      const onClick = args.actions['onClick']
+      if (onClick) {
+        onClick(args.data, args.supply)
       }
     }, [])
     return (
@@ -131,6 +171,7 @@ describe('Engine', () => {
     Engine.registerBrick(Text)
     Engine.registerBrick(TextWithDefaultValue)
     Engine.registerBrick(TextWithAction)
+    Engine.registerBrick(TextWithAction2)
   })
 
   test('toggle config form', () => {
@@ -228,7 +269,6 @@ describe('Engine', () => {
           version: '0.0.1',
         },
       ],
-      data: {},
       version: '0.0.1',
     })
   })
@@ -311,7 +351,6 @@ describe('Engine', () => {
           version: '0.0.1',
         },
       ],
-      data: {},
       version: '0.0.1',
     })
   })
@@ -338,7 +377,7 @@ describe('Engine', () => {
         </>
       )
       wrapper.find('button[data-testid="edit-btn"]').at(0).simulate('click')
-      wrapper.find('textarea[name="supply"]').simulate('change', {
+      wrapper.find('textarea[name="supply.data"]').simulate('change', {
         target: {
           name: 'supply',
           value: JSON.stringify({
@@ -358,10 +397,12 @@ describe('Engine', () => {
             version: '0.0.1',
           },
         ],
-        data: {},
         supply: {
-          baz: '123',
-          bar: '456',
+          data: {
+            baz: '123',
+            bar: '456',
+          },
+          actions: {},
         },
         version: '0.0.1',
       })
@@ -371,7 +412,9 @@ describe('Engine', () => {
       const config = {
         name: 'View',
         supply: {
-          text: 'foo',
+          data: {
+            text: 'foo',
+          },
         },
         children: [
           {
@@ -398,7 +441,7 @@ describe('Engine', () => {
       )
       expect(wrapper.html()).toContain('foo')
       wrapper.find('button[data-testid="edit-btn"]').at(0).simulate('click')
-      wrapper.find('textarea[name="supply"]').simulate('change', {
+      wrapper.find('textarea[name="supply.data"]').simulate('change', {
         target: {
           name: 'supply',
           value: JSON.stringify({
@@ -418,7 +461,9 @@ describe('Engine', () => {
           name: 'baz',
         },
         supply: {
-          text: '{{data.name}}',
+          data: {
+            text: '{{data.name}}',
+          },
         },
         children: [
           {
@@ -463,7 +508,9 @@ describe('Engine', () => {
           name: 'baz',
         },
         supply: {
-          text: '{{data.name}}',
+          data: {
+            text: '{{data.name}}',
+          },
         },
         children: [
           {
@@ -511,7 +558,9 @@ describe('Engine', () => {
           name: 'baz',
         },
         supply: {
-          text: '{{data.name}}',
+          data: {
+            text: '{{data.name}}',
+          },
         },
         children: [
           {
@@ -550,7 +599,9 @@ describe('Engine', () => {
           name: 'baz',
         },
         supply: {
-          text: '{{data.name}}',
+          data: {
+            text: '{{data.name}}',
+          },
         },
         children: [
           {
@@ -599,7 +650,9 @@ describe('Engine', () => {
           name: 'baz',
         },
         supply: {
-          text: '{{data.name}}',
+          data: {
+            text: '{{data.name}}',
+          },
         },
         children: [
           {
@@ -642,6 +695,219 @@ describe('Engine', () => {
       expect(wrapper.html()).toContain('123')
       const config2 = ref.current?.getConfig() as Config
       expect(config2.children?.[0].children?.[0].data?.['content']).toEqual('123')
+    })
+  })
+
+  describe('actions supply', () => {
+    test('trigger action from supply', () => {
+      const config: Config = {
+        name: 'View',
+        id: 'container',
+        data: {
+          name: 'baz',
+        },
+        supply: {
+          data: {
+            text: '{{data.name}}',
+          },
+        },
+        children: [
+          {
+            name: 'View',
+            id: 'container2',
+            data: {
+              name: '{{container.text}}',
+            },
+            supply: {
+              data: {
+                content: '{{data.name}}',
+              },
+              actions: {
+                onClick: `function(setData) {
+                  setData(function(data) {
+                    return Object.assign({}, data, {
+                      name: '123456',
+                    })
+                  }, {
+                    setToConfig: true,
+                  })
+                }`,
+              },
+            },
+            children: [
+              {
+                name: 'TextWithAction',
+                actions: {
+                  onClick: '{{container2.onClick}}',
+                },
+                data: {
+                  content: '{{container2.content}}',
+                },
+                version: '0.0.1',
+              },
+            ],
+            version: '0.0.1',
+          },
+        ],
+        version: '0.0.1',
+      }
+      const ref = React.createRef<Engine>()
+      const wrapper = mount(
+        <>
+          <Engine ref={ref} config={config} />
+        </>
+      )
+      expect(config.children?.[0].data?.['name']).toEqual('{{container.text}}')
+      expect(wrapper.html()).toContain('baz')
+      wrapper.find('span[data-testid="element-with-action"]').simulate('click')
+      expect(wrapper.html()).not.toContain('baz')
+      expect(wrapper.html()).toContain('123456')
+      const config2 = ref.current?.getConfig() as Config
+      expect(config2.children?.[0].data?.['name']).toEqual('123456')
+    })
+
+    test('data action between sibling', () => {
+      const config: Config = {
+        name: 'View',
+        id: 'container',
+        data: {
+          name: 'baz',
+        },
+        supply: {
+          data: {
+            text: '{{data.name}}',
+          },
+          actions: {
+            onClick: `function(setData) {
+              setData(function(data) {
+                return Object.assign({}, data, {
+                  name: '123456',
+                })
+              }, {
+                setToConfig: true,
+              })
+            }`,
+          },
+        },
+        children: [
+          {
+            name: 'View',
+            children: [
+              {
+                name: 'TextWithAction',
+                actions: {
+                  onClick: '{{container.onClick}}',
+                },
+                data: {
+                  content: 'foo',
+                },
+                version: '0.0.1',
+              },
+            ],
+            version: '0.0.1',
+          },
+          {
+            name: 'View',
+            children: [
+              {
+                name: 'Text',
+                data: {
+                  content: '{{container.text}}',
+                },
+                version: '0.0.1',
+              },
+            ],
+            version: '0.0.1',
+          },
+        ],
+        version: '0.0.1',
+      }
+      const ref = React.createRef<Engine>()
+      const wrapper = mount(
+        <>
+          <Engine ref={ref} config={config} />
+        </>
+      )
+      expect(config.data?.['name']).toEqual('baz')
+      expect(wrapper.html()).toContain('baz')
+      wrapper.find('span[data-testid="element-with-action"]').simulate('click')
+      expect(wrapper.html()).not.toContain('baz')
+      expect(wrapper.html()).toContain('123456')
+      const config2 = ref.current?.getConfig() as Config
+      expect(config2.data?.['name']).toEqual('123456')
+    })
+
+    test('trigger action with param', () => {
+      const config: Config = {
+        name: 'View',
+        id: 'container',
+        data: {
+          name: 'baz',
+        },
+        supply: {
+          data: {
+            text: '{{data.name}}',
+          },
+          actions: {
+            onClick: `function(setData, name) {
+              setData(function(data) {
+                return Object.assign({}, data, {
+                  name: name,
+                })
+              }, {
+                setToConfig: true,
+              })
+            }`,
+          },
+        },
+        children: [
+          {
+            name: 'View',
+            children: [
+              {
+                name: 'TextWithAction2',
+                actions: {
+                  onClick: `function(setData, data, supply) {
+                    supply.actions.container.onClick(data.content)
+                  }`,
+                },
+                data: {
+                  content: '123456789',
+                },
+                version: '0.0.1',
+              },
+            ],
+            version: '0.0.1',
+          },
+          {
+            name: 'View',
+            children: [
+              {
+                name: 'Text',
+                data: {
+                  content: '{{container.text}}',
+                },
+                version: '0.0.1',
+              },
+            ],
+            version: '0.0.1',
+          },
+        ],
+        version: '0.0.1',
+      }
+      const ref = React.createRef<Engine>()
+      const wrapper = mount(
+        <>
+          <Engine ref={ref} config={config} />
+        </>
+      )
+      expect(config.data?.['name']).toEqual('baz')
+      expect(wrapper.html()).toContain('baz')
+      wrapper.find('span[data-testid="element-with-action"]').simulate('click')
+      expect(wrapper.html()).not.toContain('baz')
+      expect(wrapper.html()).toContain('123456789')
+      const config2 = ref.current?.getConfig() as Config
+      expect(config2.data?.['name']).toEqual('123456789')
     })
   })
 })

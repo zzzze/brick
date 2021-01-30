@@ -5,13 +5,17 @@ const config = {
   name: 'View',
   id: 'node1',
   supply: {
-    text: 'foo',
+    data: {
+      text: 'foo',
+    },
   },
   children: [
     {
       name: 'View',
       supply: {
-        text: 'baz',
+        data: {
+          text: 'baz',
+        },
       },
       children: [
         {
