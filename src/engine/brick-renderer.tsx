@@ -36,7 +36,8 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
   }, [pSupply, keys, config.data])
   const supply = useMemo(() => {
     let supply = config.supply ?? {}
-    supply = Object.keys(supply).reduce<Record<string, unknown>>((result, key) => {
+    const keys = Object.keys(supply)
+    supply = keys.reduce<Record<string, unknown>>((result, key) => {
       let value = supply[key]
       if (typeof value === 'string') {
         value = interpreteParam(value, {
@@ -47,7 +48,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
       result[key] = value
       return result
     }, {})
-    if (config.id) {
+    if (config.id && keys.length > 0) {
       supply = {
         [config.id]: supply,
       }

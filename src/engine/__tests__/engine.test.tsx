@@ -4,15 +4,30 @@ import 'jest-enzyme'
 import Engine from '@/engine'
 import BrickContainer from '@/engine/brick-containter'
 import { Brick, ChildrenType, ConfigFormRenderArgs, DataType, RenderArgs } from '@/types'
-import ObjectStringInput from '@/components/object-string-input'
 
 const View: Brick = {
   name: 'View',
-  dataTypes: {},
+  dataTypes: {
+    name: DataType.STRING,
+  },
   defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
   renderConfigForm(args: ConfigFormRenderArgs) {
-    return <div>edit View: {args.children}</div>
+    const handleChange = useCallback(
+      (event: ChangeEvent<HTMLInputElement>) => {
+        args.onChange({
+          ...args.value,
+          name: event.target.value,
+        })
+      },
+      [args.value]
+    )
+    return (
+      <div>
+        edit View: {args.value.name as string}
+        <input data-testid="name-input" name="name" value={args.value.name as string} onChange={handleChange} />
+      </div>
+    )
   },
   render(args: RenderArgs) {
     return <BrickContainer>{args.children}</BrickContainer>
@@ -286,17 +301,16 @@ describe('Engine', () => {
       </>
     )
     wrapper.find('button[data-testid="edit-btn"]').at(0).simulate('click')
-    const onChange = wrapper.find(ObjectStringInput).props().onChange
-    onChange &&
-      onChange({
-        target: {
-          name: 'supply',
-          value: {
-            baz: '123',
-            bar: '456',
-          },
-        },
-      })
+
+    wrapper.find('textarea[name="supply"]').simulate('change', {
+      target: {
+        name: 'supply',
+        value: JSON.stringify({
+          baz: '123',
+          bar: '456',
+        }),
+      },
+    })
     expect(ref.current?.getConfig()).toEqual({
       name: 'View',
       children: [
@@ -317,7 +331,7 @@ describe('Engine', () => {
     })
   })
 
-  test('use supply', () => {
+  test('use and update supply', () => {
     const config = {
       name: 'View',
       supply: {
@@ -347,6 +361,107 @@ describe('Engine', () => {
       </>
     )
     expect(wrapper.html()).toContain('foo')
-    expect(ref.current?.getConfig()).toMatchObject(config)
+    wrapper.find('button[data-testid="edit-btn"]').at(0).simulate('click')
+    wrapper.find('textarea[name="supply"]').simulate('change', {
+      target: {
+        name: 'supply',
+        value: JSON.stringify({
+          text: 123,
+        }),
+      },
+    })
+    wrapper.find('button[data-testid="close-btn"]').at(0).simulate('click')
+    expect(wrapper.html()).not.toContain('foo')
+    expect(wrapper.html()).toContain('123')
+  })
+
+  test('inject supply from data', () => {
+    const config = {
+      name: 'View',
+      data: {
+        name: 'baz',
+      },
+      supply: {
+        text: '{{data.name}}',
+      },
+      children: [
+        {
+          name: 'View',
+          children: [
+            {
+              name: 'Text',
+              data: {
+                content: '{{text}}',
+              },
+              version: '0.0.1',
+            },
+          ],
+          version: '0.0.1',
+        },
+      ],
+      version: '0.0.1',
+    }
+    const ref = React.createRef<Engine>()
+    const wrapper = mount(
+      <>
+        <Engine ref={ref} config={config} />
+      </>
+    )
+    expect(wrapper.html()).toContain('baz')
+    wrapper.find('button[data-testid="edit-btn"]').at(0).simulate('click')
+    wrapper.find('input[data-testid="name-input"]').simulate('change', {
+      target: {
+        name: 'name',
+        value: 'bar',
+      },
+    })
+    expect(wrapper.html()).not.toContain('baz')
+    expect(wrapper.html()).toContain('bar')
+  })
+
+  test('inject supply from data and use id as namespace', () => {
+    const config = {
+      name: 'View',
+      id: 'container',
+      data: {
+        name: 'baz',
+      },
+      supply: {
+        text: '{{data.name}}',
+      },
+      children: [
+        {
+          name: 'View',
+          children: [
+            {
+              name: 'Text',
+              data: {
+                content: '{{container.text}}',
+              },
+              version: '0.0.1',
+            },
+          ],
+          version: '0.0.1',
+        },
+      ],
+      version: '0.0.1',
+    }
+    const ref = React.createRef<Engine>()
+    const wrapper = mount(
+      <>
+        <Engine ref={ref} config={config} />
+      </>
+    )
+    expect(wrapper.html()).toContain('baz')
+    wrapper.find('button[data-testid="edit-btn"]').at(0).simulate('click')
+    wrapper.find('input[data-testid="name-input"]').simulate('change', {
+      target: {
+        name: 'name',
+        value: 'bar',
+      },
+    })
+    wrapper.find('button[data-testid="close-btn"]').at(0).simulate('click')
+    expect(wrapper.html()).not.toContain('baz')
+    expect(wrapper.html()).toContain('bar')
   })
 })
