@@ -14,8 +14,12 @@ export interface SetDataFn {
   (data: DataObject): DataObject
 }
 
+export interface SetDataOptions {
+  setToConfig?: boolean // whether set data into config, if false set data at runtime only
+}
+
 export interface SetData {
-  (fn: SetDataFn): void
+  (fn: SetDataFn, options: SetDataOptions): void
 }
 
 export interface RenderArgs {

@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 import 'jest-enzyme'
 import Engine from '@/engine'
 import BrickContainer from '@/engine/brick-containter'
-import { Brick, ChildrenType, ConfigFormRenderArgs, DataType, RenderArgs } from '@/types'
+import { Brick, ChildrenType, Config, ConfigFormRenderArgs, DataType, RenderArgs } from '@/types'
 
 const View: Brick = {
   name: 'View',
@@ -542,7 +542,7 @@ describe('Engine', () => {
       expect(wrapper.html()).toContain('foo')
     })
 
-    test('use custom action', () => {
+    test('use custom action - set data at runtime only', () => {
       const config = {
         name: 'View',
         id: 'container',
@@ -588,6 +588,60 @@ describe('Engine', () => {
       wrapper.find('span[data-testid="element-with-action"]').simulate('click')
       expect(wrapper.html()).not.toContain('baz')
       expect(wrapper.html()).toContain('123')
+      expect(ref.current?.getConfig()).toMatchObject(config)
+    })
+
+    test('use custom action - set data to config', () => {
+      const config: Config = {
+        name: 'View',
+        id: 'container',
+        data: {
+          name: 'baz',
+        },
+        supply: {
+          text: '{{data.name}}',
+        },
+        children: [
+          {
+            name: 'View',
+            children: [
+              {
+                name: 'TextWithAction',
+                data: {
+                  content: '{{container.text}}',
+                },
+                actions: {
+                  onClick: `function(setData) {
+                    setData(function(data) {
+                      return Object.assign({}, data, {
+                        content: '123',
+                      })
+                    }, {
+                      setToConfig: true,
+                    })
+                  }`,
+                },
+                version: '0.0.1',
+              },
+            ],
+            version: '0.0.1',
+          },
+        ],
+        version: '0.0.1',
+      }
+      const ref = React.createRef<Engine>()
+      const wrapper = mount(
+        <>
+          <Engine ref={ref} config={config} />
+        </>
+      )
+      expect(config.children?.[0].children?.[0].data?.['content']).toEqual('{{container.text}}')
+      expect(wrapper.html()).toContain('baz')
+      wrapper.find('span[data-testid="element-with-action"]').simulate('click')
+      expect(wrapper.html()).not.toContain('baz')
+      expect(wrapper.html()).toContain('123')
+      const config2 = ref.current?.getConfig() as Config
+      expect(config2.children?.[0].children?.[0].data?.['content']).toEqual('123')
     })
   })
 })

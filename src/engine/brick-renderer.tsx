@@ -1,5 +1,15 @@
-import React, { useCallback, useMemo, useEffect } from 'react'
-import { Config, Brick, DataObject, EngineMode, SetConfig, SetConfigFn, SetDataFn, SetData } from '@/types'
+import React, { useCallback, useMemo, useEffect, useState } from 'react'
+import {
+  Config,
+  Brick,
+  DataObject,
+  EngineMode,
+  SetConfig,
+  SetConfigFn,
+  SetDataFn,
+  SetData,
+  SetDataOptions,
+} from '@/types'
 import BrickWrapper from '@/engine/brick-wrapper'
 import { interpreteParam } from '@/utils'
 
@@ -9,6 +19,17 @@ interface BrickRenderProps {
   supply: Record<string, unknown>
   mode: EngineMode
   setConfig: SetConfig
+}
+
+function getData(keys: string[], config: Config, pSupply: Record<string, unknown>): Record<string, unknown> {
+  return keys.reduce<Record<string, unknown>>((result, key) => {
+    let value = config.data?.[key]
+    if (typeof value === 'string') {
+      value = interpreteParam(value, pSupply)
+    }
+    result[key] = value
+    return result
+  }, {})
 }
 
 const BrickRenderer: React.FC<BrickRenderProps> = ({
@@ -24,15 +45,12 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
   const keys = useMemo(() => {
     return Object.keys(brick.dataTypes)
   }, [brick])
-  const data = useMemo(() => {
-    return keys.reduce<Record<string, unknown>>((result, key) => {
-      let value = config.data?.[key]
-      if (typeof value === 'string') {
-        value = interpreteParam(value, pSupply)
-      }
-      result[key] = value
-      return result
-    }, {})
+  const [data, setData] = useState<Record<string, unknown>>(() => {
+    return getData(keys, config, pSupply)
+  })
+  useEffect(() => {
+    const newData = getData(keys, config, pSupply)
+    setData(newData)
   }, [pSupply, keys, config.data])
   const supply = useMemo(() => {
     let supply = config.supply ?? {}
@@ -86,12 +104,16 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
     [config]
   )
   const handleSetData = useCallback(
-    (fn: SetDataFn): void => {
+    (fn: SetDataFn, options: SetDataOptions = {}): void => {
       const newData = fn(data)
-      setConfig((config) => ({
-        ...config,
-        data: newData,
-      }))
+      if (options.setToConfig) {
+        setConfig((config) => ({
+          ...config,
+          data: newData,
+        }))
+      } else {
+        setData(newData)
+      }
     },
     [data]
   )
