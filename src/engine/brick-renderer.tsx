@@ -187,7 +187,8 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
       {context.bricks[config.name].render({
         data,
         setData: handleSetData,
-        actions: handlers,
+        actions,
+        handlers,
         supply: pSupply,
         children:
           Array.isArray(config.children) &&

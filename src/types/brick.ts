@@ -36,6 +36,7 @@ export interface SupplyInRender {
 export interface RenderArgs {
   data: DataObject
   actions: Record<string, Action>
+  handlers: Record<string, Action>
   supply: SupplyInRender
   setData: SetData
   children?: React.ReactNode

@@ -108,7 +108,7 @@ const TextWithAction: Brick = {
   },
   render(args) {
     const handleClick = useCallback(() => {
-      const onClick = args.actions['onClick']
+      const onClick = args.handlers['onClick']
       if (onClick) {
         onClick()
       }
@@ -148,9 +148,15 @@ const TextWithAction2: Brick = {
   },
   render(args) {
     const handleClick = useCallback(() => {
-      const onClick = args.actions['onClick']
+      const onClick = args.handlers['onClick']
       if (onClick) {
-        onClick(args.data, args.supply)
+        onClick(
+          {
+            data: args.data,
+            actions: args.actions,
+          },
+          args.supply
+        )
       }
     }, [])
     return (
