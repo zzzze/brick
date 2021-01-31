@@ -5,7 +5,7 @@ import Engine from '@/engine'
 import { Config } from '@/types'
 import './register-bricks'
 
-describe('actions supply', () => {
+describe('supply actions', () => {
   test('trigger action from supply', () => {
     const config: Config = {
       name: 'View',

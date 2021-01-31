@@ -186,4 +186,51 @@ describe('Engine', () => {
       version: '0.0.1',
     })
   })
+
+  test('update actions', () => {
+    const config: Config = {
+      name: 'View',
+      children: [
+        {
+          name: 'Text',
+          data: {
+            content: 'foo',
+          },
+          version: '0.0.1',
+        },
+      ],
+      version: '0.0.1',
+    }
+    const ref = React.createRef<Engine>()
+    const wrapper = mount(
+      <>
+        <Engine ref={ref} config={config} />
+      </>
+    )
+    wrapper.find('button[data-testid="edit-btn"]').at(0).simulate('click')
+    wrapper.find('textarea[name="actions"]').simulate('change', {
+      target: {
+        name: 'actions',
+        value: JSON.stringify({
+          handleClick: 'function(){}',
+        }),
+      },
+    })
+    expect(ref.current?.getConfig()).toEqual({
+      name: 'View',
+      children: [
+        {
+          name: 'Text',
+          data: {
+            content: 'foo',
+          },
+          version: '0.0.1',
+        },
+      ],
+      actions: {
+        handleClick: 'function(){}',
+      },
+      version: '0.0.1',
+    })
+  })
 })

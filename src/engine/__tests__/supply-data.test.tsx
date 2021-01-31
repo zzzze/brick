@@ -5,7 +5,7 @@ import Engine from '@/engine'
 import { Config } from '@/types'
 import './register-bricks'
 
-describe('supply', () => {
+describe('supply data', () => {
   test('update supply', () => {
     const config: Config = {
       name: 'View',
