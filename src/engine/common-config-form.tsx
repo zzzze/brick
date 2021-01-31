@@ -33,11 +33,26 @@ const CommonConfigForm = ({ config, onConfigChange }: PropsConfigFormProps): JSX
       }
     })
   }, [])
+  const handleActionsChange = useCallback((data: ObjectInputEventData) => {
+    onConfigChange((config) => {
+      return {
+        ...config,
+        actions: {
+          ...config.actions,
+          ...(data.target.value as Record<string, string>),
+        },
+      }
+    })
+  }, [])
   return (
     <>
       <div>
         <label htmlFor="id">ID: </label>
         <input type="text" name="id" value={config.id || ''} onChange={handleChange} />
+      </div>
+      <div>
+        <label htmlFor="actions">Actions: </label>
+        <ObjectStringInput name="actions" value={config.actions || {}} onChange={handleActionsChange} />
       </div>
       <div>
         <label htmlFor="supply.data">Supply Data: </label>

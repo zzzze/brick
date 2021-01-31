@@ -55,8 +55,8 @@ export interface Brick {
   name: string
   icon?: string
   dataTypes: Record<string, DataType>
-  actionNames?: string[]
-  defaultActions?: Record<string, string>
+  eventNames?: string[] // events triggered by brick
+  defaultHandlers?: Record<string, string> // handler for event
   defaultData: DataObject
   childrenType: ChildrenType
   renderConfigForm: (args: ConfigFormRenderArgs) => React.ReactElement

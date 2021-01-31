@@ -12,7 +12,8 @@ export interface Config {
   version: string
   id?: string
   data?: DataObject
-  actions?: Record<string, string>
+  actions?: Record<string, string> // define action which can be used by supply or handler
+  handlers?: Record<string, string>
   supply?: Supply // provide data for child brick
   children?: Config[]
 }

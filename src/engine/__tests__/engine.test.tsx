@@ -94,8 +94,8 @@ const TextWithAction: Brick = {
     content: 'hello world',
   },
   childrenType: ChildrenType.NONE,
-  actionNames: ['onClick'],
-  defaultActions: {
+  eventNames: ['onClick'],
+  defaultHandlers: {
     onClick: `function () {
       setData(function(data) {
         return Object.assign({}, data, {
@@ -134,8 +134,8 @@ const TextWithAction2: Brick = {
     content: 'hello world',
   },
   childrenType: ChildrenType.NONE,
-  actionNames: ['onClick'],
-  defaultActions: {
+  eventNames: ['onClick'],
+  defaultHandlers: {
     onClick: `function () {
       setData(function(data) {
         return Object.assign({}, data, {
@@ -175,7 +175,7 @@ describe('Engine', () => {
   })
 
   test('toggle config form', () => {
-    const config = {
+    const config: Config = {
       name: 'View',
       children: [
         {
@@ -214,7 +214,7 @@ describe('Engine', () => {
   })
 
   test('default data', () => {
-    const config = {
+    const config: Config = {
       name: 'View',
       children: [
         {
@@ -237,7 +237,7 @@ describe('Engine', () => {
   })
 
   test('update value', () => {
-    const config = {
+    const config: Config = {
       name: 'View',
       children: [
         {
@@ -274,7 +274,7 @@ describe('Engine', () => {
   })
 
   test('multiple brick at root', () => {
-    const config = [
+    const config: Config[] = [
       {
         name: 'Text',
         data: {
@@ -313,7 +313,7 @@ describe('Engine', () => {
   })
 
   test('update id', () => {
-    const config = {
+    const config: Config = {
       name: 'View',
       children: [
         {
@@ -357,7 +357,7 @@ describe('Engine', () => {
 
   describe('supply', () => {
     test('update supply', () => {
-      const config = {
+      const config: Config = {
         name: 'View',
         children: [
           {
@@ -409,7 +409,7 @@ describe('Engine', () => {
     })
 
     test('use and update supply', () => {
-      const config = {
+      const config: Config = {
         name: 'View',
         supply: {
           data: {
@@ -455,7 +455,7 @@ describe('Engine', () => {
     })
 
     test('inject supply from data', () => {
-      const config = {
+      const config: Config = {
         name: 'View',
         data: {
           name: 'baz',
@@ -501,7 +501,7 @@ describe('Engine', () => {
     })
 
     test('inject supply from data and use id as namespace', () => {
-      const config = {
+      const config: Config = {
         name: 'View',
         id: 'container',
         data: {
@@ -551,7 +551,7 @@ describe('Engine', () => {
 
   describe('action', () => {
     test('use default action', () => {
-      const config = {
+      const config: Config = {
         name: 'View',
         id: 'container',
         data: {
@@ -592,7 +592,7 @@ describe('Engine', () => {
     })
 
     test('use custom action - set data at runtime only', () => {
-      const config = {
+      const config: Config = {
         name: 'View',
         id: 'container',
         data: {
@@ -612,7 +612,7 @@ describe('Engine', () => {
                 data: {
                   content: '{{$$container.text}}',
                 },
-                actions: {
+                handlers: {
                   onClick: `function() {
                     setData(function(data) {
                       return Object.assign({}, data, {
@@ -663,7 +663,7 @@ describe('Engine', () => {
                 data: {
                   content: '{{$$container.text}}',
                 },
-                actions: {
+                handlers: {
                   onClick: `function() {
                     setData(function(data) {
                       return Object.assign({}, data, {
@@ -737,8 +737,8 @@ describe('Engine', () => {
             children: [
               {
                 name: 'TextWithAction',
-                actions: {
-                  onClick: '{{$$container2.onClick}}',
+                handlers: {
+                  onClick: '{{supply.$$container2.onClick}}',
                 },
                 data: {
                   content: '{{$$container2.content}}',
@@ -795,8 +795,8 @@ describe('Engine', () => {
             children: [
               {
                 name: 'TextWithAction',
-                actions: {
-                  onClick: '{{$$container.onClick}}',
+                handlers: {
+                  onClick: '{{supply.$$container.onClick}}',
                 },
                 data: {
                   content: 'foo',
@@ -866,7 +866,7 @@ describe('Engine', () => {
             children: [
               {
                 name: 'TextWithAction2',
-                actions: {
+                handlers: {
                   onClick: `function(data, supply) {
                     supply.actions.$$container.onClick(data.content)
                   }`,
@@ -945,10 +945,92 @@ describe('Engine', () => {
             children: [
               {
                 name: 'TextWithAction2',
-                actions: {
+                handlers: {
                   onClick: `function(data, supply) {
                     supply.actions.$$container2.onClick(data.content)
                   }`,
+                },
+                data: {
+                  content: '123456789',
+                },
+                version: '0.0.1',
+              },
+            ],
+            version: '0.0.1',
+          },
+          {
+            name: 'View',
+            children: [
+              {
+                name: 'Text',
+                data: {
+                  content: '{{$$container.text}}',
+                },
+                version: '0.0.1',
+              },
+            ],
+            version: '0.0.1',
+          },
+        ],
+        version: '0.0.1',
+      }
+      const ref = React.createRef<Engine>()
+      const wrapper = mount(
+        <>
+          <Engine ref={ref} config={config} />
+        </>
+      )
+      expect(config.data?.['name']).toEqual('baz')
+      expect(wrapper.html()).toContain('baz')
+      wrapper.find('span[data-testid="element-with-action"]').simulate('click')
+      expect(wrapper.html()).not.toContain('baz')
+      expect(wrapper.html()).toContain('123456789')
+      const config2 = ref.current?.getConfig() as Config
+      expect(config2.data?.['name']).toEqual('123456789')
+    })
+
+    test('use action as handler', () => {
+      const config: Config = {
+        name: 'View',
+        id: 'container',
+        data: {
+          name: 'baz',
+        },
+        supply: {
+          data: {
+            text: '{{data.name}}',
+          },
+          actions: {
+            onClick: `function(name) {
+              setData(function(data) {
+                return Object.assign({}, data, {
+                  name: name,
+                })
+              }, {
+                setToConfig: true,
+              })
+            }`,
+          },
+        },
+        children: [
+          {
+            name: 'View',
+            id: 'container2',
+            supply: {
+              actions: {
+                onClick: '{{supply.$$container.onClick}}',
+              },
+            },
+            children: [
+              {
+                name: 'TextWithAction2',
+                actions: {
+                  handleClick: `function(data, supply) {
+                    supply.actions.$$container2.onClick(data.content)
+                  }`,
+                },
+                handlers: {
+                  onClick: '{{actions.handleClick}}',
                 },
                 data: {
                   content: '123456789',

@@ -42,7 +42,7 @@ function getData(
 
 function compileAction(fn: string, setData: SetData): Action {
   return (...args: unknown[]) => {
-    void(setData) // cheak on compiler
+    void setData // cheak on compiler
     let action: (...args: unknown[]) => void = () => {} // eslint-disable-line prefer-const, @typescript-eslint/no-empty-function
     eval(`action = ${fn}`) // TODO: compile in build mode
     return action(...args)
@@ -91,12 +91,28 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
     setData(newData)
   }, [pSupply, keys, config.data, config.id, brick.defaultData])
   const actions = useMemo<Actions>(() => {
+    return Object.keys(config.actions || {}).reduce<Actions>((result, key) => {
+      const functionStr = config.actions?.[key] || 'function(){}'
+      let action: (...args: unknown[]) => void
+      if (functionStr.startsWith('{{')) {
+        action = interpreteParam(functionStr, pSupply.actions || {}) as (...args: unknown[]) => void
+      } else {
+        action = compileAction(functionStr, handleSetData)
+      }
+      result[key] = action
+      return result
+    }, {})
+  }, [config.actions, pSupply])
+  const handlers = useMemo<Actions>(() => {
     return (
-      brick.actionNames?.reduce<Actions>((result, name) => {
-        const functionStr = config.actions?.[name] || brick.defaultActions?.[name] || 'function(){}'
+      brick.eventNames?.reduce<Actions>((result, name) => {
+        const functionStr = config.handlers?.[name] || brick.defaultHandlers?.[name] || 'function(){}'
         let action: (...args: unknown[]) => void
         if (functionStr.startsWith('{{')) {
-          action = interpreteParam(functionStr, pSupply.actions || {}) as (...args: unknown[]) => void
+          action = interpreteParam(functionStr, {
+            supply: pSupply.actions || {},
+            actions,
+          }) as (...args: unknown[]) => void
         } else {
           action = compileAction(functionStr, handleSetData)
         }
@@ -104,7 +120,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
         return result
       }, {}) || {}
     )
-  }, [config.actions, pSupply.actions])
+  }, [config.handlers, pSupply.actions, actions])
   const supplyData = useMemo(() => {
     let supplyData = {
       ...config.supply?.data,
@@ -184,7 +200,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
       {context.bricks[config.name].render({
         data,
         setData: handleSetData,
-        actions,
+        actions: handlers,
         supply: pSupply,
         children:
           Array.isArray(config.children) &&
