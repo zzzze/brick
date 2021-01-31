@@ -96,7 +96,7 @@ const TextWithAction: Brick = {
   childrenType: ChildrenType.NONE,
   actionNames: ['onClick'],
   defaultActions: {
-    onClick: `function (setData) {
+    onClick: `function () {
       setData(function(data) {
         return Object.assign({}, data, {
           content: 'foo',
@@ -136,7 +136,7 @@ const TextWithAction2: Brick = {
   childrenType: ChildrenType.NONE,
   actionNames: ['onClick'],
   defaultActions: {
-    onClick: `function (setData) {
+    onClick: `function () {
       setData(function(data) {
         return Object.assign({}, data, {
           content: 'foo',
@@ -519,7 +519,7 @@ describe('Engine', () => {
               {
                 name: 'Text',
                 data: {
-                  content: '{{container.text}}',
+                  content: '{{$$container.text}}',
                 },
                 version: '0.0.1',
               },
@@ -569,7 +569,7 @@ describe('Engine', () => {
               {
                 name: 'TextWithAction',
                 data: {
-                  content: '{{container.text}}',
+                  content: '{{$$container.text}}',
                 },
                 version: '0.0.1',
               },
@@ -610,10 +610,10 @@ describe('Engine', () => {
               {
                 name: 'TextWithAction',
                 data: {
-                  content: '{{container.text}}',
+                  content: '{{$$container.text}}',
                 },
                 actions: {
-                  onClick: `function(setData) {
+                  onClick: `function() {
                     setData(function(data) {
                       return Object.assign({}, data, {
                         content: '123',
@@ -661,10 +661,10 @@ describe('Engine', () => {
               {
                 name: 'TextWithAction',
                 data: {
-                  content: '{{container.text}}',
+                  content: '{{$$container.text}}',
                 },
                 actions: {
-                  onClick: `function(setData) {
+                  onClick: `function() {
                     setData(function(data) {
                       return Object.assign({}, data, {
                         content: '123',
@@ -688,7 +688,7 @@ describe('Engine', () => {
           <Engine ref={ref} config={config} />
         </>
       )
-      expect(config.children?.[0].children?.[0].data?.['content']).toEqual('{{container.text}}')
+      expect(config.children?.[0].children?.[0].data?.['content']).toEqual('{{$$container.text}}')
       expect(wrapper.html()).toContain('baz')
       wrapper.find('span[data-testid="element-with-action"]').simulate('click')
       expect(wrapper.html()).not.toContain('baz')
@@ -716,14 +716,14 @@ describe('Engine', () => {
             name: 'View',
             id: 'container2',
             data: {
-              name: '{{container.text}}',
+              name: '{{$$container.text}}',
             },
             supply: {
               data: {
                 content: '{{data.name}}',
               },
               actions: {
-                onClick: `function(setData) {
+                onClick: `function() {
                   setData(function(data) {
                     return Object.assign({}, data, {
                       name: '123456',
@@ -738,10 +738,10 @@ describe('Engine', () => {
               {
                 name: 'TextWithAction',
                 actions: {
-                  onClick: '{{container2.onClick}}',
+                  onClick: '{{$$container2.onClick}}',
                 },
                 data: {
-                  content: '{{container2.content}}',
+                  content: '{{$$container2.content}}',
                 },
                 version: '0.0.1',
               },
@@ -757,7 +757,7 @@ describe('Engine', () => {
           <Engine ref={ref} config={config} />
         </>
       )
-      expect(config.children?.[0].data?.['name']).toEqual('{{container.text}}')
+      expect(config.children?.[0].data?.['name']).toEqual('{{$$container.text}}')
       expect(wrapper.html()).toContain('baz')
       wrapper.find('span[data-testid="element-with-action"]').simulate('click')
       expect(wrapper.html()).not.toContain('baz')
@@ -778,7 +778,7 @@ describe('Engine', () => {
             text: '{{data.name}}',
           },
           actions: {
-            onClick: `function(setData) {
+            onClick: `function() {
               setData(function(data) {
                 return Object.assign({}, data, {
                   name: '123456',
@@ -796,7 +796,7 @@ describe('Engine', () => {
               {
                 name: 'TextWithAction',
                 actions: {
-                  onClick: '{{container.onClick}}',
+                  onClick: '{{$$container.onClick}}',
                 },
                 data: {
                   content: 'foo',
@@ -812,7 +812,7 @@ describe('Engine', () => {
               {
                 name: 'Text',
                 data: {
-                  content: '{{container.text}}',
+                  content: '{{$$container.text}}',
                 },
                 version: '0.0.1',
               },
@@ -849,7 +849,7 @@ describe('Engine', () => {
             text: '{{data.name}}',
           },
           actions: {
-            onClick: `function(setData, name) {
+            onClick: `function(name) {
               setData(function(data) {
                 return Object.assign({}, data, {
                   name: name,
@@ -867,8 +867,8 @@ describe('Engine', () => {
               {
                 name: 'TextWithAction2',
                 actions: {
-                  onClick: `function(setData, data, supply) {
-                    supply.actions.container.onClick(data.content)
+                  onClick: `function(data, supply) {
+                    supply.actions.$$container.onClick(data.content)
                   }`,
                 },
                 data: {
@@ -885,7 +885,86 @@ describe('Engine', () => {
               {
                 name: 'Text',
                 data: {
-                  content: '{{container.text}}',
+                  content: '{{$$container.text}}',
+                },
+                version: '0.0.1',
+              },
+            ],
+            version: '0.0.1',
+          },
+        ],
+        version: '0.0.1',
+      }
+      const ref = React.createRef<Engine>()
+      const wrapper = mount(
+        <>
+          <Engine ref={ref} config={config} />
+        </>
+      )
+      expect(config.data?.['name']).toEqual('baz')
+      expect(wrapper.html()).toContain('baz')
+      wrapper.find('span[data-testid="element-with-action"]').simulate('click')
+      expect(wrapper.html()).not.toContain('baz')
+      expect(wrapper.html()).toContain('123456789')
+      const config2 = ref.current?.getConfig() as Config
+      expect(config2.data?.['name']).toEqual('123456789')
+    })
+
+    test('trigger action provided by supply with param', () => {
+      const config: Config = {
+        name: 'View',
+        id: 'container',
+        data: {
+          name: 'baz',
+        },
+        supply: {
+          data: {
+            text: '{{data.name}}',
+          },
+          actions: {
+            onClick: `function(name) {
+              setData(function(data) {
+                return Object.assign({}, data, {
+                  name: name,
+                })
+              }, {
+                setToConfig: true,
+              })
+            }`,
+          },
+        },
+        children: [
+          {
+            name: 'View',
+            id: 'container2',
+            supply: {
+              actions: {
+                onClick: '{{supply.$$container.onClick}}',
+              },
+            },
+            children: [
+              {
+                name: 'TextWithAction2',
+                actions: {
+                  onClick: `function(data, supply) {
+                    supply.actions.$$container2.onClick(data.content)
+                  }`,
+                },
+                data: {
+                  content: '123456789',
+                },
+                version: '0.0.1',
+              },
+            ],
+            version: '0.0.1',
+          },
+          {
+            name: 'View',
+            children: [
+              {
+                name: 'Text',
+                data: {
+                  content: '{{$$container.text}}',
                 },
                 version: '0.0.1',
               },

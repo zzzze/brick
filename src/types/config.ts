@@ -1,5 +1,7 @@
 import { DataObject } from './brick'
 
+export const idPrefix = '$$'
+
 export interface Supply {
   data?: Record<string, unknown>
   actions?: Record<string, string>

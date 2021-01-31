@@ -11,6 +11,7 @@ import {
   Action,
   Actions,
   SupplyInRender,
+  idPrefix,
 } from '@/types'
 import BrickWrapper from '@/engine/brick-wrapper'
 import { interpreteParam } from '@/utils'
@@ -41,9 +42,10 @@ function getData(
 
 function compileAction(fn: string, setData: SetData): Action {
   return (...args: unknown[]) => {
-    let action: (setData: SetData, ...args: unknown[]) => void = () => {} // eslint-disable-line prefer-const, @typescript-eslint/no-empty-function
+    void(setData) // cheak on compiler
+    let action: (...args: unknown[]) => void = () => {} // eslint-disable-line prefer-const, @typescript-eslint/no-empty-function
     eval(`action = ${fn}`) // TODO: compile in build mode
-    return action(setData, ...args)
+    return action(...args)
   }
 }
 
@@ -121,7 +123,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
     }, {})
     if (config.id && dataKeys.length > 0) {
       supplyData = {
-        [config.id]: supplyData,
+        [`${idPrefix}${config.id}`]: supplyData,
       }
     }
     return supplyData
@@ -146,7 +148,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
     }, {})
     if (config.id && actionKeys.length > 0) {
       supplyActions = {
-        [config.id]: supplyActions,
+        [`${idPrefix}${config.id}`]: supplyActions,
       }
     }
     return supplyActions

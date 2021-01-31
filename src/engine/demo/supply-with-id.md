@@ -13,13 +13,15 @@ const config = {
     {
       name: 'View',
       supply: {
-        text: 'baz',
+        data: {
+          text: 'baz',
+        },
       },
       children: [
         {
           name: 'Text',
           data: {
-            content: '{{node1.text}}',
+            content: '{{$$node1.text}}',
           },
           version: '0.0.1',
         },
