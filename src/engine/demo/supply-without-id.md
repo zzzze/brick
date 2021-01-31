@@ -21,7 +21,7 @@ const config = {
         {
           name: 'Text',
           data: {
-            content: '{{text}}',
+            content: '{{$supply.text}}',
           },
           version: '0.0.1',
         },

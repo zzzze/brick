@@ -423,7 +423,7 @@ describe('Engine', () => {
               {
                 name: 'Text',
                 data: {
-                  content: '{{text}}',
+                  content: '{{$supply.text}}',
                 },
                 version: '0.0.1',
               },
@@ -462,7 +462,7 @@ describe('Engine', () => {
         },
         supply: {
           data: {
-            text: '{{data.name}}',
+            text: '{{$this.name}}',
           },
         },
         children: [
@@ -472,7 +472,7 @@ describe('Engine', () => {
               {
                 name: 'Text',
                 data: {
-                  content: '{{text}}',
+                  content: '{{$supply.text}}',
                 },
                 version: '0.0.1',
               },
@@ -509,7 +509,7 @@ describe('Engine', () => {
         },
         supply: {
           data: {
-            text: '{{data.name}}',
+            text: '{{$this.name}}',
           },
         },
         children: [
@@ -519,7 +519,7 @@ describe('Engine', () => {
               {
                 name: 'Text',
                 data: {
-                  content: '{{$$container.text}}',
+                  content: '{{$supply.$$container.text}}',
                 },
                 version: '0.0.1',
               },
@@ -559,7 +559,7 @@ describe('Engine', () => {
         },
         supply: {
           data: {
-            text: '{{data.name}}',
+            text: '{{$this.name}}',
           },
         },
         children: [
@@ -569,7 +569,7 @@ describe('Engine', () => {
               {
                 name: 'TextWithAction',
                 data: {
-                  content: '{{$$container.text}}',
+                  content: '{{$supply.$$container.text}}',
                 },
                 version: '0.0.1',
               },
@@ -600,7 +600,7 @@ describe('Engine', () => {
         },
         supply: {
           data: {
-            text: '{{data.name}}',
+            text: '{{$this.name}}',
           },
         },
         children: [
@@ -610,7 +610,7 @@ describe('Engine', () => {
               {
                 name: 'TextWithAction',
                 data: {
-                  content: '{{$$container.text}}',
+                  content: '{{$supply.$$container.text}}',
                 },
                 handlers: {
                   onClick: `function() {
@@ -651,7 +651,7 @@ describe('Engine', () => {
         },
         supply: {
           data: {
-            text: '{{data.name}}',
+            text: '{{$this.name}}',
           },
         },
         children: [
@@ -661,7 +661,7 @@ describe('Engine', () => {
               {
                 name: 'TextWithAction',
                 data: {
-                  content: '{{$$container.text}}',
+                  content: '{{$supply.$$container.text}}',
                 },
                 handlers: {
                   onClick: `function() {
@@ -688,7 +688,7 @@ describe('Engine', () => {
           <Engine ref={ref} config={config} />
         </>
       )
-      expect(config.children?.[0].children?.[0].data?.['content']).toEqual('{{$$container.text}}')
+      expect(config.children?.[0].children?.[0].data?.['content']).toEqual('{{$supply.$$container.text}}')
       expect(wrapper.html()).toContain('baz')
       wrapper.find('span[data-testid="element-with-action"]').simulate('click')
       expect(wrapper.html()).not.toContain('baz')
@@ -708,7 +708,7 @@ describe('Engine', () => {
         },
         supply: {
           data: {
-            text: '{{data.name}}',
+            text: '{{$this.name}}',
           },
         },
         children: [
@@ -716,11 +716,11 @@ describe('Engine', () => {
             name: 'View',
             id: 'container2',
             data: {
-              name: '{{$$container.text}}',
+              name: '{{$supply.$$container.text}}',
             },
             supply: {
               data: {
-                content: '{{data.name}}',
+                content: '{{$this.name}}',
               },
               actions: {
                 onClick: `function() {
@@ -738,10 +738,10 @@ describe('Engine', () => {
               {
                 name: 'TextWithAction',
                 handlers: {
-                  onClick: '{{supply.$$container2.onClick}}',
+                  onClick: '{{$supply.$$container2.onClick}}',
                 },
                 data: {
-                  content: '{{$$container2.content}}',
+                  content: '{{$supply.$$container2.content}}',
                 },
                 version: '0.0.1',
               },
@@ -757,7 +757,7 @@ describe('Engine', () => {
           <Engine ref={ref} config={config} />
         </>
       )
-      expect(config.children?.[0].data?.['name']).toEqual('{{$$container.text}}')
+      expect(config.children?.[0].data?.['name']).toEqual('{{$supply.$$container.text}}')
       expect(wrapper.html()).toContain('baz')
       wrapper.find('span[data-testid="element-with-action"]').simulate('click')
       expect(wrapper.html()).not.toContain('baz')
@@ -775,7 +775,7 @@ describe('Engine', () => {
         },
         supply: {
           data: {
-            text: '{{data.name}}',
+            text: '{{$this.name}}',
           },
           actions: {
             onClick: `function() {
@@ -796,7 +796,7 @@ describe('Engine', () => {
               {
                 name: 'TextWithAction',
                 handlers: {
-                  onClick: '{{supply.$$container.onClick}}',
+                  onClick: '{{$supply.$$container.onClick}}',
                 },
                 data: {
                   content: 'foo',
@@ -812,7 +812,7 @@ describe('Engine', () => {
               {
                 name: 'Text',
                 data: {
-                  content: '{{$$container.text}}',
+                  content: '{{$supply.$$container.text}}',
                 },
                 version: '0.0.1',
               },
@@ -846,7 +846,7 @@ describe('Engine', () => {
         },
         supply: {
           data: {
-            text: '{{data.name}}',
+            text: '{{$this.name}}',
           },
           actions: {
             onClick: `function(name) {
@@ -885,7 +885,7 @@ describe('Engine', () => {
               {
                 name: 'Text',
                 data: {
-                  content: '{{$$container.text}}',
+                  content: '{{$supply.$$container.text}}',
                 },
                 version: '0.0.1',
               },
@@ -919,7 +919,7 @@ describe('Engine', () => {
         },
         supply: {
           data: {
-            text: '{{data.name}}',
+            text: '{{$this.name}}',
           },
           actions: {
             onClick: `function(name) {
@@ -939,7 +939,7 @@ describe('Engine', () => {
             id: 'container2',
             supply: {
               actions: {
-                onClick: '{{supply.$$container.onClick}}',
+                onClick: '{{$supply.$$container.onClick}}',
               },
             },
             children: [
@@ -964,7 +964,7 @@ describe('Engine', () => {
               {
                 name: 'Text',
                 data: {
-                  content: '{{$$container.text}}',
+                  content: '{{$supply.$$container.text}}',
                 },
                 version: '0.0.1',
               },
@@ -998,7 +998,7 @@ describe('Engine', () => {
         },
         supply: {
           data: {
-            text: '{{data.name}}',
+            text: '{{$this.name}}',
           },
           actions: {
             onClick: `function(name) {
@@ -1018,7 +1018,7 @@ describe('Engine', () => {
             id: 'container2',
             supply: {
               actions: {
-                onClick: '{{supply.$$container.onClick}}',
+                onClick: '{{$supply.$$container.onClick}}',
               },
             },
             children: [
@@ -1030,7 +1030,7 @@ describe('Engine', () => {
                   }`,
                 },
                 handlers: {
-                  onClick: '{{actions.handleClick}}',
+                  onClick: '{{$this.handleClick}}',
                 },
                 data: {
                   content: '123456789',
@@ -1046,7 +1046,7 @@ describe('Engine', () => {
               {
                 name: 'Text',
                 data: {
-                  content: '{{$$container.text}}',
+                  content: '{{$supply.$$container.text}}',
                 },
                 version: '0.0.1',
               },

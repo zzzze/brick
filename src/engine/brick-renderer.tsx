@@ -33,7 +33,9 @@ function getData(
   return keys.reduce<Record<string, unknown>>((result, key) => {
     let value = data[key] || defaultData[key]
     if (typeof value === 'string') {
-      value = interpreteParam(value, pSupply)
+      value = interpreteParam(value, {
+        $supply: pSupply,
+      })
     }
     result[key] = value
     return result
@@ -95,7 +97,9 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
       const functionStr = config.actions?.[key] || 'function(){}'
       let action: (...args: unknown[]) => void
       if (functionStr.startsWith('{{')) {
-        action = interpreteParam(functionStr, pSupply.actions || {}) as (...args: unknown[]) => void
+        action = interpreteParam(functionStr, {
+          $supply: pSupply.actions || {},
+        }) as (...args: unknown[]) => void
       } else {
         action = compileAction(functionStr, handleSetData)
       }
@@ -110,8 +114,8 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
         let action: (...args: unknown[]) => void
         if (functionStr.startsWith('{{')) {
           action = interpreteParam(functionStr, {
-            supply: pSupply.actions || {},
-            actions,
+            $supply: pSupply.actions || {},
+            $this: actions,
           }) as (...args: unknown[]) => void
         } else {
           action = compileAction(functionStr, handleSetData)
@@ -130,8 +134,8 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
       let value = supplyData[key]
       if (typeof value === 'string') {
         value = interpreteParam(value, {
-          supply: pSupply.data,
-          data,
+          $supply: pSupply.data,
+          $this: data,
         })
       }
       result[key] = value
@@ -154,8 +158,8 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
       if (typeof value === 'string') {
         if (value.startsWith('{{')) {
           value = interpreteParam(value, {
-            supply: pSupply.actions,
-            actions,
+            $supply: pSupply.actions,
+            $this: actions,
           }) as (fn: SetData) => void
         }
       }

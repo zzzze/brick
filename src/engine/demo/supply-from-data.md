@@ -8,7 +8,7 @@ const config = {
   },
   supply: {
     data: {
-      text: '{{data.name}}',
+      text: '{{$this.name}}',
     },
   },
   children: [
@@ -18,7 +18,7 @@ const config = {
         {
           name: 'Text',
           data: {
-            content: '{{text}}',
+            content: '{{$supply.text}}',
           },
           version: '0.0.1',
         },
