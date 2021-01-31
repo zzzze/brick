@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useEffect, useState, useContext } from 'react'
 import {
   Config,
-  DataObject,
   EngineMode,
   SetConfig,
   SetConfigFn,
@@ -12,34 +11,18 @@ import {
   Actions,
   SupplyInRender,
   idPrefix,
+  VALUE_PARAM_PATTERN,
 } from '@/types'
 import BrickWrapper from '@/engine/brick-wrapper'
 import { interpreteParam } from '@/utils'
 import Context from '@/engine/context'
+import getConfigData from '@/engine/get-config-data'
 
 interface BrickRenderProps {
   config: Config
   supply: SupplyInRender
   mode: EngineMode
   setConfig: SetConfig
-}
-
-function getData(
-  keys: string[],
-  data: DataObject,
-  pSupply: Record<string, unknown>,
-  defaultData: DataObject
-): Record<string, unknown> {
-  return keys.reduce<Record<string, unknown>>((result, key) => {
-    let value = data[key] || defaultData[key]
-    if (typeof value === 'string') {
-      value = interpreteParam(value, {
-        $supply: pSupply,
-      })
-    }
-    result[key] = value
-    return result
-  }, {})
 }
 
 function compileAction(fn: string, setData: SetData): Action {
@@ -72,7 +55,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
     return Object.keys(brick.dataTypes)
   }, [brick])
   const [data, setData] = useState<Record<string, unknown>>(() => {
-    return getData(keys, config.data ?? {}, pSupply.data ?? {}, brick.defaultData)
+    return getConfigData(keys, config.data ?? {}, pSupply.data ?? {}, brick.defaultData)
   })
   const handleSetData = useCallback(
     (fn: SetDataFn, options: SetDataOptions = {}): void => {
@@ -89,14 +72,14 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
     [data]
   )
   useEffect(() => {
-    const newData = getData(keys, config.data ?? {}, pSupply.data ?? {}, brick.defaultData)
+    const newData = getConfigData(keys, config.data ?? {}, pSupply.data ?? {}, brick.defaultData)
     setData(newData)
   }, [pSupply, keys, config.data, config.id, brick.defaultData])
   const actions = useMemo<Actions>(() => {
     return Object.keys(config.actions || {}).reduce<Actions>((result, key) => {
       const functionStr = config.actions?.[key] || 'function(){}'
       let action: (...args: unknown[]) => void
-      if (functionStr.startsWith('{{')) {
+      if (VALUE_PARAM_PATTERN.test(functionStr)) {
         action = interpreteParam(functionStr, {
           $supply: pSupply.actions || {},
         }) as (...args: unknown[]) => void
@@ -112,7 +95,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
       brick.eventNames?.reduce<Actions>((result, name) => {
         const functionStr = config.handlers?.[name] || brick.defaultHandlers?.[name] || 'function(){}'
         let action: (...args: unknown[]) => void
-        if (functionStr.startsWith('{{')) {
+        if (VALUE_PARAM_PATTERN.test(functionStr)) {
           action = interpreteParam(functionStr, {
             $supply: pSupply.actions || {},
             $this: actions,
@@ -156,7 +139,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
     supplyActions = actionKeys.reduce<Actions>((result, key) => {
       let value = supplyActions[key]
       if (typeof value === 'string') {
-        if (value.startsWith('{{')) {
+        if (VALUE_PARAM_PATTERN.test(value)) {
           value = interpreteParam(value, {
             $supply: pSupply.actions,
             $this: actions,
