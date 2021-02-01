@@ -25,7 +25,7 @@ describe('handlers', () => {
             {
               name: 'TextWithAction',
               data: {
-                content: '{{$supply.$$container.text}}',
+                content: '{{$supply.$container.text}}',
               },
               version: '0.0.1',
             },
@@ -66,7 +66,7 @@ describe('handlers', () => {
             {
               name: 'TextWithAction',
               data: {
-                content: '{{$supply.$$container.text}}',
+                content: '{{$supply.$container.text}}',
               },
               handlers: {
                 onClick: `function() {
@@ -117,7 +117,7 @@ describe('handlers', () => {
             {
               name: 'TextWithAction',
               data: {
-                content: '{{$supply.$$container.text}}',
+                content: '{{$supply.$container.text}}',
               },
               handlers: {
                 onClick: `function() {
@@ -144,7 +144,7 @@ describe('handlers', () => {
         <Engine ref={ref} config={config} />
       </>
     )
-    expect(config.children?.[0].children?.[0].data?.['content']).toEqual('{{$supply.$$container.text}}')
+    expect(config.children?.[0].children?.[0].data?.['content']).toEqual('{{$supply.$container.text}}')
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
     expect(wrapper.html()).not.toContain('baz')

@@ -169,7 +169,7 @@ describe('supply data', () => {
             {
               name: 'Text',
               data: {
-                content: '{{$supply.$$container.text}}',
+                content: '{{$supply.$container.text}}',
               },
               version: '0.0.1',
             },

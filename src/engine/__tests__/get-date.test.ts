@@ -5,11 +5,11 @@ describe('getData', () => {
     const data = {
       foo: '{{$supply.foo}}',
       bar: '20',
-      baz: '{{$supply.$$node.text}}',
+      baz: '{{$supply.$node.text}}',
     }
     const pSupply = {
       foo: '123456',
-      $$node: {
+      $node: {
         text: 'abcdef',
       },
     }
@@ -24,10 +24,10 @@ describe('getData', () => {
   test('get data from defaultData', () => {
     const data = {
       bar: '20',
-      baz: '{{$supply.$$node.text}}',
+      baz: '{{$supply.$node.text}}',
     }
     const pSupply = {
-      $$node: {
+      '$node': {
         text: 'abcdef',
       },
     }

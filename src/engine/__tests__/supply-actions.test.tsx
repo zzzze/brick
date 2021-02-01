@@ -23,7 +23,7 @@ describe('supply actions', () => {
           name: 'View',
           id: 'container2',
           data: {
-            name: '{{$supply.$$container.text}}',
+            name: '{{$supply.$container.text}}',
           },
           supply: {
             data: {
@@ -45,10 +45,10 @@ describe('supply actions', () => {
             {
               name: 'TextWithAction',
               handlers: {
-                onClick: '{{$supply.$$container2.onClick}}',
+                onClick: '{{$supply.$container2.onClick}}',
               },
               data: {
-                content: '{{$supply.$$container2.content}}',
+                content: '{{$supply.$container2.content}}',
               },
               version: '0.0.1',
             },
@@ -64,7 +64,7 @@ describe('supply actions', () => {
         <Engine ref={ref} config={config} />
       </>
     )
-    expect(config.children?.[0].data?.['name']).toEqual('{{$supply.$$container.text}}')
+    expect(config.children?.[0].data?.['name']).toEqual('{{$supply.$container.text}}')
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
     expect(wrapper.html()).not.toContain('baz')
@@ -103,7 +103,7 @@ describe('supply actions', () => {
             {
               name: 'TextWithAction',
               handlers: {
-                onClick: '{{$supply.$$container.onClick}}',
+                onClick: '{{$supply.$container.onClick}}',
               },
               data: {
                 content: 'foo',
@@ -119,7 +119,7 @@ describe('supply actions', () => {
             {
               name: 'Text',
               data: {
-                content: '{{$supply.$$container.text}}',
+                content: '{{$supply.$container.text}}',
               },
               version: '0.0.1',
             },
@@ -175,7 +175,7 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               handlers: {
                 onClick: `function($this, $supply) {
-                  $supply.actions.$$container.onClick($this.data.content)
+                  $supply.actions.$container.onClick($this.data.content)
                 }`,
               },
               data: {
@@ -192,7 +192,7 @@ describe('supply actions', () => {
             {
               name: 'Text',
               data: {
-                content: '{{$supply.$$container.text}}',
+                content: '{{$supply.$container.text}}',
               },
               version: '0.0.1',
             },
@@ -246,7 +246,7 @@ describe('supply actions', () => {
           id: 'container2',
           supply: {
             actions: {
-              onClick: '{{$supply.$$container.onClick}}',
+              onClick: '{{$supply.$container.onClick}}',
             },
           },
           children: [
@@ -254,7 +254,7 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               handlers: {
                 onClick: `function($this, $supply) {
-                  $supply.actions.$$container2.onClick($this.data.content)
+                  $supply.actions.$container2.onClick($this.data.content)
                 }`,
               },
               data: {
@@ -271,7 +271,7 @@ describe('supply actions', () => {
             {
               name: 'Text',
               data: {
-                content: '{{$supply.$$container.text}}',
+                content: '{{$supply.$container.text}}',
               },
               version: '0.0.1',
             },
@@ -325,7 +325,7 @@ describe('supply actions', () => {
           id: 'container2',
           supply: {
             actions: {
-              onClick: '{{$supply.$$container.onClick}}',
+              onClick: '{{$supply.$container.onClick}}',
             },
           },
           children: [
@@ -333,7 +333,7 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               actions: {
                 handleClick: `function($this, $supply) {
-                  $supply.actions.$$container2.onClick($this.data.content)
+                  $supply.actions.$container2.onClick($this.data.content)
                 }`,
               },
               handlers: {
@@ -353,7 +353,7 @@ describe('supply actions', () => {
             {
               name: 'Text',
               data: {
-                content: '{{$supply.$$container.text}}',
+                content: '{{$supply.$container.text}}',
               },
               version: '0.0.1',
             },
@@ -407,7 +407,7 @@ describe('supply actions', () => {
           id: 'container2',
           supply: {
             actions: {
-              onClick: '{{$supply.$$container.onClick}}',
+              onClick: '{{$supply.$container.onClick}}',
             },
           },
           children: [
@@ -415,7 +415,7 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               actions: {
                 click: `function($this, $supply) {
-                  $supply.actions.$$container2.onClick($this.data.content)
+                  $supply.actions.$container2.onClick($this.data.content)
                 }`,
                 handleClick: `function($this, $supply) {
                   $this.actions.click($this, $supply)
@@ -438,7 +438,7 @@ describe('supply actions', () => {
             {
               name: 'Text',
               data: {
-                content: '{{$supply.$$container.text}}',
+                content: '{{$supply.$container.text}}',
               },
               version: '0.0.1',
             },
