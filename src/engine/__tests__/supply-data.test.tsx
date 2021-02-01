@@ -52,7 +52,6 @@ describe('supply data', () => {
           baz: '123',
           bar: '456',
         },
-        actions: {},
       },
       version: '0.0.1',
     })

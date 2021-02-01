@@ -56,6 +56,10 @@ export interface ConfigFormRenderArgs {
 
 export type DataObject = Record<string, unknown>
 
+export interface Render {
+  (args: RenderArgs): React.ReactElement
+}
+
 export interface Brick {
   name: string
   icon?: string
@@ -65,6 +69,7 @@ export interface Brick {
   defaultData: DataObject
   childrenType: ChildrenType
   renderConfigForm: (args: ConfigFormRenderArgs) => React.ReactElement
-  render: (args: RenderArgs) => React.ReactElement
+  render: Render
+  canCustomizeRender?: boolean
   version: string
 }

@@ -1,47 +1,31 @@
-import React, { ChangeEvent, useCallback } from 'react'
+import React, { useCallback, useMemo, useContext } from 'react'
 import { Config, SetConfig } from '@/types'
-import ObjectStringInput, { ObjectInputEventData } from '@/components/object-string-input'
+import ObjectStringInput, { CommonEventData } from '@/components/object-string-input'
+import Context from '@/engine/context'
+import { set as _set } from 'lodash'
+import { copyConfig } from '@/utils/copy-config'
 
 interface PropsConfigFormProps {
   config: Config
   onConfigChange: SetConfig
 }
 const CommonConfigForm = ({ config, onConfigChange }: PropsConfigFormProps): JSX.Element | null => {
-  const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const context = useContext(Context)
+  const brick = useMemo(() => {
+    return context.bricks[config.name]
+  }, [context.bricks, config])
+  const handleChange = useCallback((event: CommonEventData) => {
     onConfigChange((config) => {
       return {
         ...config,
-        [event.target.name]: event.target.value,
+        [event.target.name]: event.target.value as string,
       }
     })
   }, [])
-  const handleSupplyChange = useCallback((data: ObjectInputEventData) => {
+  const handleSupplyChange = useCallback((data: CommonEventData) => {
     onConfigChange((config) => {
-      return {
-        ...config,
-        supply: {
-          ...config.supply,
-          data: {
-            ...config.supply?.data,
-            ...(data.target.name === 'supply.data' ? data.target.value : {}),
-          },
-          actions: {
-            ...config.supply?.actions,
-            ...(data.target.name === 'supply.actions' ? (data.target.value as Record<string, string>) : {}),
-          },
-        },
-      }
-    })
-  }, [])
-  const handleActionsChange = useCallback((data: ObjectInputEventData) => {
-    onConfigChange((config) => {
-      return {
-        ...config,
-        actions: {
-          ...config.actions,
-          ...(data.target.value as Record<string, string>),
-        },
-      }
+      const newConfig = copyConfig(config)
+      return _set(newConfig, data.target.name, data.target.value)
     })
   }, [])
   return (
@@ -52,7 +36,7 @@ const CommonConfigForm = ({ config, onConfigChange }: PropsConfigFormProps): JSX
       </div>
       <div>
         <label htmlFor="actions">Actions: </label>
-        <ObjectStringInput name="actions" value={config.actions || {}} onChange={handleActionsChange} />
+        <ObjectStringInput name="actions" value={config.actions || {}} onChange={handleSupplyChange} />
       </div>
       <div>
         <label htmlFor="supply.data">Supply Data: </label>
@@ -62,6 +46,22 @@ const CommonConfigForm = ({ config, onConfigChange }: PropsConfigFormProps): JSX
         <label htmlFor="supply.actions">Supply Actions: </label>
         <ObjectStringInput name="supply.actions" value={config.supply?.actions || {}} onChange={handleSupplyChange} />
       </div>
+      {brick.canCustomizeRender && (
+        <>
+          <div>
+            <label htmlFor="render.modules">Render Modules: </label>
+            <ObjectStringInput
+              name="render.modules"
+              value={config.render?.modules || {}}
+              onChange={handleSupplyChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="render.func">Render Func: </label>
+            <textarea name="render.func" value={config.render?.func || ''} onChange={handleSupplyChange} />
+          </div>
+        </>
+      )}
     </>
   )
 }

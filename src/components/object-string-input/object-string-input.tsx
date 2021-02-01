@@ -1,17 +1,17 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { isPlainObject } from 'lodash'
 
-export interface ObjectInputEventData {
+export interface CommonEventData {
   target: {
     name: string
-    value: Record<string, unknown>
+    value: unknown
   }
 }
 
 interface ObjectInputProps {
   name?: string
   value?: Record<string, unknown>
-  onChange?: (data: ObjectInputEventData) => void
+  onChange?: (data: CommonEventData) => void
 }
 
 const ObjectStringInput: React.FC<ObjectInputProps> = (props: ObjectInputProps) => {
