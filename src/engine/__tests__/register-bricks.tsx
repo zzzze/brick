@@ -84,8 +84,8 @@ const TextWithDefaultValue: Brick = {
   version: '0.0.1',
 }
 
-const TextWithAction: Brick = {
-  name: 'TextWithAction',
+const TextWithOnClickEvent: Brick = {
+  name: 'TextWithOnClickEvent',
   dataTypes: {
     content: DataType.STRING,
   },
@@ -173,5 +173,5 @@ const TextWithAction2: Brick = {
 Engine.registerBrick(View)
 Engine.registerBrick(Text)
 Engine.registerBrick(TextWithDefaultValue)
-Engine.registerBrick(TextWithAction)
+Engine.registerBrick(TextWithOnClickEvent)
 Engine.registerBrick(TextWithAction2)

@@ -23,7 +23,7 @@ describe('handlers', () => {
           name: 'View',
           children: [
             {
-              name: 'TextWithAction',
+              name: 'TextWithOnClickEvent',
               data: {
                 content: '{{$supply.$container.text}}',
               },
@@ -64,7 +64,7 @@ describe('handlers', () => {
           name: 'View',
           children: [
             {
-              name: 'TextWithAction',
+              name: 'TextWithOnClickEvent',
               data: {
                 content: '{{$supply.$container.text}}',
               },
@@ -115,7 +115,7 @@ describe('handlers', () => {
           name: 'View',
           children: [
             {
-              name: 'TextWithAction',
+              name: 'TextWithOnClickEvent',
               data: {
                 content: '{{$supply.$container.text}}',
               },

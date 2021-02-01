@@ -43,7 +43,7 @@ describe('supply actions', () => {
           },
           children: [
             {
-              name: 'TextWithAction',
+              name: 'TextWithOnClickEvent',
               handlers: {
                 onClick: '{{$supply.$container2.onClick}}',
               },
@@ -101,7 +101,7 @@ describe('supply actions', () => {
           name: 'View',
           children: [
             {
-              name: 'TextWithAction',
+              name: 'TextWithOnClickEvent',
               handlers: {
                 onClick: '{{$supply.$container.onClick}}',
               },

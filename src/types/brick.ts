@@ -28,6 +28,10 @@ export interface SetData {
   (fn: SetDataFn, options: SetDataOptions): void
 }
 
+export interface Emit {
+  (event: string, ...args: unknown[]): void
+}
+
 export interface SupplyInRender {
   data?: Record<string, unknown>
   actions?: Record<string, unknown>

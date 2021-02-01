@@ -27,7 +27,7 @@ describe('getData', () => {
       baz: '{{$supply.$node.text}}',
     }
     const pSupply = {
-      '$node': {
+      $node: {
         text: 'abcdef',
       },
     }

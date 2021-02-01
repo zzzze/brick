@@ -12,6 +12,7 @@ import {
   SupplyInRender,
   idPrefix,
   VALUE_PARAM_PATTERN,
+  Emit,
 } from '@/types'
 import BrickWrapper from '@/engine/brick-wrapper'
 import { interpreteParam } from '@/utils'
@@ -25,20 +26,21 @@ interface BrickRenderProps {
   setConfig: SetConfig
 }
 
-function compileAction(fn: string, setData: SetData): Action {
+function compileAction(fn: string, setData: SetData, emit: Emit): Action {
   return (...args: unknown[]) => {
     void setData // cheak on compiler
+    void emit // cheak on compiler
     let action: (...args: unknown[]) => void = () => {} // eslint-disable-line prefer-const, @typescript-eslint/no-empty-function
     eval(`action = ${fn}`) // TODO: compile in build mode
     return action(...args)
   }
 }
 
-function compileActions(actions: Record<string, unknown>, setData: SetData): Record<string, unknown> {
+function compileActions(actions: Record<string, unknown>, setData: SetData, emit: Emit): Record<string, unknown> {
   return Object.keys(actions).reduce<Record<string, unknown>>((result, key) => {
     const value = actions[key]
     if (typeof value === 'string' && !value.startsWith('{{')) {
-      result[key] = compileAction(value, setData)
+      result[key] = compileAction(value, setData, emit)
     } else {
       result[key] = value
     }
@@ -71,6 +73,9 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
     },
     [data]
   )
+  const handleEmit = useCallback((event: string, ...args: unknown[]) => {
+    context.ee.emit(event, ...args)
+  }, [])
   useEffect(() => {
     const newData = getConfigData(keys, config.data ?? {}, pSupply.data ?? {}, brick.defaultData)
     setData(newData)
@@ -84,7 +89,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
           $supply: pSupply.actions || {},
         }) as (...args: unknown[]) => void
       } else {
-        action = compileAction(functionStr, handleSetData)
+        action = compileAction(functionStr, handleSetData, handleEmit)
       }
       result[key] = action
       return result
@@ -101,13 +106,40 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
             $this: actions,
           }) as (...args: unknown[]) => void
         } else {
-          action = compileAction(functionStr, handleSetData)
+          action = compileAction(functionStr, handleSetData, handleEmit)
         }
         result[name] = action
         return result
       }, {}) || {}
     )
   }, [config.handlers, pSupply.actions, actions])
+  const listeners = useMemo<Actions>(() => {
+    return (
+      Object.keys(config.listeners || {}).reduce<Actions>((result, name) => {
+        const functionStr = config.listeners?.[name] || 'function(){}'
+        let action: (...args: unknown[]) => void
+        if (VALUE_PARAM_PATTERN.test(functionStr)) {
+          action = interpreteParam(functionStr, {
+            $supply: pSupply.actions || {},
+            $this: actions,
+          }) as (...args: unknown[]) => void
+        } else {
+          action = compileAction(functionStr, handleSetData, handleEmit)
+        }
+        result[name] = action
+        return result
+      }, {}) || {}
+    )
+  }, [config.listeners, pSupply.actions, actions])
+  useEffect(() => {
+    const _listeners = Object.keys(listeners || {}).map((key) => {
+      context.ee.on(key, listeners[key])
+      return () => context.ee.off(key, listeners[key])
+    })
+    return () => {
+      _listeners.map((func) => func())
+    }
+  }, [listeners])
   const supplyData = useMemo(() => {
     let supplyData = {
       ...config.supply?.data,
@@ -133,7 +165,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
   }, [config.supply?.data, config.id, pSupply, data])
   const supplyActions = useMemo(() => {
     let supplyActions = {
-      ...compileActions(config.supply?.actions || {}, handleSetData),
+      ...compileActions(config.supply?.actions || {}, handleSetData, handleEmit),
     }
     const actionKeys = Object.keys(supplyActions)
     supplyActions = actionKeys.reduce<Actions>((result, key) => {

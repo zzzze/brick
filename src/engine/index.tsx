@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react'
 import { Config, Brick, EngineMode, SetConfigFn } from '@/types'
 import Context, { RenderConfigForm } from '@/engine/context'
 import BrickRenderer from '@/engine/brick-renderer'
+import EventEmitter from 'eventemitter3'
 
 interface EngineProps {
   config: Config | Config[] | null
@@ -93,6 +94,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
         value={{
           renderConfigForm: this.renderConfigForm,
           bricks: Engine.bricks,
+          ee: new EventEmitter(),
         }}>
         {this.state.config &&
           Array.isArray(this.state.config) &&

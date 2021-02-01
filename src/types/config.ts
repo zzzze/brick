@@ -8,14 +8,15 @@ export interface Supply {
 }
 
 export interface Config {
-  name: string
-  version: string
-  id?: string
-  data?: DataObject
+  name: string // brick name
+  version: string // brick version
+  id?: string // brick instance id
+  data?: DataObject // data for brick instance
   actions?: Record<string, string> // define action which can be used by supply or handler
-  handlers?: Record<string, string>
-  supply?: Supply // provide data for child brick
+  handlers?: Record<string, string> // define handler of event that triggered by brick instance
+  supply?: Supply // provide data for child brick instance
   children?: Config[]
+  listeners?: Record<string, string> // listeners use for register event listeners of EventEmitter
 }
 
 export interface SetConfigFn {
