@@ -1,11 +1,18 @@
 import { Action, Emit, SetData } from '@/types'
+import { transform } from '@babel/standalone'
 
 export function compileAction(fn: string, setData: SetData, emit: Emit): Action {
   return (...args: unknown[]) => {
     void setData // cheak on compiler
     void emit // cheak on compiler
     let action: (...args: unknown[]) => void = () => {} // eslint-disable-line prefer-const, @typescript-eslint/no-empty-function
-    eval(`action = ${fn}`) // TODO: compile in build mode
+    fn = `action = ${fn}`
+    fn =
+      transform(fn, {
+        filename: 'action.ts',
+        presets: ['env', 'typescript'],
+      }).code || ''
+    eval(fn) // TODO: compile in build mode
     return action(...args)
   }
 }

@@ -38,7 +38,25 @@ const Text: Brick = {
   version: '0.0.1',
 }
 
+const ViewWithCustomRender: Brick = {
+  name: 'ViewWithCustomRender',
+  dataTypes: {},
+  defaultData: {},
+  childrenType: ChildrenType.MULTIPLE,
+  canCustomizeRender: true,
+  renderConfigForm(args) {
+    void args
+    return <></>
+  },
+  render(args) {
+    void args
+    return <></>
+  },
+  version: '0.0.1',
+}
+
 Engine.registerBrick(View)
 Engine.registerBrick(Text)
+Engine.registerBrick(ViewWithCustomRender)
 
 demoTest('engine')

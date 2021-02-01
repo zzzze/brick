@@ -99,6 +99,31 @@ Array [
 ]
 `;
 
+exports[`renders ./src/engine/demo/custom-render.md correctly 1`] = `
+<div>
+  <div>
+    <button
+      data-testid="edit-btn"
+    >
+      edit
+    </button>
+  </div>
+  <span>
+    foo
+  </span>
+  <span>
+    <div>
+      <button
+        data-testid="edit-btn"
+      >
+        edit
+      </button>
+    </div>
+    bar
+  </span>
+</div>
+`;
+
 exports[`renders ./src/engine/demo/supply.md correctly 1`] = `
 <div>
   <div>
