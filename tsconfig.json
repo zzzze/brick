@@ -5,9 +5,9 @@
       "@/*": ["src/*"]
     },
     "target": "es5",
-    "module": "commonjs",
+    "module": "esnext",
+    "moduleResolution": "node",
     "jsx": "react",
-    "noEmit": true,
     "removeComments": true,
     "isolatedModules": true,
     "strict": true,
@@ -19,6 +19,8 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "noEmitHelpers": false,
+    "importHelpers": true,
     "forceConsistentCasingInFileNames": true
   },
   "exclude": ["node_modules"],

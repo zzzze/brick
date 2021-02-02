@@ -24,7 +24,15 @@ module.exports = function (env, argv) {
         '@': path.resolve(__dirname, 'src'),
       },
     },
+    externals: {
+      '@babel/standalone': 'commonjs2 @babel/standalone',
+    },
     mode: env.prod ? 'production' : 'development',
+    devtool: !env.prod && 'source-map',
+    optimization: {
+      usedExports: true,
+      concatenateModules: false,
+    },
     plugins: [
       new LodashModuleReplacementPlugin(),
       new webpack.DefinePlugin({

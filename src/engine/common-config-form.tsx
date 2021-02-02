@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useContext } from 'react'
 import { Config, SetConfig } from '@/types'
 import ObjectStringInput, { CommonEventData } from '@/components/object-string-input'
 import Context from '@/engine/context'
-import { set as _set } from 'lodash'
+import set from 'lodash/set'
 import { copyConfig } from '@/utils/copy-config'
 
 interface PropsConfigFormProps {
@@ -25,7 +25,7 @@ const CommonConfigForm = ({ config, onConfigChange }: PropsConfigFormProps): JSX
   const handleSupplyChange = useCallback((data: CommonEventData) => {
     onConfigChange((config) => {
       const newConfig = copyConfig(config)
-      return _set(newConfig, data.target.name, data.target.value)
+      return set(newConfig, data.target.name, data.target.value)
     })
   }, [])
   return (

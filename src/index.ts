@@ -1,3 +1,1 @@
-export default (): number => {
-  return 0
-}
+export {default} from '@/engine'

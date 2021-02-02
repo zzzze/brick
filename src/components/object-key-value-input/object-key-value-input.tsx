@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
-import { isPlainObject } from 'lodash'
+import isPlainObject from 'lodash/isPlainObject'
 
 export interface ObjectInputEventData {
   target: {
