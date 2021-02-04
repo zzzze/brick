@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders ./packages/components/object-string-input/demo/basic.md correctly 1`] = `<textarea />`;
+
+exports[`renders ./packages/components/object-string-input/demo/with-props.md correctly 1`] = `
+<textarea
+  name="obj"
+>
+  {"foo":"bar","baz":123}
+</textarea>
+`;

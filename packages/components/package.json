@@ -1,0 +1,13 @@
+{
+  "name": "@brick/components",
+  "version": "0.0.1",
+  "description": "Component module of brick.",
+  "main": "index.tsx",
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "@brick/tools": "^0.0.1"
+  }
+}

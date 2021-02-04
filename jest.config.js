@@ -1,12 +1,9 @@
 module.exports = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/'],
-  testMatch: ['**/__tests__/*.test.(js|ts|tsx)'],
   transform: {
     '\\.[jt]sx?$': 'babel-jest',
-    '\\.md$': './src/tools/jest/demoPreprocessor',
+    '\\.md$': './packages/tools/jest/demoPreprocessor',
   },
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-  },
+  projects: ['<rootDir>/packages/engine/jest.config.js', '<rootDir>/packages/components/jest.config.js'],
 }

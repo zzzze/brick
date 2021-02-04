@@ -1,2 +1,3 @@
 src/tools/jest/*.js
 *.js
+cli/

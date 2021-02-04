@@ -6,6 +6,7 @@
     },
     "target": "es5",
     "module": "esnext",
+    "resolveJsonModule": true,
     "moduleResolution": "node",
     "jsx": "react",
     "removeComments": true,
@@ -22,7 +23,5 @@
     "noEmitHelpers": false,
     "importHelpers": true,
     "forceConsistentCasingInFileNames": true
-  },
-  "exclude": ["node_modules"],
-  "include": ["**/*.js", "**/*.ts", "**/*.tsx"]
+  }
 }

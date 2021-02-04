@@ -1,0 +1,23 @@
+{
+  "name": "@brick/engine",
+  "version": "0.0.1",
+  "description": "Core module of brick.",
+  "main": "lib/engine.js",
+  "files": [
+    "lib/"
+  ],
+  "sideEffects": false,
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-virtual": "^2.0.3"
+  },
+  "dependencies": {
+    "@brick/components": "^0.0.1",
+    "@brick/tools": "^0.0.1",
+    "eventemitter3": "^4.0.7",
+    "lodash": "^4.17.20"
+  }
+}

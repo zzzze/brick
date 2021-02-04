@@ -31,7 +31,6 @@ module.exports = function (env, argv) {
     devtool: !env.prod && 'source-map',
     optimization: {
       usedExports: true,
-      concatenateModules: false,
     },
     plugins: [
       new LodashModuleReplacementPlugin(),
