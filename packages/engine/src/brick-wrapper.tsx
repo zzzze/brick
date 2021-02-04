@@ -1,21 +1,17 @@
 import React, { Children, cloneElement, useCallback, useContext } from 'react'
-import { Config, DataObject, SetConfig } from '@/types'
-import PropsConfigForm from '@/props-config-form'
-import { BrickContainerProps } from '@/brick-containter'
-import CommonConfigForm from '@/common-config-form'
-import Context from '@/context'
+import { Config, DataObject, SetConfig } from './types'
+import PropsConfigForm from './props-config-form'
+import { BrickContainerProps } from '@brick/components'
+import CommonConfigForm from './common-config-form'
+import Context from './context'
 
-interface ConfigFormWrapperProps {
+interface BrickWrapperProps {
   children: React.ReactElement<React.PropsWithChildren<unknown>>
   config: Config
   onConfigChange: SetConfig
 }
 
-const ConfigFormWrapper: React.FC<ConfigFormWrapperProps> = ({
-  children,
-  config,
-  onConfigChange,
-}: ConfigFormWrapperProps) => {
+const BrickWrapper: React.FC<BrickWrapperProps> = ({ children, config, onConfigChange }: BrickWrapperProps) => {
   const context = useContext(Context)
   const handleChange = useCallback((newProps: DataObject) => {
     onConfigChange((config: Config) => {
@@ -41,4 +37,4 @@ const ConfigFormWrapper: React.FC<ConfigFormWrapperProps> = ({
   )
 }
 
-export default ConfigFormWrapper
+export default BrickWrapper

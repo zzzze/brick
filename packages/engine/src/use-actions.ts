@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { Action, Actions, Config, SupplyInRender, VALUE_PARAM_PATTERN } from '@/types'
-import { interpreteParam } from '@/utils'
-import { compileAction } from '@/compile-action'
-import { HandlersUseInRender } from '@/use-handlers-use-in-render'
+import { Action, Actions, Config, SupplyInRender, VALUE_PARAM_PATTERN } from './types'
+import { interpreteParam } from './utils'
+import { compileAction } from './compile-action'
+import { HandlersUseInRender } from './use-handlers-use-in-render'
 
 export default function useActions(
   config: Config,

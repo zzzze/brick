@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { Action, Actions, Config, SetData, SupplyInRender, VALUE_PARAM_PATTERN, idPrefix } from '@/types'
-import { interpreteParam } from '@/utils'
-import { compileActions } from '@/compile-action'
-import { HandlersUseInRender } from '@/use-handlers-use-in-render'
+import { Action, Actions, Config, SetData, SupplyInRender, VALUE_PARAM_PATTERN, idPrefix } from './types'
+import { interpreteParam } from './utils'
+import { compileActions } from './compile-action'
+import { HandlersUseInRender } from './use-handlers-use-in-render'
 
 export default function useSupply(
   config: Config,

@@ -1,5 +1,5 @@
-import { DataObject, VALUE_PARAM_PATTERN } from '@/types'
-import { interpreteParam } from '@/utils'
+import { DataObject, VALUE_PARAM_PATTERN } from './types'
+import { interpreteParam } from './utils'
 
 export default function getConfigData(
   keys: string[],

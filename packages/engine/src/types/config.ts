@@ -7,11 +7,6 @@ export interface Supply {
   actions?: Record<string, string>
 }
 
-export interface CustomRender {
-  modules?: Record<string, string>
-  func: string
-}
-
 export type Func = string | ((setData: SetData, emit: Emit) => Action)
 
 export interface Config {
@@ -24,7 +19,7 @@ export interface Config {
   supply?: Supply // provide data for child brick instance
   children?: Config[]
   listeners?: Record<string, Func> // listeners use for register event listeners of EventEmitter
-  render?: CustomRender // custom render
+  render?: string // custom render
 }
 
 export interface SetConfigFn {

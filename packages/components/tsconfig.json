@@ -2,6 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {}
-  }
+    "declaration": true,
+    "outDir": "lib"
+  },
+  "exclude": ["__tests__", "lib"]
 }

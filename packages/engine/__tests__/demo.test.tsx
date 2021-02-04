@@ -1,7 +1,7 @@
 import React from 'react'
 import demoTest from '@brick/tools/tests/demoTest'
 import { Engine } from '@/index'
-import BrickContainer from '@/brick-containter'
+import { BrickContainer } from '@brick/components'
 import { Brick, ChildrenType, ConfigFormRenderArgs, DataType, RenderArgs } from '@/types'
 
 const View: Brick = {

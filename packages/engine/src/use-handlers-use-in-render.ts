@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useContext } from 'react'
-import { Emit, SetConfig, SetData, SetDataFn, SetDataOptions } from '@/types'
-import Context from '@/context'
+import { Emit, SetConfig, SetData, SetDataFn, SetDataOptions } from './types'
+import Context from './context'
 
 export interface HandlersUseInRender {
   setData: SetData

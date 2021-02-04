@@ -1,6 +1,6 @@
 import { useMemo, useContext } from 'react'
-import { DataObject, Config } from '@/types'
-import Context from '@/context'
+import { DataObject, Config } from './types'
+import Context from './context'
 
 interface PropsConfigFormProps {
   config: Config

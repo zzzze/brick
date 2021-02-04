@@ -1,4 +1,4 @@
-import { Brick } from '@/types'
+import { Brick } from './types'
 import React from 'react'
 import EventEmitter from 'eventemitter3'
 

@@ -1,4 +1,4 @@
-import { Action, Emit, Func, SetData } from '@/types'
+import { Action, Emit, Func, SetData, VALUE_PARAM_PATTERN } from './types'
 import { transform } from '@babel/standalone'
 
 export function compileAction(fn: Func, setData: SetData, emit: Emit): Action {
@@ -21,14 +21,10 @@ export function compileAction(fn: Func, setData: SetData, emit: Emit): Action {
   }
 }
 
-export function compileActions(
-  actions: Record<string, unknown>,
-  setData: SetData,
-  emit: Emit
-): Record<string, unknown> {
+export function compileActions(actions: Record<string, Func>, setData: SetData, emit: Emit): Record<string, unknown> {
   return Object.keys(actions).reduce<Record<string, unknown>>((result, key) => {
     const value = actions[key]
-    if (typeof value === 'string' && !value.startsWith('{{')) {
+    if (typeof value !== 'string' || !VALUE_PARAM_PATTERN.test(value)) {
       result[key] = compileAction(value, setData, emit)
     } else {
       result[key] = value

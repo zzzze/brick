@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, useContext } from 'react'
 import { Config, SetConfig } from '@/types'
 import { ObjectStringInput, CommonEventData } from '@brick/components'
-import Context from '@/context'
+import Context from './context'
 import set from 'lodash/set'
-import { copyConfig } from '@/utils/copy-config'
+import { copyConfig } from './utils/copy-config'
 
 interface PropsConfigFormProps {
   config: Config
@@ -49,16 +49,8 @@ const CommonConfigForm = ({ config, onConfigChange }: PropsConfigFormProps): JSX
       {brick.canCustomizeRender && (
         <>
           <div>
-            <label htmlFor="render.modules">Render Modules: </label>
-            <ObjectStringInput
-              name="render.modules"
-              value={config.render?.modules || {}}
-              onChange={handleSupplyChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="render.func">Render Func: </label>
-            <textarea name="render.func" value={config.render?.func || ''} onChange={handleSupplyChange} />
+            <label htmlFor="render">Render: </label>
+            <textarea name="render" value={config.render} onChange={handleSupplyChange} />
           </div>
         </>
       )}

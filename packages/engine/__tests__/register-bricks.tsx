@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useCallback } from 'react'
 import 'jest-enzyme'
 import { Engine } from '@/index'
-import BrickContainer from '@/brick-containter'
+import { BrickContainer } from '@brick/components'
 import { Brick, ChildrenType, ConfigFormRenderArgs, DataType, RenderArgs } from '@/types'
 
 const View: Brick = {

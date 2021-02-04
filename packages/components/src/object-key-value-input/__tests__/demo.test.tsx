@@ -1,3 +1,3 @@
 import demoTest from '@brick/tools/tests/demoTest'
 
-demoTest('components/object-key-value-input')
+demoTest('components/src/object-key-value-input')

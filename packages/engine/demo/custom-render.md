@@ -3,20 +3,15 @@ import { Engine } from '@brick/engine'
 
 const config = {
   name: 'ViewWithCustomRender',
-  render: {
-    modules: {
-      brickContainer: '@brick/engine/brick-containter',
-    },
-    func: `args => {
-      const BrickContainer = modules.brickContainer.default
-      return (
-        <BrickContainer tag="div">
-          <span>foo</span>
-          {args.children}
-        </BrickContainer>
-      )
-    }`,
-  },
+  render: `args => {
+    const BrickContainer = require('@brick/components').BrickContainer
+    return (
+      <BrickContainer tag="div">
+        <span>foo</span>
+        {args.children}
+      </BrickContainer>
+    )
+  }`,
   children: [
     {
       name: 'Text',

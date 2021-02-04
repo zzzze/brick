@@ -1,0 +1,15 @@
+{
+  "name": "@brick/cli",
+  "version": "0.0.1",
+  "description": "Cli tool of brick.",
+  "bin": {
+    "brick": "cli.js"
+  },
+  "dependencies": {
+    "@types/lodash-webpack-plugin": "^0.11.4",
+    "html-webpack-plugin": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/lodash-webpack-plugin": "^0.11.4"
+  }
+}

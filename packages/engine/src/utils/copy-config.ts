@@ -21,12 +21,7 @@ export const copyConfig = (config: Config): Config => {
     }
   }
   if (config.render) {
-    newConfig.render = {
-      func: config.render?.func || '',
-      modules: {
-        ...config.render?.modules,
-      },
-    }
+    newConfig.render = config.render || ''
   }
   return newConfig
 }

@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
-import { Brick, Config, Render } from '@/types'
-import compileCustomRender from '@/compile-custom-render'
+import { Brick, Config, Render } from './types'
+import compileCustomRender from './compile-custom-render'
 
 export default function useRender(brick: Brick, config: Config): Render {
   const customRender = useMemo<null | Render>(() => {

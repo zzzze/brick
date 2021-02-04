@@ -6,9 +6,9 @@ import virtual from '@rollup/plugin-virtual'
 
 export default [
   {
-    input: 'packages/engine/src/index.tsx',
+    input: 'packages/engine/index.ts',
     output: {
-      file: 'packages/engine/lib/engine.js',
+      dir: 'packages/engine/lib',
       format: 'cjs',
     },
     plugins: [
@@ -24,30 +24,21 @@ export default [
       }),
       commonjs(),
     ],
-    external: [
-      'react',
-      'react-dom',
-      'tslib',
-      '@babel/standalone',
-      '@brick/components',
-      'eventemitter3',
-      'lodash/get',
-      'lodash/set',
-    ],
+    external: ['react', 'react-dom', 'tslib', '@babel/standalone', 'eventemitter3', /@brick(\/.*)?/, /lodash(\/.*)?/],
     onwarn: (warning, next) => {
       if (warning.code === 'EVAL') return
       next(warning)
     },
   },
   {
-    input: 'packages/engine/src/index.tsx',
+    input: 'packages/engine/index.noconfig.ts',
     output: {
-      file: 'packages/engine/lib/engine.noconfig.js',
+      dir: 'packages/engine/lib',
       format: 'cjs',
     },
     plugins: [
       virtual({
-        '@/brick-wrapper': `export default (children) => children`,
+        './brick-wrapper': `export default (children) => children`,
       }),
       typescript({
         tsconfig: 'packages/engine/tsconfig.json',
@@ -61,16 +52,7 @@ export default [
       }),
       commonjs(),
     ],
-    external: [
-      'react',
-      'react-dom',
-      'tslib',
-      '@babel/standalone',
-      '@brick/components',
-      'eventemitter3',
-      'lodash/get',
-      'lodash/set',
-    ],
+    external: ['react', 'react-dom', 'tslib', '@babel/standalone', 'eventemitter3', /@brick(\/.*)?/, /lodash(\/.*)?/],
     onwarn: (warning, next) => {
       if (warning.code === 'EVAL') return
       next(warning)
@@ -79,7 +61,7 @@ export default [
   {
     input: 'packages/components/index.tsx',
     output: {
-      file: 'packages/components/lib/index.js',
+      dir: 'packages/components/lib',
       format: 'cjs',
     },
     plugins: [
@@ -95,6 +77,29 @@ export default [
       }),
       commonjs(),
     ],
-    external: ['react', 'react-dom', 'tslib', 'lodash/isPlainObject'],
+    external: ['react', 'react-dom', 'tslib', /lodash(\/.*)?/],
+  },
+  {
+    input: [
+      'packages/cli/index.ts',
+      'packages/cli/loader.ts',
+      'packages/cli/mock-babel-standalone.ts',
+      'packages/cli/webpack.config.ts',
+    ],
+    output: {
+      dir: 'packages/cli/lib',
+      format: 'cjs',
+    },
+    plugins: [
+      typescript({
+        tsconfig: 'packages/cli/tsconfig.json',
+      }),
+      nodeResolve({
+        moduleDirectories: ['node_modules'],
+        extensions: ['.js', '.ts', '.tsx'],
+      }),
+      commonjs(),
+    ],
+    external: ['tslib', 'webpack', 'lodash-webpack-plugin', 'html-webpack-plugin'],
   },
 ]

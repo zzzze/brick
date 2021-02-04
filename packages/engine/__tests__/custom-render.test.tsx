@@ -9,20 +9,15 @@ describe('custom-render', () => {
   test('', () => {
     const config: Config = {
       name: 'ViewWithCustomRender',
-      render: {
-        modules: {
-          brickContainer: '@/brick-containter',
-        },
-        func: `args => {
-          const BrickContainer = modules.brickContainer.default
-          return (
-            <BrickContainer tag="div">
-              <span>foo</span>
-              {args.children}
-            </BrickContainer>
-          )
-        }`,
-      },
+      render: `args => {
+        const BrickContainer = require('@brick/components').BrickContainer
+        return (
+          <BrickContainer tag="div">
+            <span>foo</span>
+            {args.children}
+          </BrickContainer>
+        )
+      }`,
       version: '0.0.1',
     }
     const wrapper = mount(<Engine config={config} />)

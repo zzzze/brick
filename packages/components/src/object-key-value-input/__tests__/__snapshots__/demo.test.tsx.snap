@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders ./packages/components/object-key-value-input/demo/basic.md correctly 1`] = `
+exports[`renders ./packages/components/src/object-key-value-input/demo/basic.md correctly 1`] = `
 <div>
   <button
     data-testid="add-item"
@@ -10,7 +10,7 @@ exports[`renders ./packages/components/object-key-value-input/demo/basic.md corr
 </div>
 `;
 
-exports[`renders ./packages/components/object-key-value-input/demo/with-props.md correctly 1`] = `
+exports[`renders ./packages/components/src/object-key-value-input/demo/with-props.md correctly 1`] = `
 <div>
   <button
     data-testid="add-item"
