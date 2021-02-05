@@ -71,6 +71,7 @@
   },
   "dependencies": {
     "@babel/standalone": "^7.12.12",
+    "@rollup/plugin-json": "^4.1.0",
     "eventemitter3": "^4.0.7",
     "lodash": "^4.17.20",
     "react": "^17.0.1",

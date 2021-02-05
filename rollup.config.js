@@ -3,6 +3,7 @@ import alias from '@rollup/plugin-alias'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import virtual from '@rollup/plugin-virtual'
+import json from '@rollup/plugin-json'
 
 export default [
   {
@@ -98,8 +99,9 @@ export default [
         moduleDirectories: ['node_modules'],
         extensions: ['.js', '.ts', '.tsx'],
       }),
+      json(),
       commonjs(),
     ],
-    external: ['tslib', 'webpack', 'lodash-webpack-plugin', 'html-webpack-plugin'],
+    external: ['tslib', 'webpack', 'lodash-webpack-plugin', 'html-webpack-plugin', 'webpack-dev-server'],
   },
 ]
