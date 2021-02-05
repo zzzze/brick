@@ -12,7 +12,7 @@
     "test": "jest",
     "type-check": "tsc --project tsconfig.eslint.json",
     "build:dev": "webpack --progress",
-    "build": "webpack --env prod",
+    "build": "rollup --config",
     "lint": "eslint ./",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
