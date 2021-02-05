@@ -1,7 +1,7 @@
 import React from 'react'
 
 export interface BrickContainerProps extends React.HTMLAttributes<HTMLElement> {
-  tag?: keyof React.ReactHTML
+  tag?: keyof React.ReactHTML | React.ComponentType
   configForm?: React.ReactElement | null
 }
 

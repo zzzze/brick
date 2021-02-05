@@ -8,17 +8,23 @@ export interface ObjectInputEventData {
   }
 }
 
-interface ObjectInputProps {
+export interface ObjectInputProps {
   name?: string
   value?: Record<string, string>
   onChange?: (data: ObjectInputEventData) => void
 }
 
 export const ObjectKeyValueInput: React.FC<ObjectInputProps> = (props: ObjectInputProps) => {
+  const [value, setValue] = useState(props.value)
   const [keys, setKeys] = useState<string[]>(() => {
     const value = props.value || {}
     return Object.keys(value)
   })
+  useEffect(() => {
+    if (!isPlainObject(props.value)) {
+      triggerChange({})
+    }
+  }, [props.value])
   useEffect(() => {
     const newKeys: string[] = keys.slice()
     const valueKeys = Object.keys(props.value || {})
@@ -33,6 +39,7 @@ export const ObjectKeyValueInput: React.FC<ObjectInputProps> = (props: ObjectInp
       }
     })
     setKeys(newKeys)
+    setValue(props.value)
   }, [props.value])
   const triggerChange = useCallback(
     (obj: Record<string, string>) => {
@@ -46,32 +53,28 @@ export const ObjectKeyValueInput: React.FC<ObjectInputProps> = (props: ObjectInp
     },
     [props.name, props.onChange]
   )
-  useEffect(() => {
-    if (!isPlainObject(props.value)) {
-      triggerChange({})
-    }
-  }, [props.value])
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const [index, inputType] = event.target.name.split('-')
-      const value = keys.reduce<Record<string, string>>((result, key, i) => {
+      const newValue = keys.reduce<Record<string, string>>((result, key, i) => {
         if (index != i.toString()) {
-          result[key] = props.value?.[key] || ''
+          result[key] = value?.[key] || ''
         } else {
           if (inputType === 'label') {
             const newKeys = keys.slice()
             newKeys.splice(i, 1, event.target.value)
             setKeys(newKeys)
-            result[event.target.value] = props.value?.[key] || ''
+            result[event.target.value] = value?.[key] || ''
           } else {
             result[key] = event.target.value
           }
         }
         return result
       }, {})
-      triggerChange(value)
+      setValue(newValue)
+      triggerChange(newValue)
     },
-    [props.value, keys]
+    [keys, value]
   )
   const handleAddItem = useCallback(() => {
     const newKeys = keys.slice()
@@ -84,16 +87,17 @@ export const ObjectKeyValueInput: React.FC<ObjectInputProps> = (props: ObjectInp
   const handleDeleteItem = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       const newValue = {
-        ...props.value,
+        ...value,
       }
       const index = parseInt(event.currentTarget.dataset['index'] || '0')
       const newKeys = keys.slice()
       const deletedKey = newKeys.splice(index, 1)[0]
       delete newValue[deletedKey]
       setKeys(newKeys)
+      setValue(newValue)
       triggerChange(newValue)
     },
-    [keys, props.value]
+    [keys, value]
   )
   return (
     <div>
@@ -104,7 +108,7 @@ export const ObjectKeyValueInput: React.FC<ObjectInputProps> = (props: ObjectInp
         return (
           <div key={index}>
             <input name={`${index}-label`} type="text" value={key} onChange={handleChange} />
-            <input name={`${index}-value`} type="text" value={props.value?.[key] || ''} onChange={handleChange} />
+            <input name={`${index}-value`} type="text" value={value?.[key] || ''} onChange={handleChange} />
             <button data-testid={`remove-btn-${index}`} data-index={index} onClick={handleDeleteItem}>
               delete
             </button>

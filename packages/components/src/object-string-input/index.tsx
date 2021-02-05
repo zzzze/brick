@@ -8,7 +8,7 @@ export interface CommonEventData {
   }
 }
 
-interface ObjectInputProps {
+export interface ObjectInputProps {
   name?: string
   value?: Record<string, unknown>
   onChange?: (data: CommonEventData) => void
