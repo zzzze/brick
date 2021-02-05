@@ -20,7 +20,11 @@ interface BrickRenderProps {
 const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, setConfig, mode }: BrickRenderProps) => {
   const context = useContext(Context)
   const brick = useMemo(() => {
-    return context.bricks[config.name]
+    const brick = context.bricks[config.name]
+    if (!brick) {
+      throw Error(`brick (${config.name}) not found`)
+    }
+    return brick
   }, [context.bricks, config])
   const keys = useMemo(() => {
     return Object.keys(brick.dataTypes)

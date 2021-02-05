@@ -1,4 +1,4 @@
-import { VALUE_PARAM_PATTERN } from '@/types'
+import { VALUE_PARAM_PATTERN } from '../types'
 import get from 'lodash/get'
 
 export const interpreteParam = (param: string, obj: Record<string, unknown>): unknown => {

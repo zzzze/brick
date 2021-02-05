@@ -3,3 +3,4 @@ coverage/
 yarn-error.log
 dist/
 lib/
+lerna-debug.log

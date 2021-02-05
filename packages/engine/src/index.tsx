@@ -4,8 +4,14 @@ import Context, { RenderConfigForm } from './context'
 import BrickRenderer from './brick-renderer'
 import EventEmitter from 'eventemitter3'
 
-interface EngineProps {
+export interface EngineProps {
+  /**
+   * Configuration for engine
+   */
   config: Config | Config[] | null
+  /**
+   * Render configuration form of brick
+   */
   renderConfigForm?: RenderConfigForm
   mode?: EngineMode
 }
@@ -14,6 +20,9 @@ interface EngineState {
   config: Config | Config[] | null
 }
 
+/**
+ * Engine render bricks according to the configuration
+ */
 class Engine extends React.Component<EngineProps, EngineState> {
   constructor(props: EngineProps) {
     super(props)
