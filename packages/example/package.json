@@ -1,0 +1,13 @@
+{
+  "name": "@brick/example",
+  "private": true,
+  "version": "0.0.1",
+  "dependencies": {
+    "@brick/components": "^0.0.1",
+    "@brick/engine": "^0.0.1",
+    "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "@brick/cli": "^0.0.1"
+  }
+}
