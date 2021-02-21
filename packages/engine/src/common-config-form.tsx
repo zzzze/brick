@@ -70,7 +70,7 @@ const CommonConfigForm = ({
         <>
           <div>
             <label htmlFor="render">Render: </label>
-            <textarea name="render" value={config.render} onChange={handleSupplyChange} />
+            <textarea name="render" value={config.render as string} onChange={handleSupplyChange} />
           </div>
         </>
       )}

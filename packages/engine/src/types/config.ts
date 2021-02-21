@@ -1,4 +1,4 @@
-import { Action, DataObject, Emit, SetData } from './brick'
+import { Action, DataObject, Emit, Render, SetData } from './brick'
 
 export const idPrefix = '$'
 
@@ -8,6 +8,8 @@ export interface Supply {
 }
 
 export type Func = string | ((setData: SetData, emit: Emit) => Action)
+
+export type CustomRender = string | ((components: unknown) => Render)
 
 export interface Config {
   name: string // brick name
@@ -19,7 +21,7 @@ export interface Config {
   supply?: Supply // provide data for child brick instance
   children?: Config[]
   listeners?: Record<string, Func> // listeners use for register event listeners of EventEmitter
-  render?: string // custom render
+  render?: CustomRender // custom render
 }
 
 export interface SetConfigFn {

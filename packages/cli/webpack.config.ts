@@ -20,7 +20,17 @@ export default function (env: Env): webpack.Configuration {
       rules: [
         {
           test: /brick.config.json$/,
-          loader: path.resolve(__dirname, 'loader.js'),
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                presets: [['@babel/preset-env', { targets: 'defaults' }], '@babel/preset-react'],
+              },
+            },
+            {
+              loader: path.resolve(__dirname, 'loader.js'),
+            },
+          ],
           type: 'javascript/auto',
         },
         {

@@ -1,28 +1,39 @@
 const flagMap: Record<string, string> = {}
 
-function setFuncFlag(obj: unknown): unknown {
-  if (!obj) {
-    return obj
+function setFuncFlag(value: unknown, label = 'brickroot', path = ''): unknown {
+  if (!value) {
+    return value
   }
-  if (Array.isArray(obj)) {
-    return obj.map(function (item) {
+  if (label === 'children' && Array.isArray(value)) {
+    return value.map(function (item) {
       return setFuncFlag(item)
     })
   }
-  if (typeof obj === 'object') {
-    return Object.keys(obj || {}).reduce<Record<string, unknown>>(function (result, key) {
-      result[key] = setFuncFlag(result[key])
+  if (typeof value === 'object') {
+    return Object.keys(value || {}).reduce<Record<string, unknown>>(function (result, key) {
+      result[key] = setFuncFlag(result[key], key, path ? `${path}-${label}` : label)
       return result
-    }, (obj as Record<string, unknown>) || {})
+    }, (value as Record<string, unknown>) || {})
   }
-  if (typeof obj === 'string' && /^\s*function\s*\(/.test(obj)) {
+  if (path === 'brickroot' && label === 'render' && typeof value === 'string') {
     const key = Math.random().toString(36).slice(2).toUpperCase()
-    flagMap[key] = `function (setData, emit) {
-      return ${obj}
+    flagMap[key] = `function (components) {
+      return ${value}
     }`
     return key
   }
-  return obj
+  if (
+    ['brickroot-supply-actions', 'brickroot-actions', 'brickroot-handlers'].includes(path) &&
+    typeof value === 'string' &&
+    /^\s*function\s*\(|^(\w+|\((\s*\w+,?)*\))\s*=>\s*/.test(value)
+  ) {
+    const key = Math.random().toString(36).slice(2).toUpperCase()
+    flagMap[key] = `function (setData, emit) {
+      return ${value}
+    }`
+    return key
+  }
+  return value
 }
 
 export default function loader(source: string | Record<string, unknown>): string {

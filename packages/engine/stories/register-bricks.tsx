@@ -42,6 +42,7 @@ const Text: Brick = {
     content: '',
   },
   childrenType: ChildrenType.NONE,
+  canCustomizeRender: true,
   renderConfigForm(args: ConfigFormRenderArgs) {
     const handleChange = useCallback(
       (event: ChangeEvent<HTMLInputElement>) => {

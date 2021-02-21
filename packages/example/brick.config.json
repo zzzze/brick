@@ -2,16 +2,17 @@
   "name": "View",
   "id": "container",
   "data": {
-    "name": "baz"
+    "name": "bazx"
   },
   "supply": {
     "data": {
       "text": "{{$this.name}}"
     },
     "actions": {
-      "onClick": "function(name) {\n            setData(function(data) {\n    console.log('000001', data);\n          return Object.assign({}, data, {\n                name: name,\n              })\n            }, {\n              setToConfig: true,\n            })\n          }"
+      "onClick": "name => {\n            setData(function(data) {\n    console.log('000001', data);\n          return Object.assign({}, data, {\n                name: name,\n              })\n            }, {\n              setToConfig: true,\n            })\n          }"
     }
   },
+  "render": "args => <div>abc</div>",
   "children": [
     {
       "name": "Text",

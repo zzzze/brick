@@ -9,7 +9,12 @@ import pkg from './package.json'
 
 export default (prefix) => [
   {
-    input: path.join(prefix, 'index.ts'),
+    input: [
+      path.join(prefix, 'index.ts'),
+      path.join(prefix, 'loader.ts'),
+      path.join(prefix, 'mock-babel-standalone.ts'),
+      path.join(prefix, 'webpack.config.ts'),
+    ],
     output: {
       dir: path.join(prefix, 'lib'),
       format: 'cjs',

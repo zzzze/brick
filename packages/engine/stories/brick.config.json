@@ -62,6 +62,14 @@
             "content": "{{$supply.$container.text}}"
           },
           "version": "0.0.1"
+        },
+        {
+          "name": "Text",
+          "data": {
+            "content": "hello world"
+          },
+          "render": "(args) => {const BrickContainer = components.BrickContainer; return <BrickContainer tag='span'>content: {args.data.content}</BrickContainer>}",
+          "version": "0.0.1"
         }
       ],
       "version": "0.0.1"
