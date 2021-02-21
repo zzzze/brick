@@ -75,10 +75,10 @@ const TextWithDefaultValue: Brick = {
     content: 'hello world',
   },
   childrenType: ChildrenType.NONE,
-  renderConfigForm(args) {
+  renderConfigForm(args: ConfigFormRenderArgs) {
     return <div>edit Text: {args.data.content}</div>
   },
-  render(args) {
+  render(args: RenderArgs) {
     return <BrickContainer tag="span">{args.data.content as string}</BrickContainer>
   },
   version: '0.0.1',
@@ -103,10 +103,10 @@ const TextWithOnClickEvent: Brick = {
       })
     }`,
   },
-  renderConfigForm(args) {
+  renderConfigForm(args: ConfigFormRenderArgs) {
     return <div>edit Text: {args.data.content}</div>
   },
-  render(args) {
+  render(args: RenderArgs) {
     const handleClick = useCallback(() => {
       const onClick = args.handlers['onClick']
       if (onClick) {
@@ -143,10 +143,10 @@ const TextWithAction2: Brick = {
       })
     }`,
   },
-  renderConfigForm(args) {
+  renderConfigForm(args: ConfigFormRenderArgs) {
     return <div>edit Text: {args.data.content}</div>
   },
-  render(args) {
+  render(args: RenderArgs) {
     const handleClick = useCallback(() => {
       const onClick = args.handlers['onClick']
       if (onClick) {
@@ -176,11 +176,11 @@ const ViewWithCustomRender: Brick = {
   defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
   canCustomizeRender: true,
-  renderConfigForm(args) {
+  renderConfigForm(args: ConfigFormRenderArgs) {
     void args
     return <></>
   },
-  render(args) {
+  render(args: RenderArgs) {
     void args
     return <></>
   },

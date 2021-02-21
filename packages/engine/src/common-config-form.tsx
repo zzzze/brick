@@ -1,15 +1,27 @@
 import React, { useCallback, useMemo, useContext } from 'react'
 import { Config, SetConfig } from '@/types'
-import { ObjectStringInput, CommonEventData } from '@brick/components'
+import { ObjectStringInput } from '@brick/components'
 import Context from './context'
 import set from 'lodash/set'
 import { copyConfig } from './utils/copy-config'
+
+interface CommonEventData {
+  target: {
+    name: string
+    value: unknown
+  }
+}
 
 interface PropsConfigFormProps {
   config: Config
   onConfigChange: SetConfig
 }
-const CommonConfigForm = ({ config, onConfigChange }: PropsConfigFormProps): JSX.Element | null => {
+
+const CommonConfigForm = ({
+  children,
+  config,
+  onConfigChange,
+}: React.PropsWithChildren<PropsConfigFormProps>): JSX.Element | null => {
   const context = useContext(Context)
   const brick = useMemo(() => {
     return context.bricks[config.name]
@@ -36,11 +48,19 @@ const CommonConfigForm = ({ config, onConfigChange }: PropsConfigFormProps): JSX
       </div>
       <div>
         <label htmlFor="actions">Actions: </label>
-        <ObjectStringInput name="actions" value={config.actions || {}} onChange={handleSupplyChange} />
+        <ObjectStringInput
+          name="actions"
+          value={(config.actions as Record<string, string>) || {}}
+          onChange={handleSupplyChange}
+        />
       </div>
       <div>
         <label htmlFor="supply.data">Supply Data: </label>
-        <ObjectStringInput name="supply.data" value={config.supply?.data || {}} onChange={handleSupplyChange} />
+        <ObjectStringInput
+          name="supply.data"
+          value={(config.supply?.data as Record<string, string>) || {}}
+          onChange={handleSupplyChange}
+        />
       </div>
       <div>
         <label htmlFor="supply.actions">Supply Actions: </label>
@@ -54,6 +74,7 @@ const CommonConfigForm = ({ config, onConfigChange }: PropsConfigFormProps): JSX
           </div>
         </>
       )}
+      {children}
     </>
   )
 }

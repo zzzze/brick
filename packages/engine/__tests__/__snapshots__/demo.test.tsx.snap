@@ -1,9 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders ./packages/engine/demo/basic.md correctly 1`] = `
-<span>
-  <div>
+<span
+  class="brick brick__with-config-form"
+>
+  <div
+    class="brick__config-form"
+  >
     <button
+      class="brick__config-form-btn brick__config-form-btn-edit"
       data-testid="edit-btn"
     >
       edit
@@ -14,17 +19,27 @@ exports[`renders ./packages/engine/demo/basic.md correctly 1`] = `
 `;
 
 exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
-<div>
-  <div>
+<div
+  class="brick brick__with-config-form"
+>
+  <div
+    class="brick__config-form"
+  >
     <button
+      class="brick__config-form-btn brick__config-form-btn-edit"
       data-testid="edit-btn"
     >
       edit
     </button>
   </div>
-  <span>
-    <div>
+  <span
+    class="brick brick__with-config-form"
+  >
+    <div
+      class="brick__config-form"
+    >
       <button
+        class="brick__config-form-btn brick__config-form-btn-edit"
         data-testid="edit-btn"
       >
         edit
@@ -32,9 +47,14 @@ exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
     </div>
     hello
   </span>
-  <span>
-    <div>
+  <span
+    class="brick brick__with-config-form"
+  >
+    <div
+      class="brick__config-form"
+    >
       <button
+        class="brick__config-form-btn brick__config-form-btn-edit"
         data-testid="edit-btn"
       >
         edit
@@ -47,9 +67,14 @@ exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
 
 exports[`renders ./packages/engine/demo/config-tree-array.md correctly 1`] = `
 Array [
-  <span>
-    <div>
+  <span
+    class="brick brick__with-config-form"
+  >
+    <div
+      class="brick__config-form"
+    >
       <button
+        class="brick__config-form-btn brick__config-form-btn-edit"
         data-testid="edit-btn"
       >
         edit
@@ -57,9 +82,14 @@ Array [
     </div>
     hello
   </span>,
-  <span>
-    <div>
+  <span
+    class="brick brick__with-config-form"
+  >
+    <div
+      class="brick__config-form"
+    >
       <button
+        class="brick__config-form-btn brick__config-form-btn-edit"
         data-testid="edit-btn"
       >
         edit
@@ -67,17 +97,27 @@ Array [
     </div>
     world
   </span>,
-  <div>
-    <div>
+  <div
+    class="brick brick__with-config-form"
+  >
+    <div
+      class="brick__config-form"
+    >
       <button
+        class="brick__config-form-btn brick__config-form-btn-edit"
         data-testid="edit-btn"
       >
         edit
       </button>
     </div>
-    <span>
-      <div>
+    <span
+      class="brick brick__with-config-form"
+    >
+      <div
+        class="brick__config-form"
+      >
         <button
+          class="brick__config-form-btn brick__config-form-btn-edit"
           data-testid="edit-btn"
         >
           edit
@@ -85,9 +125,14 @@ Array [
       </div>
       hello
     </span>
-    <span>
-      <div>
+    <span
+      class="brick brick__with-config-form"
+    >
+      <div
+        class="brick__config-form"
+      >
         <button
+          class="brick__config-form-btn brick__config-form-btn-edit"
           data-testid="edit-btn"
         >
           edit
@@ -100,9 +145,14 @@ Array [
 `;
 
 exports[`renders ./packages/engine/demo/custom-render.md correctly 1`] = `
-<div>
-  <div>
+<div
+  class="brick brick__with-config-form"
+>
+  <div
+    class="brick__config-form"
+  >
     <button
+      class="brick__config-form-btn brick__config-form-btn-edit"
       data-testid="edit-btn"
     >
       edit
@@ -111,9 +161,14 @@ exports[`renders ./packages/engine/demo/custom-render.md correctly 1`] = `
   <span>
     foo
   </span>
-  <span>
-    <div>
+  <span
+    class="brick brick__with-config-form"
+  >
+    <div
+      class="brick__config-form"
+    >
       <button
+        class="brick__config-form-btn brick__config-form-btn-edit"
         data-testid="edit-btn"
       >
         edit
@@ -125,25 +180,40 @@ exports[`renders ./packages/engine/demo/custom-render.md correctly 1`] = `
 `;
 
 exports[`renders ./packages/engine/demo/supply.md correctly 1`] = `
-<div>
-  <div>
+<div
+  class="brick brick__with-config-form"
+>
+  <div
+    class="brick__config-form"
+  >
     <button
+      class="brick__config-form-btn brick__config-form-btn-edit"
       data-testid="edit-btn"
     >
       edit
     </button>
   </div>
-  <div>
-    <div>
+  <div
+    class="brick brick__with-config-form"
+  >
+    <div
+      class="brick__config-form"
+    >
       <button
+        class="brick__config-form-btn brick__config-form-btn-edit"
         data-testid="edit-btn"
       >
         edit
       </button>
     </div>
-    <span>
-      <div>
+    <span
+      class="brick brick__with-config-form"
+    >
+      <div
+        class="brick__config-form"
+      >
         <button
+          class="brick__config-form-btn brick__config-form-btn-edit"
           data-testid="edit-btn"
         >
           edit
@@ -156,25 +226,40 @@ exports[`renders ./packages/engine/demo/supply.md correctly 1`] = `
 `;
 
 exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
-<div>
-  <div>
+<div
+  class="brick brick__with-config-form"
+>
+  <div
+    class="brick__config-form"
+  >
     <button
+      class="brick__config-form-btn brick__config-form-btn-edit"
       data-testid="edit-btn"
     >
       edit
     </button>
   </div>
-  <div>
-    <div>
+  <div
+    class="brick brick__with-config-form"
+  >
+    <div
+      class="brick__config-form"
+    >
       <button
+        class="brick__config-form-btn brick__config-form-btn-edit"
         data-testid="edit-btn"
       >
         edit
       </button>
     </div>
-    <span>
-      <div>
+    <span
+      class="brick brick__with-config-form"
+    >
+      <div
+        class="brick__config-form"
+      >
         <button
+          class="brick__config-form-btn brick__config-form-btn-edit"
           data-testid="edit-btn"
         >
           edit
@@ -187,25 +272,40 @@ exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
 `;
 
 exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
-<div>
-  <div>
+<div
+  class="brick brick__with-config-form"
+>
+  <div
+    class="brick__config-form"
+  >
     <button
+      class="brick__config-form-btn brick__config-form-btn-edit"
       data-testid="edit-btn"
     >
       edit
     </button>
   </div>
-  <div>
-    <div>
+  <div
+    class="brick brick__with-config-form"
+  >
+    <div
+      class="brick__config-form"
+    >
       <button
+        class="brick__config-form-btn brick__config-form-btn-edit"
         data-testid="edit-btn"
       >
         edit
       </button>
     </div>
-    <span>
-      <div>
+    <span
+      class="brick brick__with-config-form"
+    >
+      <div
+        class="brick__config-form"
+      >
         <button
+          class="brick__config-form-btn brick__config-form-btn-edit"
           data-testid="edit-btn"
         >
           edit
@@ -218,25 +318,40 @@ exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
 `;
 
 exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
-<div>
-  <div>
+<div
+  class="brick brick__with-config-form"
+>
+  <div
+    class="brick__config-form"
+  >
     <button
+      class="brick__config-form-btn brick__config-form-btn-edit"
       data-testid="edit-btn"
     >
       edit
     </button>
   </div>
-  <div>
-    <div>
+  <div
+    class="brick brick__with-config-form"
+  >
+    <div
+      class="brick__config-form"
+    >
       <button
+        class="brick__config-form-btn brick__config-form-btn-edit"
         data-testid="edit-btn"
       >
         edit
       </button>
     </div>
-    <span>
-      <div>
+    <span
+      class="brick brick__with-config-form"
+    >
+      <div
+        class="brick__config-form"
+      >
         <button
+          class="brick__config-form-btn brick__config-form-btn-edit"
           data-testid="edit-btn"
         >
           edit

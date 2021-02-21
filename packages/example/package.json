@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "dependencies": {
+    "@brick/cli": "^0.0.1",
     "@brick/components": "^0.0.1",
     "@brick/engine": "^0.0.1",
     "lodash": "^4.17.20"

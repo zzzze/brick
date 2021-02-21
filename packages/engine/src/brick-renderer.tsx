@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useEffect, useState, useContext } from 'react'
-import { Config, EngineMode, SetConfig, SetConfigFn, SupplyInRender } from './types'
+import { Config, SetConfig, SetConfigFn, SupplyInRender } from './types'
 import BrickWrapper from './brick-wrapper'
 import Context from './context'
 import getConfigData from './get-config-data'
@@ -13,11 +13,10 @@ import useHandlersUseInRender from './use-handlers-use-in-render'
 interface BrickRenderProps {
   config: Config
   supply: SupplyInRender
-  mode: EngineMode
   setConfig: SetConfig
 }
 
-const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, setConfig, mode }: BrickRenderProps) => {
+const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, setConfig }: BrickRenderProps) => {
   const context = useContext(Context)
   const brick = useMemo(() => {
     const brick = context.bricks[config.name]
@@ -70,7 +69,6 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
             return (
               <BrickRenderer
                 key={index}
-                mode={mode}
                 config={child}
                 supply={supply}
                 setConfig={(fn: SetConfigFn) => handleSetStateForChildren(fn, index)}

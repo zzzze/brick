@@ -1,6 +1,6 @@
 export enum EngineMode {
   EDIT = 'edit',
-  BUILD = 'build',
+  PREVIEW = 'preview',
 }
 
 export const VALUE_PARAM_PATTERN = /^\{\{([^{}]*)\}\}$/

@@ -44,11 +44,11 @@ const ViewWithCustomRender: Brick = {
   defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
   canCustomizeRender: true,
-  renderConfigForm(args) {
+  renderConfigForm(args: ConfigFormRenderArgs) {
     void args
     return <></>
   },
-  render(args) {
+  render(args: RenderArgs) {
     void args
     return <></>
   },

@@ -1,0 +1,40 @@
+.brick__with-config-form {
+  position: relative;
+  padding: 10px;
+  margin: 10px;
+  min-width: 100px;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+}
+
+span.brick__with-config-form {
+  display: inline-block;
+}
+
+div.brick__with-config-form + div.brick__with-config-form {
+  margin-top: 20px;
+}
+
+.brick__with-config-form .brick__config-form .brick__config-form-btn {
+  display: none;
+}
+
+.brick__with-config-form .brick__config-form {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #fff;
+}
+
+.brick__with-config-form .brick__config-form--active {
+  background: #fff;
+  z-index: 100;
+  padding: 10px;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+}
+
+.brick__with-config-form:hover .brick__config-form .brick__config-form-btn,
+.brick__with-config-form .brick__config-form--active .brick__config-form-btn {
+  display: block;
+}

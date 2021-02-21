@@ -1,6 +1,7 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import { ObjectStringInput, ObjectInputProps } from '../index'
+import { ObjectStringInput } from '../index'
+import { ObjectInputProps } from '../../object-input-props'
 
 export default {
   title: 'Components/ObjectStringInput',

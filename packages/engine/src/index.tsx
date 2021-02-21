@@ -1,8 +1,11 @@
-import React, { useState, useCallback } from 'react'
+import React from 'react'
 import { Config, Brick, EngineMode, SetConfigFn } from './types'
 import Context, { RenderConfigForm } from './context'
 import BrickRenderer from './brick-renderer'
 import EventEmitter from 'eventemitter3'
+import renderConfigForm from './render-config-form'
+
+const ee = new EventEmitter()
 
 export interface EngineProps {
   /**
@@ -29,40 +32,12 @@ class Engine extends React.Component<EngineProps, EngineState> {
     this.state = {
       config: props.config,
     }
-    if (props.mode) {
-      this.mode = props.mode
-    }
-    if (props.renderConfigForm) {
-      this.renderConfigForm = props.renderConfigForm
-    }
+    this.renderConfigForm = props.renderConfigForm || renderConfigForm
   }
-  mode = EngineMode.EDIT
   getConfig(): Config | Config[] | null {
     return this.state.config
   }
-  renderConfigForm: RenderConfigForm = (node: JSX.Element) => {
-    const [configFormVisible, setConfigFormVisible] = useState(false)
-    const handleShowConfigForm = useCallback(() => {
-      setConfigFormVisible(true)
-    }, [])
-    const handleHideConfigForm = useCallback(() => {
-      setConfigFormVisible(false)
-    }, [])
-    return (
-      <div>
-        {configFormVisible ? (
-          <button data-testid="close-btn" onClick={handleHideConfigForm}>
-            close
-          </button>
-        ) : (
-          <button data-testid="edit-btn" onClick={handleShowConfigForm}>
-            edit
-          </button>
-        )}
-        {configFormVisible && node}
-      </div>
-    )
-  }
+  renderConfigForm: RenderConfigForm
   state: EngineState = {
     config: null,
   }
@@ -103,7 +78,8 @@ class Engine extends React.Component<EngineProps, EngineState> {
         value={{
           renderConfigForm: this.renderConfigForm,
           bricks: Engine.bricks,
-          ee: new EventEmitter(),
+          ee,
+          mode: this.props.mode || EngineMode.EDIT,
         }}>
         {this.state.config &&
           Array.isArray(this.state.config) &&
@@ -111,14 +87,12 @@ class Engine extends React.Component<EngineProps, EngineState> {
             <BrickRenderer
               key={index}
               supply={{ data: {}, actions: {} }}
-              mode={this.mode}
               config={item}
               setConfig={(fn: SetConfigFn) => this.handleSetConfigForArrayItem(fn, index)}
             />
           ))}
         {this.state.config && !Array.isArray(this.state.config) && (
           <BrickRenderer
-            mode={this.mode}
             supply={{ data: {}, actions: {} }}
             config={this.state.config}
             setConfig={this.handleSetConfig}

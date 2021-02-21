@@ -9,40 +9,16 @@ describe('Engine', () => {
   test('toggle config form', () => {
     const config: Config = {
       name: 'View',
-      children: [
-        {
-          name: 'Text',
-          data: {
-            content: 'hello',
-          },
-          version: '0.0.1',
-        },
-        {
-          name: 'Text',
-          data: {
-            content: 'world',
-          },
-          version: '0.0.1',
-        },
-      ],
       version: '0.0.1',
     }
     const wrapper = mount(<Engine config={config} />)
     // show
-    wrapper.find('button').at(0).simulate('click')
+    wrapper.find('button[data-testid="edit-btn"]').at(0).simulate('click')
     expect(wrapper.html()).toContain('edit View')
-    wrapper.find('button').at(1).simulate('click')
-    expect(wrapper.html()).toContain('edit Text: hello')
-    wrapper.find('button').at(2).simulate('click')
-    expect(wrapper.html()).toContain('edit Text: world')
 
     // hide
-    wrapper.find('button').at(0).simulate('click')
+    wrapper.find('button[data-testid="close-btn"]').at(0).simulate('click')
     expect(wrapper.html()).not.toContain('edit View')
-    wrapper.find('button').at(1).simulate('click')
-    expect(wrapper.html()).not.toContain('edit Text: hello')
-    wrapper.find('button').at(2).simulate('click')
-    expect(wrapper.html()).not.toContain('edit Text: world')
   })
 
   test('default data', () => {

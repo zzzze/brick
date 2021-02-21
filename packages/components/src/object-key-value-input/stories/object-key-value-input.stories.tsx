@@ -1,6 +1,7 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import { ObjectKeyValueInput, ObjectInputProps } from '../index'
+import { ObjectKeyValueInput } from '../index'
+import { ObjectInputProps } from '../../object-input-props'
 
 export default {
   title: 'Components/ObjectKeyValueInput',

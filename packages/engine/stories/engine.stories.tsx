@@ -3,6 +3,8 @@ import { Story, Meta } from '@storybook/react'
 import config from './brick.config.json'
 import { Engine, EngineProps } from '../src'
 import './register-bricks'
+import '../index.css'
+import { EngineMode } from '../src/types'
 
 export default {
   title: 'Example/Engine',
@@ -26,4 +28,11 @@ Default.args = {
 export const WithHandler = Template.bind({})
 WithHandler.args = {
   config,
+  mode: EngineMode.EDIT,
+}
+
+export const PreviewMode = Template.bind({})
+PreviewMode.args = {
+  config,
+  mode: EngineMode.PREVIEW,
 }

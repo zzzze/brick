@@ -1,18 +1,6 @@
 import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import isPlainObject from 'lodash/isPlainObject'
-
-export interface ObjectInputEventData {
-  target: {
-    name: string
-    value: Record<string, string>
-  }
-}
-
-export interface ObjectInputProps {
-  name?: string
-  value?: Record<string, string>
-  onChange?: (data: ObjectInputEventData) => void
-}
+import { ObjectInputProps } from '../object-input-props'
 
 export const ObjectKeyValueInput: React.FC<ObjectInputProps> = (props: ObjectInputProps) => {
   const [value, setValue] = useState(props.value)

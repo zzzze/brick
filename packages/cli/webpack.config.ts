@@ -32,6 +32,9 @@ export default function (env: Env): webpack.Configuration {
     resolve: {
       modules: ['node_modules'],
       extensions: ['.js', '.ts', '.tsx'],
+      alias: {
+        '@brick/engine': '@brick/engine/lib/index.pure.js',
+      },
     },
     mode: env.prod ? 'production' : 'development',
     devtool: !env.prod && 'source-map',

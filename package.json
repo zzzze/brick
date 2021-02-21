@@ -15,7 +15,8 @@
     "build": "rollup --config",
     "lint": "eslint ./",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "rollup": "rollup --config"
   },
   "license": "MIT",
   "husky": {
@@ -78,7 +79,6 @@
     "yarn": "^1.22.10"
   },
   "dependencies": {
-    "@babel/standalone": "^7.12.12",
     "@rollup/plugin-json": "^4.1.0",
     "eventemitter3": "^4.0.7",
     "lodash": "^4.17.20",

@@ -1,6 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import { ObjectKeyValueInput, ObjectInputEventData } from '../'
+import { ObjectKeyValueInput } from '../'
+import { ObjectInputEventData } from '../../object-input-props'
 
 describe('ObjectKeyValueInput', () => {
   let handleChange: jest.Mock

@@ -22,7 +22,7 @@ const View: Brick = {
     )
     return (
       <div>
-        edit View: {args.data.name as string}
+        name:
         <input data-testid="name-input" name="name" value={args.data.name as string} onChange={handleChange} />
       </div>
     )
@@ -54,7 +54,7 @@ const Text: Brick = {
     )
     return (
       <div>
-        edit Text: {args.data.content as string}
+        text:
         <input data-testid="content-input" name="content" value={args.data.content as string} onChange={handleChange} />
       </div>
     )
