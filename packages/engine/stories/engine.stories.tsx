@@ -2,9 +2,9 @@ import React from 'react'
 import { Story, Meta } from '@storybook/react'
 import config from './brick.config.json'
 import { Engine, EngineProps } from '../src'
-import './register-bricks'
-import '../index.css'
 import { EngineMode } from '../src/types'
+import registerBricks from './register-bricks'
+import '../index.css'
 
 export default {
   title: 'Example/Engine',
@@ -12,7 +12,10 @@ export default {
   argTypes: {},
 } as Meta
 
-const Template: Story<EngineProps> = (args) => <Engine {...args} />
+const Template: Story<EngineProps> = (args) => {
+  registerBricks()
+  return <Engine {...args} />
+}
 
 export const Default = Template.bind({})
 Default.args = {

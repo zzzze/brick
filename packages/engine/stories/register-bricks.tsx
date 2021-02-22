@@ -112,6 +112,8 @@ const TextWithAction: Brick = {
   version: '0.0.1',
 }
 
-Engine.registerBrick(View)
-Engine.registerBrick(Text)
-Engine.registerBrick(TextWithAction)
+export default (): void => {
+  Engine.registerBrick(View)
+  Engine.registerBrick(Text)
+  Engine.registerBrick(TextWithAction)
+}
