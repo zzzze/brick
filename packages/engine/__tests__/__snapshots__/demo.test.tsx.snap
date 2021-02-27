@@ -15,6 +15,18 @@ exports[`renders ./packages/engine/demo/basic.md correctly 1`] = `
     </button>
   </div>
   hello world
+  <div
+    class="brick__action-area brick__action-area-left"
+  />
+  <div
+    class="brick__action-area brick__action-area-right"
+  />
+  <div
+    class="brick__action-area brick__action-area-top"
+  />
+  <div
+    class="brick__action-area brick__action-area-bottom"
+  />
 </span>
 `;
 
@@ -46,6 +58,18 @@ exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
       </button>
     </div>
     hello
+    <div
+      class="brick__action-area brick__action-area-left"
+    />
+    <div
+      class="brick__action-area brick__action-area-right"
+    />
+    <div
+      class="brick__action-area brick__action-area-top"
+    />
+    <div
+      class="brick__action-area brick__action-area-bottom"
+    />
   </span>
   <span
     class="brick brick__with-config-form"
@@ -61,7 +85,31 @@ exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
       </button>
     </div>
     world
+    <div
+      class="brick__action-area brick__action-area-left"
+    />
+    <div
+      class="brick__action-area brick__action-area-right"
+    />
+    <div
+      class="brick__action-area brick__action-area-top"
+    />
+    <div
+      class="brick__action-area brick__action-area-bottom"
+    />
   </span>
+  <div
+    class="brick__action-area brick__action-area-left"
+  />
+  <div
+    class="brick__action-area brick__action-area-right"
+  />
+  <div
+    class="brick__action-area brick__action-area-top"
+  />
+  <div
+    class="brick__action-area brick__action-area-bottom"
+  />
 </div>
 `;
 
@@ -81,6 +129,18 @@ Array [
       </button>
     </div>
     hello
+    <div
+      class="brick__action-area brick__action-area-left"
+    />
+    <div
+      class="brick__action-area brick__action-area-right"
+    />
+    <div
+      class="brick__action-area brick__action-area-top"
+    />
+    <div
+      class="brick__action-area brick__action-area-bottom"
+    />
   </span>,
   <span
     class="brick brick__with-config-form"
@@ -96,6 +156,18 @@ Array [
       </button>
     </div>
     world
+    <div
+      class="brick__action-area brick__action-area-left"
+    />
+    <div
+      class="brick__action-area brick__action-area-right"
+    />
+    <div
+      class="brick__action-area brick__action-area-top"
+    />
+    <div
+      class="brick__action-area brick__action-area-bottom"
+    />
   </span>,
   <div
     class="brick brick__with-config-form"
@@ -124,6 +196,18 @@ Array [
         </button>
       </div>
       hello
+      <div
+        class="brick__action-area brick__action-area-left"
+      />
+      <div
+        class="brick__action-area brick__action-area-right"
+      />
+      <div
+        class="brick__action-area brick__action-area-top"
+      />
+      <div
+        class="brick__action-area brick__action-area-bottom"
+      />
     </span>
     <span
       class="brick brick__with-config-form"
@@ -139,7 +223,31 @@ Array [
         </button>
       </div>
       world
+      <div
+        class="brick__action-area brick__action-area-left"
+      />
+      <div
+        class="brick__action-area brick__action-area-right"
+      />
+      <div
+        class="brick__action-area brick__action-area-top"
+      />
+      <div
+        class="brick__action-area brick__action-area-bottom"
+      />
     </span>
+    <div
+      class="brick__action-area brick__action-area-left"
+    />
+    <div
+      class="brick__action-area brick__action-area-right"
+    />
+    <div
+      class="brick__action-area brick__action-area-top"
+    />
+    <div
+      class="brick__action-area brick__action-area-bottom"
+    />
   </div>,
 ]
 `;
@@ -175,7 +283,31 @@ exports[`renders ./packages/engine/demo/custom-render.md correctly 1`] = `
       </button>
     </div>
     bar
+    <div
+      class="brick__action-area brick__action-area-left"
+    />
+    <div
+      class="brick__action-area brick__action-area-right"
+    />
+    <div
+      class="brick__action-area brick__action-area-top"
+    />
+    <div
+      class="brick__action-area brick__action-area-bottom"
+    />
   </span>
+  <div
+    class="brick__action-area brick__action-area-left"
+  />
+  <div
+    class="brick__action-area brick__action-area-right"
+  />
+  <div
+    class="brick__action-area brick__action-area-top"
+  />
+  <div
+    class="brick__action-area brick__action-area-bottom"
+  />
 </div>
 `;
 
@@ -220,8 +352,44 @@ exports[`renders ./packages/engine/demo/supply.md correctly 1`] = `
         </button>
       </div>
       foo
+      <div
+        class="brick__action-area brick__action-area-left"
+      />
+      <div
+        class="brick__action-area brick__action-area-right"
+      />
+      <div
+        class="brick__action-area brick__action-area-top"
+      />
+      <div
+        class="brick__action-area brick__action-area-bottom"
+      />
     </span>
+    <div
+      class="brick__action-area brick__action-area-left"
+    />
+    <div
+      class="brick__action-area brick__action-area-right"
+    />
+    <div
+      class="brick__action-area brick__action-area-top"
+    />
+    <div
+      class="brick__action-area brick__action-area-bottom"
+    />
   </div>
+  <div
+    class="brick__action-area brick__action-area-left"
+  />
+  <div
+    class="brick__action-area brick__action-area-right"
+  />
+  <div
+    class="brick__action-area brick__action-area-top"
+  />
+  <div
+    class="brick__action-area brick__action-area-bottom"
+  />
 </div>
 `;
 
@@ -266,8 +434,44 @@ exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
         </button>
       </div>
       bar
+      <div
+        class="brick__action-area brick__action-area-left"
+      />
+      <div
+        class="brick__action-area brick__action-area-right"
+      />
+      <div
+        class="brick__action-area brick__action-area-top"
+      />
+      <div
+        class="brick__action-area brick__action-area-bottom"
+      />
     </span>
+    <div
+      class="brick__action-area brick__action-area-left"
+    />
+    <div
+      class="brick__action-area brick__action-area-right"
+    />
+    <div
+      class="brick__action-area brick__action-area-top"
+    />
+    <div
+      class="brick__action-area brick__action-area-bottom"
+    />
   </div>
+  <div
+    class="brick__action-area brick__action-area-left"
+  />
+  <div
+    class="brick__action-area brick__action-area-right"
+  />
+  <div
+    class="brick__action-area brick__action-area-top"
+  />
+  <div
+    class="brick__action-area brick__action-area-bottom"
+  />
 </div>
 `;
 
@@ -312,8 +516,44 @@ exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
         </button>
       </div>
       foo
+      <div
+        class="brick__action-area brick__action-area-left"
+      />
+      <div
+        class="brick__action-area brick__action-area-right"
+      />
+      <div
+        class="brick__action-area brick__action-area-top"
+      />
+      <div
+        class="brick__action-area brick__action-area-bottom"
+      />
     </span>
+    <div
+      class="brick__action-area brick__action-area-left"
+    />
+    <div
+      class="brick__action-area brick__action-area-right"
+    />
+    <div
+      class="brick__action-area brick__action-area-top"
+    />
+    <div
+      class="brick__action-area brick__action-area-bottom"
+    />
   </div>
+  <div
+    class="brick__action-area brick__action-area-left"
+  />
+  <div
+    class="brick__action-area brick__action-area-right"
+  />
+  <div
+    class="brick__action-area brick__action-area-top"
+  />
+  <div
+    class="brick__action-area brick__action-area-bottom"
+  />
 </div>
 `;
 
@@ -358,7 +598,43 @@ exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
         </button>
       </div>
       baz
+      <div
+        class="brick__action-area brick__action-area-left"
+      />
+      <div
+        class="brick__action-area brick__action-area-right"
+      />
+      <div
+        class="brick__action-area brick__action-area-top"
+      />
+      <div
+        class="brick__action-area brick__action-area-bottom"
+      />
     </span>
+    <div
+      class="brick__action-area brick__action-area-left"
+    />
+    <div
+      class="brick__action-area brick__action-area-right"
+    />
+    <div
+      class="brick__action-area brick__action-area-top"
+    />
+    <div
+      class="brick__action-area brick__action-area-bottom"
+    />
   </div>
+  <div
+    class="brick__action-area brick__action-area-left"
+  />
+  <div
+    class="brick__action-area brick__action-area-right"
+  />
+  <div
+    class="brick__action-area brick__action-area-top"
+  />
+  <div
+    class="brick__action-area brick__action-area-bottom"
+  />
 </div>
 `;

@@ -12,9 +12,11 @@ import useHandlersUseInRender from './use-handlers-use-in-render'
 
 interface BrickRenderProps {
   config: Config
+  parentConfig?: Config
   supply: SupplyInRender
   setConfig: SetConfig
   onRemoveItemFromParent?: (key: string) => void
+  onAddToOrMoveInParent?: (config: Config, anchorKey: string, action: string) => void
   onDrop?: (_config: Config) => void
 }
 
@@ -92,14 +94,40 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
       }
     })
   }, [])
+  const handleAddToOrMoveInParent = useCallback((_config: Config, anchorKey: string, action: string) => {
+    setConfig((config) => {
+      if (!config.children || !config.children.length) {
+        return config
+      }
+      const children = config.children.filter((c) => c._key !== _config._key)
+      let anchorIndex = -1
+      for (let i = 0; i < config.children.length; i++) {
+        if (config.children[i]._key === anchorKey) {
+          anchorIndex = i
+          break
+        }
+      }
+      if (anchorIndex === -1) {
+        throw Error(`anchor node not found (key: ${anchorKey})`)
+      }
+      const insertIndex = action === 'forward' ? anchorIndex : anchorIndex + 1
+      children.splice(insertIndex, 0, _config)
+      return {
+        ...config,
+        children,
+      }
+    })
+  }, [])
   const render = useRender(brick, config)
   return (
     <BrickWrapper
       key={config._key}
       onRemoveChild={handleRemoveFromParent}
       onRemoveItemFormParent={props.onRemoveItemFromParent}
+      onAddToOrMoveInParent={props.onAddToOrMoveInParent}
       onDrop={handleDrop}
       config={config}
+      parentConfig={props.parentConfig}
       onConfigChange={setConfig}>
       {render({
         data,
@@ -113,8 +141,10 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
             return (
               <BrickRenderer
                 key={child._key}
+                parentConfig={config}
                 config={child}
                 supply={supply}
+                onAddToOrMoveInParent={handleAddToOrMoveInParent}
                 onRemoveItemFromParent={handleRemoveFromParent}
                 setConfig={(fn: SetConfigFn) => handleSetStateForChildren(fn, child._key)}
               />

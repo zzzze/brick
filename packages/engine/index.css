@@ -39,3 +39,62 @@ div.brick__with-config-form + div.brick__with-config-form {
 .brick__with-config-form .brick__config-form--active .brick__config-form-btn {
   display: block;
 }
+
+.brick__with-config-form--dragging {
+  border: dashed 1px #ccc;
+  background: #fff8d1;
+  color: #fff8d1;
+}
+
+.brick__with-config-form--dragging * {
+  opacity: 0;
+}
+
+.brick__with-config-form:not(.brick__with-config-form--hovered) > .brick__action-area {
+  display: none;
+}
+
+.brick__with-config-form--hovered {
+  background-color: #efefef;
+}
+
+.brick__action-area {
+  position: absolute;
+  background-color: #1da1ff;
+}
+
+.brick__action-area.brick__action-area-top {
+  top: 8px;
+  left: 50%;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  transform: translateX(-50%);
+}
+
+.brick__action-area.brick__action-area-bottom {
+  bottom: 8px;
+  left: 50%;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  transform: translateX(-50%);
+}
+
+.brick__action-area.brick__action-area-left {
+  left: 8px;
+  top: 50%;
+  height: 20px;
+  width: 2px;
+  border-radius: 2px;
+  transform: translateY(-50%);
+}
+
+.brick__action-area.brick__action-area-right {
+  right: 8px;
+  top: 50%;
+  height: 20px;
+  width: 2px;
+  border-radius: 2px;
+  transform: translateY(-50%);
+}

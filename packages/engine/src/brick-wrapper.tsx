@@ -1,27 +1,29 @@
-import React, { Children, cloneElement, useRef, useCallback, useContext, useState, useMemo } from 'react'
+import React, { Children, cloneElement, useRef, useCallback, useContext, useMemo } from 'react'
 import { ChildrenType, Config, DataObject, EngineMode, SetConfig } from './types'
 import PropsConfigForm from './props-config-form'
 import { BrickContainerProps } from '@brick/components'
 import CommonConfigForm from './common-config-form'
 import Context from './context'
-import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
-// import { XYCoord } from 'dnd-core'
+import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
+import { XYCoord } from 'dnd-core'
 import clx from 'classnames'
 
 interface BrickWrapperProps {
   children: React.ReactElement<React.PropsWithChildren<unknown>>
   config: Config
+  parentConfig?: Config
   onConfigChange: SetConfig
   style?: React.CSSProperties
-  greedy?: boolean
   onRemoveItemFormParent?: (key: string) => void
   onRemoveChild?: (key: string) => void
+  onAddToOrMoveInParent?: (config: Config, anchorKey: string, action: string) => void
   onDrop?: (config: Config) => void
 }
 
 export interface IDragItem {
   type: string
   config: Config
+  lastAction: string
   onRemove?: (key: string) => void
 }
 
@@ -39,10 +41,48 @@ const isHoverOnItselfOrChild = (config: Config, key: string): boolean => {
   return false
 }
 
+const offset = 10
+
+// The area trigger insert item to the hovered element
+const isInAdditionActionTriggerAera = (rect: DOMRect, clientOffset: XYCoord) => {
+  return (
+    clientOffset.x > rect.x + offset &&
+    clientOffset.x < rect.x + rect.width - offset &&
+    clientOffset.y > rect.y + offset &&
+    clientOffset.y < rect.y + rect.height - offset
+  )
+}
+
+// The area trigger move item in front of the hovered element
+const isInForwardActionTriggerAera = (rect: DOMRect, clientOffset: XYCoord) => {
+  return (
+    (clientOffset.x > rect.x &&
+      clientOffset.x < rect.x + rect.width &&
+      clientOffset.y > rect.y &&
+      clientOffset.y < rect.y + offset) || // top
+    (clientOffset.y > rect.y &&
+      clientOffset.y < rect.y + rect.height &&
+      clientOffset.x > rect.x &&
+      clientOffset.x < rect.x + offset) // left
+  )
+}
+
+// The area trigger move item after the hovered element
+const isInBackwardActionTriggerAera = (rect: DOMRect, clientOffset: XYCoord) => {
+  return (
+    (clientOffset.x > rect.x &&
+      clientOffset.x < rect.x + rect.width &&
+      clientOffset.y > rect.y + rect.height - offset &&
+      clientOffset.y < rect.y + rect.height) || // bottom
+    (clientOffset.y > rect.y &&
+      clientOffset.y < rect.y + rect.height &&
+      clientOffset.x > rect.x + rect.width - offset &&
+      clientOffset.x < rect.x + rect.width) // right
+  )
+}
+
 const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => {
   const context = useContext(Context)
-  const [hasDropped, setHasDropped] = useState(false)
-  const [hasDroppedOnChild, setHasDroppedOnChild] = useState(false)
   const brick = useMemo(() => {
     const brick = context.bricks[props.config.name]
     if (!brick) {
@@ -50,6 +90,16 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     }
     return brick
   }, [context.bricks, props.config])
+  const parentBrick = useMemo(() => {
+    if (!props.parentConfig) {
+      return null
+    }
+    const brick = context.bricks[props.parentConfig.name]
+    if (!brick) {
+      throw Error(`brick (${props.parentConfig.name}) not found`)
+    }
+    return brick
+  }, [context.bricks, props.parentConfig])
   const brickContainer = useRef<HTMLElement>(null)
   const handleChange = useCallback((newProps: DataObject) => {
     props.onConfigChange((config: Config) => {
@@ -66,17 +116,24 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     </CommonConfigForm>,
     context.ee
   )
-  const [, drag] = useDrag(
+  const [{ isDragging }, drag] = useDrag(
     {
       item: {
         type: 'ItemTypes.BOX',
         config: props.config,
+        lastAction: '',
         onRemove: props.onRemoveItemFormParent,
       },
+      isDragging: (monitor: DragSourceMonitor) => {
+        return (monitor.getItem() as IDragItem).config._key === props.config._key
+      },
+      collect: (monitor: DragSourceMonitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
     },
     [props]
   )
-  const [{ isOver, isOverCurrent }, drop] = useDrop(
+  const [{ isOverCurrent }, drop] = useDrop(
     {
       accept: 'ItemTypes.BOX',
       canDrop(item: IDragItem, monitor: DropTargetMonitor) {
@@ -90,76 +147,113 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           // drag and hover on itself or its children
           return false
         }
-        if (Array.isArray(props.config.children) && props.config.children.some((c) => c._key === item.config._key)) {
-          return false
+        const hoverBoundingRect = brickContainer.current.getBoundingClientRect()
+        const clientOffset = monitor.getClientOffset()
+        const inAdditionActionTriggerAera = isInAdditionActionTriggerAera(
+          hoverBoundingRect,
+          clientOffset || { x: -1, y: -1 }
+        )
+        if (inAdditionActionTriggerAera) {
+          if (Array.isArray(props.config.children) && props.config.children.some((c) => c._key === item.config._key)) {
+            // item is in the container already
+            return false
+          }
+          if (brick.childrenType === ChildrenType.NONE) {
+            return false
+          }
+          if (
+            brick.childrenType === ChildrenType.SINGLE &&
+            Array.isArray(props.config.children) &&
+            props.config.children.length > 0
+          ) {
+            return false
+          }
         }
-        if (brick.childrenType === ChildrenType.NONE) {
-          return false
-        }
-        if (
-          brick.childrenType === ChildrenType.SINGLE &&
-          Array.isArray(props.config.children) &&
-          props.config.children.length > 0
-        ) {
-          return false
+        const inForwardActionTriggerAera = isInForwardActionTriggerAera(
+          hoverBoundingRect,
+          clientOffset || { x: -1, y: -1 }
+        )
+        const inBackwardActionTriggerAera = isInBackwardActionTriggerAera(
+          hoverBoundingRect,
+          clientOffset || { x: -1, y: -1 }
+        )
+        if (inForwardActionTriggerAera || inBackwardActionTriggerAera) {
+          if (
+            parentBrick?.childrenType === ChildrenType.SINGLE &&
+            props?.parentConfig &&
+            Array.isArray(props?.parentConfig?.children) &&
+            props?.parentConfig.children.length > 0
+          ) {
+            return false
+          }
         }
         return true
       },
       hover(item: IDragItem, monitor: DropTargetMonitor) {
+        if (!brickContainer.current) {
+          return
+        }
         if (!monitor.canDrop()) {
           return
         }
-        // const hoverBoundingRect = brickContainer.current?.getBoundingClientRect()
-        // const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-        // const clientOffset = monitor.getClientOffset()
-        // const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
-        // if (dragConfig < hoverConfig && hoverClientY < hoverMiddleY) {
-        //   return
-        // }
-        // if (dragConfig > hoverConfig && hoverClientY > hoverMiddleY) {
-        //   return
-        // }
-        props.onDrop && props.onDrop(item.config)
-        item.onRemove && item.onRemove(item.config._key)
-        item.onRemove = props.onRemoveChild
-      },
-      drop(_, monitor) {
-        const hasDroppedOnChild = monitor.didDrop()
-        if (hasDroppedOnChild && !props.greedy) {
-          return
+        const hoverBoundingRect = brickContainer.current.getBoundingClientRect()
+        const clientOffset = monitor.getClientOffset()
+        const inAdditionActionTriggerAera = isInAdditionActionTriggerAera(
+          hoverBoundingRect,
+          clientOffset || { x: -1, y: -1 }
+        )
+        if (inAdditionActionTriggerAera && item.lastAction !== `addition-${props.config._key}-${item.config._key}`) {
+          props.onDrop && props.onDrop(item.config)
+          item.onRemove && item.onRemove(item.config._key)
+          item.onRemove = props.onRemoveChild
+          item.lastAction = `addition-${props.config._key}-${item.config._key}`
         }
-        setHasDroppedOnChild(hasDroppedOnChild)
-        setHasDropped(true)
+        const inForwardActionTriggerAera = isInForwardActionTriggerAera(
+          hoverBoundingRect,
+          clientOffset || { x: -1, y: -1 }
+        )
+        if (inForwardActionTriggerAera && item.lastAction !== `forward-${props.config._key}-${item.config._key}`) {
+          props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.config, props.config._key, 'forward')
+          props.onRemoveChild && props.onRemoveChild(item.config._key)
+          item.onRemove = props.onRemoveItemFormParent
+          item.lastAction = `forward-${props.config._key}-${item.config._key}`
+        }
+        const inBackwardActionTriggerAera = isInBackwardActionTriggerAera(
+          hoverBoundingRect,
+          clientOffset || { x: -1, y: -1 }
+        )
+        if (inBackwardActionTriggerAera && item.lastAction !== `backward-${props.config._key}-${item.config._key}`) {
+          props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.config, props.config._key, 'backward')
+          props.onRemoveChild && props.onRemoveChild(item.config._key)
+          item.onRemove = props.onRemoveItemFormParent
+          item.lastAction = `backward-${props.config._key}-${item.config._key}`
+        }
       },
       collect: (monitor: DropTargetMonitor) => ({
-        isOver: monitor.isOver(),
         isOverCurrent: monitor.isOver({ shallow: true }),
       }),
     },
     [props]
   )
-  let backgroundColor = 'rgba(0, 0, 0, .5)'
-  if (isOverCurrent || (isOver && props.greedy)) {
-    backgroundColor = 'darkgreen'
-  }
-  console.log(backgroundColor)
   drag(drop(brickContainer))
   return cloneElement<BrickContainerPropsWithRef>(
     child,
     {
-      style: {
-        ...props.style,
-        // backgroundColor,
-        // color: '#fff',
-      },
       ref: brickContainer,
       configForm: context.mode === EngineMode.EDIT ? configForm : null,
       className: clx(child.props.className, 'brick', {
         'brick__with-config-form': context.mode === EngineMode.EDIT,
+        'brick__with-config-form--dragging': isDragging,
+        'brick__with-config-form--hovered': isOverCurrent,
       }),
     },
-    hasDropped && <span>dropped {hasDroppedOnChild && ' on child'}</span>,
-    ...Children.toArray(child.props.children)
+    ...Children.toArray(child.props.children),
+    ...context.mode === EngineMode.EDIT ? [
+      <div key="left" className="brick__action-area brick__action-area-left" />,
+      <div key="right" className="brick__action-area brick__action-area-right" />,
+      <div key="top" className="brick__action-area brick__action-area-top" />,
+      <div key="bottom" className="brick__action-area brick__action-area-bottom" />
+    ] : [],
   )
 }
 export default BrickWrapper

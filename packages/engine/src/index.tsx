@@ -90,6 +90,30 @@ class Engine extends React.Component<EngineProps, EngineState> {
       }
     })
   }
+  handleAddToOrMoveInParent = (_config: Config, anchorKey: string, action: string): void => {
+    this.setState((state) => {
+      if (!state.config || !Array.isArray(state.config)) {
+        return state
+      }
+      const config = state.config.filter((c) => c._key !== _config._key)
+      let anchorIndex = -1
+      for (let i = 0; i < config.length; i++) {
+        if (config[i]._key === anchorKey) {
+          anchorIndex = i
+          break
+        }
+      }
+      if (anchorIndex === -1) {
+        throw Error(`anchor node not found (key: ${anchorKey})`)
+      }
+      const insertIndex = action === 'forward' ? anchorIndex : anchorIndex + 1
+      config.splice(insertIndex, 0, _config)
+      return {
+        ...state,
+        config,
+      }
+    })
+  }
   render(): React.ReactNode {
     return (
       <Context.Provider
@@ -106,6 +130,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
               <BrickRenderer
                 key={item._key}
                 onRemoveItemFromParent={this.handleRemoveFromParent}
+                onAddToOrMoveInParent={this.handleAddToOrMoveInParent}
                 supply={{ data: {}, actions: {} }}
                 config={item}
                 setConfig={(fn: SetConfigFn) => this.handleSetConfigForArrayItem(fn, item._key)}
