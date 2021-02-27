@@ -1,6 +1,7 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import config from './brick.config.json'
+import itemConfig from './item-root.config.json'
+import arrayConfig from './array-root.config.json'
 import { Engine, EngineProps } from '../src'
 import { EngineMode } from '../src/types'
 import registerBricks from './register-bricks'
@@ -29,14 +30,26 @@ Default.args = {
   },
 }
 
+export const ItemRootWithHandler = Template.bind({})
+ItemRootWithHandler.args = {
+  config: itemConfig,
+  mode: EngineMode.EDIT,
+}
+
+export const ArrayRootWithHandler = Template.bind({})
+ArrayRootWithHandler.args = {
+  config: arrayConfig,
+  mode: EngineMode.EDIT,
+}
+
 export const WithHandler = Template.bind({})
 WithHandler.args = {
-  config,
+  config: itemConfig,
   mode: EngineMode.EDIT,
 }
 
 export const PreviewMode = Template.bind({})
 PreviewMode.args = {
-  config,
+  config: itemConfig,
   mode: EngineMode.PREVIEW,
 }

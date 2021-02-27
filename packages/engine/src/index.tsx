@@ -61,34 +61,32 @@ class Engine extends React.Component<EngineProps, EngineState> {
       return newState
     }, cb)
   }
-  handleSetConfigForArrayItem = (fn: SetConfigFn, index: number, cb?: () => void): void => {
+  handleSetConfigForArrayItem = (fn: SetConfigFn, key: string): void => {
     this.setState((state) => {
       if (!Array.isArray(state.config)) {
         return state
       }
-      const config = state.config.slice()
-      config.splice(index, 1, fn(config[index]))
+      const config = state.config.map((child) => {
+        if (child._key !== key) {
+          return child
+        } else {
+          return fn({ ...child })
+        }
+      })
       return {
         ...state,
         config: config,
       }
-    }, cb)
+    })
   }
-  handleRemoveChild = (key: string): void => {
+  handleRemoveFromParent = (key: string): void => {
     this.setState((state) => {
-      if (!state.config || Array.isArray(state.config)) {
+      if (!state.config || !Array.isArray(state.config)) {
         return state
       }
-      if (!Array.isArray(state.config.children) || !state.config.children.length) {
-        return state
-      }
-      const children = state.config.children.filter((item) => item._key !== key)
       return {
         ...state,
-        config: {
-          ...state.config,
-          children,
-        },
+        config: state.config.filter((item) => item._key !== key),
       }
     })
   }
@@ -104,17 +102,17 @@ class Engine extends React.Component<EngineProps, EngineState> {
         <DndProvider backend={HTML5Backend}>
           {this.state.config &&
             Array.isArray(this.state.config) &&
-            this.state.config.map((item, index) => (
+            this.state.config.map((item) => (
               <BrickRenderer
-                key={index}
+                key={item._key}
+                onRemoveItemFromParent={this.handleRemoveFromParent}
                 supply={{ data: {}, actions: {} }}
                 config={item}
-                setConfig={(fn: SetConfigFn, cb?: () => void) => this.handleSetConfigForArrayItem(fn, index, cb)}
+                setConfig={(fn: SetConfigFn) => this.handleSetConfigForArrayItem(fn, item._key)}
               />
             ))}
           {this.state.config && !Array.isArray(this.state.config) && (
             <BrickRenderer
-              onRemoveChild={this.handleRemoveChild}
               supply={{ data: {}, actions: {} }}
               config={this.state.config}
               setConfig={this.handleSetConfig}

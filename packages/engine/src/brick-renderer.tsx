@@ -15,7 +15,6 @@ interface BrickRenderProps {
   supply: SupplyInRender
   setConfig: SetConfig
   onRemoveItemFromParent?: (key: string) => void
-  onRemoveChild?: (key: string) => void
   onDrop?: (_config: Config) => void
 }
 

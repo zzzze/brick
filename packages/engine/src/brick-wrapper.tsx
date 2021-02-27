@@ -142,6 +142,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
   if (isOverCurrent || (isOver && props.greedy)) {
     backgroundColor = 'darkgreen'
   }
+  console.log(backgroundColor)
   drag(drop(brickContainer))
   return cloneElement<BrickContainerPropsWithRef>(
     child,
