@@ -5,5 +5,9 @@ module.exports = {
     '\\.[jt]sx?$': 'babel-jest',
     '\\.md$': './packages/tools/jest/demoPreprocessor',
   },
-  projects: ['<rootDir>/packages/engine/jest.config.js', '<rootDir>/packages/components/jest.config.js'],
+  projects: [
+    '<rootDir>/packages/cli/jest.config.js',
+    '<rootDir>/packages/engine/jest.config.js',
+    '<rootDir>/packages/components/jest.config.js',
+  ],
 }

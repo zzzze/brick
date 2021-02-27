@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`load module correctly 1`] = `
+"module.exports = {
+  \\"name\\": \\"View\\",
+  \\"id\\": \\"container\\",
+  \\"data\\": {
+    \\"name\\": \\"bazx\\"
+  },
+  \\"supply\\": {
+    \\"data\\": {
+      \\"text\\": \\"{{$this.name}}\\"
+    },
+    \\"actions\\": {
+      \\"onClick\\": function (setData, emit) {
+      return name => {
+            setData(function(data) {
+    console.log('000001', data);
+          return Object.assign({}, data, {
+                name: name,
+              })
+            }, {
+              setToConfig: true,
+            })
+          }
+    }
+    }
+  },
+  \\"handlers\\": {
+    \\"handler-01\\": function (setData, emit) {
+      return () => console.log('hello')
+    }
+  },
+  \\"listeners\\": {
+    \\"listener-01\\": function (setData, emit) {
+      return () => console.log('world')
+    }
+  },
+  \\"render\\": function (components) {
+      return args => <div>abc</div>
+    },
+  \\"children\\": [
+    {
+      \\"name\\": \\"Text\\",
+      \\"data\\": {
+        \\"content\\": \\"{{$supply.$container.text}}\\"
+      },
+      \\"version\\": \\"0.0.1\\"
+    },
+    {
+      \\"name\\": \\"Text\\",
+      \\"data\\": {
+        \\"content\\": \\"fooo\\"
+      },
+      \\"version\\": \\"0.0.1\\"
+    },
+    {
+      \\"name\\": \\"View\\",
+      \\"id\\": \\"container2\\",
+      \\"supply\\": {
+        \\"actions\\": {
+          \\"onClick\\": \\"{{$supply.$container.onClick}}\\"
+        }
+      },
+      \\"children\\": [
+        {
+          \\"name\\": \\"TextWithAction\\",
+          \\"actions\\": {
+            \\"click\\": function (setData, emit) {
+      return function($this, $supply) {
+ window.xx = $supply;
+                 $supply.actions.$container2.onClick($this.data.content)
+                }
+    },
+            \\"handleClick\\": function (setData, emit) {
+      return function($this, $supply) {
+                  $this.actions.click($this, $supply)
+                }
+    }
+          },
+          \\"handlers\\": {
+            \\"onClick\\": \\"{{$this.handleClick}}\\"
+          },
+          \\"data\\": {
+            \\"content\\": \\"123456789\\"
+          },
+          \\"version\\": \\"0.0.1\\"
+        }
+      ],
+      \\"version\\": \\"0.0.1\\"
+    },
+    {
+      \\"name\\": \\"View\\",
+      \\"children\\": [
+        {
+          \\"name\\": \\"Text\\",
+          \\"data\\": {
+            \\"content\\": \\"{{$supply.$container.text}}\\"
+          },
+          \\"version\\": \\"0.0.1\\"
+        }
+      ],
+      \\"version\\": \\"0.0.1\\"
+    }
+  ],
+  \\"version\\": \\"0.0.1\\"
+}"
+`;

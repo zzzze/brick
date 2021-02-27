@@ -23,7 +23,7 @@ function setFuncFlag(value: unknown, label = 'brickroot', path = ''): unknown {
     return key
   }
   if (
-    ['brickroot-supply-actions', 'brickroot-actions', 'brickroot-handlers'].includes(path) &&
+    ['brickroot-supply-actions', 'brickroot-actions', 'brickroot-handlers', 'brickroot-listeners'].includes(path) &&
     typeof value === 'string' &&
     /^\s*function\s*\(|^(\w+|\((\s*\w+,?)*\))\s*=>\s*/.test(value)
   ) {
