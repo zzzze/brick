@@ -5,11 +5,14 @@ import { Engine } from '@/index'
 import { Config } from '@/types'
 import './register-bricks'
 
+React.useLayoutEffect = React.useEffect
+
 describe('handlers', () => {
   test('use default action', () => {
     const config: Config = {
       name: 'View',
       id: 'container',
+      _key: '001',
       data: {
         name: 'baz',
       },
@@ -21,9 +24,11 @@ describe('handlers', () => {
       children: [
         {
           name: 'View',
+          _key: '002',
           children: [
             {
               name: 'TextWithOnClickEvent',
+              _key: '003',
               data: {
                 content: '{{$supply.$container.text}}',
               },
@@ -50,6 +55,7 @@ describe('handlers', () => {
   test('use custom action - set data at runtime only', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       id: 'container',
       data: {
         name: 'baz',
@@ -62,9 +68,11 @@ describe('handlers', () => {
       children: [
         {
           name: 'View',
+          _key: '002',
           children: [
             {
               name: 'TextWithOnClickEvent',
+              _key: '003',
               data: {
                 content: '{{$supply.$container.text}}',
               },
@@ -101,6 +109,7 @@ describe('handlers', () => {
   test('use custom action - set data to config', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       id: 'container',
       data: {
         name: 'baz',
@@ -113,9 +122,11 @@ describe('handlers', () => {
       children: [
         {
           name: 'View',
+          _key: '002',
           children: [
             {
               name: 'TextWithOnClickEvent',
+              _key: '003',
               data: {
                 content: '{{$supply.$container.text}}',
               },

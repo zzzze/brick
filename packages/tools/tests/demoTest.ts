@@ -1,6 +1,9 @@
+import React from 'react'
 import glob from 'glob'
 import { render } from 'enzyme'
 import 'jest-enzyme'
+
+React.useLayoutEffect = React.useEffect
 
 export default function demoTest(component: string): void {
   const files = glob.sync(`./packages/${component}/demo/**/*.md`)

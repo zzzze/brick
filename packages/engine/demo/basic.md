@@ -3,6 +3,7 @@ import { Engine } from '@brick/engine'
 
 const config = {
   name: 'Text',
+  _key: '001',
   data: {
     content: 'hello world',
   },

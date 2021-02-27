@@ -5,10 +5,13 @@ import { Engine } from '@/index'
 import { Config } from '@/types'
 import './register-bricks'
 
+React.useLayoutEffect = React.useEffect
+
 describe('custom-render', () => {
   test('', () => {
     const config: Config = {
       name: 'ViewWithCustomRender',
+      _key: '001',
       render: `args => {
         const BrickContainer = require('@brick/components').BrickContainer
         return (

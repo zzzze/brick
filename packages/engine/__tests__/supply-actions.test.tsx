@@ -5,10 +5,13 @@ import { Engine } from '@/index'
 import { Config } from '@/types'
 import './register-bricks'
 
+React.useLayoutEffect = React.useEffect
+
 describe('supply actions', () => {
   test('trigger action from supply', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       id: 'container',
       data: {
         name: 'baz',
@@ -21,6 +24,7 @@ describe('supply actions', () => {
       children: [
         {
           name: 'View',
+          _key: '002',
           id: 'container2',
           data: {
             name: '{{$supply.$container.text}}',
@@ -44,6 +48,7 @@ describe('supply actions', () => {
           children: [
             {
               name: 'TextWithOnClickEvent',
+              _key: '003',
               handlers: {
                 onClick: '{{$supply.$container2.onClick}}',
               },
@@ -76,6 +81,7 @@ describe('supply actions', () => {
   test('data action between sibling', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       id: 'container',
       data: {
         name: 'baz',
@@ -99,9 +105,11 @@ describe('supply actions', () => {
       children: [
         {
           name: 'View',
+          _key: '002',
           children: [
             {
               name: 'TextWithOnClickEvent',
+              _key: '003',
               handlers: {
                 onClick: '{{$supply.$container.onClick}}',
               },
@@ -115,9 +123,11 @@ describe('supply actions', () => {
         },
         {
           name: 'View',
+          _key: '004',
           children: [
             {
               name: 'Text',
+              _key: '005',
               data: {
                 content: '{{$supply.$container.text}}',
               },
@@ -147,6 +157,7 @@ describe('supply actions', () => {
   test('trigger action with param', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       id: 'container',
       data: {
         name: 'baz',
@@ -170,9 +181,11 @@ describe('supply actions', () => {
       children: [
         {
           name: 'View',
+          _key: '002',
           children: [
             {
               name: 'TextWithAction2',
+              _key: '003',
               handlers: {
                 onClick: `function($this, $supply) {
                   $supply.actions.$container.onClick($this.data.content)
@@ -188,9 +201,11 @@ describe('supply actions', () => {
         },
         {
           name: 'View',
+          _key: '004',
           children: [
             {
               name: 'Text',
+              _key: '005',
               data: {
                 content: '{{$supply.$container.text}}',
               },
@@ -220,6 +235,7 @@ describe('supply actions', () => {
   test('trigger action provided by supply with param', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       id: 'container',
       data: {
         name: 'baz',
@@ -243,6 +259,7 @@ describe('supply actions', () => {
       children: [
         {
           name: 'View',
+          _key: '002',
           id: 'container2',
           supply: {
             actions: {
@@ -252,6 +269,7 @@ describe('supply actions', () => {
           children: [
             {
               name: 'TextWithAction2',
+              _key: '003',
               handlers: {
                 onClick: `function($this, $supply) {
                   $supply.actions.$container2.onClick($this.data.content)
@@ -267,9 +285,11 @@ describe('supply actions', () => {
         },
         {
           name: 'View',
+          _key: '004',
           children: [
             {
               name: 'Text',
+              _key: '005',
               data: {
                 content: '{{$supply.$container.text}}',
               },
@@ -299,6 +319,7 @@ describe('supply actions', () => {
   test('use action as handler', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       id: 'container',
       data: {
         name: 'baz',
@@ -322,6 +343,7 @@ describe('supply actions', () => {
       children: [
         {
           name: 'View',
+          _key: '002',
           id: 'container2',
           supply: {
             actions: {
@@ -331,6 +353,7 @@ describe('supply actions', () => {
           children: [
             {
               name: 'TextWithAction2',
+              _key: '003',
               actions: {
                 handleClick: `function($this, $supply) {
                   $supply.actions.$container2.onClick($this.data.content)
@@ -349,9 +372,11 @@ describe('supply actions', () => {
         },
         {
           name: 'View',
+          _key: '004',
           children: [
             {
               name: 'Text',
+              _key: '005',
               data: {
                 content: '{{$supply.$container.text}}',
               },
@@ -381,6 +406,7 @@ describe('supply actions', () => {
   test('invoke action in another action', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       id: 'container',
       data: {
         name: 'baz',
@@ -404,6 +430,7 @@ describe('supply actions', () => {
       children: [
         {
           name: 'View',
+          _key: '002',
           id: 'container2',
           supply: {
             actions: {
@@ -413,6 +440,7 @@ describe('supply actions', () => {
           children: [
             {
               name: 'TextWithAction2',
+              _key: '003',
               actions: {
                 click: `function($this, $supply) {
                   $supply.actions.$container2.onClick($this.data.content)
@@ -434,9 +462,11 @@ describe('supply actions', () => {
         },
         {
           name: 'View',
+          _key: '004',
           children: [
             {
               name: 'Text',
+              _key: '005',
               data: {
                 content: '{{$supply.$container.text}}',
               },

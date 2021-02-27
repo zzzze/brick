@@ -5,10 +5,13 @@ import { Engine } from '@/index'
 import { Config } from '@/types'
 import './register-bricks'
 
+React.useLayoutEffect = React.useEffect
+
 describe('Engine', () => {
   test('toggle config form', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       version: '0.0.1',
     }
     const wrapper = mount(<Engine config={config} />)
@@ -24,9 +27,11 @@ describe('Engine', () => {
   test('default data', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       children: [
         {
           name: 'Text',
+          _key: '002',
           data: {
             content: 'foo',
           },
@@ -34,6 +39,7 @@ describe('Engine', () => {
         },
         {
           name: 'TextWithDefaultValue',
+          _key: '003',
           data: {},
           version: '0.0.1',
         },
@@ -47,9 +53,11 @@ describe('Engine', () => {
   test('update value', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       children: [
         {
           name: 'Text',
+          _key: '002',
           data: {
             content: 'foo',
           },
@@ -68,9 +76,11 @@ describe('Engine', () => {
     wrapper.find('input[data-testid="content-input"]').simulate('change', { target: { name: 'content', value: 'bar' } })
     expect(ref.current?.getConfig()).toEqual({
       name: 'View',
+      _key: '001',
       children: [
         {
           name: 'Text',
+          _key: '002',
           data: {
             content: 'bar',
           },
@@ -85,6 +95,7 @@ describe('Engine', () => {
     const config: Config[] = [
       {
         name: 'Text',
+        _key: '001',
         data: {
           content: 'foo',
         },
@@ -92,14 +103,17 @@ describe('Engine', () => {
       },
       {
         name: 'TextWithDefaultValue',
+        _key: '002',
         data: {},
         version: '0.0.1',
       },
       {
         name: 'View',
+        _key: '003',
         children: [
           {
             name: 'Text',
+            _key: '004',
             data: {
               content: 'hello',
             },
@@ -107,6 +121,7 @@ describe('Engine', () => {
           },
           {
             name: 'Text',
+            _key: '005',
             data: {
               content: 'world',
             },
@@ -123,9 +138,11 @@ describe('Engine', () => {
   test('update id', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       children: [
         {
           name: 'Text',
+          _key: '002',
           data: {
             content: 'foo',
           },
@@ -149,9 +166,11 @@ describe('Engine', () => {
     })
     expect(ref.current?.getConfig()).toEqual({
       name: 'View',
+      _key: '001',
       children: [
         {
           name: 'Text',
+          _key: '002',
           data: {
             content: 'foo',
           },
@@ -166,9 +185,11 @@ describe('Engine', () => {
   test('update actions', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       children: [
         {
           name: 'Text',
+          _key: '002',
           data: {
             content: 'foo',
           },
@@ -194,9 +215,11 @@ describe('Engine', () => {
     })
     expect(ref.current?.getConfig()).toEqual({
       name: 'View',
+      _key: '001',
       children: [
         {
           name: 'Text',
+          _key: '002',
           data: {
             content: 'foo',
           },

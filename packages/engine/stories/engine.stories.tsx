@@ -21,6 +21,7 @@ export const Default = Template.bind({})
 Default.args = {
   config: {
     name: 'Text',
+    _key: '001',
     data: {
       content: 'hello world',
     },

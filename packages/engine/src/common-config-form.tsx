@@ -26,15 +26,7 @@ const CommonConfigForm = ({
   const brick = useMemo(() => {
     return context.bricks[config.name]
   }, [context.bricks, config])
-  const handleChange = useCallback((event: CommonEventData) => {
-    onConfigChange((config) => {
-      return {
-        ...config,
-        [event.target.name]: event.target.value as string,
-      }
-    })
-  }, [])
-  const handleSupplyChange = useCallback((data: CommonEventData) => {
+  const handleChange = useCallback((data: CommonEventData) => {
     onConfigChange((config) => {
       const newConfig = copyConfig(config)
       return set(newConfig, data.target.name, data.target.value)
@@ -51,7 +43,7 @@ const CommonConfigForm = ({
         <ObjectStringInput
           name="actions"
           value={(config.actions as Record<string, string>) || {}}
-          onChange={handleSupplyChange}
+          onChange={handleChange}
         />
       </div>
       <div>
@@ -59,18 +51,18 @@ const CommonConfigForm = ({
         <ObjectStringInput
           name="supply.data"
           value={(config.supply?.data as Record<string, string>) || {}}
-          onChange={handleSupplyChange}
+          onChange={handleChange}
         />
       </div>
       <div>
         <label htmlFor="supply.actions">Supply Actions: </label>
-        <ObjectStringInput name="supply.actions" value={config.supply?.actions || {}} onChange={handleSupplyChange} />
+        <ObjectStringInput name="supply.actions" value={config.supply?.actions || {}} onChange={handleChange} />
       </div>
       {brick.canCustomizeRender && (
         <>
           <div>
             <label htmlFor="render">Render: </label>
-            <textarea name="render" value={config.render as string} onChange={handleSupplyChange} />
+            <textarea name="render" value={config.render as string} onChange={handleChange} />
           </div>
         </>
       )}

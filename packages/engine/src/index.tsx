@@ -4,6 +4,8 @@ import Context, { RenderConfigForm } from './context'
 import BrickRenderer from './brick-renderer'
 import EventEmitter from 'eventemitter3'
 import renderConfigForm from './render-config-form'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 const ee = new EventEmitter()
 
@@ -45,21 +47,21 @@ class Engine extends React.Component<EngineProps, EngineState> {
   static registerBrick(brick: Brick): void {
     Engine.bricks[brick.name] = brick
   }
-  handleSetConfig = (fn: SetConfigFn): void => {
+  handleSetConfig = (fn: SetConfigFn, cb?: () => void): void => {
     this.setState((state) => {
       if (!state.config || Array.isArray(state.config)) {
         return state
       }
-      return {
+      const newState = {
         ...state,
         config: {
-          ...state.config,
           ...fn(state.config),
         },
       }
-    })
+      return newState
+    }, cb)
   }
-  handleSetConfigForArrayItem = (fn: SetConfigFn, index: number): void => {
+  handleSetConfigForArrayItem = (fn: SetConfigFn, index: number, cb?: () => void): void => {
     this.setState((state) => {
       if (!Array.isArray(state.config)) {
         return state
@@ -69,6 +71,24 @@ class Engine extends React.Component<EngineProps, EngineState> {
       return {
         ...state,
         config: config,
+      }
+    }, cb)
+  }
+  handleRemoveChild = (key: string): void => {
+    this.setState((state) => {
+      if (!state.config || Array.isArray(state.config)) {
+        return state
+      }
+      if (!Array.isArray(state.config.children) || !state.config.children.length) {
+        return state
+      }
+      const children = state.config.children.filter((item) => item._key !== key)
+      return {
+        ...state,
+        config: {
+          ...state.config,
+          children,
+        },
       }
     })
   }
@@ -81,23 +101,26 @@ class Engine extends React.Component<EngineProps, EngineState> {
           ee,
           mode: this.props.mode || EngineMode.EDIT,
         }}>
-        {this.state.config &&
-          Array.isArray(this.state.config) &&
-          this.state.config.map((item, index) => (
+        <DndProvider backend={HTML5Backend}>
+          {this.state.config &&
+            Array.isArray(this.state.config) &&
+            this.state.config.map((item, index) => (
+              <BrickRenderer
+                key={index}
+                supply={{ data: {}, actions: {} }}
+                config={item}
+                setConfig={(fn: SetConfigFn, cb?: () => void) => this.handleSetConfigForArrayItem(fn, index, cb)}
+              />
+            ))}
+          {this.state.config && !Array.isArray(this.state.config) && (
             <BrickRenderer
-              key={index}
+              onRemoveChild={this.handleRemoveChild}
               supply={{ data: {}, actions: {} }}
-              config={item}
-              setConfig={(fn: SetConfigFn) => this.handleSetConfigForArrayItem(fn, index)}
+              config={this.state.config}
+              setConfig={this.handleSetConfig}
             />
-          ))}
-        {this.state.config && !Array.isArray(this.state.config) && (
-          <BrickRenderer
-            supply={{ data: {}, actions: {} }}
-            config={this.state.config}
-            setConfig={this.handleSetConfig}
-          />
-        )}
+          )}
+        </DndProvider>
       </Context.Provider>
     )
   }

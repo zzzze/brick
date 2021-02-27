@@ -14,9 +14,17 @@ interface BrickRenderProps {
   config: Config
   supply: SupplyInRender
   setConfig: SetConfig
+  onRemoveItemFromParent?: (key: string) => void
+  onRemoveChild?: (key: string) => void
+  onDrop?: (_config: Config) => void
 }
 
-const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, setConfig }: BrickRenderProps) => {
+const BrickRenderer: React.FC<BrickRenderProps> = ({
+  config,
+  supply: pSupply,
+  setConfig,
+  ...props
+}: BrickRenderProps) => {
   const context = useContext(Context)
   const brick = useMemo(() => {
     const brick = context.bricks[config.name]
@@ -40,23 +48,60 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
   const handlers = useHandlers(brick, actions, config, pSupply, handlersUseInRender)
   useListeners(actions, config, pSupply, handlersUseInRender)
   const supply = useSupply(config, pSupply, data, actions, handlersUseInRender)
-  const handleSetStateForChildren = useCallback(
-    (fn: (config: Readonly<Config>) => Config, index: number) => {
+  const handleSetStateForChildren = useCallback((fn: (config: Readonly<Config>) => Config, key: string) => {
+    setConfig((config) => {
       if (!config.children || !config.children.length) {
-        return
+        return config
       }
-      const children = config.children.slice()
-      children.splice(index, 1, fn(config.children[index]))
-      setConfig((config) => ({
+      const children = config.children.map((child) => {
+        if (child._key !== key) {
+          return child
+        } else {
+          return fn({ ...child })
+        }
+      })
+      return {
         ...config,
         children,
-      }))
-    },
-    [config]
-  )
+      }
+    })
+  }, [])
+  const handleRemoveFromParent = useCallback((key: string) => {
+    setConfig((config) => {
+      if (!config.children || !config.children.length) {
+        return config
+      }
+      const children = config.children.filter((item) => item._key !== key)
+      return {
+        ...config,
+        children,
+      }
+    })
+  }, [])
+  const handleDrop = useCallback((_config: Config) => {
+    setConfig((config) => {
+      let children: Config[] = []
+      if (config.children && config.children.length) {
+        children = config.children.slice()
+      }
+      children.push({
+        ..._config,
+      })
+      return {
+        ...config,
+        children,
+      }
+    })
+  }, [])
   const render = useRender(brick, config)
   return (
-    <BrickWrapper config={config} onConfigChange={setConfig}>
+    <BrickWrapper
+      key={config._key}
+      onRemoveChild={handleRemoveFromParent}
+      onRemoveItemFormParent={props.onRemoveItemFromParent}
+      onDrop={handleDrop}
+      config={config}
+      onConfigChange={setConfig}>
       {render({
         data,
         setData: handlersUseInRender.setData,
@@ -65,13 +110,14 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, supply: pSupply, se
         supply: pSupply,
         children:
           Array.isArray(config.children) &&
-          config.children.map((child, index) => {
+          config.children.map((child) => {
             return (
               <BrickRenderer
-                key={index}
+                key={child._key}
                 config={child}
                 supply={supply}
-                setConfig={(fn: SetConfigFn) => handleSetStateForChildren(fn, index)}
+                onRemoveItemFromParent={handleRemoveFromParent}
+                setConfig={(fn: SetConfigFn) => handleSetStateForChildren(fn, child._key)}
               />
             )
           }),

@@ -3,6 +3,7 @@ import { Engine } from '@brick/engine'
 
 const config = {
   name: 'View',
+  _key: '001',
   supply: {
     data: {
       text: 'foo',
@@ -11,9 +12,11 @@ const config = {
   children: [
     {
       name: 'View',
+      _key: '002',
       children: [
         {
           name: 'Text',
+          _key: '003',
           data: {
             content: '{{$supply.text}}',
           },

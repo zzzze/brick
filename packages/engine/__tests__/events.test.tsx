@@ -5,10 +5,13 @@ import { Engine } from '@/index'
 import { Config } from '@/types'
 import './register-bricks'
 
+React.useLayoutEffect = React.useEffect
+
 describe('events', () => {
   test('emit event', () => {
     const config: Config = {
       name: 'TextWithOnClickEvent',
+      _key: '001',
       listeners: {
         setContent: `function() {
           setData(function(data) {
@@ -48,6 +51,7 @@ describe('events', () => {
   test('emit event - use action', () => {
     const config: Config = {
       name: 'TextWithOnClickEvent',
+      _key: '001',
       actions: {
         setContent: `function() {
           setData(function(data) {
@@ -90,6 +94,7 @@ describe('events', () => {
   test('emit event - from children', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       data: {
         name: 'foo',
       },
@@ -112,6 +117,7 @@ describe('events', () => {
       children: [
         {
           name: 'TextWithOnClickEvent',
+          _key: '002',
           handlers: {
             onClick: `function() {
             emit('setName')
@@ -142,6 +148,7 @@ describe('events', () => {
     const config: Config[] = [
       {
         name: 'View',
+        _key: '001',
         data: {
           name: 'foo',
         },
@@ -164,6 +171,7 @@ describe('events', () => {
         children: [
           {
             name: 'Text',
+            _key: '002',
             data: {
               content: '{{$supply.name}}',
             },
@@ -174,6 +182,7 @@ describe('events', () => {
       },
       {
         name: 'TextWithOnClickEvent',
+        _key: '003',
         handlers: {
           onClick: `function() {
           emit('setName')
@@ -202,6 +211,7 @@ describe('events', () => {
     const config: Config[] = [
       {
         name: 'View',
+        _key: '001',
         data: {
           name: 'foo',
         },
@@ -224,6 +234,7 @@ describe('events', () => {
         children: [
           {
             name: 'Text',
+            _key: '002',
             data: {
               content: '{{$supply.name}}',
             },
@@ -234,9 +245,11 @@ describe('events', () => {
       },
       {
         name: 'View',
+        _key: '003',
         children: [
           {
             name: 'TextWithOnClickEvent',
+            _key: '004',
             handlers: {
               onClick: `function() {
             emit('setName')

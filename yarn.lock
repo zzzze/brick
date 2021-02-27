@@ -3390,6 +3390,21 @@
     prop-types "^15.6.1"
     react-lifecycles-compat "^3.0.4"
 
+"@react-dnd/asap@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.npm.taobao.org/@react-dnd/asap/download/@react-dnd/asap-4.0.0.tgz#b300eeed83e9801f51bd66b0337c9a6f04548651"
+  integrity sha1-swDu7YPpgB9RvWawM3yabwRUhlE=
+
+"@react-dnd/invariant@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npm.taobao.org/@react-dnd/invariant/download/@react-dnd/invariant-2.0.0.tgz#09d2e81cd39e0e767d7da62df9325860f24e517e"
+  integrity sha1-CdLoHNOeDnZ9faYt+TJYYPJOUX4=
+
+"@react-dnd/shallowequal@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npm.taobao.org/@react-dnd/shallowequal/download/@react-dnd/shallowequal-2.0.0.tgz#a3031eb54129f2c66b2753f8404266ec7bf67f0a"
+  integrity sha1-owMetUEp8sZrJ1P4QEJm7Hv2fwo=
+
 "@rollup/plugin-alias@^3.1.2":
   version "3.1.2"
   resolved "https://registry.npm.taobao.org/@rollup/plugin-alias/download/@rollup/plugin-alias-3.1.2.tgz#c585b05be4a7782d269c69d13def56f44e417772"
@@ -7704,6 +7719,15 @@ discontinuous-range@1.0.0:
   resolved "https://registry.npm.taobao.org/discontinuous-range/download/discontinuous-range-1.0.0.tgz#e38331f0844bba49b9a9cb71c771585aab1bc65a"
   integrity sha1-44Mx8IRLukm5qctxx3FYWqsbxlo=
 
+dnd-core@12.0.1:
+  version "12.0.1"
+  resolved "https://registry.npm.taobao.org/dnd-core/download/dnd-core-12.0.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fdnd-core%2Fdownload%2Fdnd-core-12.0.1.tgz#2263391d6de218801770df4d345294a5f1eccc48"
+  integrity sha1-ImM5HW3iGIAXcN9NNFKUpfHszEg=
+  dependencies:
+    "@react-dnd/asap" "^4.0.0"
+    "@react-dnd/invariant" "^2.0.0"
+    redux "^4.0.5"
+
 dns-equal@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/dns-equal/download/dns-equal-1.0.0.tgz#b39e7f1da6eb0a75ba9c17324b34753c47e0654d"
@@ -9698,7 +9722,7 @@ hmac-drbg@^1.0.1:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hoist-non-react-statics@^3.3.0:
+hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.npm.taobao.org/hoist-non-react-statics/download/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
   integrity sha1-7OCsr3HWLClpwuxZ/v9CpLGoW0U=
@@ -14073,6 +14097,23 @@ react-dev-utils@^10.0.0:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
+react-dnd-html5-backend@^12.1.1:
+  version "12.1.1"
+  resolved "https://registry.npm.taobao.org/react-dnd-html5-backend/download/react-dnd-html5-backend-12.1.1.tgz?cache=0&sync_timestamp=1614186947304&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-dnd-html5-backend%2Fdownload%2Freact-dnd-html5-backend-12.1.1.tgz#73aa9043f5a2da5b192503593d620d30c0bd7348"
+  integrity sha1-c6qQQ/Wi2lsZJQNZPWINMMC9c0g=
+  dependencies:
+    dnd-core "12.0.1"
+
+react-dnd@^13.1.1:
+  version "13.1.1"
+  resolved "https://registry.npm.taobao.org/react-dnd/download/react-dnd-13.1.1.tgz?cache=0&sync_timestamp=1614186947535&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-dnd%2Fdownload%2Freact-dnd-13.1.1.tgz#ea6d3f15cccf542a3ebfb978c097b2e3b1d1c962"
+  integrity sha1-6m0/FczPVCo+v7l4wJey47HRyWI=
+  dependencies:
+    "@react-dnd/invariant" "^2.0.0"
+    "@react-dnd/shallowequal" "^2.0.0"
+    dnd-core "12.0.1"
+    hoist-non-react-statics "^3.3.2"
+
 react-docgen-typescript-plugin@^0.6.2:
   version "0.6.3"
   resolved "https://registry.npm.taobao.org/react-docgen-typescript-plugin/download/react-docgen-typescript-plugin-0.6.3.tgz#664b22601df083597ecb1e60bd21beca60125fdf"
@@ -14458,6 +14499,14 @@ redent@^3.0.0:
   dependencies:
     indent-string "^4.0.0"
     strip-indent "^3.0.0"
+
+redux@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.npm.taobao.org/redux/download/redux-4.0.5.tgz#4db5de5816e17891de8a80c424232d06f051d93f"
+  integrity sha1-TbXeWBbheJHeioDEJCMtBvBR2T8=
+  dependencies:
+    loose-envify "^1.4.0"
+    symbol-observable "^1.2.0"
 
 reflect.ownkeys@^0.2.0:
   version "0.2.0"
@@ -15870,6 +15919,11 @@ supports-hyperlinks@^2.0.0:
   dependencies:
     has-flag "^4.0.0"
     supports-color "^7.0.0"
+
+symbol-observable@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npm.taobao.org/symbol-observable/download/symbol-observable-1.2.0.tgz?cache=0&sync_timestamp=1604337936252&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsymbol-observable%2Fdownload%2Fsymbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
+  integrity sha1-wiaIrtTqs83C3+rLtWFmBWCgCAQ=
 
 "symbol-tree@>= 3.1.0 < 4.0.0", symbol-tree@^3.2.2, symbol-tree@^3.2.4:
   version "3.2.4"

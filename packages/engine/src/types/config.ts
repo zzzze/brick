@@ -12,6 +12,7 @@ export type Func = string | ((setData: SetData, emit: Emit) => Action)
 export type CustomRender = string | ((components: unknown) => Render)
 
 export interface Config {
+  _key: string
   name: string // brick name
   version: string // brick version
   id?: string // brick instance id
@@ -29,5 +30,5 @@ export interface SetConfigFn {
 }
 
 export interface SetConfig {
-  (fn: SetConfigFn): void
+  (fn: SetConfigFn, cb?: () => void): void
 }

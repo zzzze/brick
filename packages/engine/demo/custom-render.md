@@ -3,6 +3,7 @@ import { Engine } from '@brick/engine'
 
 const config = {
   name: 'ViewWithCustomRender',
+  _key: '001',
   render: `args => {
     const BrickContainer = require('@brick/components').BrickContainer
     return (
@@ -14,6 +15,7 @@ const config = {
   }`,
   children: [
     {
+      _key: '002',
       name: 'Text',
       data: {
         content: 'bar',

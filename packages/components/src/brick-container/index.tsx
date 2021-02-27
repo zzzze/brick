@@ -5,19 +5,17 @@ export interface BrickContainerProps extends React.HTMLAttributes<HTMLElement> {
   configForm?: React.ReactElement | null
 }
 
-const BrickContainer: React.FC<BrickContainerProps> = ({
-  tag,
-  children,
-  configForm,
-  ...props
-}: BrickContainerProps) => {
-  const Tag = tag || 'div'
-  return (
-    <Tag {...props}>
-      {configForm}
-      {children}
-    </Tag>
-  )
-}
+const BrickContainer = React.forwardRef<unknown, BrickContainerProps>(
+  ({ tag, children, configForm, ...props }, ref) => {
+    const Tag = tag || 'div'
+    ;(props as any).ref = ref // eslint-disable-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+    return (
+      <Tag {...props}>
+        {configForm}
+        {children}
+      </Tag>
+    )
+  }
+)
 
 export { BrickContainer }

@@ -5,13 +5,17 @@ import { Engine } from '@/index'
 import { Config } from '@/types'
 import './register-bricks'
 
+React.useLayoutEffect = React.useEffect
+
 describe('supply data', () => {
   test('update supply', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       children: [
         {
           name: 'Text',
+          _key: '002',
           data: {
             content: 'foo',
           },
@@ -38,9 +42,11 @@ describe('supply data', () => {
     })
     expect(ref.current?.getConfig()).toEqual({
       name: 'View',
+      _key: '001',
       children: [
         {
           name: 'Text',
+          _key: '002',
           data: {
             content: 'foo',
           },
@@ -60,6 +66,7 @@ describe('supply data', () => {
   test('use and update supply', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       supply: {
         data: {
           text: 'foo',
@@ -68,9 +75,11 @@ describe('supply data', () => {
       children: [
         {
           name: 'View',
+          _key: '002',
           children: [
             {
               name: 'Text',
+              _key: '003',
               data: {
                 content: '{{$supply.text}}',
               },
@@ -106,6 +115,7 @@ describe('supply data', () => {
   test('inject supply from data', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       data: {
         name: 'baz',
       },
@@ -117,9 +127,11 @@ describe('supply data', () => {
       children: [
         {
           name: 'View',
+          _key: '002',
           children: [
             {
               name: 'Text',
+              _key: '003',
               data: {
                 content: '{{$supply.text}}',
               },
@@ -152,6 +164,7 @@ describe('supply data', () => {
   test('inject supply from data and use id as namespace', () => {
     const config: Config = {
       name: 'View',
+      _key: '001',
       id: 'container',
       data: {
         name: 'baz',
@@ -164,9 +177,11 @@ describe('supply data', () => {
       children: [
         {
           name: 'View',
+          _key: '002',
           children: [
             {
               name: 'Text',
+              _key: '003',
               data: {
                 content: '{{$supply.$container.text}}',
               },

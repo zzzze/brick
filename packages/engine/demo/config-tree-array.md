@@ -4,6 +4,7 @@ import { Engine } from '@brick/engine'
 const config = [
   {
     name: 'Text',
+    _key: '001',
     data: {
       content: 'hello',
     },
@@ -11,6 +12,7 @@ const config = [
   },
   {
     name: 'Text',
+    _key: '002',
     data: {
       content: 'world',
     },
@@ -18,9 +20,11 @@ const config = [
   },
   {
     name: 'View',
+    _key: '003',
     children: [
       {
         name: 'Text',
+        _key: '004',
         data: {
           content: 'hello',
         },
@@ -28,6 +32,7 @@ const config = [
       },
       {
         name: 'Text',
+        _key: '005',
         data: {
           content: 'world',
         },

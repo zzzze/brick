@@ -2,8 +2,7 @@ import { Config } from '../types'
 
 export const copyConfig = (config: Config): Config => {
   const newConfig: Config = {
-    name: config.name,
-    version: config.version,
+    ...config,
   }
   if (config.supply) {
     newConfig.supply = {
@@ -15,9 +14,24 @@ export const copyConfig = (config: Config): Config => {
       },
     }
   }
+  if (config.data) {
+    newConfig.data = {
+      ...config.data,
+    }
+  }
   if (config.actions) {
     newConfig.actions = {
       ...config.actions,
+    }
+  }
+  if (config.handlers) {
+    newConfig.handlers = {
+      ...config.handlers,
+    }
+  }
+  if (config.listeners) {
+    newConfig.listeners = {
+      ...config.listeners,
     }
   }
   if (config.render) {
