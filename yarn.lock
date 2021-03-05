@@ -4418,6 +4418,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-icons@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.npm.taobao.org/@types/react-icons/download/@types/react-icons-3.0.0.tgz#27ca2823a6add881d06a371bfff093afc1b9c829"
+  integrity sha1-J8ooI6at2IHQajcb//CTr8G5yCk=
+  dependencies:
+    react-icons "*"
+
 "@types/react-syntax-highlighter@11.0.4":
   version "11.0.4"
   resolved "https://registry.npm.taobao.org/@types/react-syntax-highlighter/download/@types/react-syntax-highlighter-11.0.4.tgz#d86d17697db62f98046874f62fdb3e53a0bbc4cd"
@@ -14196,6 +14203,11 @@ react-hotkeys@2.0.0:
   integrity sha1-p3Gcc0DLuoiLDpGE+Aap7ArCxT8=
   dependencies:
     prop-types "^15.6.1"
+
+react-icons@*, react-icons@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.npm.taobao.org/react-icons/download/react-icons-4.2.0.tgz#6dda80c8a8f338ff96a1851424d63083282630d0"
+  integrity sha1-bdqAyKjzOP+WoYUUJNYwgygmMNA=
 
 react-inspector@^5.0.1:
   version "5.1.0"

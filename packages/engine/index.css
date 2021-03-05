@@ -22,28 +22,52 @@ div.brick__with-config-form + div.brick__with-config-form {
   margin-top: 20px;
 }
 
-.brick__with-config-form .brick__config-form .brick__config-form-btn {
+.brick__config-form-btn-g2 {
   display: none;
 }
 
-.brick__with-config-form .brick__config-form {
+.brick__with-config-form .brick__config-form--active .brick__config-form-btn-g2 {
+  display: block;
+}
+
+.brick__config-form-btn-g1 {
+  display: none;
+  padding: 5px 8px;
+  color: #fff;
+  border-radius: 0 4px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.brick__config-form-btn-g1 > * {
+  margin: 0 5px;
+}
+
+.brick__config-form-edit-btn {
+  cursor: pointer;
+}
+
+.brick__config-form-move-btn {
+  cursor: move;
+}
+
+.brick__with-config-form:hover > .brick__config-form .brick__config-form-btn-g1 {
+  display: flex;
+}
+
+.brick__config-form {
   position: absolute;
   top: 0;
   right: 0;
-  background: #fff;
+  z-index: 100;
 }
 
-.brick__with-config-form .brick__config-form--active {
+.brick__config-form--active {
   background: #fff;
   z-index: 100;
   padding: 10px;
   border: solid 1px #ccc;
   border-radius: 5px;
-}
-
-.brick__with-config-form:hover .brick__config-form .brick__config-form-btn,
-.brick__with-config-form .brick__config-form--active .brick__config-form-btn {
-  display: block;
+  background: #fff;
 }
 
 .brick__with-config-form--dragging {

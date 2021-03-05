@@ -6,6 +6,7 @@ import Context from './context'
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
 import clx from 'classnames'
+import debounce from 'lodash/debounce'
 
 const ITEM_TYPE = 'brick-config'
 
@@ -25,7 +26,6 @@ const DragOver: React.FC<DragOverProps> = ({ className }: DragOverProps) => {
       onDragEnter={handleMouseOver}
       onDragLeave={handleMouseOut}
       onDrop={handleMouseOut}
-      onDragExit={handleMouseOut}
     />
   )
 }
@@ -133,19 +133,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
   }, [])
 
   const child: React.ReactElement<BrickContainerPropsWithRef> = Children.only(props.children)
-  const configForm = context.renderConfigurationForm(
-    <CommonConfigurationForm config={props.config} onConfigChange={props.onConfigChange}>
-      <ConfigurationFormContext.Provider
-        value={{
-          data: props.config.data || {},
-          onChange: handleChange,
-        }}>
-        {brick.renderConfigForm()}
-      </ConfigurationFormContext.Provider>
-    </CommonConfigurationForm>,
-    context.ee
-  )
-  const [{ isDragging }, drag] = useDrag(
+  const [{ isDragging }, drag, preview] = useDrag(
     {
       item: {
         type: ITEM_TYPE,
@@ -224,7 +212,11 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         }
         return true
       },
-      hover(item: IDragItem, monitor: DropTargetMonitor) {
+      hover: debounce((item: IDragItem, monitor: DropTargetMonitor) => {
+        /**
+         * Must remove item before insert it, otherwise item can't insert to container due to same key item exists.
+         * And then the item will lost.
+         */
         if (!brickContainer.current) {
           return
         }
@@ -238,8 +230,8 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           clientOffset || { x: -1, y: -1 }
         )
         if (inAdditionActionTriggerAera && item.lastAction !== `addition-${props.config._key}-${item.config._key}`) {
-          props.onDrop && props.onDrop(item.config)
           item.onRemove && item.onRemove(item.config._key)
+          props.onDrop && props.onDrop(item.config)
           item.onRemove = props.onRemoveChild
           item.lastAction = `addition-${props.config._key}-${item.config._key}`
         }
@@ -248,8 +240,8 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           clientOffset || { x: -1, y: -1 }
         )
         if (inForwardActionTriggerAera && item.lastAction !== `forward-${props.config._key}-${item.config._key}`) {
+          item.onRemove && item.onRemove(item.config._key)
           props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.config, props.config._key, 'forward')
-          props.onRemoveChild && props.onRemoveChild(item.config._key)
           item.onRemove = props.onRemoveItemFormParent
           item.lastAction = `forward-${props.config._key}-${item.config._key}`
         }
@@ -258,19 +250,36 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           clientOffset || { x: -1, y: -1 }
         )
         if (inBackwardActionTriggerAera && item.lastAction !== `backward-${props.config._key}-${item.config._key}`) {
+          item.onRemove && item.onRemove(item.config._key)
           props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.config, props.config._key, 'backward')
-          props.onRemoveChild && props.onRemoveChild(item.config._key)
           item.onRemove = props.onRemoveItemFormParent
           item.lastAction = `backward-${props.config._key}-${item.config._key}`
         }
-      },
+      }, 200),
       collect: (monitor: DropTargetMonitor) => ({
         isOverCurrent: monitor.isOver({ shallow: true }),
       }),
     },
     [props]
   )
-  drag(drop(brickContainer))
+  const onRemove = useCallback(() => {
+    props.onRemoveItemFormParent && props.onRemoveItemFormParent(props.config._key)
+  }, [props.onRemoveItemFormParent])
+  const configForm = context.renderConfigurationForm(
+    <CommonConfigurationForm config={props.config} onConfigChange={props.onConfigChange}>
+      <ConfigurationFormContext.Provider
+        value={{
+          data: props.config.data || {},
+          onChange: handleChange,
+        }}>
+        {brick.renderConfigForm()}
+      </ConfigurationFormContext.Provider>
+    </CommonConfigurationForm>,
+    context.ee,
+    drag,
+    onRemove
+  )
+  preview(drop(brickContainer))
   return cloneElement<BrickContainerPropsWithRef>(
     child,
     {

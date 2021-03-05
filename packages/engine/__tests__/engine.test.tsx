@@ -16,7 +16,7 @@ describe('Engine', () => {
     }
     const wrapper = mount(<Engine config={config} />)
     // show
-    wrapper.find('button[data-testid="edit-btn"]').at(0).simulate('click')
+    wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
     expect(wrapper.html()).toContain('edit View')
 
     // hide
@@ -72,7 +72,7 @@ describe('Engine', () => {
         <Engine ref={ref} config={config} />
       </>
     )
-    wrapper.find('button[data-testid="edit-btn"]').at(1).simulate('click')
+    wrapper.find('span[data-testid="edit-btn"]').at(1).simulate('click')
     wrapper.find('input[data-testid="content-input"]').simulate('change', { target: { name: 'content', value: 'bar' } })
     expect(ref.current?.getConfig()).toEqual({
       name: 'View',
@@ -157,7 +157,7 @@ describe('Engine', () => {
         <Engine ref={ref} config={config} />
       </>
     )
-    wrapper.find('button[data-testid="edit-btn"]').at(1).simulate('click')
+    wrapper.find('span[data-testid="edit-btn"]').at(1).simulate('click')
     wrapper.find('input[name="id"]').simulate('change', {
       target: {
         name: 'id',
@@ -204,7 +204,7 @@ describe('Engine', () => {
         <Engine ref={ref} config={config} />
       </>
     )
-    wrapper.find('button[data-testid="edit-btn"]').at(0).simulate('click')
+    wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
     wrapper.find('textarea[name="actions"]').simulate('change', {
       target: {
         name: 'actions',

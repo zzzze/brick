@@ -30,7 +30,7 @@ describe('supply data', () => {
         <Engine ref={ref} config={config} />
       </>
     )
-    wrapper.find('button[data-testid="edit-btn"]').at(0).simulate('click')
+    wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
     wrapper.find('textarea[name="supply.data"]').simulate('change', {
       target: {
         name: 'supply',
@@ -98,7 +98,7 @@ describe('supply data', () => {
       </>
     )
     expect(wrapper.html()).toContain('foo')
-    wrapper.find('button[data-testid="edit-btn"]').at(0).simulate('click')
+    wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
     wrapper.find('textarea[name="supply.data"]').simulate('change', {
       target: {
         name: 'supply',
@@ -150,7 +150,7 @@ describe('supply data', () => {
       </>
     )
     expect(wrapper.html()).toContain('baz')
-    wrapper.find('button[data-testid="edit-btn"]').at(0).simulate('click')
+    wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
     wrapper.find('input[data-testid="name-input"]').simulate('change', {
       target: {
         name: 'name',
@@ -200,7 +200,7 @@ describe('supply data', () => {
       </>
     )
     expect(wrapper.html()).toContain('baz')
-    wrapper.find('button[data-testid="edit-btn"]').at(0).simulate('click')
+    wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
     wrapper.find('input[data-testid="name-input"]').simulate('change', {
       target: {
         name: 'name',
