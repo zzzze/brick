@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, useRef, useCallback, useContext, useMemo } from 'react'
+import React, { Children, cloneElement, useRef, useCallback, useContext, useMemo, useState } from 'react'
 import { ChildrenType, Config, DataObject, EngineMode, SetConfig } from './types'
 import PropsConfigForm from './props-config-form'
 import { BrickContainerProps } from '@brick/components'
@@ -7,6 +7,27 @@ import Context from './context'
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
 import clx from 'classnames'
+
+interface DragOverProps {
+  className?: string
+}
+
+const DragOver: React.FC<DragOverProps> = ({ className }: DragOverProps) => {
+  const [hover, setHover] = useState(false)
+  const handleMouseOver = useCallback(() => setHover(true), [])
+  const handleMouseOut = useCallback(() => setHover(false), [])
+  return (
+    <div
+      className={clx(className, {
+        'brick__action-area--hovered': hover,
+      })}
+      onDragEnter={handleMouseOver}
+      onDragLeave={handleMouseOut}
+      onDrop={handleMouseOut}
+      onDragExit={handleMouseOut}
+    />
+  )
+}
 
 interface BrickWrapperProps {
   children: React.ReactElement<React.PropsWithChildren<unknown>>
@@ -244,16 +265,18 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       className: clx(child.props.className, 'brick', {
         'brick__with-config-form': context.mode === EngineMode.EDIT,
         'brick__with-config-form--dragging': isDragging,
-        'brick__with-config-form--hovered': isOverCurrent,
+        'brick__with-config-form--hovered': isOverCurrent && !isDragging,
       }),
     },
     ...Children.toArray(child.props.children),
-    ...context.mode === EngineMode.EDIT ? [
-      <div key="left" className="brick__action-area brick__action-area-left" />,
-      <div key="right" className="brick__action-area brick__action-area-right" />,
-      <div key="top" className="brick__action-area brick__action-area-top" />,
-      <div key="bottom" className="brick__action-area brick__action-area-bottom" />
-    ] : [],
+    ...(context.mode === EngineMode.EDIT
+      ? [
+          <DragOver key="left" className="brick__action-area brick__action-area-left" />,
+          <DragOver key="right" className="brick__action-area brick__action-area-right" />,
+          <DragOver key="top" className="brick__action-area brick__action-area-top" />,
+          <DragOver key="bottom" className="brick__action-area brick__action-area-bottom" />,
+        ]
+      : [])
   )
 }
 export default BrickWrapper

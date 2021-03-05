@@ -1,3 +1,8 @@
+/* ---------------------------------------------------- */
+/* brick__with-config-form                              */
+/* ---------------------------------------------------- */
+/* style of birck with config form                      */
+/* ---------------------------------------------------- */
 .brick__with-config-form {
   position: relative;
   padding: 10px;
@@ -58,13 +63,38 @@ div.brick__with-config-form + div.brick__with-config-form {
 .brick__with-config-form--hovered {
   background-color: #efefef;
 }
+/* ---------------------------------------------------- */
+/* brick__with-config-form                              */
+/* ---------------------------------------------------- */
 
+/* ---------------------------------------------------- */
+/* brick__action-area                                   */
+/* ---------------------------------------------------- */
+/* dragger over the area will trigger position changing */
+/* ---------------------------------------------------- */
 .brick__action-area {
   position: absolute;
+}
+
+.brick__action-area::before {
+  position: absolute;
+  background-color: #ccc;
+  content: '';
+}
+
+.brick__action-area.brick__action-area--hovered::before {
   background-color: #1da1ff;
 }
 
 .brick__action-area.brick__action-area-top {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.brick__action-area.brick__action-area-top::before {
   top: 8px;
   left: 50%;
   width: 20px;
@@ -74,6 +104,14 @@ div.brick__with-config-form + div.brick__with-config-form {
 }
 
 .brick__action-area.brick__action-area-bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.brick__action-area.brick__action-area-bottom::before {
   bottom: 8px;
   left: 50%;
   width: 20px;
@@ -83,6 +121,14 @@ div.brick__with-config-form + div.brick__with-config-form {
 }
 
 .brick__action-area.brick__action-area-left {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  border-radius: 2px;
+}
+
+.brick__action-area.brick__action-area-left::before {
   left: 8px;
   top: 50%;
   height: 20px;
@@ -92,6 +138,14 @@ div.brick__with-config-form + div.brick__with-config-form {
 }
 
 .brick__action-area.brick__action-area-right {
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  border-radius: 2px;
+}
+
+.brick__action-area.brick__action-area-right::before {
   right: 8px;
   top: 50%;
   height: 20px;
@@ -99,3 +153,6 @@ div.brick__with-config-form + div.brick__with-config-form {
   border-radius: 2px;
   transform: translateY(-50%);
 }
+/* ---------------------------------------------------- */
+/* brick__action-area                                   */
+/* ---------------------------------------------------- */
