@@ -8,6 +8,8 @@ import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dn
 import { XYCoord } from 'dnd-core'
 import clx from 'classnames'
 
+const ITEM_TYPE = 'brick-config'
+
 interface DragOverProps {
   className?: string
 }
@@ -140,10 +142,13 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
   const [{ isDragging }, drag] = useDrag(
     {
       item: {
-        type: 'ItemTypes.BOX',
+        type: ITEM_TYPE,
         config: props.config,
         lastAction: '',
         onRemove: props.onRemoveItemFormParent,
+      },
+      canDrag() {
+        return context.mode === EngineMode.EDIT
       },
       isDragging: (monitor: DragSourceMonitor) => {
         return (monitor.getItem() as IDragItem).config._key === props.config._key
@@ -156,8 +161,11 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
   )
   const [{ isOverCurrent }, drop] = useDrop(
     {
-      accept: 'ItemTypes.BOX',
+      accept: ITEM_TYPE,
       canDrop(item: IDragItem, monitor: DropTargetMonitor) {
+        if (context.mode !== EngineMode.EDIT) {
+          return false
+        }
         if (!brickContainer.current) {
           return false
         }
