@@ -5,6 +5,7 @@ import arrayConfig from './array-root.config.json'
 import { Engine, EngineProps } from '../src'
 import { EngineMode } from '../src/types'
 import registerBricks from './register-bricks'
+import './style.css'
 import '../index.css'
 
 export default {

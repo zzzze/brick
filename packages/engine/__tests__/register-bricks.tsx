@@ -1,8 +1,9 @@
-import React, { ChangeEvent, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import 'jest-enzyme'
 import { Engine } from '@/index'
 import { BrickContainer } from '@brick/components'
-import { Brick, ChildrenType, ConfigFormRenderArgs, DataType, RenderArgs } from '@/types'
+import { Brick, ChildrenType, DataType, RenderArgs } from '@/types'
+import { ConfigurationFormItem as FormItem } from '@brick/components'
 
 const View: Brick = {
   name: 'View',
@@ -11,21 +12,11 @@ const View: Brick = {
   },
   defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
-  renderConfigForm(args: ConfigFormRenderArgs) {
-    const handleChange = useCallback(
-      (event: ChangeEvent<HTMLInputElement>) => {
-        args.onChange({
-          ...args.data,
-          name: event.target.value,
-        })
-      },
-      [args.data]
-    )
+  renderConfigForm() {
     return (
-      <div>
-        edit View: {args.data.name as string}
-        <input data-testid="name-input" name="name" value={args.data.name as string} onChange={handleChange} />
-      </div>
+      <FormItem label="edit View: " name="name">
+        <input data-testid="name-input" />
+      </FormItem>
     )
   },
   render(args: RenderArgs) {
@@ -43,21 +34,11 @@ const Text: Brick = {
     content: '',
   },
   childrenType: ChildrenType.NONE,
-  renderConfigForm(args: ConfigFormRenderArgs) {
-    const handleChange = useCallback(
-      (event: ChangeEvent<HTMLInputElement>) => {
-        args.onChange({
-          ...args.data,
-          content: event.target.value,
-        })
-      },
-      [args.data]
-    )
+  renderConfigForm() {
     return (
-      <div>
-        edit Text: {args.data.content as string}
-        <input data-testid="content-input" name="content" value={args.data.content as string} onChange={handleChange} />
-      </div>
+      <FormItem label="edit Text: " name="content">
+        <input data-testid="content-input" />
+      </FormItem>
     )
   },
   render(args: RenderArgs) {
@@ -75,8 +56,12 @@ const TextWithDefaultValue: Brick = {
     content: 'hello world',
   },
   childrenType: ChildrenType.NONE,
-  renderConfigForm(args: ConfigFormRenderArgs) {
-    return <div>edit Text: {args.data.content}</div>
+  renderConfigForm() {
+    return (
+      <FormItem label="edit Text: " name="content">
+        <input data-testid="content-input" />
+      </FormItem>
+    )
   },
   render(args: RenderArgs) {
     return <BrickContainer tag="span">{args.data.content as string}</BrickContainer>
@@ -103,8 +88,12 @@ const TextWithOnClickEvent: Brick = {
       })
     }`,
   },
-  renderConfigForm(args: ConfigFormRenderArgs) {
-    return <div>edit Text: {args.data.content}</div>
+  renderConfigForm() {
+    return (
+      <FormItem label="edit Text: " name="content">
+        <input data-testid="content-input" />
+      </FormItem>
+    )
   },
   render(args: RenderArgs) {
     const handleClick = useCallback(() => {
@@ -143,8 +132,12 @@ const TextWithAction2: Brick = {
       })
     }`,
   },
-  renderConfigForm(args: ConfigFormRenderArgs) {
-    return <div>edit Text: {args.data.content}</div>
+  renderConfigForm() {
+    return (
+      <FormItem label="edit Text: " name="content">
+        <input data-testid="content-input" />
+      </FormItem>
+    )
   },
   render(args: RenderArgs) {
     const handleClick = useCallback(() => {
@@ -176,8 +169,7 @@ const ViewWithCustomRender: Brick = {
   defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
   canCustomizeRender: true,
-  renderConfigForm(args: ConfigFormRenderArgs) {
-    void args
+  renderConfigForm() {
     return <></>
   },
   render(args: RenderArgs) {

@@ -2,7 +2,8 @@ import React from 'react'
 import demoTest from '@brick/tools/tests/demoTest'
 import { Engine } from '@/index'
 import { BrickContainer } from '@brick/components'
-import { Brick, ChildrenType, ConfigFormRenderArgs, DataType, RenderArgs } from '@/types'
+import { Brick, ChildrenType, DataType, RenderArgs } from '@/types'
+import { ConfigurationFormItem as FormItem } from '@brick/components'
 
 const View: Brick = {
   name: 'View',
@@ -11,8 +12,8 @@ const View: Brick = {
   },
   defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
-  renderConfigForm(args: ConfigFormRenderArgs) {
-    return <div>edit View: {args.children}</div>
+  renderConfigForm() {
+    return <></>
   },
   render(args: RenderArgs) {
     return <BrickContainer>{args.children}</BrickContainer>
@@ -29,8 +30,12 @@ const Text: Brick = {
     content: '',
   },
   childrenType: ChildrenType.NONE,
-  renderConfigForm(args: ConfigFormRenderArgs) {
-    return <div>edit Text: {args.data.content as string}</div>
+  renderConfigForm() {
+    return (
+      <FormItem label="edit Text: " name="content">
+        <input data-testid="content-input" />
+      </FormItem>
+    )
   },
   render(args: RenderArgs) {
     return <BrickContainer tag="span">{args.data.content as string}</BrickContainer>
@@ -44,8 +49,7 @@ const ViewWithCustomRender: Brick = {
   defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
   canCustomizeRender: true,
-  renderConfigForm(args: ConfigFormRenderArgs) {
-    void args
+  renderConfigForm() {
     return <></>
   },
   render(args: RenderArgs) {

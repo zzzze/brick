@@ -1,7 +1,8 @@
-import React, { ChangeEvent, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { Engine } from '../src'
-import { Brick, ChildrenType, ConfigFormRenderArgs, DataType, RenderArgs } from '../src/types'
+import { Brick, ChildrenType, DataType, RenderArgs } from '../src/types'
 import { BrickContainer } from '@brick/components'
+import { ConfigurationFormItem as FormItem } from '@brick/components'
 
 const View: Brick = {
   name: 'View',
@@ -10,21 +11,11 @@ const View: Brick = {
   },
   defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
-  renderConfigForm(args: ConfigFormRenderArgs) {
-    const handleChange = useCallback(
-      (event: ChangeEvent<HTMLInputElement>) => {
-        args.onChange({
-          ...args.data,
-          name: event.target.value,
-        })
-      },
-      [args.data]
-    )
+  renderConfigForm() {
     return (
-      <div>
-        name:
-        <input data-testid="name-input" name="name" value={args.data.name as string} onChange={handleChange} />
-      </div>
+      <FormItem label="name" name="name">
+        <input />
+      </FormItem>
     )
   },
   render(args: RenderArgs) {
@@ -43,21 +34,11 @@ const Text: Brick = {
   },
   childrenType: ChildrenType.NONE,
   canCustomizeRender: true,
-  renderConfigForm(args: ConfigFormRenderArgs) {
-    const handleChange = useCallback(
-      (event: ChangeEvent<HTMLInputElement>) => {
-        args.onChange({
-          ...args.data,
-          content: event.target.value,
-        })
-      },
-      [args.data]
-    )
+  renderConfigForm() {
     return (
-      <div>
-        text:
-        <input data-testid="content-input" name="content" value={args.data.content as string} onChange={handleChange} />
-      </div>
+      <FormItem label="content" name="content">
+        <input />
+      </FormItem>
     )
   },
   render(args: RenderArgs) {
@@ -85,8 +66,12 @@ const TextWithAction: Brick = {
       })
     }`,
   },
-  renderConfigForm(args) {
-    return <div>edit Text: {args.data.content}</div>
+  renderConfigForm() {
+    return (
+      <FormItem label="content" name="content">
+        <input />
+      </FormItem>
+    )
   },
   render(args) {
     const handleClick = useCallback(() => {

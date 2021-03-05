@@ -46,14 +46,6 @@ export interface RenderArgs {
   children?: React.ReactNode
 }
 
-export interface ConfigFormRenderArgs {
-  data: DataObject
-  onChange: (value: DataObject) => void
-  configFormVisible?: boolean
-  hideConfigForm?: () => void
-  children?: React.ReactNode
-}
-
 export type DataObject = Record<string, unknown>
 
 export interface Render {
@@ -68,7 +60,7 @@ export interface Brick {
   defaultHandlers?: Record<string, string> // handler for event
   defaultData: DataObject
   childrenType: ChildrenType
-  renderConfigForm: (args: ConfigFormRenderArgs) => React.ReactElement
+  renderConfigForm: () => React.ReactElement
   render: Render
   canCustomizeRender?: boolean
   version: string

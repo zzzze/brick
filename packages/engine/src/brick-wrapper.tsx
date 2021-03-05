@@ -1,8 +1,7 @@
 import React, { Children, cloneElement, useRef, useCallback, useContext, useMemo, useState } from 'react'
 import { ChildrenType, Config, DataObject, EngineMode, SetConfig } from './types'
-import PropsConfigForm from './props-config-form'
-import { BrickContainerProps } from '@brick/components'
-import CommonConfigForm from './common-config-form'
+import { BrickContainerProps, ConfigurationFormContext } from '@brick/components'
+import CommonConfigurationForm from './common-configuration-form'
 import Context from './context'
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
@@ -132,11 +131,18 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       }
     })
   }, [])
+
   const child: React.ReactElement<BrickContainerPropsWithRef> = Children.only(props.children)
-  const configForm = context.renderConfigForm(
-    <CommonConfigForm config={props.config} onConfigChange={props.onConfigChange}>
-      <PropsConfigForm config={props.config} onPropsChange={handleChange} />
-    </CommonConfigForm>,
+  const configForm = context.renderConfigurationForm(
+    <CommonConfigurationForm config={props.config} onConfigChange={props.onConfigChange}>
+      <ConfigurationFormContext.Provider
+        value={{
+          data: props.config.data || {},
+          onChange: handleChange,
+        }}>
+        {brick.renderConfigForm()}
+      </ConfigurationFormContext.Provider>
+    </CommonConfigurationForm>,
     context.ee
   )
   const [{ isDragging }, drag] = useDrag(
@@ -269,7 +275,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     child,
     {
       ref: brickContainer,
-      configForm: context.mode === EngineMode.EDIT ? configForm : null,
+      configurationForm: context.mode === EngineMode.EDIT ? configForm : null,
       className: clx(child.props.className, 'brick', {
         'brick__with-config-form': context.mode === EngineMode.EDIT,
         'brick__with-config-form--dragging': isDragging,

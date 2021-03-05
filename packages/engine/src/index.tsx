@@ -1,9 +1,9 @@
 import React from 'react'
 import { Config, Brick, EngineMode, SetConfigFn } from './types'
-import Context, { RenderConfigForm } from './context'
+import Context, { RenderConfigurationForm } from './context'
 import BrickRenderer from './brick-renderer'
 import EventEmitter from 'eventemitter3'
-import renderConfigForm from './render-config-form'
+import renderConfigurationForm from './render-configuration-form'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
@@ -17,7 +17,7 @@ export interface EngineProps {
   /**
    * Render configuration form of brick
    */
-  renderConfigForm?: RenderConfigForm
+  renderConfigurationForm?: RenderConfigurationForm
   mode?: EngineMode
 }
 
@@ -34,12 +34,12 @@ class Engine extends React.Component<EngineProps, EngineState> {
     this.state = {
       config: props.config,
     }
-    this.renderConfigForm = props.renderConfigForm || renderConfigForm
+    this.renderConfigurationForm = props.renderConfigurationForm || renderConfigurationForm
   }
   getConfig(): Config | Config[] | null {
     return this.state.config
   }
-  renderConfigForm: RenderConfigForm
+  renderConfigurationForm: RenderConfigurationForm
   state: EngineState = {
     config: null,
   }
@@ -118,7 +118,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
     return (
       <Context.Provider
         value={{
-          renderConfigForm: this.renderConfigForm,
+          renderConfigurationForm: this.renderConfigurationForm,
           bricks: Engine.bricks,
           ee,
           mode: this.props.mode || EngineMode.EDIT,

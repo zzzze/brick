@@ -1,7 +1,7 @@
 import { Engine } from '@brick/engine'
-import { BrickContainer } from '@brick/components'
-import { Brick, ChildrenType, ConfigFormRenderArgs, DataType, RenderArgs } from '@brick/engine'
-import React, { ChangeEvent, useCallback } from 'react'
+import { BrickContainer, ConfigurationFormItem as FormItem } from '@brick/components'
+import { Brick, ChildrenType, DataType, RenderArgs } from '@brick/engine'
+import React, { useCallback } from 'react'
 import ReactDOM from 'react-dom'
 import config from './brick.config.json'
 
@@ -12,21 +12,11 @@ const View: Brick = {
   },
   defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
-  renderConfigForm(args: ConfigFormRenderArgs) {
-    const handleChange = useCallback(
-      (event: ChangeEvent<HTMLInputElement>) => {
-        args.onChange({
-          ...args.data,
-          name: event.target.value,
-        })
-      },
-      [args.data]
-    )
+  renderConfigForm() {
     return (
-      <div>
-        edit View: {args.data.name as string}
-        <input data-testid="name-input" name="name" value={args.data.name as string} onChange={handleChange} />
-      </div>
+      <FormItem label="name" name="name">
+        <input />
+      </FormItem>
     )
   },
   render(args: RenderArgs) {
@@ -44,21 +34,11 @@ const Text: Brick = {
     content: '',
   },
   childrenType: ChildrenType.NONE,
-  renderConfigForm(args: ConfigFormRenderArgs) {
-    const handleChange = useCallback(
-      (event: ChangeEvent<HTMLInputElement>) => {
-        args.onChange({
-          ...args.data,
-          content: event.target.value,
-        })
-      },
-      [args.data]
-    )
+  renderConfigForm() {
     return (
-      <div>
-        edit Text: {args.data.content as string}
-        <input data-testid="content-input" name="content" value={args.data.content as string} onChange={handleChange} />
-      </div>
+      <FormItem label="content" name="content">
+        <input />
+      </FormItem>
     )
   },
   render(args: RenderArgs) {
@@ -86,8 +66,12 @@ const TextWithAction: Brick = {
       })
     }`,
   },
-  renderConfigForm(args) {
-    return <div>edit Text: {args.data.content}</div>
+  renderConfigForm() {
+    return (
+      <FormItem label="content" name="content">
+        <input />
+      </FormItem>
+    )
   },
   render(args) {
     const handleClick = useCallback(() => {

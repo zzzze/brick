@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { RenderConfigForm } from './context'
+import { RenderConfigurationForm } from './context'
 import clx from 'classnames'
 import EventEmitter from 'eventemitter3'
 
-export default (node: JSX.Element, ee: EventEmitter): ReturnType<RenderConfigForm> => {
+export default (node: JSX.Element, ee: EventEmitter): ReturnType<RenderConfigurationForm> => {
   const [configFormVisible, setConfigFormVisible] = useState(false)
   const handleShowConfigForm = useCallback(() => {
     ee.emit('close-config-form')

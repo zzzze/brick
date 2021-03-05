@@ -12,16 +12,16 @@ interface CommonEventData {
   }
 }
 
-interface PropsConfigFormProps {
+interface PropsConfigurationFormProps {
   config: Config
   onConfigChange: SetConfig
 }
 
-const CommonConfigForm = ({
+const CommonConfigurationForm = ({
   children,
   config,
   onConfigChange,
-}: React.PropsWithChildren<PropsConfigFormProps>): JSX.Element | null => {
+}: React.PropsWithChildren<PropsConfigurationFormProps>): JSX.Element | null => {
   const context = useContext(Context)
   const brick = useMemo(() => {
     return context.bricks[config.name]
@@ -34,34 +34,44 @@ const CommonConfigForm = ({
   }, [])
   return (
     <>
-      <div>
-        <label htmlFor="id">ID: </label>
+      <div className="config-form__item">
+        <label className="config-form__label" htmlFor="id">
+          ID:{' '}
+        </label>
         <input type="text" name="id" value={config.id || ''} onChange={handleChange} />
       </div>
-      <div>
-        <label htmlFor="actions">Actions: </label>
+      <div className="config-form__item">
+        <label className="config-form__label" htmlFor="actions">
+          Actions:{' '}
+        </label>
         <ObjectStringInput
           name="actions"
           value={(config.actions as Record<string, string>) || {}}
           onChange={handleChange}
         />
       </div>
-      <div>
-        <label htmlFor="supply.data">Supply Data: </label>
+      <div className="config-form__item">
+        <label className="config-form__label" htmlFor="supply.data">
+          Supply Data:{' '}
+        </label>
         <ObjectStringInput
           name="supply.data"
           value={(config.supply?.data as Record<string, string>) || {}}
           onChange={handleChange}
         />
       </div>
-      <div>
-        <label htmlFor="supply.actions">Supply Actions: </label>
+      <div className="config-form__item">
+        <label className="config-form__label" htmlFor="supply.actions">
+          Supply Actions:{' '}
+        </label>
         <ObjectStringInput name="supply.actions" value={config.supply?.actions || {}} onChange={handleChange} />
       </div>
       {brick.canCustomizeRender && (
         <>
-          <div>
-            <label htmlFor="render">Render: </label>
+          <div className="config-form__item">
+            <label className="config-form__label" htmlFor="render">
+              Render:{' '}
+            </label>
             <textarea name="render" value={config.render as string} onChange={handleChange} />
           </div>
         </>
@@ -71,4 +81,4 @@ const CommonConfigForm = ({
   )
 }
 
-export default CommonConfigForm
+export default CommonConfigurationForm
