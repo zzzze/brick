@@ -17,6 +17,8 @@ interface ContextType {
   bricks: Record<string, Brick>
   ee: EventEmitter
   mode: EngineMode
+  transactionStart: () => void
+  transactionEnd: () => void
 }
 
 const Context = React.createContext<ContextType>({
@@ -24,6 +26,8 @@ const Context = React.createContext<ContextType>({
   bricks: {},
   ee: new EventEmitter(),
   mode: EngineMode.EDIT,
+  transactionStart: () => {}, // eslint-disable-line  @typescript-eslint/no-empty-function
+  transactionEnd: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
 })
 
 export default Context

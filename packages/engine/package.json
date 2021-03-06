@@ -21,7 +21,9 @@
   "dependencies": {
     "@babel/standalone": "^7.12.12",
     "@brick/components": "^0.0.1",
+    "@types/deep-diff": "^1.0.0",
     "classnames": "^2.2.6",
+    "deep-diff": "^1.0.2",
     "eventemitter3": "^4.0.7",
     "lodash": "^4.17.20",
     "react-dnd": "^13.1.1",

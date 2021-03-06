@@ -230,8 +230,10 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           clientOffset || { x: -1, y: -1 }
         )
         if (inAdditionActionTriggerAera && item.lastAction !== `addition-${props.config._key}-${item.config._key}`) {
+          context.transactionStart()
           item.onRemove && item.onRemove(item.config._key)
           props.onDrop && props.onDrop(item.config)
+          context.transactionEnd()
           item.onRemove = props.onRemoveChild
           item.lastAction = `addition-${props.config._key}-${item.config._key}`
         }
@@ -240,8 +242,10 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           clientOffset || { x: -1, y: -1 }
         )
         if (inForwardActionTriggerAera && item.lastAction !== `forward-${props.config._key}-${item.config._key}`) {
+          context.transactionStart()
           item.onRemove && item.onRemove(item.config._key)
           props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.config, props.config._key, 'forward')
+          context.transactionEnd()
           item.onRemove = props.onRemoveItemFormParent
           item.lastAction = `forward-${props.config._key}-${item.config._key}`
         }
@@ -250,8 +254,10 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           clientOffset || { x: -1, y: -1 }
         )
         if (inBackwardActionTriggerAera && item.lastAction !== `backward-${props.config._key}-${item.config._key}`) {
+          context.transactionStart()
           item.onRemove && item.onRemove(item.config._key)
           props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.config, props.config._key, 'backward')
+          context.transactionEnd()
           item.onRemove = props.onRemoveItemFormParent
           item.lastAction = `backward-${props.config._key}-${item.config._key}`
         }
