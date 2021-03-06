@@ -24,6 +24,7 @@ export default function useHandlersUseInRender(
       } else {
         setData(newData)
       }
+      context.transactionEnd()
     },
     [data]
   )

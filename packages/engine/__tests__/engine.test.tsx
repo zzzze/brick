@@ -14,7 +14,7 @@ describe('Engine', () => {
       _key: '001',
       version: '0.0.1',
     }
-    const wrapper = mount(<Engine config={config} />)
+    const wrapper = mount(<Engine autoCommit config={config} />)
     // show
     wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
     expect(wrapper.html()).toContain('edit View')
@@ -46,7 +46,7 @@ describe('Engine', () => {
       ],
       version: '0.0.1',
     }
-    const wrapper = mount(<Engine config={config} />)
+    const wrapper = mount(<Engine autoCommit config={config} />)
     expect(wrapper.html()).toContain('hello world')
   })
 
@@ -69,7 +69,7 @@ describe('Engine', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} autoCommit config={config} />
       </>
     )
     wrapper.find('span[data-testid="edit-btn"]').at(1).simulate('click')
@@ -110,7 +110,7 @@ describe('Engine', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} autoCommit config={config} />
       </>
     )
     wrapper.find('span[data-testid="edit-btn"]').at(1).simulate('click')
@@ -157,7 +157,7 @@ describe('Engine', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} autoCommit config={config} />
       </>
     )
     wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')

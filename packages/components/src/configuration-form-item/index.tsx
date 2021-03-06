@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react'
+import React, { RefObject, useCallback, useContext, useEffect, useRef } from 'react'
 import ConfigurationFormContext from './configuration-form-context'
 
 interface EventData {
@@ -12,6 +12,7 @@ interface FormItemCommonProps {
   name: string
   label: string
   value?: unknown
+  ref?: RefObject<{ value: unknown }>
   onChange?: (data: EventData) => void
 }
 
@@ -20,7 +21,7 @@ interface FormItemProps extends FormItemCommonProps {
 }
 
 const FormItem: React.FC<FormItemProps> = ({ label, name, children }: FormItemProps) => {
-  const child: React.ReactElement<FormItemCommonProps> = React.Children.only(children)
+  const child = React.Children.only(children)
   const context = useContext(ConfigurationFormContext)
   const onChange = useCallback(
     (event: EventData) => {
@@ -31,16 +32,30 @@ const FormItem: React.FC<FormItemProps> = ({ label, name, children }: FormItemPr
     },
     [context.data]
   )
+  const ref = useRef<{ value: unknown }>(null)
+  useEffect(() => {
+    if (context.autoCommit || !ref.current) {
+      return
+    }
+    ref.current.value = context.data[name]
+  }, [context.data[name]])
   return (
     <div className="config-form__item">
       <label className="config-form__label" htmlFor="id">
         {label}
       </label>
-      {React.cloneElement(child, {
-        name,
-        value: context.data[name],
-        onChange,
-      })}
+      {context.autoCommit &&
+        React.cloneElement(child, {
+          name,
+          value: context.data[name],
+          onChange,
+        })}
+      {!context.autoCommit &&
+        React.cloneElement(child, {
+          name,
+          ref,
+          onChange,
+        })}
     </div>
   )
 }

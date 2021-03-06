@@ -27,7 +27,7 @@ describe('supply data', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine autoCommit ref={ref} config={config} />
       </>
     )
     wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
@@ -94,7 +94,7 @@ describe('supply data', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine autoCommit ref={ref} config={config} />
       </>
     )
     expect(wrapper.html()).toContain('foo')
@@ -146,7 +146,7 @@ describe('supply data', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine autoCommit ref={ref} config={config} />
       </>
     )
     expect(wrapper.html()).toContain('baz')
@@ -196,7 +196,7 @@ describe('supply data', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine autoCommit ref={ref} config={config} />
       </>
     )
     expect(wrapper.html()).toContain('baz')

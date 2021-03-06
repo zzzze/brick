@@ -1,28 +1,26 @@
-import React, { useState, useCallback, useEffect } from 'react'
-import { RenderConfigurationForm } from './context'
+import React, { useState, useCallback, useEffect, useContext } from 'react'
+import { RenderConfigurationForm, RenderConfigurationFormOptions } from './context'
 import clx from 'classnames'
-import EventEmitter from 'eventemitter3'
-import { ConnectDragSource } from 'react-dnd'
 import { FaEdit } from 'react-icons/fa'
 import { FiMove } from 'react-icons/fi'
 import { AiTwotoneDelete } from 'react-icons/ai'
+import Context from './context'
 
-export default (
-  node: JSX.Element,
-  ee: EventEmitter,
-  connectDragSource: ConnectDragSource,
-  removeItem: () => void
-): ReturnType<RenderConfigurationForm> => {
+export default (node: JSX.Element, options: RenderConfigurationFormOptions): ReturnType<RenderConfigurationForm> => {
+  const context = useContext(Context)
   const [configFormVisible, setConfigFormVisible] = useState(false)
   const handleShowConfigForm = useCallback(() => {
-    ee.emit('close-config-form')
+    options.ee.emit('close-config-form')
     setConfigFormVisible(true)
   }, [])
   const handleHideConfigForm = useCallback(() => {
     setConfigFormVisible(false)
   }, [])
+  const handleCommit = useCallback(() => {
+    context.transactionEnd()
+  }, [])
   useEffect(() => {
-    ee.on('close-config-form', handleHideConfigForm)
+    options.ee.on('close-config-form', handleHideConfigForm)
   }, [])
   return (
     <div
@@ -34,10 +32,19 @@ export default (
           <button data-testid="close-btn" onClick={handleHideConfigForm}>
             close
           </button>
+          {!context.autoCommit && (
+            <button data-testid="commit-btn" onClick={handleCommit}>
+              commit
+            </button>
+          )}
         </div>
       ) : (
         <div className="brick__config-form-btn-g1">
-          <span className="brick__config-form-remove-btn" title="remove" data-testid="remove-btn" onClick={removeItem}>
+          <span
+            className="brick__config-form-remove-btn"
+            title="remove"
+            data-testid="remove-btn"
+            onClick={options.removeItem}>
             <AiTwotoneDelete />
           </span>
           <span
@@ -47,7 +54,7 @@ export default (
             onClick={handleShowConfigForm}>
             <FaEdit />
           </span>
-          <span className="brick__config-form-move-btn" title="move" ref={connectDragSource}>
+          <span className="brick__config-form-move-btn" title="move" ref={options.connectDragSource}>
             <FiMove />
           </span>
         </div>

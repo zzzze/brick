@@ -281,13 +281,16 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         value={{
           data: props.config.data || {},
           onChange: handleChange,
+          autoCommit: context.autoCommit,
         }}>
         {brick.renderConfigForm()}
       </ConfigurationFormContext.Provider>
     </CommonConfigurationForm>,
-    context.ee,
-    drag,
-    onRemove
+    {
+      ee: context.ee,
+      connectDragSource: drag,
+      removeItem: onRemove,
+    }
   )
   preview(drop(brickContainer))
   return cloneElement<BrickContainerPropsWithRef>(

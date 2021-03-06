@@ -24,8 +24,8 @@ const Template: Story<EngineProps> = (args) => {
   }, [])
   return (
     <div>
-      <button onClick={handleUndo}>撤销</button>
-      <button onClick={handleRedo}>重做</button>
+      <button onClick={handleUndo}>undo</button>
+      <button onClick={handleRedo}>redo</button>
       <Engine ref={ref} {...args} />
     </div>
   )

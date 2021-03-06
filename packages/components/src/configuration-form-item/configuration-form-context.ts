@@ -9,11 +9,13 @@ export interface RenderConfigurationForm {
 
 interface ContextType {
   data: DataObject
+  autoCommit: boolean
   onChange: (newProps: DataObject) => void
 }
 
 const ConfigurationFormContext = React.createContext<ContextType>({
   data: {},
+  autoCommit: false,
   onChange: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
 })
 

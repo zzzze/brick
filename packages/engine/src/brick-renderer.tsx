@@ -28,6 +28,16 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
   ...props
 }: BrickRenderProps) => {
   const context = useContext(Context)
+  useEffect(() => {
+    if (!context.autoCommit) {
+      context.transactionStart()
+    }
+  })
+  useEffect(() => {
+    if (context.autoCommit) {
+      context.transactionEnd()
+    }
+  }, [context.autoCommit])
   const brick = useMemo(() => {
     const brick = context.bricks[config.name]
     if (!brick) {

@@ -26,6 +26,7 @@ export interface EngineProps {
    */
   renderConfigurationForm?: RenderConfigurationForm
   mode?: EngineMode
+  autoCommit?: boolean
 }
 
 interface EngineState {
@@ -117,6 +118,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
     }
   }
   _transactionStart = (): void => {
+    this._commitConfig()
     this._transaction = TransactionState.START
   }
   _transactionEnd = (): void => {
@@ -124,6 +126,9 @@ class Engine extends React.Component<EngineProps, EngineState> {
     this._commitConfig()
   }
   _commitConfig = (): void => {
+    if (!this._stagingConfig) {
+      return
+    }
     this.setState(
       (state) => ({
         ...state,
@@ -187,6 +192,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
           mode: this.props.mode || EngineMode.EDIT,
           transactionStart: this._transactionStart,
           transactionEnd: this._transactionEnd,
+          autoCommit: !!this.props.autoCommit,
         }}>
         <DndProvider backend={HTML5Backend}>
           {this.state.config && (
