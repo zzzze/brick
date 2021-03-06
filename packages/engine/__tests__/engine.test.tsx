@@ -91,50 +91,6 @@ describe('Engine', () => {
     })
   })
 
-  test('multiple brick at root', () => {
-    const config: Config[] = [
-      {
-        name: 'Text',
-        _key: '001',
-        data: {
-          content: 'foo',
-        },
-        version: '0.0.1',
-      },
-      {
-        name: 'TextWithDefaultValue',
-        _key: '002',
-        data: {},
-        version: '0.0.1',
-      },
-      {
-        name: 'View',
-        _key: '003',
-        children: [
-          {
-            name: 'Text',
-            _key: '004',
-            data: {
-              content: 'hello',
-            },
-            version: '0.0.1',
-          },
-          {
-            name: 'Text',
-            _key: '005',
-            data: {
-              content: 'world',
-            },
-            version: '0.0.1',
-          },
-        ],
-        version: '0.0.1',
-      },
-    ]
-    const wrapper = mount(<Engine config={config} />)
-    expect(wrapper.html()).toContain('hello world')
-  })
-
   test('update id', () => {
     const config: Config = {
       name: 'View',

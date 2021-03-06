@@ -120,8 +120,8 @@ describe('events', () => {
           _key: '002',
           handlers: {
             onClick: `function() {
-            emit('setName')
-          }`,
+              emit('setName')
+            }`,
           },
           data: {
             content: '{{$supply.name}}',
@@ -145,55 +145,63 @@ describe('events', () => {
   })
 
   test('emit event - from sibling', () => {
-    const config: Config[] = [
-      {
-        name: 'View',
-        _key: '001',
-        data: {
-          name: 'foo',
-        },
-        listeners: {
-          setName: `function() {
-          setData(function(data) {
-            return Object.assign({}, data, {
-              name: '123456',
-            })
-          }, {
-            setToConfig: true,
-          })
-        }`,
-        },
-        supply: {
+    const config: Config = {
+      name: 'View',
+      _key: '001',
+      data: {
+        name: 'foo',
+      },
+      children: [
+        {
+          name: 'View',
+          _key: '002',
           data: {
-            name: '{{$this.name}}',
+            name: 'foo',
           },
-        },
-        children: [
-          {
-            name: 'Text',
-            _key: '002',
+          listeners: {
+            setName: `function() {
+              setData(function(data) {
+                return Object.assign({}, data, {
+                  name: '123456',
+                })
+              }, {
+                setToConfig: true,
+              })
+            }`,
+          },
+          supply: {
             data: {
-              content: '{{$supply.name}}',
+              name: '{{$this.name}}',
             },
-            version: '0.0.1',
           },
-        ],
-        version: '0.0.1',
-      },
-      {
-        name: 'TextWithOnClickEvent',
-        _key: '003',
-        handlers: {
-          onClick: `function() {
-          emit('setName')
-        }`,
+          children: [
+            {
+              name: 'Text',
+              _key: '003',
+              data: {
+                content: '{{$supply.name}}',
+              },
+              version: '0.0.1',
+            },
+          ],
+          version: '0.0.1',
         },
-        data: {
-          content: 'hello world',
+        {
+          name: 'TextWithOnClickEvent',
+          _key: '004',
+          handlers: {
+            onClick: `function() {
+              emit('setName')
+            }`,
+          },
+          data: {
+            content: 'hello world',
+          },
+          version: '0.0.1',
         },
-        version: '0.0.1',
-      },
-    ]
+      ],
+      version: '0.0.1',
+    }
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
@@ -208,62 +216,67 @@ describe('events', () => {
   })
 
   test('emit event - from children sibling', () => {
-    const config: Config[] = [
-      {
-        name: 'View',
-        _key: '001',
-        data: {
-          name: 'foo',
-        },
-        listeners: {
-          setName: `function() {
-          setData(function(data) {
-            return Object.assign({}, data, {
-              name: '123456',
-            })
-          }, {
-            setToConfig: true,
-          })
-        }`,
-        },
-        supply: {
+    const config: Config = {
+      name: 'View',
+      _key: '001',
+      children: [
+        {
+          name: 'View',
+          _key: '002',
           data: {
-            name: '{{$this.name}}',
+            name: 'foo',
           },
+          listeners: {
+            setName: `function() {
+              setData(function(data) {
+                return Object.assign({}, data, {
+                  name: '123456',
+                })
+              }, {
+                setToConfig: true,
+              })
+            }`,
+          },
+          supply: {
+            data: {
+              name: '{{$this.name}}',
+            },
+          },
+          children: [
+            {
+              name: 'Text',
+              _key: '003',
+              data: {
+                content: '{{$supply.name}}',
+              },
+              version: '0.0.1',
+            },
+          ],
+          version: '0.0.1',
         },
-        children: [
-          {
-            name: 'Text',
-            _key: '002',
-            data: {
-              content: '{{$supply.name}}',
+        {
+          name: 'View',
+          _key: '004',
+          children: [
+            {
+              name: 'TextWithOnClickEvent',
+              _key: '005',
+              handlers: {
+                onClick: `function() {
+                  emit('setName')
+                }`,
+              },
+              data: {
+                content: 'hello world',
+              },
+              version: '0.0.1',
             },
-            version: '0.0.1',
-          },
-        ],
-        version: '0.0.1',
-      },
-      {
-        name: 'View',
-        _key: '003',
-        children: [
-          {
-            name: 'TextWithOnClickEvent',
-            _key: '004',
-            handlers: {
-              onClick: `function() {
-            emit('setName')
-          }`,
-            },
-            data: {
-              content: 'hello world',
-            },
-            version: '0.0.1',
-          },
-        ],
-        version: '0.0.1',
-      },
-    ]
+          ],
+          version: '0.0.1',
+        },
+      ],
+      version: '0.0.1',
+    }
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>

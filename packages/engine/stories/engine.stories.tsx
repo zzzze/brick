@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useCallback, useRef } from 'react'
 import { Story, Meta } from '@storybook/react'
 import itemConfig from './item-root.config.json'
-import arrayConfig from './array-root.config.json'
 import { Engine, EngineProps } from '../src'
 import { EngineMode } from '../src/types'
 import registerBricks from './register-bricks'
@@ -16,7 +15,20 @@ export default {
 
 const Template: Story<EngineProps> = (args) => {
   registerBricks()
-  return <Engine {...args} />
+  const ref = useRef<Engine>(null)
+  const handleUndo = useCallback(() => {
+    ref.current?.undo()
+  }, [])
+  const handleRedo = useCallback(() => {
+    ref.current?.redo()
+  }, [])
+  return (
+    <div>
+      <button onClick={handleUndo}>撤销</button>
+      <button onClick={handleRedo}>重做</button>
+      <Engine ref={ref} {...args} />
+    </div>
+  )
 }
 
 export const Default = Template.bind({})
@@ -34,12 +46,6 @@ Default.args = {
 export const ItemRootWithHandler = Template.bind({})
 ItemRootWithHandler.args = {
   config: itemConfig,
-  mode: EngineMode.EDIT,
-}
-
-export const ArrayRootWithHandler = Template.bind({})
-ArrayRootWithHandler.args = {
-  config: arrayConfig,
   mode: EngineMode.EDIT,
 }
 
