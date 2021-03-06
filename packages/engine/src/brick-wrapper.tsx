@@ -40,6 +40,7 @@ interface BrickWrapperProps {
   onRemoveChild?: (key: string) => void
   onAddToOrMoveInParent?: (config: Config, anchorKey: string, action: string) => void
   onDrop?: (config: Config) => void
+  isRoot?: boolean
 }
 
 export interface IDragItem {
@@ -237,6 +238,9 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           item.onRemove = props.onRemoveChild
           item.lastAction = `addition-${props.config._key}-${item.config._key}`
         }
+        if (props.isRoot) {
+          return
+        }
         const inForwardActionTriggerAera = isInForwardActionTriggerAera(
           hoverBoundingRect,
           clientOffset || { x: -1, y: -1 }
@@ -298,7 +302,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       }),
     },
     ...Children.toArray(child.props.children),
-    ...(context.mode === EngineMode.EDIT
+    ...(context.mode === EngineMode.EDIT && !props.isRoot
       ? [
           <DragOver key="left" className="brick__action-area brick__action-area-left" />,
           <DragOver key="right" className="brick__action-area brick__action-area-right" />,

@@ -20,7 +20,7 @@ export interface EngineProps {
   /**
    * Configuration for engine
    */
-  config: Config | Config[] | null
+  config: Config | null
   /**
    * Render configuration form of brick
    */
@@ -29,7 +29,7 @@ export interface EngineProps {
 }
 
 interface EngineState {
-  config: Config | Config[] | null
+  config: Config | null
 }
 
 /**
@@ -66,9 +66,9 @@ class Engine extends React.Component<EngineProps, EngineState> {
    * inner properties
    */
   _transaction: TransactionState = TransactionState.END
-  _configStage: Config | Config[] | null = null
-  _backwardDiffs: Diff.Diff<Config | Config[] | null>[][] = []
-  _forwardDiffs: Diff.Diff<Config | Config[] | null>[][] = []
+  _stagingConfig: Config | null = null
+  _backwardDiffs: Diff.Diff<Config | null>[][] = []
+  _forwardDiffs: Diff.Diff<Config | null>[][] = []
   _isUndoRedo = false
 
   /**
@@ -93,7 +93,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
   /**
    * exposed methods
    */
-  getConfig(): Config | Config[] | null {
+  getConfig(): Config | null {
     return this.state.config
   }
   undo(): void {
@@ -108,10 +108,10 @@ class Engine extends React.Component<EngineProps, EngineState> {
    */
   _renderConfigurationForm: RenderConfigurationForm
   _handleSetConfig = (fn: SetConfigFn): void => {
-    if (this._configStage == null) {
-      this._configStage = this.state.config
+    if (this._stagingConfig == null) {
+      this._stagingConfig = this.state.config
     }
-    this._configStage = fn(this._configStage as Config)
+    this._stagingConfig = fn(this._stagingConfig as Config)
     if (this._transaction == TransactionState.END) {
       this._commitConfig()
     }
@@ -128,32 +128,14 @@ class Engine extends React.Component<EngineProps, EngineState> {
       (state) => ({
         ...state,
         config: {
-          ...(this._configStage as Config),
+          ...(this._stagingConfig as Config),
         },
       }),
       () => {
         this._forwardDiffs = []
-        this._configStage = null
+        this._stagingConfig = null
       }
     )
-  }
-  _handleSetConfigForArrayItem = (fn: SetConfigFn, key: string): void => {
-    this.setState((state) => {
-      if (!Array.isArray(state.config)) {
-        return state
-      }
-      const config = state.config.map((child) => {
-        if (child._key !== key) {
-          return child
-        } else {
-          return fn({ ...child })
-        }
-      })
-      return {
-        ...state,
-        config: config,
-      }
-    })
   }
   _undeOrRedo(redo = false): void {
     this._isUndoRedo = true
@@ -170,9 +152,9 @@ class Engine extends React.Component<EngineProps, EngineState> {
     const config = cloneDeep(this.state.config)
     diffs?.forEach((diff) => {
       if (redo) {
-        Diff.applyChange<Config | Config[] | null>(config, config, diff)
+        Diff.applyChange<Config | null>(config, config, diff)
       } else {
-        Diff.revertChange<Config | Config[] | null>(config, config, diff)
+        Diff.revertChange<Config | null>(config, config, diff)
       }
     })
     this.setState(
@@ -191,41 +173,6 @@ class Engine extends React.Component<EngineProps, EngineState> {
     }
     this._undeOrRedo(event.shiftKey)
   }
-  _handleRemoveFromParent = (key: string): void => {
-    this.setState((state) => {
-      if (!state.config || !Array.isArray(state.config)) {
-        return state
-      }
-      return {
-        ...state,
-        config: state.config.filter((item) => item._key !== key),
-      }
-    })
-  }
-  _handleAddToOrMoveInParent = (_config: Config, anchorKey: string, action: string): void => {
-    this.setState((state) => {
-      if (!state.config || !Array.isArray(state.config)) {
-        return state
-      }
-      const config = state.config.filter((c) => c._key !== _config._key)
-      let anchorIndex = -1
-      for (let i = 0; i < config.length; i++) {
-        if (config[i]._key === anchorKey) {
-          anchorIndex = i
-          break
-        }
-      }
-      if (anchorIndex === -1) {
-        throw Error(`anchor node not found (key: ${anchorKey})`)
-      }
-      const insertIndex = action === 'forward' ? anchorIndex : anchorIndex + 1
-      config.splice(insertIndex, 0, _config)
-      return {
-        ...state,
-        config,
-      }
-    })
-  }
 
   /**
    * render
@@ -242,20 +189,9 @@ class Engine extends React.Component<EngineProps, EngineState> {
           transactionEnd: this._transactionEnd,
         }}>
         <DndProvider backend={HTML5Backend}>
-          {this.state.config &&
-            Array.isArray(this.state.config) &&
-            this.state.config.map((item) => (
-              <BrickRenderer
-                key={item._key}
-                onRemoveItemFromParent={this._handleRemoveFromParent}
-                onAddToOrMoveInParent={this._handleAddToOrMoveInParent}
-                supply={{ data: {}, actions: {} }}
-                config={item}
-                setConfig={(fn: SetConfigFn) => this._handleSetConfigForArrayItem(fn, item._key)}
-              />
-            ))}
-          {this.state.config && !Array.isArray(this.state.config) && (
+          {this.state.config && (
             <BrickRenderer
+              isRoot
               supply={{ data: {}, actions: {} }}
               config={this.state.config}
               setConfig={this._handleSetConfig}

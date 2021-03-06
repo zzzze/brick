@@ -18,6 +18,7 @@ interface BrickRenderProps {
   onRemoveItemFromParent?: (key: string) => void
   onAddToOrMoveInParent?: (config: Config, anchorKey: string, action: string) => void
   onDrop?: (_config: Config) => void
+  isRoot?: boolean
 }
 
 const BrickRenderer: React.FC<BrickRenderProps> = ({
@@ -127,6 +128,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
       onAddToOrMoveInParent={props.onAddToOrMoveInParent}
       onDrop={handleDrop}
       config={config}
+      isRoot={props.isRoot}
       parentConfig={props.parentConfig}
       onConfigChange={setConfig}>
       {render({
