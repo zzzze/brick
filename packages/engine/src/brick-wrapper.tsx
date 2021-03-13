@@ -54,12 +54,12 @@ interface BrickContainerPropsWithRef extends React.PropsWithChildren<BrickContai
   ref?: React.RefObject<HTMLElement>
 }
 
-const isHoverOnItselfOrChild = (config: Config, key: string): boolean => {
+const isHoverOnDragItemOrItsChild = (config: Config, key: string): boolean => {
   if (config._key === key) {
     return true
   }
   if (Array.isArray(config.children)) {
-    return config.children.some((child) => isHoverOnItselfOrChild(child, key))
+    return config.children.some((child) => isHoverOnDragItemOrItsChild(child, key))
   }
   return false
 }
@@ -143,7 +143,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     if (!monitor.isOver({ shallow: true })) {
       return false
     }
-    if (isHoverOnItselfOrChild(item.config, props.config._key)) {
+    if (isHoverOnDragItemOrItsChild(item.config, props.config._key)) {
       // drag and hover on itself or its children
       return false
     }
@@ -227,10 +227,10 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           clientOffset || { x: -1, y: -1 }
         )
         if (inAdditionActionTriggerAera && item.lastAction !== `addition-${props.config._key}-${item.config._key}`) {
-          context.transactionStart()
+          context.transactionBegin()
           item.onRemove && item.onRemove(item.config._key)
           props.onDrop && props.onDrop(item.config)
-          context.transactionEnd()
+          context.transactionCommit()
           item.onRemove = props.onRemoveChild
           item.lastAction = `addition-${props.config._key}-${item.config._key}`
         }
@@ -242,10 +242,10 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           clientOffset || { x: -1, y: -1 }
         )
         if (inForwardActionTriggerAera && item.lastAction !== `forward-${props.config._key}-${item.config._key}`) {
-          context.transactionStart()
+          context.transactionBegin()
           item.onRemove && item.onRemove(item.config._key)
           props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.config, props.config._key, 'forward')
-          context.transactionEnd()
+          context.transactionCommit()
           item.onRemove = props.onRemoveItemFormParent
           item.lastAction = `forward-${props.config._key}-${item.config._key}`
         }
@@ -254,10 +254,10 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           clientOffset || { x: -1, y: -1 }
         )
         if (inBackwardActionTriggerAera && item.lastAction !== `backward-${props.config._key}-${item.config._key}`) {
-          context.transactionStart()
+          context.transactionBegin()
           item.onRemove && item.onRemove(item.config._key)
           props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.config, props.config._key, 'backward')
-          context.transactionEnd()
+          context.transactionCommit()
           item.onRemove = props.onRemoveItemFormParent
           item.lastAction = `backward-${props.config._key}-${item.config._key}`
         }
@@ -270,6 +270,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
   )
   const onRemove = useCallback(() => {
     props.onRemoveItemFormParent && props.onRemoveItemFormParent(props.config._key)
+    context.transactionCommit()
   }, [props.onRemoveItemFormParent])
   const configForm = context.renderConfigurationForm(
     <CommonConfigurationForm config={props.config} onConfigChange={props.onConfigChange}>

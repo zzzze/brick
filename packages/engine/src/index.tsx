@@ -117,11 +117,11 @@ class Engine extends React.Component<EngineProps, EngineState> {
       this._commitConfig()
     }
   }
-  _transactionStart = (): void => {
+  _transactionBegin = (): void => {
     this._commitConfig()
     this._transaction = TransactionState.START
   }
-  _transactionEnd = (): void => {
+  _transactionCommit = (): void => {
     this._transaction = TransactionState.END
     this._commitConfig()
   }
@@ -190,8 +190,8 @@ class Engine extends React.Component<EngineProps, EngineState> {
           bricks: Engine.bricks,
           ee,
           mode: this.props.mode || EngineMode.EDIT,
-          transactionStart: this._transactionStart,
-          transactionEnd: this._transactionEnd,
+          transactionBegin: this._transactionBegin,
+          transactionCommit: this._transactionCommit,
           autoCommit: !!this.props.autoCommit,
         }}>
         <DndProvider backend={HTML5Backend}>

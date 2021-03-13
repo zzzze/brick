@@ -30,12 +30,12 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
   const context = useContext(Context)
   useEffect(() => {
     if (!context.autoCommit) {
-      context.transactionStart()
+      context.transactionBegin()
     }
   })
   useEffect(() => {
     if (context.autoCommit) {
-      context.transactionEnd()
+      context.transactionCommit()
     }
   }, [context.autoCommit])
   const brick = useMemo(() => {

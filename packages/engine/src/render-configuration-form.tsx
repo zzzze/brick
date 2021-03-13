@@ -17,7 +17,7 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
     setConfigFormVisible(false)
   }, [])
   const handleCommit = useCallback(() => {
-    context.transactionEnd()
+    context.transactionCommit()
   }, [])
   useEffect(() => {
     options.ee.on('close-config-form', handleHideConfigForm)

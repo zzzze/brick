@@ -18,8 +18,8 @@ interface ContextType {
   bricks: Record<string, Brick>
   ee: EventEmitter
   mode: EngineMode
-  transactionStart: () => void
-  transactionEnd: () => void
+  transactionBegin: () => void
+  transactionCommit: () => void
   autoCommit: boolean
 }
 
@@ -28,8 +28,8 @@ const Context = React.createContext<ContextType>({
   bricks: {},
   ee: new EventEmitter(),
   mode: EngineMode.EDIT,
-  transactionStart: () => {}, // eslint-disable-line  @typescript-eslint/no-empty-function
-  transactionEnd: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  transactionBegin: () => {}, // eslint-disable-line  @typescript-eslint/no-empty-function
+  transactionCommit: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   autoCommit: false,
 })
 
