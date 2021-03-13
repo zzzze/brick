@@ -2,16 +2,16 @@ import React, { useCallback, useMemo, useContext } from 'react'
 import { Emit, SetConfig, SetData, SetDataFn, SetDataOptions } from './types'
 import Context from './context'
 
-export interface HandlersUseInRender {
+export interface InstanceHandlers {
   setData: SetData
   emit: Emit
 }
 
-export default function useHandlersUseInRender(
+export default function useInstanceHandlers(
   data: Record<string, unknown>,
   setConfig: SetConfig,
   setData: React.Dispatch<React.SetStateAction<Record<string, unknown>>>
-): HandlersUseInRender {
+): InstanceHandlers {
   const context = useContext(Context)
   const handleSetData = useCallback(
     (fn: SetDataFn, options: SetDataOptions = {}): void => {

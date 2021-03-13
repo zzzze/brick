@@ -37,19 +37,20 @@ export interface SupplyInRender {
   actions?: Record<string, unknown>
 }
 
-export interface RenderArgs {
+export interface BrickInstance {
   data: DataObject
   actions: Record<string, Action>
   handlers: Record<string, Action>
   supply: SupplyInRender
   setData: SetData
+  emit: Emit
   children?: React.ReactNode
 }
 
 export type DataObject = Record<string, unknown>
 
 export interface Render {
-  (args: RenderArgs): React.ReactElement
+  (args: BrickInstance): React.ReactElement
 }
 
 export interface Brick {

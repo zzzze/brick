@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useEffect, useState, useContext } from 'react'
-import { Config, SetConfig, SetConfigFn, SupplyInRender } from './types'
+import { BrickInstance, Config, SetConfig, SetConfigFn, SupplyInRender } from './types'
 import BrickWrapper from './brick-wrapper'
 import Context from './context'
 import getConfigData from './get-config-data'
@@ -8,7 +8,7 @@ import useActions from './use-actions'
 import useHandlers from './use-handlers'
 import useListeners from './use-listeners'
 import useSupply from './use-supply'
-import useHandlersUseInRender from './use-handlers-use-in-render'
+import useInstanceHandlers from './use-instance-handlers'
 
 interface BrickRenderProps {
   config: Config
@@ -51,15 +51,19 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
   const [data, setData] = useState<Record<string, unknown>>(() => {
     return getConfigData(keys, config.data ?? {}, pSupply.data ?? {}, brick.defaultData)
   })
-  const handlersUseInRender = useHandlersUseInRender(data, setConfig, setData)
+  const instanceHandlers = useInstanceHandlers(data, setConfig, setData)
+  const brickInstance: Omit<BrickInstance, 'children' | 'handlers' | 'actions'> = {
+    ...instanceHandlers,
+    data,
+    supply: pSupply,
+  }
   useEffect(() => {
     const newData = getConfigData(keys, config.data ?? {}, pSupply.data ?? {}, brick.defaultData)
     setData(newData)
   }, [pSupply, keys, config.data, config.id, brick.defaultData])
-  const actions = useActions(config, pSupply, handlersUseInRender)
-  const handlers = useHandlers(brick, actions, config, pSupply, handlersUseInRender)
-  useListeners(actions, config, pSupply, handlersUseInRender)
-  const supply = useSupply(config, pSupply, data, actions, handlersUseInRender)
+  const actions = useActions(config, pSupply, brickInstance)
+  useListeners(actions, config, pSupply, instanceHandlers)
+  const supply = useSupply(config, pSupply, data, actions, instanceHandlers)
   const handleSetStateForChildren = useCallback((fn: (config: Readonly<Config>) => Config, key: string) => {
     setConfig((config) => {
       if (!config.children || !config.children.length) {
@@ -129,6 +133,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
       }
     })
   }, [])
+  const handlers = useHandlers(brick, config, actions, brickInstance)
   const render = useRender(brick, config)
   return (
     <BrickWrapper
@@ -142,11 +147,9 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
       parentConfig={props.parentConfig}
       onConfigChange={setConfig}>
       {render({
-        data,
-        setData: handlersUseInRender.setData,
+        ...brickInstance,
         actions,
         handlers,
-        supply: pSupply,
         children:
           Array.isArray(config.children) &&
           config.children.map((child) => {

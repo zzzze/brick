@@ -1,13 +1,12 @@
 import { useMemo } from 'react'
-import { Action, Actions, Config, SupplyInRender, VALUE_PARAM_PATTERN } from './types'
+import { Action, Actions, BrickInstance, Config, SupplyInRender, VALUE_PARAM_PATTERN } from './types'
 import { interpreteParam } from './utils'
 import { compileAction } from './compile-action'
-import { HandlersUseInRender } from './use-handlers-use-in-render'
 
 export default function useActions(
   config: Config,
   pSupply: SupplyInRender,
-  handlers: HandlersUseInRender
+  $this: Omit<BrickInstance, 'children' | 'handlers' | 'actions'>
 ): Record<string, Action> {
   return useMemo<Actions>(() => {
     return Object.keys(config.actions || {}).reduce<Actions>((result, key) => {
@@ -15,12 +14,23 @@ export default function useActions(
       let action: (...args: unknown[]) => void
       if (typeof functionStr !== 'function' && VALUE_PARAM_PATTERN.test(functionStr)) {
         action = interpreteParam(functionStr, {
-          $supply: pSupply.actions || {},
+          $this: {
+            supply: $this.supply.actions || {},
+          },
         }) as (...args: unknown[]) => void
       } else {
-        action = compileAction(functionStr, handlers.setData, handlers.emit)
+        action = compileAction(functionStr, $this.setData, $this.emit)
       }
-      result[key] = action
+      const handler = (...args: unknown[]) => {
+        const firstArgs = args[0]
+        if (firstArgs && typeof firstArgs === 'object') {
+          if (['data', 'emit', 'setData'].every((key) => Object.keys(firstArgs).includes(key))) {
+            args = args.slice(1)
+          }
+        }
+        action({ ...$this, actions: result }, ...args)
+      }
+      result[key] = handler
       return result
     }, {})
   }, [config.actions, pSupply])

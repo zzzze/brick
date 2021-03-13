@@ -1,15 +1,15 @@
 import { useMemo } from 'react'
-import { Action, Actions, Config, SetData, SupplyInRender, VALUE_PARAM_PATTERN, idPrefix } from './types'
+import { Actions, Config, SupplyInRender, VALUE_PARAM_PATTERN, idPrefix } from './types'
 import { interpreteParam } from './utils'
-import { compileActions } from './compile-action'
-import { HandlersUseInRender } from './use-handlers-use-in-render'
+import { compileAction } from './compile-action'
+import { InstanceHandlers } from './use-instance-handlers'
 
 export default function useSupply(
   config: Config,
   pSupply: SupplyInRender,
   data: Record<string, unknown>,
   actions: Actions,
-  handlers: HandlersUseInRender
+  handlers: InstanceHandlers
 ): SupplyInRender {
   const supplyData = useMemo(() => {
     let supplyData = {
@@ -20,8 +20,10 @@ export default function useSupply(
       let value = supplyData[key]
       if (typeof value === 'string') {
         value = interpreteParam(value, {
-          $supply: pSupply.data,
-          $this: data,
+          $this: {
+            ...data,
+            supply: pSupply.data,
+          },
         })
       }
       result[key] = value
@@ -35,21 +37,32 @@ export default function useSupply(
     return supplyData
   }, [config.supply?.data, config.id, pSupply, data])
   const supplyActions = useMemo(() => {
-    let supplyActions = {
-      ...compileActions(config.supply?.actions || {}, handlers.setData, handlers.emit),
-    }
-    const actionKeys = Object.keys(supplyActions)
+    let supplyActions = {}
+    const rawActions = config.supply?.actions || {}
+    const actionKeys = Object.keys(rawActions)
     supplyActions = actionKeys.reduce<Actions>((result, key) => {
-      let value = supplyActions[key]
-      if (typeof value === 'string') {
-        if (VALUE_PARAM_PATTERN.test(value)) {
-          value = interpreteParam(value, {
-            $supply: pSupply.actions,
-            $this: actions,
-          }) as (fn: SetData) => void
-        }
+      const value = rawActions[key]
+      let action: (...args: unknown[]) => void
+      if (typeof value !== 'function' && VALUE_PARAM_PATTERN.test(value)) {
+        action = interpreteParam(value, {
+          $this: {
+            ...actions,
+            supply: pSupply.actions,
+          },
+        }) as (...args: unknown[]) => void
+      } else {
+        action = compileAction(value, handlers.setData, handlers.emit)
       }
-      result[key] = value as Action
+      const handler = (...args: unknown[]) => {
+        const firstArgs = args[0]
+        if (firstArgs && typeof firstArgs === 'object') {
+          if (['data', 'emit', 'setData'].every((key) => Object.keys(firstArgs).includes(key))) {
+            args = args.slice(1)
+          }
+        }
+        action({ supply: pSupply, actions, data, ...handlers }, ...args)
+      }
+      result[key] = handler
       return result
     }, {})
     if (config.id && actionKeys.length > 0) {

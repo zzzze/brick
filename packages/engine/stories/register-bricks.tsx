@@ -1,7 +1,6 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { Engine } from '../src'
-import { Brick, ChildrenType, DataType, RenderArgs } from '../src/types'
-import { BrickContainer } from '@brick/components'
+import { Brick, ChildrenType, DataType, BrickInstance } from '../src/types'
 import { ConfigurationFormItem as FormItem } from '@brick/components'
 
 const View: Brick = {
@@ -18,8 +17,8 @@ const View: Brick = {
       </FormItem>
     )
   },
-  render(args: RenderArgs) {
-    return <BrickContainer>{args.children}</BrickContainer>
+  render(args: BrickInstance) {
+    return <div>{args.children}</div>
   },
   version: '0.0.1',
 }
@@ -41,8 +40,50 @@ const Text: Brick = {
       </FormItem>
     )
   },
-  render(args: RenderArgs) {
-    return <BrickContainer tag="span">{args.data.content as string}</BrickContainer>
+  render($this: BrickInstance) {
+    return <span>{$this.data.content as string}</span>
+  },
+  version: '0.0.1',
+}
+
+const Image: Brick = {
+  name: 'Image',
+  dataTypes: {
+    src: DataType.STRING,
+  },
+  defaultData: {
+    src: '',
+  },
+  childrenType: ChildrenType.NONE,
+  canCustomizeRender: true,
+  renderConfigForm() {
+    return (
+      <FormItem label="src" name="src">
+        <input />
+      </FormItem>
+    )
+  },
+  render(args: BrickInstance) {
+    return <img style={{ width: 100 }} src={args.data.src as string} />
+  },
+  version: '0.0.1',
+}
+
+const Input: Brick = {
+  name: 'Input',
+  dataTypes: {},
+  defaultData: {},
+  childrenType: ChildrenType.NONE,
+  renderConfigForm() {
+    return (
+      <FormItem label="src" name="src">
+        <input />
+      </FormItem>
+    )
+  },
+  eventNames: ['onChange'],
+  render($this: BrickInstance) {
+    return <input onChange={$this.handlers['onChange']} />
   },
   version: '0.0.1',
 }
@@ -73,25 +114,11 @@ const TextWithAction: Brick = {
       </FormItem>
     )
   },
-  render(args) {
-    const handleClick = useCallback(() => {
-      const onClick = args.handlers['onClick']
-      if (onClick) {
-        onClick(
-          {
-            data: args.data,
-            actions: args.actions,
-          },
-          args.supply
-        )
-      }
-    }, [])
+  render($this: BrickInstance) {
     return (
-      <BrickContainer tag="span">
-        <span data-testid="element-with-action" onClick={handleClick}>
-          {args.data.content as string}
-        </span>
-      </BrickContainer>
+      <span data-testid="element-with-action" onClick={$this.handlers['onClick']}>
+        {$this.data.content as string}
+      </span>
     )
   },
   version: '0.0.1',
@@ -100,5 +127,7 @@ const TextWithAction: Brick = {
 export default (): void => {
   Engine.registerBrick(View)
   Engine.registerBrick(Text)
+  Engine.registerBrick(Image)
+  Engine.registerBrick(Input)
   Engine.registerBrick(TextWithAction)
 }

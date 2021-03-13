@@ -3,13 +3,13 @@ import { Actions, Config, SupplyInRender, VALUE_PARAM_PATTERN } from './types'
 import { interpreteParam } from './utils'
 import { compileAction } from './compile-action'
 import Context from './context'
-import { HandlersUseInRender } from './use-handlers-use-in-render'
+import { InstanceHandlers } from './use-handlers-use-in-render'
 
 export default function useListeners(
   actions: Actions,
   config: Config,
   pSupply: SupplyInRender,
-  handlers: HandlersUseInRender
+  handlers: InstanceHandlers
 ): void {
   const context = useContext(Context)
   const listeners = useMemo<Actions>(() => {

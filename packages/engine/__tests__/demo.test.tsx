@@ -2,7 +2,7 @@ import React from 'react'
 import demoTest from '@brick/tools/tests/demoTest'
 import { Engine } from '@/index'
 import { BrickContainer } from '@brick/components'
-import { Brick, ChildrenType, DataType, RenderArgs } from '@/types'
+import { Brick, ChildrenType, DataType, BrickInstance } from '@/types'
 import { ConfigurationFormItem as FormItem } from '@brick/components'
 
 const View: Brick = {
@@ -15,7 +15,7 @@ const View: Brick = {
   renderConfigForm() {
     return <></>
   },
-  render(args: RenderArgs) {
+  render(args: BrickInstance) {
     return <BrickContainer>{args.children}</BrickContainer>
   },
   version: '0.0.1',
@@ -37,7 +37,7 @@ const Text: Brick = {
       </FormItem>
     )
   },
-  render(args: RenderArgs) {
+  render(args: BrickInstance) {
     return <BrickContainer tag="span">{args.data.content as string}</BrickContainer>
   },
   version: '0.0.1',
@@ -52,7 +52,7 @@ const ViewWithCustomRender: Brick = {
   renderConfigForm() {
     return <></>
   },
-  render(args: RenderArgs) {
+  render(args: BrickInstance) {
     void args
     return <></>
   },

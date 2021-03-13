@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import 'jest-enzyme'
 import { Engine } from '@/index'
 import { BrickContainer } from '@brick/components'
-import { Brick, ChildrenType, DataType, RenderArgs } from '@/types'
+import { Brick, ChildrenType, DataType, BrickInstance } from '@/types'
 import { ConfigurationFormItem as FormItem } from '@brick/components'
 
 const View: Brick = {
@@ -19,7 +19,7 @@ const View: Brick = {
       </FormItem>
     )
   },
-  render(args: RenderArgs) {
+  render(args: BrickInstance) {
     return <BrickContainer>{args.children}</BrickContainer>
   },
   version: '0.0.1',
@@ -41,7 +41,7 @@ const Text: Brick = {
       </FormItem>
     )
   },
-  render(args: RenderArgs) {
+  render(args: BrickInstance) {
     return <BrickContainer tag="span">{args.data.content as string}</BrickContainer>
   },
   version: '0.0.1',
@@ -63,7 +63,7 @@ const TextWithDefaultValue: Brick = {
       </FormItem>
     )
   },
-  render(args: RenderArgs) {
+  render(args: BrickInstance) {
     return <BrickContainer tag="span">{args.data.content as string}</BrickContainer>
   },
   version: '0.0.1',
@@ -95,7 +95,7 @@ const TextWithOnClickEvent: Brick = {
       </FormItem>
     )
   },
-  render(args: RenderArgs) {
+  render(args: BrickInstance) {
     const handleClick = useCallback(() => {
       const onClick = args.handlers['onClick']
       if (onClick) {
@@ -139,7 +139,7 @@ const TextWithAction2: Brick = {
       </FormItem>
     )
   },
-  render(args: RenderArgs) {
+  render(args: BrickInstance) {
     const handleClick = useCallback(() => {
       const onClick = args.handlers['onClick']
       if (onClick) {
@@ -172,7 +172,7 @@ const ViewWithCustomRender: Brick = {
   renderConfigForm() {
     return <></>
   },
-  render(args: RenderArgs) {
+  render(args: BrickInstance) {
     void args
     return <></>
   },

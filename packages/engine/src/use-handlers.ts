@@ -1,15 +1,13 @@
 import { useMemo } from 'react'
-import { Action, Actions, Brick, Config, SupplyInRender, VALUE_PARAM_PATTERN } from './types'
+import { Action, Actions, Brick, BrickInstance, Config, VALUE_PARAM_PATTERN } from './types'
 import { interpreteParam } from './utils'
 import { compileAction } from './compile-action'
-import { HandlersUseInRender } from './use-handlers-use-in-render'
 
 export default function useHandlers(
   brick: Brick,
-  actions: Actions,
   config: Config,
-  pSupply: SupplyInRender,
-  handlers: HandlersUseInRender
+  actions: Record<string, Action>,
+  $this: Omit<BrickInstance, 'children' | 'handlers' | 'actions'>
 ): Record<string, Action> {
   return useMemo<Actions>(() => {
     return (
@@ -18,15 +16,26 @@ export default function useHandlers(
         let action: (...args: unknown[]) => void
         if (typeof functionStr !== 'function' && VALUE_PARAM_PATTERN.test(functionStr)) {
           action = interpreteParam(functionStr, {
-            $supply: pSupply.actions || {},
-            $this: actions,
+            $this: {
+              ...actions,
+              supply: $this.supply.actions || {},
+            },
           }) as (...args: unknown[]) => void
         } else {
-          action = compileAction(functionStr, handlers.setData, handlers.emit)
+          action = compileAction(functionStr, $this.setData, $this.emit)
         }
-        result[name] = action
+        const handler = (event: unknown) => {
+          action(
+            {
+              ...$this,
+              actions: actions,
+            },
+            event
+          )
+        }
+        result[name] = handler
         return result
       }, {}) || {}
     )
-  }, [brick, actions, config.handlers, pSupply])
+  }, [brick, config, $this])
 }

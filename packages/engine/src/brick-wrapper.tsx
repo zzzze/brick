@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, useRef, useCallback, useContext, useMemo, useState } from 'react'
+import React, { Children, cloneElement, useRef, useCallback, useContext, useMemo, useState, RefObject } from 'react'
 import { ChildrenType, Config, DataObject, EngineMode, SetConfig } from './types'
 import { BrickContainerProps, ConfigurationFormContext } from '@brick/components'
 import CommonConfigurationForm from './common-configuration-form'
@@ -13,6 +13,65 @@ const ITEM_TYPE = 'brick-config'
 interface DragOverProps {
   className?: string
 }
+
+function isTypeString(obj: unknown): obj is string {
+  return typeof obj === 'string'
+}
+
+const blockLevelElement = [
+  'address',
+  'article',
+  'aside',
+  'blockquote',
+  'details',
+  'dialog',
+  'dd',
+  'div',
+  'dl',
+  'dt',
+  'fieldset',
+  'figcaption',
+  'figure',
+  'footer',
+  'form',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'header',
+  'hgroup',
+  'hr',
+  'li',
+  'main',
+  'nav',
+  'ol',
+  'p',
+  'pre',
+  'section',
+  'table',
+  'ul',
+]
+
+const voidElements = [
+  'area',
+  'base',
+  'br',
+  'col',
+  'command',
+  'embed',
+  'hr',
+  'img',
+  'input',
+  'keygen',
+  'link',
+  'meta',
+  'param',
+  'source',
+  'track',
+  'wbr',
+]
 
 const DragOver: React.FC<DragOverProps> = ({ className }: DragOverProps) => {
   const [hover, setHover] = useState(false)
@@ -290,26 +349,48 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     }
   )
   preview(drop(brickContainer))
-  return cloneElement<BrickContainerPropsWithRef>(
-    child,
-    {
-      ref: brickContainer,
-      configurationForm: context.mode === EngineMode.EDIT ? configForm : null,
-      className: clx(child.props.className, 'brick', {
-        'brick__with-config-form': context.mode === EngineMode.EDIT,
-        'brick__with-config-form--dragging': isDragging,
-        'brick__with-config-form--hovered': isOverCurrent && !isDragging,
-      }),
-    },
-    ...Children.toArray(child.props.children),
-    ...(context.mode === EngineMode.EDIT && !props.isRoot
+  const configurationForm = useMemo(() => {
+    return context.mode === EngineMode.EDIT ? configForm : null
+  }, [context.mode, configForm])
+  const className = useMemo(() => {
+    return clx('brick', {
+      'brick__with-config-form': context.mode === EngineMode.EDIT,
+      'brick__with-config-form--dragging': isDragging,
+      'brick__with-config-form--hovered': isOverCurrent && !isDragging,
+    })
+  }, [child.props.className, context.mode, isDragging, isOverCurrent, isDragging])
+  const actionArea = useMemo(() => {
+    return context.mode === EngineMode.EDIT && !props.isRoot
       ? [
           <DragOver key="left" className="brick__action-area brick__action-area-left" />,
           <DragOver key="right" className="brick__action-area brick__action-area-right" />,
           <DragOver key="top" className="brick__action-area brick__action-area-top" />,
           <DragOver key="bottom" className="brick__action-area brick__action-area-bottom" />,
         ]
-      : [])
+      : []
+  }, [context.mode, props.isRoot])
+  if (isTypeString(child.type) && voidElements.includes(child.type)) {
+    let Tag: 'span' | 'div' = 'span'
+    if (blockLevelElement.includes(child.type)) {
+      Tag = 'div'
+    }
+    return (
+      <Tag ref={brickContainer as RefObject<HTMLDivElement>} className={className}>
+        {child}
+        {configurationForm}
+        {actionArea}
+      </Tag>
+    )
+  }
+  return cloneElement<BrickContainerPropsWithRef>(
+    child,
+    {
+      ref: brickContainer,
+      className: clx(child.props.className, className),
+    },
+    configurationForm,
+    ...Children.toArray(child.props.children),
+    ...actionArea
   )
 }
 export default BrickWrapper
