@@ -132,8 +132,60 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       }
     })
   }, [])
-
   const child: React.ReactElement<BrickContainerPropsWithRef> = Children.only(props.children)
+  const canDrop = (item: IDragItem, monitor: DropTargetMonitor) => {
+    if (context.mode !== EngineMode.EDIT) {
+      return false
+    }
+    if (!brickContainer.current) {
+      return false
+    }
+    if (!monitor.isOver({ shallow: true })) {
+      return false
+    }
+    if (isHoverOnItselfOrChild(item.config, props.config._key)) {
+      // drag and hover on itself or its children
+      return false
+    }
+    const hoverBoundingRect = brickContainer.current.getBoundingClientRect()
+    const clientOffset = monitor.getClientOffset()
+    const inAdditionActionTriggerAera = isInAdditionActionTriggerAera(
+      hoverBoundingRect,
+      clientOffset || { x: -1, y: -1 }
+    )
+    if (inAdditionActionTriggerAera) {
+      if (Array.isArray(props.config.children) && props.config.children.some((c) => c._key === item.config._key)) {
+        // item is in the container already
+        return false
+      }
+      if (brick.childrenType === ChildrenType.NONE) {
+        return false
+      }
+      if (
+        brick.childrenType === ChildrenType.SINGLE &&
+        Array.isArray(props.config.children) &&
+        props.config.children.length > 0
+      ) {
+        return false
+      }
+    }
+    const inForwardActionTriggerAera = isInForwardActionTriggerAera(hoverBoundingRect, clientOffset || { x: -1, y: -1 })
+    const inBackwardActionTriggerAera = isInBackwardActionTriggerAera(
+      hoverBoundingRect,
+      clientOffset || { x: -1, y: -1 }
+    )
+    if (inForwardActionTriggerAera || inBackwardActionTriggerAera) {
+      if (
+        parentBrick?.childrenType === ChildrenType.SINGLE &&
+        props?.parentConfig &&
+        Array.isArray(props?.parentConfig?.children) &&
+        props?.parentConfig.children.length > 0
+      ) {
+        return false
+      }
+    }
+    return true
+  }
   const [{ isDragging }, drag, preview] = useDrag(
     {
       item: {
@@ -157,62 +209,6 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
   const [{ isOverCurrent }, drop] = useDrop(
     {
       accept: ITEM_TYPE,
-      canDrop(item: IDragItem, monitor: DropTargetMonitor) {
-        if (context.mode !== EngineMode.EDIT) {
-          return false
-        }
-        if (!brickContainer.current) {
-          return false
-        }
-        if (!monitor.isOver({ shallow: true })) {
-          return false
-        }
-        if (isHoverOnItselfOrChild(item.config, props.config._key)) {
-          // drag and hover on itself or its children
-          return false
-        }
-        const hoverBoundingRect = brickContainer.current.getBoundingClientRect()
-        const clientOffset = monitor.getClientOffset()
-        const inAdditionActionTriggerAera = isInAdditionActionTriggerAera(
-          hoverBoundingRect,
-          clientOffset || { x: -1, y: -1 }
-        )
-        if (inAdditionActionTriggerAera) {
-          if (Array.isArray(props.config.children) && props.config.children.some((c) => c._key === item.config._key)) {
-            // item is in the container already
-            return false
-          }
-          if (brick.childrenType === ChildrenType.NONE) {
-            return false
-          }
-          if (
-            brick.childrenType === ChildrenType.SINGLE &&
-            Array.isArray(props.config.children) &&
-            props.config.children.length > 0
-          ) {
-            return false
-          }
-        }
-        const inForwardActionTriggerAera = isInForwardActionTriggerAera(
-          hoverBoundingRect,
-          clientOffset || { x: -1, y: -1 }
-        )
-        const inBackwardActionTriggerAera = isInBackwardActionTriggerAera(
-          hoverBoundingRect,
-          clientOffset || { x: -1, y: -1 }
-        )
-        if (inForwardActionTriggerAera || inBackwardActionTriggerAera) {
-          if (
-            parentBrick?.childrenType === ChildrenType.SINGLE &&
-            props?.parentConfig &&
-            Array.isArray(props?.parentConfig?.children) &&
-            props?.parentConfig.children.length > 0
-          ) {
-            return false
-          }
-        }
-        return true
-      },
       hover: debounce((item: IDragItem, monitor: DropTargetMonitor) => {
         /**
          * Must remove item before insert it, otherwise item can't insert to container due to same key item exists.
@@ -221,7 +217,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         if (!brickContainer.current) {
           return
         }
-        if (!monitor.canDrop()) {
+        if (!canDrop(item, monitor)) {
           return
         }
         const hoverBoundingRect = brickContainer.current.getBoundingClientRect()
@@ -265,7 +261,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           item.onRemove = props.onRemoveItemFormParent
           item.lastAction = `backward-${props.config._key}-${item.config._key}`
         }
-      }, 200),
+      }, 20),
       collect: (monitor: DropTargetMonitor) => ({
         isOverCurrent: monitor.isOver({ shallow: true }),
       }),
