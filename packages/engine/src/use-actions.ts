@@ -15,8 +15,9 @@ export default function useActions(
       if (typeof functionStr !== 'function' && VALUE_PARAM_PATTERN.test(functionStr)) {
         action = interpreteParam(functionStr, {
           $this: {
-            supply: $this.supply.actions || {},
+            supply: pSupply.actions,
           },
+          $supply: pSupply.actions,
         }) as (...args: unknown[]) => void
       } else {
         action = compileAction(functionStr, $this.setData, $this.emit)

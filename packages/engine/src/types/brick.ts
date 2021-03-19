@@ -44,6 +44,7 @@ export interface BrickInstance {
   supply: SupplyInRender
   setData: SetData
   emit: Emit
+  isBrickInstance: true
   children?: React.ReactNode
 }
 

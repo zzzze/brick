@@ -18,8 +18,9 @@ export default function useHandlers(
           action = interpreteParam(functionStr, {
             $this: {
               ...actions,
-              supply: $this.supply.actions || {},
+              supply: $this.supply.actions,
             },
+            $supply: $this.supply.actions,
           }) as (...args: unknown[]) => void
         } else {
           action = compileAction(functionStr, $this.setData, $this.emit)

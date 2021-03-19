@@ -3,7 +3,7 @@ import { Actions, Config, SupplyInRender, VALUE_PARAM_PATTERN } from './types'
 import { interpreteParam } from './utils'
 import { compileAction } from './compile-action'
 import Context from './context'
-import { InstanceHandlers } from './use-handlers-use-in-render'
+import { InstanceHandlers } from './use-instance-handlers'
 
 export default function useListeners(
   actions: Actions,

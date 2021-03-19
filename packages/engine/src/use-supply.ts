@@ -49,6 +49,7 @@ export default function useSupply(
             ...actions,
             supply: pSupply.actions,
           },
+          $supply: pSupply.actions,
         }) as (...args: unknown[]) => void
       } else {
         action = compileAction(value, handlers.setData, handlers.emit)

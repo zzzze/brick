@@ -19,16 +19,17 @@ export default function getConfigData(
       let value = data[key] || defaultData[key]
       if (typeof value === 'string' && VALUE_PARAM_PATTERN.test(value)) {
         const match = /^\{\{\s*\$this\.(\w+)\.?/.exec(value)
-        if (!match) {
-          return
+        const dependentData: Record<string, unknown> = {}
+        if (match) {
+          const attr = match[1]
+          const valueOfAttr = getValueOfkey(result, attr, traversedKeys)
+          dependentData[attr] = valueOfAttr
         }
-        const attr = match[1]
-        const valueOfAttr = getValueOfkey(result, attr, traversedKeys)
         value = interpreteParam(value, {
           $this: {
-            [attr]: valueOfAttr,
-            supply: pSupply,
+            ...dependentData,
           },
+          $supply: pSupply,
         })
       }
       result[key] = value

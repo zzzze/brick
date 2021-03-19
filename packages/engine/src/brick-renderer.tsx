@@ -56,6 +56,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
     ...instanceHandlers,
     data,
     supply: pSupply,
+    isBrickInstance: true,
   }
   useEffect(() => {
     const newData = getConfigData(keys, config.data ?? {}, pSupply.data ?? {}, brick.defaultData)

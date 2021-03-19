@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 import 'jest-enzyme'
 import { Engine } from '@/index'
-import { BrickContainer } from '@brick/components'
 import { Brick, ChildrenType, DataType, BrickInstance } from '@/types'
 import { ConfigurationFormItem as FormItem } from '@brick/components'
 
@@ -19,8 +18,8 @@ const View: Brick = {
       </FormItem>
     )
   },
-  render(args: BrickInstance) {
-    return <BrickContainer>{args.children}</BrickContainer>
+  render(instance: BrickInstance) {
+    return <div>{instance.children}</div>
   },
   version: '0.0.1',
 }
@@ -41,8 +40,8 @@ const Text: Brick = {
       </FormItem>
     )
   },
-  render(args: BrickInstance) {
-    return <BrickContainer tag="span">{args.data.content as string}</BrickContainer>
+  render(instance: BrickInstance) {
+    return <span>{instance.data.content as string}</span>
   },
   version: '0.0.1',
 }
@@ -63,8 +62,8 @@ const TextWithDefaultValue: Brick = {
       </FormItem>
     )
   },
-  render(args: BrickInstance) {
-    return <BrickContainer tag="span">{args.data.content as string}</BrickContainer>
+  render(instance: BrickInstance) {
+    return <span>{instance.data.content as string}</span>
   },
   version: '0.0.1',
 }
@@ -95,19 +94,17 @@ const TextWithOnClickEvent: Brick = {
       </FormItem>
     )
   },
-  render(args: BrickInstance) {
+  render(instance: BrickInstance) {
     const handleClick = useCallback(() => {
-      const onClick = args.handlers['onClick']
+      const onClick = instance.handlers['onClick']
       if (onClick) {
         onClick()
       }
     }, [])
     return (
-      <BrickContainer tag="span">
-        <span data-testid="element-with-action" onClick={handleClick}>
-          {args.data.content as string}
-        </span>
-      </BrickContainer>
+      <span data-testid="element-with-action" onClick={handleClick}>
+        {instance.data.content as string}
+      </span>
     )
   },
   version: '0.0.1',
@@ -139,25 +136,23 @@ const TextWithAction2: Brick = {
       </FormItem>
     )
   },
-  render(args: BrickInstance) {
+  render(instance: BrickInstance) {
     const handleClick = useCallback(() => {
-      const onClick = args.handlers['onClick']
+      const onClick = instance.handlers['onClick']
       if (onClick) {
         onClick(
           {
-            data: args.data,
-            actions: args.actions,
+            data: instance.data,
+            actions: instance.actions,
           },
-          args.supply
+          instance.supply
         )
       }
     }, [])
     return (
-      <BrickContainer tag="span">
-        <span data-testid="element-with-action" onClick={handleClick}>
-          {args.data.content as string}
-        </span>
-      </BrickContainer>
+      <span data-testid="element-with-action" onClick={handleClick}>
+        {instance.data.content as string}
+      </span>
     )
   },
   version: '0.0.1',
@@ -172,8 +167,8 @@ const ViewWithCustomRender: Brick = {
   renderConfigForm() {
     return <></>
   },
-  render(args: BrickInstance) {
-    void args
+  render(instance: BrickInstance) {
+    void instance
     return <></>
   },
   version: '0.0.1',

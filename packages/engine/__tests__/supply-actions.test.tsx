@@ -167,7 +167,7 @@ describe('supply actions', () => {
           text: '{{$this.name}}',
         },
         actions: {
-          onClick: `function(name) {
+          onClick: `function($this, name) {
             setData(function(data) {
               return Object.assign({}, data, {
                 name: name,
@@ -187,8 +187,8 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               _key: '003',
               handlers: {
-                onClick: `function($this, $supply) {
-                  $supply.actions.$container.onClick($this.data.content)
+                onClick: `function($this) {
+                  $this.supply.actions.$container.onClick($this.data.content)
                 }`,
               },
               data: {
@@ -245,7 +245,7 @@ describe('supply actions', () => {
           text: '{{$this.name}}',
         },
         actions: {
-          onClick: `function(name) {
+          onClick: `function($this, name) {
             setData(function(data) {
               return Object.assign({}, data, {
                 name: name,
@@ -271,8 +271,8 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               _key: '003',
               handlers: {
-                onClick: `function($this, $supply) {
-                  $supply.actions.$container2.onClick($this.data.content)
+                onClick: `function($this) {
+                  $this.supply.actions.$container2.onClick($this.data.content)
                 }`,
               },
               data: {
@@ -329,7 +329,7 @@ describe('supply actions', () => {
           text: '{{$this.name}}',
         },
         actions: {
-          onClick: `function(name) {
+          onClick: `function($this, name) {
             setData(function(data) {
               return Object.assign({}, data, {
                 name: name,
@@ -355,8 +355,8 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               _key: '003',
               actions: {
-                handleClick: `function($this, $supply) {
-                  $supply.actions.$container2.onClick($this.data.content)
+                handleClick: `function($this) {
+                  $this.supply.actions.$container2.onClick($this.data.content)
                 }`,
               },
               handlers: {
@@ -416,7 +416,7 @@ describe('supply actions', () => {
           text: '{{$this.name}}',
         },
         actions: {
-          onClick: `function(name) {
+          onClick: `function($this, name) {
             setData(function(data) {
               return Object.assign({}, data, {
                 name: name,
@@ -442,11 +442,11 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               _key: '003',
               actions: {
-                click: `function($this, $supply) {
-                  $supply.actions.$container2.onClick($this.data.content)
+                click: `function($this) {
+                  $this.supply.actions.$container2.onClick($this.data.content)
                 }`,
-                handleClick: `function($this, $supply) {
-                  $this.actions.click($this, $supply)
+                handleClick: `function($this) {
+                  $this.actions.click()
                 }`,
               },
               handlers: {
