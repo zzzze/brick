@@ -1,14 +1,14 @@
 import React from 'react'
 import { Engine } from '../src'
-import { Brick, ChildrenType, DataType, BrickInstance } from '../src/types'
+import { Brick, ChildrenType, BrickInstance } from '../src/types'
 import { ConfigurationFormItem as FormItem } from '@brick/components'
+import {StringType, NumberType, BooleanType} from '../src/data/data-type'
 
 const View: Brick = {
   name: 'View',
   dataTypes: {
-    name: DataType.STRING,
+    name: 'string',
   },
-  defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
   renderConfigForm() {
     return (
@@ -26,10 +26,7 @@ const View: Brick = {
 const Text: Brick = {
   name: 'Text',
   dataTypes: {
-    content: DataType.STRING,
-  },
-  defaultData: {
-    content: '',
+    content: 'string',
   },
   childrenType: ChildrenType.NONE,
   canCustomizeRender: true,
@@ -49,10 +46,7 @@ const Text: Brick = {
 const Image: Brick = {
   name: 'Image',
   dataTypes: {
-    src: DataType.STRING,
-  },
-  defaultData: {
-    src: '',
+    src: 'string',
   },
   childrenType: ChildrenType.NONE,
   canCustomizeRender: true,
@@ -72,7 +66,6 @@ const Image: Brick = {
 const Input: Brick = {
   name: 'Input',
   dataTypes: {},
-  defaultData: {},
   childrenType: ChildrenType.NONE,
   renderConfigForm() {
     return (
@@ -91,10 +84,7 @@ const Input: Brick = {
 const TextWithAction: Brick = {
   name: 'TextWithAction',
   dataTypes: {
-    content: DataType.STRING,
-  },
-  defaultData: {
-    content: 'hello world',
+    content: 'string',
   },
   childrenType: ChildrenType.NONE,
   eventNames: ['onClick'],
@@ -130,4 +120,8 @@ export default (): void => {
   Engine.registerBrick(Image)
   Engine.registerBrick(Input)
   Engine.registerBrick(TextWithAction)
+
+  Engine.registerDataType(StringType)
+  Engine.registerDataType(NumberType)
+  Engine.registerDataType(BooleanType)
 }

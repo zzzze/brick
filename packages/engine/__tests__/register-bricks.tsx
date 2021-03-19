@@ -1,15 +1,14 @@
 import React, { useCallback } from 'react'
 import 'jest-enzyme'
 import { Engine } from '@/index'
-import { Brick, ChildrenType, DataType, BrickInstance } from '@/types'
+import { Brick, ChildrenType, BrickInstance } from '@/types'
 import { ConfigurationFormItem as FormItem } from '@brick/components'
 
 const View: Brick = {
   name: 'View',
   dataTypes: {
-    name: DataType.STRING,
+    name: 'string',
   },
-  defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
   renderConfigForm() {
     return (
@@ -27,10 +26,7 @@ const View: Brick = {
 const Text: Brick = {
   name: 'Text',
   dataTypes: {
-    content: DataType.STRING,
-  },
-  defaultData: {
-    content: '',
+    content: 'string',
   },
   childrenType: ChildrenType.NONE,
   renderConfigForm() {
@@ -49,10 +45,10 @@ const Text: Brick = {
 const TextWithDefaultValue: Brick = {
   name: 'TextWithDefaultValue',
   dataTypes: {
-    content: DataType.STRING,
-  },
-  defaultData: {
-    content: 'hello world',
+    content: {
+      type: 'string',
+      default: 'hello world',
+    },
   },
   childrenType: ChildrenType.NONE,
   renderConfigForm() {
@@ -71,10 +67,7 @@ const TextWithDefaultValue: Brick = {
 const TextWithOnClickEvent: Brick = {
   name: 'TextWithOnClickEvent',
   dataTypes: {
-    content: DataType.STRING,
-  },
-  defaultData: {
-    content: 'hello world',
+    content: 'string',
   },
   childrenType: ChildrenType.NONE,
   eventNames: ['onClick'],
@@ -113,10 +106,7 @@ const TextWithOnClickEvent: Brick = {
 const TextWithAction2: Brick = {
   name: 'TextWithAction2',
   dataTypes: {
-    content: DataType.STRING,
-  },
-  defaultData: {
-    content: 'hello world',
+    content: 'string',
   },
   childrenType: ChildrenType.NONE,
   eventNames: ['onClick'],
@@ -161,7 +151,6 @@ const TextWithAction2: Brick = {
 const ViewWithCustomRender: Brick = {
   name: 'ViewWithCustomRender',
   dataTypes: {},
-  defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
   canCustomizeRender: true,
   renderConfigForm() {

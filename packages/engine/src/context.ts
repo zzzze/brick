@@ -2,6 +2,7 @@ import { Brick, EngineMode } from './types'
 import React from 'react'
 import EventEmitter from 'eventemitter3'
 import { ConnectDragSource } from 'react-dnd'
+import {DataType} from './data/data-type'
 
 export interface RenderConfigurationFormOptions {
   ee: EventEmitter
@@ -16,6 +17,7 @@ export interface RenderConfigurationForm {
 interface ContextType {
   renderConfigurationForm: RenderConfigurationForm
   bricks: Record<string, Brick>
+  dataTypes: Record<string, DataType>
   ee: EventEmitter
   mode: EngineMode
   transactionBegin: () => void
@@ -26,6 +28,7 @@ interface ContextType {
 const Context = React.createContext<ContextType>({
   renderConfigurationForm: () => null,
   bricks: {},
+  dataTypes: {},
   ee: new EventEmitter(),
   mode: EngineMode.EDIT,
   transactionBegin: () => {}, // eslint-disable-line  @typescript-eslint/no-empty-function

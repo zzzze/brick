@@ -2,15 +2,15 @@ import React from 'react'
 import demoTest from '@brick/tools/tests/demoTest'
 import { Engine } from '@/index'
 import { BrickContainer } from '@brick/components'
-import { Brick, ChildrenType, DataType, BrickInstance } from '@/types'
+import { Brick, ChildrenType, BrickInstance } from '@/types'
 import { ConfigurationFormItem as FormItem } from '@brick/components'
+import {StringType, NumberType, BooleanType} from '../src/data/data-type'
 
 const View: Brick = {
   name: 'View',
   dataTypes: {
-    name: DataType.STRING,
+    name: 'string',
   },
-  defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
   renderConfigForm() {
     return <></>
@@ -24,10 +24,7 @@ const View: Brick = {
 const Text: Brick = {
   name: 'Text',
   dataTypes: {
-    content: DataType.STRING,
-  },
-  defaultData: {
-    content: '',
+    content: 'string',
   },
   childrenType: ChildrenType.NONE,
   renderConfigForm() {
@@ -46,7 +43,6 @@ const Text: Brick = {
 const ViewWithCustomRender: Brick = {
   name: 'ViewWithCustomRender',
   dataTypes: {},
-  defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
   canCustomizeRender: true,
   renderConfigForm() {
@@ -62,5 +58,9 @@ const ViewWithCustomRender: Brick = {
 Engine.registerBrick(View)
 Engine.registerBrick(Text)
 Engine.registerBrick(ViewWithCustomRender)
+
+Engine.registerDataType(StringType)
+Engine.registerDataType(NumberType)
+Engine.registerDataType(BooleanType)
 
 demoTest('engine')

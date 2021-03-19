@@ -1,8 +1,4 @@
-export enum DataType {
-  STRING = 'string',
-  NUMBER = 'number',
-  BOOLEAN = 'boolean',
-}
+import {DataTypeDefinition} from "@/data/normalize-data-type"
 
 export enum ChildrenType {
   SINGLE = 'single',
@@ -57,10 +53,9 @@ export interface Render {
 export interface Brick {
   name: string
   icon?: string
-  dataTypes: Record<string, DataType>
+  dataTypes: Record<string, string | DataTypeDefinition>
   eventNames?: string[] // events triggered by brick
   defaultHandlers?: Record<string, string> // handler for event
-  defaultData: DataObject
   childrenType: ChildrenType
   renderConfigForm: () => React.ReactElement
   render: Render

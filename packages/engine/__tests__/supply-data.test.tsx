@@ -4,6 +4,7 @@ import 'jest-enzyme'
 import { Engine } from '@/index'
 import { Config } from '@/types'
 import './register-bricks'
+import './register-data-types'
 
 React.useLayoutEffect = React.useEffect
 

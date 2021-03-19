@@ -1,14 +1,15 @@
-import React, { useCallback, useMemo, useEffect, useState, useContext } from 'react'
+import React, { useCallback, useMemo, useEffect, useContext } from 'react'
 import { BrickInstance, Config, SetConfig, SetConfigFn, SupplyInRender } from './types'
 import BrickWrapper from './brick-wrapper'
 import Context from './context'
-import getConfigData from './get-config-data'
 import useRender from './use-render'
 import useActions from './use-actions'
 import useHandlers from './use-handlers'
 import useListeners from './use-listeners'
 import useSupply from './use-supply'
 import useInstanceHandlers from './use-instance-handlers'
+import normalizeDataType from './data/normalize-data-type'
+import useData from './data/use-data'
 
 interface BrickRenderProps {
   config: Config
@@ -45,12 +46,10 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
     }
     return brick
   }, [context.bricks, config])
-  const keys = useMemo(() => {
-    return Object.keys(brick.dataTypes)
-  }, [brick])
-  const [data, setData] = useState<Record<string, unknown>>(() => {
-    return getConfigData(keys, config.data ?? {}, pSupply.data ?? {}, brick.defaultData)
-  })
+  const dataTypes = useMemo(() => {
+    return normalizeDataType(context.dataTypes, brick.dataTypes)
+  }, [context.dataTypes, brick.dataTypes])
+  const [data, setData] = useData(dataTypes, config.data ?? {}, pSupply.data ?? {})
   const instanceHandlers = useInstanceHandlers(data, setConfig, setData)
   const brickInstance: Omit<BrickInstance, 'children' | 'handlers' | 'actions'> = {
     ...instanceHandlers,
@@ -58,10 +57,6 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
     supply: pSupply,
     isBrickInstance: true,
   }
-  useEffect(() => {
-    const newData = getConfigData(keys, config.data ?? {}, pSupply.data ?? {}, brick.defaultData)
-    setData(newData)
-  }, [pSupply, keys, config.data, config.id, brick.defaultData])
   const actions = useActions(config, pSupply, brickInstance)
   useListeners(actions, config, pSupply, instanceHandlers)
   const supply = useSupply(config, pSupply, data, actions, instanceHandlers)

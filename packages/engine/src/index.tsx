@@ -8,6 +8,7 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import Diff from 'deep-diff'
 import cloneDeep from 'lodash/cloneDeep'
+import {DataType} from './data/data-type'
 
 const ee = new EventEmitter()
 
@@ -41,8 +42,12 @@ class Engine extends React.Component<EngineProps, EngineState> {
    * static properties and methods
    */
   static bricks: Record<string, Brick> = {}
+  static dataTypes: Record<string, DataType> = {}
   static registerBrick(brick: Brick): void {
     Engine.bricks[brick.name] = brick
+  }
+  static registerDataType(dataType: DataType): void {
+    Engine.dataTypes[dataType.type] = dataType
   }
 
   /**
@@ -188,6 +193,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
         value={{
           renderConfigurationForm: this._renderConfigurationForm,
           bricks: Engine.bricks,
+          dataTypes: Engine.dataTypes,
           ee,
           mode: this.props.mode || EngineMode.EDIT,
           transactionBegin: this._transactionBegin,
