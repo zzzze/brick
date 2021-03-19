@@ -40,8 +40,8 @@ const Text: Brick = {
       </FormItem>
     )
   },
-  render($this: BrickInstance) {
-    return <span>{$this.data.content as string}</span>
+  render(instance: BrickInstance) {
+    return <span>{instance.data.content as string}</span>
   },
   version: '0.0.1',
 }
@@ -82,8 +82,8 @@ const Input: Brick = {
     )
   },
   eventNames: ['onChange'],
-  render($this: BrickInstance) {
-    return <input onChange={$this.handlers['onChange']} />
+  render(instance: BrickInstance) {
+    return <input onChange={instance.handlers['onChange']} />
   },
   version: '0.0.1',
 }
@@ -114,10 +114,10 @@ const TextWithAction: Brick = {
       </FormItem>
     )
   },
-  render($this: BrickInstance) {
+  render(instance: BrickInstance) {
     return (
-      <span data-testid="element-with-action" onClick={$this.handlers['onClick']}>
-        {$this.data.content as string}
+      <span data-testid="element-with-action" onClick={instance.handlers['onClick']}>
+        {instance.data.content as string}
       </span>
     )
   },
