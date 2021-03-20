@@ -38,7 +38,7 @@ export interface BrickInstance {
   data: DataObject
   actions: Record<string, Action>
   handlers: Record<string, Action>
-  supply: SupplyInRender
+  context: SupplyInRender
   setData: SetData
   emit: Emit
   children?: React.ReactNode

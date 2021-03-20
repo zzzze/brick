@@ -1,6 +1,6 @@
 import React from 'react'
 import { Config, Brick, EngineMode, SetConfigFn } from './types'
-import Context, { RenderConfigurationForm } from './context'
+import EnginxContext, { RenderConfigurationForm } from './context'
 import BrickRenderer from './brick-renderer'
 import EventEmitter from 'eventemitter3'
 import renderConfigurationForm from './render-configuration-form'
@@ -189,7 +189,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
    */
   render(): React.ReactNode {
     return (
-      <Context.Provider
+      <EnginxContext.Provider
         value={{
           renderConfigurationForm: this._renderConfigurationForm,
           bricks: Engine.bricks,
@@ -204,13 +204,13 @@ class Engine extends React.Component<EngineProps, EngineState> {
           {this.state.config && (
             <BrickRenderer
               isRoot
-              supply={{ data: {}, actions: {} }}
+              context={{ data: {}, actions: {} }}
               config={this.state.config}
               setConfig={this._handleSetConfig}
             />
           )}
         </DndProvider>
-      </Context.Provider>
+      </EnginxContext.Provider>
     )
   }
 }

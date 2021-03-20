@@ -261,7 +261,7 @@ describe('supply actions', () => {
               _key: '003',
               handlers: {
                 onClick: `function(instance) {
-                  instance.supply.actions.$container.onClick(instance.data.content)
+                  instance.context.actions.$container.onClick(instance.data.content)
                 }`,
               },
               data: {
@@ -345,7 +345,7 @@ describe('supply actions', () => {
               _key: '003',
               handlers: {
                 onClick: `function(instance) {
-                  instance.supply.actions.$container2.onClick(instance.data.content)
+                  instance.context.actions.$container2.onClick(instance.data.content)
                 }`,
               },
               data: {
@@ -429,7 +429,7 @@ describe('supply actions', () => {
               _key: '003',
               actions: {
                 handleClick: `function(instance) {
-                  instance.supply.actions.$container2.onClick(instance.data.content)
+                  instance.context.actions.$container2.onClick(instance.data.content)
                 }`,
               },
               handlers: {
@@ -516,7 +516,7 @@ describe('supply actions', () => {
               _key: '003',
               actions: {
                 click: `function(instance) {
-                  instance.supply.actions.$container2.onClick(instance.data.content)
+                  instance.context.actions.$container2.onClick(instance.data.content)
                 }`,
                 handleClick: `function(instance) {
                   instance.actions.click()

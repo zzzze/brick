@@ -4,10 +4,10 @@ import clx from 'classnames'
 import { FaEdit } from 'react-icons/fa'
 import { FiMove } from 'react-icons/fi'
 import { AiTwotoneDelete } from 'react-icons/ai'
-import Context from './context'
+import EnginxContext from './context'
 
 export default (node: JSX.Element, options: RenderConfigurationFormOptions): ReturnType<RenderConfigurationForm> => {
-  const context = useContext(Context)
+  const context = useContext(EnginxContext)
   const [configFormVisible, setConfigFormVisible] = useState(false)
   const handleShowConfigForm = useCallback(() => {
     options.ee.emit('close-config-form')

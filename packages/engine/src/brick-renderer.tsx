@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useEffect, useContext } from 'react'
 import { BrickInstance, Config, SetConfig, SetConfigFn, SupplyInRender } from './types'
 import BrickWrapper from './brick-wrapper'
-import Context from './context'
+import EnginxContext from './context'
 import useRender from './use-render'
 import useActions from './action/use-actions'
 import useHandlers from './action/use-handlers'
@@ -16,7 +16,7 @@ import { Action } from './action/compile-action'
 interface BrickRenderProps {
   config: Config
   parentConfig?: Config
-  supply: SupplyInRender
+  context: SupplyInRender
   setConfig: SetConfig
   onRemoveItemFromParent?: (key: string) => void
   onAddToOrMoveInParent?: (config: Config, anchorKey: string, action: string) => void
@@ -24,39 +24,34 @@ interface BrickRenderProps {
   isRoot?: boolean
 }
 
-const BrickRenderer: React.FC<BrickRenderProps> = ({
-  config,
-  supply: pSupply,
-  setConfig,
-  ...props
-}: BrickRenderProps) => {
-  const context = useContext(Context)
+const BrickRenderer: React.FC<BrickRenderProps> = ({ config, context, setConfig, ...props }: BrickRenderProps) => {
+  const engineCtx = useContext(EnginxContext)
   useEffect(() => {
-    if (!context.autoCommit) {
-      context.transactionBegin()
+    if (!engineCtx.autoCommit) {
+      engineCtx.transactionBegin()
     }
   })
   useEffect(() => {
-    if (context.autoCommit) {
-      context.transactionCommit()
+    if (engineCtx.autoCommit) {
+      engineCtx.transactionCommit()
     }
-  }, [context.autoCommit])
+  }, [engineCtx.autoCommit])
   const brick = useMemo(() => {
-    const brick = context.bricks[config.name]
+    const brick = engineCtx.bricks[config.name]
     if (!brick) {
       throw Error(`brick (${config.name}) not found`)
     }
     return brick
-  }, [context.bricks, config])
+  }, [engineCtx.bricks, config])
   const dataTypes = useMemo(() => {
-    return normalizeDataType(context.dataTypes, brick.dataTypes)
-  }, [context.dataTypes, brick.dataTypes])
-  const [data, setData] = useData(dataTypes, config.data ?? {}, pSupply.data ?? {})
+    return normalizeDataType(engineCtx.dataTypes, brick.dataTypes)
+  }, [engineCtx.dataTypes, brick.dataTypes])
+  const [data, setData] = useData(dataTypes, config.data ?? {}, context.data ?? {})
   const instanceHandlers = useInstanceHandlers(data, setConfig, setData)
-  const actions = useActions(config, pSupply)
-  const listeners = useListeners(config, pSupply, actions)
-  const handlers = useHandlers(brick, config, pSupply, actions)
-  const supply = useSupply(config, pSupply, data, actions)
+  const actions = useActions(config, context)
+  const listeners = useListeners(config, context, actions)
+  const handlers = useHandlers(brick, config, context, actions)
+  const supply = useSupply(config, context, data, actions)
   const handleSetStateForChildren = useCallback((fn: (config: Readonly<Config>) => Config, key: string) => {
     setConfig((config) => {
       if (!config.children || !config.children.length) {
@@ -129,7 +124,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
   const brickInstance: Omit<BrickInstance, 'children' | 'handlers'> = {
     ...instanceHandlers,
     data,
-    supply: pSupply,
+    context,
     actions,
     key: config._key,
   }
@@ -167,7 +162,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
                 key={child._key}
                 parentConfig={config}
                 config={child}
-                supply={supply}
+                context={supply}
                 onAddToOrMoveInParent={handleAddToOrMoveInParent}
                 onRemoveItemFromParent={handleRemoveFromParent}
                 setConfig={(fn: SetConfigFn) => handleSetStateForChildren(fn, child._key)}

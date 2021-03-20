@@ -5,7 +5,7 @@ import parseActions from './parse-actions'
 
 export default function useSupply(
   config: Config,
-  pSupply: SupplyInRender,
+  context: SupplyInRender,
   data: Record<string, unknown>,
   actions: Actions
 ): SupplyInRender {
@@ -20,7 +20,7 @@ export default function useSupply(
         value = interpreteParam(value, {
           $this: {
             ...data,
-            supply: pSupply.data,
+            supply: context.data,
           },
         })
       }
@@ -33,7 +33,7 @@ export default function useSupply(
       }
     }
     return supplyData
-  }, [config.supply?.data, config.id, pSupply, data])
+  }, [config.supply?.data, config.id, context, data])
   const supplyActions = useMemo(() => {
     let supplyActions = {}
     const originActions = config.supply?.actions ?? {}
@@ -41,9 +41,9 @@ export default function useSupply(
     supplyActions = parseActions(originActions, {
       $this: {
         actions,
-        supply: pSupply.actions,
+        supply: context.actions,
       },
-      $supply: pSupply.actions,
+      $supply: context.actions,
     })
     if (config.id && actionKeys.length > 0) {
       supplyActions = {
@@ -51,17 +51,17 @@ export default function useSupply(
       }
     }
     return supplyActions
-  }, [config.supply?.actions, config.id, pSupply, actions])
+  }, [config.supply?.actions, config.id, context, actions])
   return useMemo(() => {
     return {
       data: {
-        ...pSupply.data,
+        ...context.data,
         ...supplyData,
       },
       actions: {
-        ...pSupply.actions,
+        ...context.actions,
         ...supplyActions,
       },
     }
-  }, [supplyData, supplyActions, pSupply])
+  }, [supplyData, supplyActions, context])
 }

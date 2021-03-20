@@ -2,7 +2,7 @@ import React, { Children, cloneElement, useRef, useCallback, useContext, useMemo
 import { ChildrenType, Config, DataObject, EngineMode, SetConfig } from './types'
 import { BrickContainerProps, ConfigurationFormContext } from '@brick/components'
 import CommonConfigurationForm from './common-configuration-form'
-import Context from './context'
+import EnginxContext from './context'
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
 import clx from 'classnames'
@@ -164,7 +164,7 @@ const isInBackwardActionTriggerAera = (rect: DOMRect, clientOffset: XYCoord) => 
 }
 
 const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => {
-  const context = useContext(Context)
+  const context = useContext(EnginxContext)
   const brick = useMemo(() => {
     const brick = context.bricks[props.config.name]
     if (!brick) {

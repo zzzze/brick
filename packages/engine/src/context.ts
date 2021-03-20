@@ -25,7 +25,7 @@ interface ContextType {
   autoCommit: boolean
 }
 
-const Context = React.createContext<ContextType>({
+const EnginxContext = React.createContext<ContextType>({
   renderConfigurationForm: () => null,
   bricks: {},
   dataTypes: {},
@@ -36,4 +36,4 @@ const Context = React.createContext<ContextType>({
   autoCommit: false,
 })
 
-export default Context
+export default EnginxContext

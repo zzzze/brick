@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useContext } from 'react'
 import { Emit, SetConfig, SetData, SetDataFn, SetDataOptions } from './types'
-import Context from './context'
+import EnginxContext from './context'
 
 export interface InstanceHandlers {
   setData: SetData
@@ -12,7 +12,7 @@ export default function useInstanceHandlers(
   setConfig: SetConfig,
   setData: React.Dispatch<React.SetStateAction<Record<string, unknown>>>
 ): InstanceHandlers {
-  const context = useContext(Context)
+  const context = useContext(EnginxContext)
   const handleSetData = useCallback(
     (fn: SetDataFn, options: SetDataOptions = {}): void => {
       const newData = fn(data)

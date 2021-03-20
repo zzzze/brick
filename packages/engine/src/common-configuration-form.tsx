@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useContext } from 'react'
 import { Config, SetConfig } from '@/types'
 import { ObjectStringInput } from '@brick/components'
-import Context from './context'
+import EnginxContext from './context'
 import set from 'lodash/set'
 import { copyConfig } from './utils/copy-config'
 
@@ -22,7 +22,7 @@ const CommonConfigurationForm = ({
   config,
   onConfigChange,
 }: React.PropsWithChildren<PropsConfigurationFormProps>): JSX.Element | null => {
-  const context = useContext(Context)
+  const context = useContext(EnginxContext)
   const brick = useMemo(() => {
     return context.bricks[config.name]
   }, [context.bricks, config])

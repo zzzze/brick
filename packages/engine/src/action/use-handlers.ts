@@ -6,7 +6,7 @@ import parseActions from './parse-actions'
 export default function useHandlers(
   brick: Brick,
   config: Config,
-  pSupply: SupplyInRender,
+  context: SupplyInRender,
   actions: Record<string, Action>
 ): Record<string, Action> {
   return useMemo<Actions>(() => {
@@ -20,9 +20,9 @@ export default function useHandlers(
     return parseActions(obj as Record<string, Func>, {
       $this: {
         actions,
-        supply: pSupply.actions,
+        supply: context.actions,
       },
-      $supply: pSupply.actions,
+      $supply: context.actions,
     })
-  }, [brick, actions, config.handlers, pSupply])
+  }, [brick, actions, config.handlers, context])
 }
