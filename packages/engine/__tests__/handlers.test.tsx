@@ -31,7 +31,7 @@ describe('handlers', () => {
               name: 'TextWithOnClickEvent',
               _key: '003',
               data: {
-                content: '{{$supply.$container.text}}',
+                content: '{{$container.text}}',
               },
               version: '0.0.1',
             },
@@ -75,7 +75,7 @@ describe('handlers', () => {
               name: 'TextWithOnClickEvent',
               _key: '003',
               data: {
-                content: '{{$supply.$container.text}}',
+                content: '{{$container.text}}',
               },
               handlers: {
                 onClick: `function(instance) {
@@ -129,7 +129,7 @@ describe('handlers', () => {
               name: 'TextWithOnClickEvent',
               _key: '003',
               data: {
-                content: '{{$supply.$container.text}}',
+                content: '{{$container.text}}',
               },
               handlers: {
                 onClick: `function(instance) {
@@ -156,7 +156,7 @@ describe('handlers', () => {
         <Engine ref={ref} config={config} />
       </>
     )
-    expect(config.children?.[0].children?.[0].data?.['content']).toEqual('{{$supply.$container.text}}')
+    expect(config.children?.[0].children?.[0].data?.['content']).toEqual('{{$container.text}}')
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
     expect(wrapper.html()).not.toContain('baz')

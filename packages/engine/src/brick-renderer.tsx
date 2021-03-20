@@ -128,16 +128,24 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, context, setConfig,
     actions,
     key: config._key,
   }
-  bindBrickInstance(actions, brickInstance)
-  bindBrickInstance(listeners, brickInstance)
-  bindBrickInstance(handlers, brickInstance)
-  if (Object.keys(config.supply?.actions || {}).length) {
-    if (config.id) {
-      bindBrickInstance((supply?.actions?.[`$${config.id}`] || {}) as Record<string, Action>, brickInstance)
-    } else {
-      bindBrickInstance((supply?.actions || {}) as Record<string, Action>, brickInstance)
+  useMemo(() => {
+    bindBrickInstance(actions, brickInstance)
+  }, [actions])
+  useMemo(() => {
+    bindBrickInstance(listeners, brickInstance)
+  }, [listeners])
+  useMemo(() => {
+    bindBrickInstance(handlers, brickInstance)
+  }, [handlers])
+  useMemo(() => {
+    if (Object.keys(config.supply?.actions || {}).length) {
+      if (config.id) {
+        bindBrickInstance((supply.actions?.[`$${config.id}`] || {}) as Record<string, Action>, brickInstance)
+      } else {
+        bindBrickInstance((supply.actions?.$global || {}) as Record<string, Action>, brickInstance)
+      }
     }
-  }
+  }, [supply.actions])
   const render = useRender(brick, config)
   return (
     <BrickWrapper

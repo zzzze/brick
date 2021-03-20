@@ -12,15 +12,15 @@ export type ActionObj = Record<string, Func>
  * @returns {Actions}
  * @example
  *  {
- *    a: "{{$container.onClick}}", // parametric expressions
- *    b: "() => {}",               // function string
- *    c: () => {},                 // function
+ *    a: "{{$container.onClick}}",        // parametric expressions
+ *    b: "(a, b) => a + b",               // function string
+ *    c: c => add(a, b) => a + b + c,     // function
  *  }
  *  will be parsed to
  *  {
- *    a: () => {},
- *    b: () => {},
- *    c: () => {},
+ *    a: (a, b) => a + b,
+ *    b: (a, b) => a + b,
+ *    c: (a, b) => a + b + c,
  *  }
  */
 export default function parseActions(obj: ActionObj, context: Record<string, unknown>): Actions {
@@ -28,7 +28,12 @@ export default function parseActions(obj: ActionObj, context: Record<string, unk
     const func = obj[key] || 'function(){}'
     let action: Action
     if (typeof func === 'string' && VALUE_PARAM_PATTERN.test(func)) {
-      action = interpreteParam(func, context) as Action
+      action = interpreteParam(func, context, (expressions: string) => {
+        if (expressions.startsWith('$this.') && !expressions.startsWith('$this.actions.')) {
+          return expressions.replace('$this.', '$this.actions.')
+        }
+        return expressions
+      }) as Action
     } else {
       action = compileAction(func)
     }

@@ -10,7 +10,7 @@ export interface Supply {
 
 // export type Func = string | ((setData: SetData, emit: Emit) => Action)
 
-export type CustomRender = string | ((components: unknown) => Render)
+export type CustomRender = string | (() => Render)
 
 export interface Config {
   _key: string

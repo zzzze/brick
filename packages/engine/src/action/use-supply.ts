@@ -14,44 +14,56 @@ export default function useSupply(
       ...config.supply?.data,
     }
     const dataKeys = Object.keys(supplyData)
+    if (dataKeys.length <= 0) {
+      return supplyData
+    }
     supplyData = dataKeys.reduce<Record<string, unknown>>((result, key) => {
       let value = supplyData[key]
       if (typeof value === 'string' && VALUE_PARAM_PATTERN.test(value)) {
         value = interpreteParam(value, {
-          $this: {
-            ...data,
-            supply: context.data,
-          },
+          $this: data,
+          // supply: context.data,
+          ...context.data,
         })
       }
       result[key] = value
       return result
     }, {})
-    if (config.id && dataKeys.length > 0) {
+    if (config.id) {
       supplyData = {
         [`${idPrefix}${config.id}`]: supplyData,
       }
+    } else {
+      supplyData = {
+        $global: supplyData,
+      }
     }
     return supplyData
-  }, [config.supply?.data, config.id, context, data])
+  }, [config, context, actions, data])
   const supplyActions = useMemo(() => {
     let supplyActions = {}
     const originActions = config.supply?.actions ?? {}
     const actionKeys = Object.keys(originActions)
+    if (actionKeys.length <= 0) {
+      return originActions
+    }
     supplyActions = parseActions(originActions, {
       $this: {
         actions,
-        supply: context.actions,
       },
-      $supply: context.actions,
+      ...context.actions,
     })
-    if (config.id && actionKeys.length > 0) {
+    if (config.id) {
       supplyActions = {
         [`${idPrefix}${config.id}`]: supplyActions,
       }
+    } else {
+      supplyActions = {
+        $global: supplyActions,
+      }
     }
     return supplyActions
-  }, [config.supply?.actions, config.id, context, actions])
+  }, [config, context, actions])
   return useMemo(() => {
     return {
       data: {

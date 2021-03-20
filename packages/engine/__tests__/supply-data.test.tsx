@@ -82,7 +82,7 @@ describe('supply data', () => {
               name: 'Text',
               _key: '003',
               data: {
-                content: '{{$supply.text}}',
+                content: '{{$global.text}}',
               },
               version: '0.0.1',
             },
@@ -134,7 +134,7 @@ describe('supply data', () => {
               name: 'Text',
               _key: '003',
               data: {
-                content: '{{$supply.text}}',
+                content: '{{$global.text}}',
               },
               version: '0.0.1',
             },
@@ -184,7 +184,7 @@ describe('supply data', () => {
               name: 'Text',
               _key: '003',
               data: {
-                content: '{{$supply.$container.text}}',
+                content: '{{$container.text}}',
               },
               version: '0.0.1',
             },

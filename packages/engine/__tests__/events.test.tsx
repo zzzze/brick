@@ -65,7 +65,7 @@ describe('events', () => {
         }`,
       },
       listeners: {
-        setContent: '{{$this.actions.setContent}}',
+        setContent: '{{$this.setContent}}',
       },
       handlers: {
         onClick: `function(instance) {
@@ -125,7 +125,7 @@ describe('events', () => {
             }`,
           },
           data: {
-            content: '{{$supply.name}}',
+            content: '{{$global.name}}',
           },
           version: '0.0.1',
         },
@@ -180,7 +180,7 @@ describe('events', () => {
               name: 'Text',
               _key: '003',
               data: {
-                content: '{{$supply.name}}',
+                content: '{{$global.name}}',
               },
               version: '0.0.1',
             },
@@ -248,7 +248,7 @@ describe('events', () => {
               name: 'Text',
               _key: '003',
               data: {
-                content: '{{$supply.name}}',
+                content: '{{$global.name}}',
               },
               version: '0.0.1',
             },

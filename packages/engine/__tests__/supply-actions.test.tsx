@@ -28,7 +28,7 @@ describe('supply actions', () => {
           _key: '002',
           id: 'container2',
           data: {
-            name: '{{$supply.$container.text}}',
+            name: '{{$container.text}}',
           },
           supply: {
             data: {
@@ -51,10 +51,10 @@ describe('supply actions', () => {
               name: 'TextWithOnClickEvent',
               _key: '003',
               handlers: {
-                onClick: '{{$supply.$container2.onClick}}',
+                onClick: '{{$container2.onClick}}',
               },
               data: {
-                content: '{{$supply.$container2.content}}',
+                content: '{{$container2.content}}',
               },
               version: '0.0.1',
             },
@@ -70,7 +70,7 @@ describe('supply actions', () => {
         <Engine ref={ref} config={config} />
       </>
     )
-    expect(config.children?.[0].data?.['name']).toEqual('{{$supply.$container.text}}')
+    expect(config.children?.[0].data?.['name']).toEqual('{{$container.text}}')
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
     expect(wrapper.html()).not.toContain('baz')
@@ -79,7 +79,7 @@ describe('supply actions', () => {
     expect(config2.children?.[0].data?.['name']).toEqual('123456')
   })
 
-  test('trigger global action from supply', () => {
+  test('trigger global action from supply', async () => {
     const config: Config = {
       name: 'View',
       _key: '001',
@@ -100,7 +100,7 @@ describe('supply actions', () => {
           name: 'View',
           _key: '002',
           data: {
-            name: '{{$supply.$container.text}}',
+            name: '{{$container.text}}',
           },
           supply: {
             data: {
@@ -123,10 +123,10 @@ describe('supply actions', () => {
               name: 'TextWithOnClickEvent',
               _key: '003',
               handlers: {
-                onClick: '{{$supply.onClick}}',
+                onClick: '{{$global.onClick}}',
               },
               data: {
-                content: '{{$supply.content}}',
+                content: '{{$global.content}}',
               },
               version: '0.0.1',
             },
@@ -142,9 +142,10 @@ describe('supply actions', () => {
         <Engine ref={ref} config={config} />
       </>
     )
-    expect(config.children?.[0].data?.['name']).toEqual('{{$supply.$container.text}}')
+    expect(config.children?.[0].data?.['name']).toEqual('{{$container.text}}')
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
+    await new Promise((resolve) => setTimeout(resolve, 100))
     expect(wrapper.html()).not.toContain('baz')
     expect(wrapper.html()).toContain('123456')
     const config2 = ref.current?.getConfig() as Config
@@ -184,7 +185,7 @@ describe('supply actions', () => {
               name: 'TextWithOnClickEvent',
               _key: '003',
               handlers: {
-                onClick: '{{$supply.$container.onClick}}',
+                onClick: '{{$container.onClick}}',
               },
               data: {
                 content: 'foo',
@@ -202,7 +203,7 @@ describe('supply actions', () => {
               name: 'Text',
               _key: '005',
               data: {
-                content: '{{$supply.$container.text}}',
+                content: '{{$container.text}}',
               },
               version: '0.0.1',
             },
@@ -280,7 +281,7 @@ describe('supply actions', () => {
               name: 'Text',
               _key: '005',
               data: {
-                content: '{{$supply.$container.text}}',
+                content: '{{$container.text}}',
               },
               version: '0.0.1',
             },
@@ -336,7 +337,7 @@ describe('supply actions', () => {
           id: 'container2',
           supply: {
             actions: {
-              onClick: '{{$supply.$container.onClick}}',
+              onClick: '{{$container.onClick}}',
             },
           },
           children: [
@@ -364,7 +365,7 @@ describe('supply actions', () => {
               name: 'Text',
               _key: '005',
               data: {
-                content: '{{$supply.$container.text}}',
+                content: '{{$container.text}}',
               },
               version: '0.0.1',
             },
@@ -420,7 +421,7 @@ describe('supply actions', () => {
           id: 'container2',
           supply: {
             actions: {
-              onClick: '{{$supply.$container.onClick}}',
+              onClick: '{{$container.onClick}}',
             },
           },
           children: [
@@ -433,7 +434,7 @@ describe('supply actions', () => {
                 }`,
               },
               handlers: {
-                onClick: '{{$this.actions.handleClick}}',
+                onClick: '{{$this.handleClick}}',
               },
               data: {
                 content: '123456789',
@@ -451,7 +452,7 @@ describe('supply actions', () => {
               name: 'Text',
               _key: '005',
               data: {
-                content: '{{$supply.$container.text}}',
+                content: '{{$container.text}}',
               },
               version: '0.0.1',
             },
@@ -507,7 +508,7 @@ describe('supply actions', () => {
           id: 'container2',
           supply: {
             actions: {
-              onClick: '{{$supply.$container.onClick}}',
+              onClick: '{{$container.onClick}}',
             },
           },
           children: [
@@ -523,7 +524,7 @@ describe('supply actions', () => {
                 }`,
               },
               handlers: {
-                onClick: '{{$this.actions.handleClick}}',
+                onClick: '{{$this.handleClick}}',
               },
               data: {
                 content: '123456789',
@@ -541,7 +542,7 @@ describe('supply actions', () => {
               name: 'Text',
               _key: '005',
               data: {
-                content: '{{$supply.$container.text}}',
+                content: '{{$container.text}}',
               },
               version: '0.0.1',
             },

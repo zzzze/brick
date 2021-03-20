@@ -88,14 +88,8 @@ const TextWithOnClickEvent: Brick = {
     )
   },
   render(instance: BrickInstance) {
-    const handleClick = useCallback(() => {
-      const onClick = instance.handlers['onClick']
-      if (onClick) {
-        onClick()
-      }
-    }, [])
     return (
-      <span data-testid="element-with-action" onClick={handleClick}>
+      <span data-testid="element-with-action" onClick={instance.handlers['onClick']}>
         {instance.data.content as string}
       </span>
     )

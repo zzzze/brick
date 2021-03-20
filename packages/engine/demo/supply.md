@@ -18,7 +18,7 @@ const config = {
           name: 'Text',
           _key: '003',
           data: {
-            content: '{{$supply.text}}',
+            content: '{{$global.text}}',
           },
           version: '0.0.1',
         },

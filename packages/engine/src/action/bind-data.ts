@@ -23,6 +23,7 @@ export default function bindBrickInstance(
       }
     }
     func.binded = true
+    func.instance_key = instance.key
     actions[key] = func
   })
 }

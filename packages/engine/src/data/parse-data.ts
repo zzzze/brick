@@ -67,7 +67,6 @@ export default function parseData(dataConfig: DataConfig, data: DataObject, pSup
           $this: {
             ...dependentData,
           },
-          $supply: pSupply,
           ...pSupply,
         })
       }

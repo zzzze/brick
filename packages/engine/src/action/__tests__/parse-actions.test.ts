@@ -4,7 +4,7 @@ describe('parseActions', () => {
   test('parse actions string correctly', () => {
     const actionObj: ActionObj = {
       add: `(a: number, b: number, ctx: {result: number}) => (ctx.result = a + b)`,
-      sub: ((a: number, b: number, ctx: { result: number }) => (ctx.result = a - b)) as Action,
+      sub: () => ((a: number, b: number, ctx: { result: number }) => (ctx.result = a - b)) as Action,
       mul: '{{$container.mul}}',
     }
     const context = {

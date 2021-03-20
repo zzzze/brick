@@ -13,7 +13,7 @@
       "text": "{{$this.name}}"
     },
     "actions": {
-      "onClick": "{{$this.actions.onClick}}"
+      "onClick": "{{$this.onClick}}"
     }
   },
   "children": [
@@ -29,7 +29,7 @@
       "name": "Text",
       "_key": "002",
       "data": {
-        "content": "{{$supply.$container.text}}"
+        "content": "{{$container.text}}"
       },
       "version": "0.0.1"
     },
@@ -39,8 +39,8 @@
       "id": "container2",
       "supply": {
         "actions": {
-          "onClick": "{{$supply.$container.onClick}}",
-          "onInputChange": "function(instance, value) {\n  instance.supply.actions.$container.onClick(value)}"
+          "onClick": "{{$container.onClick}}",
+          "onInputChange": "function(instance, value) {\n   instance.context.actions.$container.onClick(value)}"
         }
       },
       "children": [
@@ -48,7 +48,7 @@
           "name": "Input",
           "_key": "0010",
           "handlers": {
-            "onChange": "function(instance, event) {\n             instance.supply.actions.$container2.onInputChange(event.target.value)\n                }"
+            "onChange": "function(instance, event) {\n             instance.context.actions.$container2.onInputChange(event.target.value)\n                }"
           },
           "version": "0.0.1"
         },
@@ -56,10 +56,10 @@
           "name": "TextWithAction",
           "_key": "005",
           "actions": {
-            "handleClick": "function(instance, ...args) {\n console.log('abc', instance, args)\n                  instance.supply.actions.$container2.onClick(instance.data.content)\n                }"
+            "handleClick": "function(instance, ...args) {\n console.log('abc', instance, args)\n                  instance.context.actions.$container2.onClick(instance.data.content)\n                }"
           },
           "handlers": {
-            "onClick": "{{$this.actions.handleClick}}"
+            "onClick": "{{$this.handleClick}}"
           },
           "data": {
             "content": "123456789"
@@ -77,7 +77,7 @@
           "name": "Text",
           "_key": "007",
           "data": {
-            "content": "{{$supply.$container.text}}"
+            "content": "{{$container.text}}"
           },
           "version": "0.0.1"
         },

@@ -23,6 +23,7 @@ export default function useHandlers(
         supply: context.actions,
       },
       $supply: context.actions,
+      ...context.actions,
     })
   }, [brick, actions, config.handlers, context])
 }

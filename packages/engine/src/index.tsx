@@ -204,7 +204,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
           {this.state.config && (
             <BrickRenderer
               isRoot
-              context={{ data: {}, actions: {} }}
+              context={{ data: {}, actions: { $global: {} } }}
               config={this.state.config}
               setConfig={this._handleSetConfig}
             />
