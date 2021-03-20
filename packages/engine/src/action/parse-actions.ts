@@ -1,9 +1,9 @@
-import { VALUE_PARAM_PATTERN } from '@/types'
-import { interpreteParam } from '@/utils'
-import compileAction, { Action } from './compile-action'
+import { VALUE_PARAM_PATTERN } from '../types'
+import { interpreteParam } from '../utils'
+import compileAction, { Action, Func } from './compile-action'
 
 export type Actions = Record<string, Action>
-export type ActionObj = Record<string, string | Action>
+export type ActionObj = Record<string, Func>
 
 /**
  * parse ActionObj to Actions

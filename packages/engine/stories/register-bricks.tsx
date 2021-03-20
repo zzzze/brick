@@ -2,7 +2,7 @@ import React from 'react'
 import { Engine } from '../src'
 import { Brick, ChildrenType, BrickInstance } from '../src/types'
 import { ConfigurationFormItem as FormItem } from '@brick/components'
-import {StringType, NumberType, BooleanType} from '../src/data/data-type'
+import { StringType, NumberType, BooleanType } from '../src/data/data-type'
 
 const View: Brick = {
   name: 'View',
@@ -89,8 +89,8 @@ const TextWithAction: Brick = {
   childrenType: ChildrenType.NONE,
   eventNames: ['onClick'],
   defaultHandlers: {
-    onClick: `function () {
-      setData(function(data) {
+    onClick: `function (instance) {
+      instance.setData(function(data) {
         return Object.assign({}, data, {
           content: 'foo',
         })

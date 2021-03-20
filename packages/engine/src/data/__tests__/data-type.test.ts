@@ -1,4 +1,4 @@
-import {StringType, NumberType, BooleanType} from '../data-type'
+import { StringType, NumberType, BooleanType } from '../data-type'
 import normalizeDataType from '../normalize-data-type'
 
 describe('normalizeDataType', () => {
@@ -25,6 +25,6 @@ describe('normalizeDataType', () => {
         type: 'number',
         default: 10,
       },
-    })   
+    })
   })
 })

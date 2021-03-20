@@ -2,6 +2,7 @@ import { transform } from '@babel/standalone'
 
 export interface Action {
   (...args: unknown[]): void
+  binded?: boolean
 }
 
 export type Func = string | Action

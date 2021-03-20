@@ -72,8 +72,8 @@ const TextWithOnClickEvent: Brick = {
   childrenType: ChildrenType.NONE,
   eventNames: ['onClick'],
   defaultHandlers: {
-    onClick: `function () {
-      setData(function(data) {
+    onClick: `function (instance) {
+      instance.setData(function(data) {
         return Object.assign({}, data, {
           content: 'foo',
         })
@@ -111,8 +111,8 @@ const TextWithAction2: Brick = {
   childrenType: ChildrenType.NONE,
   eventNames: ['onClick'],
   defaultHandlers: {
-    onClick: `function () {
-      setData(function(data) {
+    onClick: `function (instance) {
+      instance.setData(function(data) {
         return Object.assign({}, data, {
           content: 'foo',
         })
@@ -130,13 +130,7 @@ const TextWithAction2: Brick = {
     const handleClick = useCallback(() => {
       const onClick = instance.handlers['onClick']
       if (onClick) {
-        onClick(
-          {
-            data: instance.data,
-            actions: instance.actions,
-          },
-          instance.supply
-        )
+        onClick()
       }
     }, [])
     return (

@@ -6,15 +6,23 @@ import { Actions } from './parse-actions'
  * @param {Actions} actions action sets to be binded
  * @param {BrickInstance} instance brick instance
  */
-export default function bindBrickInstance(actions: Actions, instance: BrickInstance): void {
+export default function bindBrickInstance(
+  actions: Actions,
+  instance: Omit<BrickInstance, 'children' | 'handlers'>
+): void {
   Object.keys(actions).forEach((key) => {
     const originAction = actions[key]
-    actions[key] = (...args: unknown[]) => {
-      const firstArgs = args[0]
-      if (firstArgs && typeof firstArgs === 'object' && (firstArgs as BrickInstance).isBrickInstance) {
-        args = args.slice(1)
-      }
-      originAction(instance, ...args)
+    if (key.startsWith('$') || typeof originAction !== 'function') {
+      return
     }
+    const func = (...args: unknown[]) => {
+      if (originAction.binded) {
+        originAction(...args)
+      } else {
+        originAction(instance, ...args)
+      }
+    }
+    func.binded = true
+    actions[key] = func
   })
 }

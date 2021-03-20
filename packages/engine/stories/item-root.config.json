@@ -6,14 +6,14 @@
     "name": "baz"
   },
   "actions": {
-    "onClick": "function(instance, name) {\n console.log('instance', instance)\n            setData(function(data) {\n    console.log('000001', data);\n          return Object.assign({}, data, {\n                name: name,\n              })\n            }, {\n              setToConfig: true,\n            })\n          }"
+    "onClick": "function(instance, name) {\n            instance.setData(function(data) {\n    console.log('000001', data);\n          return Object.assign({}, data, {\n                name: name,\n              })\n            }, {\n              setToConfig: true,\n            })\n          }"
   },
   "supply": {
     "data": {
       "text": "{{$this.name}}"
     },
     "actions": {
-      "onClick": "{{$this.onClick}}"
+      "onClick": "{{$this.actions.onClick}}"
     }
   },
   "children": [
@@ -59,7 +59,7 @@
             "handleClick": "function(instance, ...args) {\n console.log('abc', instance, args)\n                  instance.supply.actions.$container2.onClick(instance.data.content)\n                }"
           },
           "handlers": {
-            "onClick": "{{$this.handleClick}}"
+            "onClick": "{{$this.actions.handleClick}}"
           },
           "data": {
             "content": "123456789"

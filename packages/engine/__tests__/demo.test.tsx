@@ -4,7 +4,7 @@ import { Engine } from '@/index'
 import { BrickContainer } from '@brick/components'
 import { Brick, ChildrenType, BrickInstance } from '@/types'
 import { ConfigurationFormItem as FormItem } from '@brick/components'
-import {StringType, NumberType, BooleanType} from '../src/data/data-type'
+import { StringType, NumberType, BooleanType } from '../src/data/data-type'
 
 const View: Brick = {
   name: 'View',

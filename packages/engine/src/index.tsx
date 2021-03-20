@@ -8,7 +8,7 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import Diff from 'deep-diff'
 import cloneDeep from 'lodash/cloneDeep'
-import {DataType} from './data/data-type'
+import { DataType } from './data/data-type'
 
 const ee = new EventEmitter()
 

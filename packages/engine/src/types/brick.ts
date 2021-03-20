@@ -1,4 +1,4 @@
-import {DataTypeDefinition} from "@/data/normalize-data-type"
+import { DataTypeDefinition } from '@/data/normalize-data-type'
 
 export enum ChildrenType {
   SINGLE = 'single',
@@ -34,13 +34,13 @@ export interface SupplyInRender {
 }
 
 export interface BrickInstance {
+  key: string
   data: DataObject
   actions: Record<string, Action>
   handlers: Record<string, Action>
   supply: SupplyInRender
   setData: SetData
   emit: Emit
-  isBrickInstance: true
   children?: React.ReactNode
 }
 

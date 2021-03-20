@@ -35,8 +35,8 @@ describe('supply actions', () => {
               content: '{{$this.name}}',
             },
             actions: {
-              onClick: `function() {
-                setData(function(data) {
+              onClick: `function(instance) {
+                instance.setData(function(data) {
                   return Object.assign({}, data, {
                     name: '123456',
                   })
@@ -79,6 +79,78 @@ describe('supply actions', () => {
     expect(config2.children?.[0].data?.['name']).toEqual('123456')
   })
 
+  test('trigger global action from supply', () => {
+    const config: Config = {
+      name: 'View',
+      _key: '001',
+      id: 'container',
+      data: {
+        name: 'baz',
+      },
+      supply: {
+        data: {
+          text: '{{$this.name}}',
+        },
+        actions: {
+          onClick: `function() {}`,
+        },
+      },
+      children: [
+        {
+          name: 'View',
+          _key: '002',
+          data: {
+            name: '{{$supply.$container.text}}',
+          },
+          supply: {
+            data: {
+              content: '{{$this.name}}',
+            },
+            actions: {
+              onClick: `function(instance) {
+                instance.setData(function(data) {
+                  return Object.assign({}, data, {
+                    name: '123456',
+                  })
+                }, {
+                  setToConfig: true,
+                })
+              }`,
+            },
+          },
+          children: [
+            {
+              name: 'TextWithOnClickEvent',
+              _key: '003',
+              handlers: {
+                onClick: '{{$supply.onClick}}',
+              },
+              data: {
+                content: '{{$supply.content}}',
+              },
+              version: '0.0.1',
+            },
+          ],
+          version: '0.0.1',
+        },
+      ],
+      version: '0.0.1',
+    }
+    const ref = React.createRef<Engine>()
+    const wrapper = mount(
+      <>
+        <Engine ref={ref} config={config} />
+      </>
+    )
+    expect(config.children?.[0].data?.['name']).toEqual('{{$supply.$container.text}}')
+    expect(wrapper.html()).toContain('baz')
+    wrapper.find('span[data-testid="element-with-action"]').simulate('click')
+    expect(wrapper.html()).not.toContain('baz')
+    expect(wrapper.html()).toContain('123456')
+    const config2 = ref.current?.getConfig() as Config
+    expect(config2.children?.[0].data?.['name']).toEqual('123456')
+  })
+
   test('data action between sibling', () => {
     const config: Config = {
       name: 'View',
@@ -92,8 +164,8 @@ describe('supply actions', () => {
           text: '{{$this.name}}',
         },
         actions: {
-          onClick: `function() {
-            setData(function(data) {
+          onClick: `function(instance) {
+            instance.setData(function(data) {
               return Object.assign({}, data, {
                 name: '123456',
               })
@@ -168,8 +240,8 @@ describe('supply actions', () => {
           text: '{{$this.name}}',
         },
         actions: {
-          onClick: `function($this, name) {
-            setData(function(data) {
+          onClick: `function(instance, name) {
+            instance.setData(function(data) {
               return Object.assign({}, data, {
                 name: name,
               })
@@ -188,8 +260,8 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               _key: '003',
               handlers: {
-                onClick: `function($this) {
-                  $this.supply.actions.$container.onClick($this.data.content)
+                onClick: `function(instance) {
+                  instance.supply.actions.$container.onClick(instance.data.content)
                 }`,
               },
               data: {
@@ -246,8 +318,8 @@ describe('supply actions', () => {
           text: '{{$this.name}}',
         },
         actions: {
-          onClick: `function($this, name) {
-            setData(function(data) {
+          onClick: `function(instance, name) {
+            instance.setData(function(data) {
               return Object.assign({}, data, {
                 name: name,
               })
@@ -272,8 +344,8 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               _key: '003',
               handlers: {
-                onClick: `function($this) {
-                  $this.supply.actions.$container2.onClick($this.data.content)
+                onClick: `function(instance) {
+                  instance.supply.actions.$container2.onClick(instance.data.content)
                 }`,
               },
               data: {
@@ -330,8 +402,8 @@ describe('supply actions', () => {
           text: '{{$this.name}}',
         },
         actions: {
-          onClick: `function($this, name) {
-            setData(function(data) {
+          onClick: `function(instance, name) {
+            instance.setData(function(data) {
               return Object.assign({}, data, {
                 name: name,
               })
@@ -356,12 +428,12 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               _key: '003',
               actions: {
-                handleClick: `function($this) {
-                  $this.supply.actions.$container2.onClick($this.data.content)
+                handleClick: `function(instance) {
+                  instance.supply.actions.$container2.onClick(instance.data.content)
                 }`,
               },
               handlers: {
-                onClick: '{{$this.handleClick}}',
+                onClick: '{{$this.actions.handleClick}}',
               },
               data: {
                 content: '123456789',
@@ -417,8 +489,8 @@ describe('supply actions', () => {
           text: '{{$this.name}}',
         },
         actions: {
-          onClick: `function($this, name) {
-            setData(function(data) {
+          onClick: `function(instance, name) {
+            instance.setData(function(data) {
               return Object.assign({}, data, {
                 name: name,
               })
@@ -443,15 +515,15 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               _key: '003',
               actions: {
-                click: `function($this) {
-                  $this.supply.actions.$container2.onClick($this.data.content)
+                click: `function(instance) {
+                  instance.supply.actions.$container2.onClick(instance.data.content)
                 }`,
-                handleClick: `function($this) {
-                  $this.actions.click()
+                handleClick: `function(instance) {
+                  instance.actions.click()
                 }`,
               },
               handlers: {
-                onClick: '{{$this.handleClick}}',
+                onClick: '{{$this.actions.handleClick}}',
               },
               data: {
                 content: '123456789',

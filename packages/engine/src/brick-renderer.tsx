@@ -3,13 +3,15 @@ import { BrickInstance, Config, SetConfig, SetConfigFn, SupplyInRender } from '.
 import BrickWrapper from './brick-wrapper'
 import Context from './context'
 import useRender from './use-render'
-import useActions from './use-actions'
-import useHandlers from './use-handlers'
-import useListeners from './use-listeners'
-import useSupply from './use-supply'
+import useActions from './action/use-actions'
+import useHandlers from './action/use-handlers'
+import useListeners from './action/use-listeners'
+import useSupply from './action/use-supply'
 import useInstanceHandlers from './use-instance-handlers'
 import normalizeDataType from './data/normalize-data-type'
 import useData from './data/use-data'
+import bindBrickInstance from './action/bind-data'
+import { Action } from './action/compile-action'
 
 interface BrickRenderProps {
   config: Config
@@ -51,15 +53,10 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
   }, [context.dataTypes, brick.dataTypes])
   const [data, setData] = useData(dataTypes, config.data ?? {}, pSupply.data ?? {})
   const instanceHandlers = useInstanceHandlers(data, setConfig, setData)
-  const brickInstance: Omit<BrickInstance, 'children' | 'handlers' | 'actions'> = {
-    ...instanceHandlers,
-    data,
-    supply: pSupply,
-    isBrickInstance: true,
-  }
-  const actions = useActions(config, pSupply, brickInstance)
-  useListeners(actions, config, pSupply, instanceHandlers)
-  const supply = useSupply(config, pSupply, data, actions, instanceHandlers)
+  const actions = useActions(config, pSupply)
+  const listeners = useListeners(config, pSupply, actions)
+  const handlers = useHandlers(brick, config, pSupply, actions)
+  const supply = useSupply(config, pSupply, data, actions)
   const handleSetStateForChildren = useCallback((fn: (config: Readonly<Config>) => Config, key: string) => {
     setConfig((config) => {
       if (!config.children || !config.children.length) {
@@ -129,7 +126,23 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
       }
     })
   }, [])
-  const handlers = useHandlers(brick, config, actions, brickInstance)
+  const brickInstance: Omit<BrickInstance, 'children' | 'handlers'> = {
+    ...instanceHandlers,
+    data,
+    supply: pSupply,
+    actions,
+    key: config._key,
+  }
+  bindBrickInstance(actions, brickInstance)
+  bindBrickInstance(listeners, brickInstance)
+  bindBrickInstance(handlers, brickInstance)
+  if (Object.keys(config.supply?.actions || {}).length) {
+    if (config.id) {
+      bindBrickInstance((supply?.actions?.[`$${config.id}`] || {}) as Record<string, Action>, brickInstance)
+    } else {
+      bindBrickInstance((supply?.actions || {}) as Record<string, Action>, brickInstance)
+    }
+  }
   const render = useRender(brick, config)
   return (
     <BrickWrapper

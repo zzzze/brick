@@ -1,4 +1,5 @@
-import { Action, DataObject, Emit, Render, SetData } from './brick'
+import { Func } from '@/action/compile-action'
+import { DataObject, Render } from './brick'
 
 export const idPrefix = '$'
 
@@ -7,7 +8,7 @@ export interface Supply {
   actions?: Record<string, string>
 }
 
-export type Func = string | ((setData: SetData, emit: Emit) => Action)
+// export type Func = string | ((setData: SetData, emit: Emit) => Action)
 
 export type CustomRender = string | ((components: unknown) => Render)
 

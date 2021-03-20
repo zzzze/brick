@@ -2,7 +2,7 @@ import { Brick, EngineMode } from './types'
 import React from 'react'
 import EventEmitter from 'eventemitter3'
 import { ConnectDragSource } from 'react-dnd'
-import {DataType} from './data/data-type'
+import { DataType } from './data/data-type'
 
 export interface RenderConfigurationFormOptions {
   ee: EventEmitter

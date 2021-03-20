@@ -14,8 +14,8 @@ describe('events', () => {
       name: 'TextWithOnClickEvent',
       _key: '001',
       listeners: {
-        setContent: `function() {
-          setData(function(data) {
+        setContent: `function(instance) {
+          instance.setData(function(data) {
             return Object.assign({}, data, {
               content: '123456',
             })
@@ -25,8 +25,8 @@ describe('events', () => {
         }`,
       },
       handlers: {
-        onClick: `function() {
-          emit('setContent')
+        onClick: `function(instance) {
+          instance.emit('setContent')
         }`,
       },
       data: {
@@ -54,8 +54,8 @@ describe('events', () => {
       name: 'TextWithOnClickEvent',
       _key: '001',
       actions: {
-        setContent: `function() {
-          setData(function(data) {
+        setContent: `function(instance) {
+          instance.setData(function(data) {
             return Object.assign({}, data, {
               content: '123456',
             })
@@ -65,11 +65,11 @@ describe('events', () => {
         }`,
       },
       listeners: {
-        setContent: '{{$this.setContent}}',
+        setContent: '{{$this.actions.setContent}}',
       },
       handlers: {
-        onClick: `function() {
-          emit('setContent')
+        onClick: `function(instance) {
+          instance.emit('setContent')
         }`,
       },
       data: {
@@ -100,8 +100,8 @@ describe('events', () => {
         name: 'foo',
       },
       listeners: {
-        setName: `function() {
-          setData(function(data) {
+        setName: `function(instance) {
+          instance.setData(function(data) {
             return Object.assign({}, data, {
               name: '123456',
             })
@@ -120,8 +120,8 @@ describe('events', () => {
           name: 'TextWithOnClickEvent',
           _key: '002',
           handlers: {
-            onClick: `function() {
-              emit('setName')
+            onClick: `function(instance) {
+              instance.emit('setName')
             }`,
           },
           data: {
@@ -160,8 +160,8 @@ describe('events', () => {
             name: 'foo',
           },
           listeners: {
-            setName: `function() {
-              setData(function(data) {
+            setName: `function(instance) {
+              instance.setData(function(data) {
                 return Object.assign({}, data, {
                   name: '123456',
                 })
@@ -191,8 +191,8 @@ describe('events', () => {
           name: 'TextWithOnClickEvent',
           _key: '004',
           handlers: {
-            onClick: `function() {
-              emit('setName')
+            onClick: `function(instance) {
+              instance.emit('setName')
             }`,
           },
           data: {
@@ -228,8 +228,8 @@ describe('events', () => {
             name: 'foo',
           },
           listeners: {
-            setName: `function() {
-              setData(function(data) {
+            setName: `function(instance) {
+              instance.setData(function(data) {
                 return Object.assign({}, data, {
                   name: '123456',
                 })
@@ -263,8 +263,8 @@ describe('events', () => {
               name: 'TextWithOnClickEvent',
               _key: '005',
               handlers: {
-                onClick: `function() {
-                  emit('setName')
+                onClick: `function(instance) {
+                  instance.emit('setName')
                 }`,
               },
               data: {
