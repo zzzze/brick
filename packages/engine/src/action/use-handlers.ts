@@ -1,12 +1,14 @@
 import { useMemo } from 'react'
-import { Action, Actions, Brick, Config, SupplyInRender } from '../types'
+import {Actions} from './parse-actions'
+import {Action} from './compile-action'
+import { Brick, Config, BrickContext } from '../types'
 import { Func } from './compile-action'
 import parseActions from './parse-actions'
 
 export default function useHandlers(
   brick: Brick,
   config: Config,
-  context: SupplyInRender,
+  context: BrickContext,
   actions: Record<string, Action>
 ): Record<string, Action> {
   return useMemo<Actions>(() => {

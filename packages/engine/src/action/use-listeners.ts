@@ -1,11 +1,13 @@
 import EnginxContext from '../context'
 import { useContext, useEffect, useMemo } from 'react'
-import { Action, Actions, Config, SupplyInRender } from '../types'
+import {Actions} from './parse-actions'
+import {Action} from './compile-action'
+import { Config, BrickContext } from '../types'
 import parseActions from './parse-actions'
 
 export default function useActions(
   config: Config,
-  context: SupplyInRender,
+  context: BrickContext,
   actions: Record<string, Action>
 ): Record<string, Action> {
   const engineCtx = useContext(EnginxContext)

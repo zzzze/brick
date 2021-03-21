@@ -8,8 +8,6 @@ export interface Supply {
   actions?: Record<string, string>
 }
 
-// export type Func = string | ((setData: SetData, emit: Emit) => Action)
-
 export type CustomRender = string | (() => Render)
 
 export interface Config {

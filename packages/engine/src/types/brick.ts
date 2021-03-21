@@ -1,16 +1,11 @@
 import { DataTypeDefinition } from '@/data/normalize-data-type'
+import {Action} from '../action/compile-action'
 
 export enum ChildrenType {
   SINGLE = 'single',
   MULTIPLE = 'multiple',
   NONE = 'none',
 }
-
-export interface Action {
-  (...args: unknown[]): void
-}
-
-export type Actions = Record<string, Action>
 
 export interface SetDataFn {
   (data: DataObject): DataObject
@@ -28,7 +23,7 @@ export interface Emit {
   (event: string, ...args: unknown[]): void
 }
 
-export interface SupplyInRender {
+export interface BrickContext {
   data?: Record<string, unknown>
   actions?: Record<string, unknown>
 }
@@ -38,7 +33,7 @@ export interface BrickInstance {
   data: DataObject
   actions: Record<string, Action>
   handlers: Record<string, Action>
-  context: SupplyInRender
+  context: BrickContext
   setData: SetData
   emit: Emit
   children?: React.ReactNode

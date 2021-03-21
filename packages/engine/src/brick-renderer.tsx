@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useEffect, useContext } from 'react'
-import { BrickInstance, Config, SetConfig, SetConfigFn, SupplyInRender } from './types'
+import { BrickInstance, Config, SetConfig, SetConfigFn, BrickContext } from './types'
 import BrickWrapper from './brick-wrapper'
 import EnginxContext from './context'
 import useRender from './use-render'
@@ -16,7 +16,7 @@ import { Action } from './action/compile-action'
 interface BrickRenderProps {
   config: Config
   parentConfig?: Config
-  context: SupplyInRender
+  context: BrickContext
   setConfig: SetConfig
   onRemoveItemFromParent?: (key: string) => void
   onAddToOrMoveInParent?: (config: Config, anchorKey: string, action: string) => void
