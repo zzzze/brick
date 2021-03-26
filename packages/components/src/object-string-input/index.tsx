@@ -1,8 +1,12 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import React, { ChangeEvent, useCallback, useEffect, useState, useImperativeHandle, useRef, useMemo } from 'react'
 import isPlainObject from 'lodash/isPlainObject'
 import { ObjectInputProps } from '../object-input-props'
 
-export const ObjectStringInput: React.FC<ObjectInputProps> = (props: ObjectInputProps) => {
+interface Instance {
+  value: string
+}
+
+export const ObjectStringInput = React.forwardRef<Instance, ObjectInputProps>((props, ref) => {
   const [valueStr, setValueStr] = useState(JSON.stringify(props.value))
   const triggerChange = useCallback(
     (obj: Record<string, string>) => {
@@ -16,8 +20,21 @@ export const ObjectStringInput: React.FC<ObjectInputProps> = (props: ObjectInput
     },
     [props.name, props.onChange]
   )
+  const inputRef = useRef<HTMLTextAreaElement>(null)
+  const instance = useMemo(() => {
+    const obj = { value: '' }
+    Object.defineProperty(obj, 'value', {
+      set(newValue: Record<string, string>) {
+        if (newValue) {
+          setValueStr(JSON.stringify(newValue))
+        }
+      },
+    })
+    return obj
+  }, [])
+  useImperativeHandle(ref, () => instance)
   useEffect(() => {
-    if (!isPlainObject(props.value)) {
+    if (!isPlainObject(props.value) && typeof props.value !== 'undefined') {
       setValueStr('{}')
       triggerChange({})
     } else {
@@ -39,5 +56,5 @@ export const ObjectStringInput: React.FC<ObjectInputProps> = (props: ObjectInput
     },
     [triggerChange]
   )
-  return <textarea name={props.name} value={valueStr} onChange={handleChange} />
-}
+  return <textarea name={props.name} ref={inputRef} value={valueStr} onChange={handleChange} />
+})

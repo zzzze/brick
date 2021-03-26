@@ -1,6 +1,5 @@
-import { Engine } from '@brick/engine'
-import { BrickContainer, ConfigurationFormItem as FormItem } from '@brick/components'
-import { Brick, ChildrenType, DataType, RenderArgs } from '@brick/engine'
+import { BrickInstance, Engine } from '@brick/engine'
+import { Brick, ChildrenType } from '@brick/engine'
 import React, { useCallback } from 'react'
 import ReactDOM from 'react-dom'
 import config from './brick.config.json'
@@ -8,19 +7,11 @@ import config from './brick.config.json'
 const View: Brick = {
   name: 'View',
   dataTypes: {
-    name: DataType.STRING,
+    name: 'string',
   },
-  defaultData: {},
   childrenType: ChildrenType.MULTIPLE,
-  renderConfigForm() {
-    return (
-      <FormItem label="name" name="name">
-        <input />
-      </FormItem>
-    )
-  },
-  render(args: RenderArgs) {
-    return <BrickContainer>{args.children}</BrickContainer>
+  render(instance: BrickInstance) {
+    return <div>{instance.children}</div>
   },
   version: '0.0.1',
 }
@@ -28,21 +19,11 @@ const View: Brick = {
 const Text: Brick = {
   name: 'Text',
   dataTypes: {
-    content: DataType.STRING,
-  },
-  defaultData: {
-    content: '',
+    content: 'string',
   },
   childrenType: ChildrenType.NONE,
-  renderConfigForm() {
-    return (
-      <FormItem label="content" name="content">
-        <input />
-      </FormItem>
-    )
-  },
-  render(args: RenderArgs) {
-    return <BrickContainer tag="span">{args.data.content as string}</BrickContainer>
+  render(instance: BrickInstance) {
+    return <span>{instance.data.content as string}</span>
   },
   version: '0.0.1',
 }
@@ -50,10 +31,7 @@ const Text: Brick = {
 const TextWithAction: Brick = {
   name: 'TextWithAction',
   dataTypes: {
-    content: DataType.STRING,
-  },
-  defaultData: {
-    content: 'hello world',
+    content: 'string',
   },
   childrenType: ChildrenType.NONE,
   eventNames: ['onClick'],
@@ -66,32 +44,25 @@ const TextWithAction: Brick = {
       })
     }`,
   },
-  renderConfigForm() {
-    return (
-      <FormItem label="content" name="content">
-        <input />
-      </FormItem>
-    )
-  },
-  render(args) {
+  render(instance: BrickInstance) {
     const handleClick = useCallback(() => {
-      const onClick = args.handlers['onClick']
+      const onClick = instance.handlers['onClick']
       if (onClick) {
         onClick(
           {
-            data: args.data,
-            actions: args.actions,
+            data: instance.data,
+            actions: instance.actions,
           },
-          args.supply
+          instance.context
         )
       }
     }, [])
     return (
-      <BrickContainer tag="span">
+      <span>
         <span data-testid="element-with-action" onClick={handleClick}>
-          {args.data.content as string}
+          {instance.data.content as string}
         </span>
-      </BrickContainer>
+      </span>
     )
   },
   version: '0.0.1',

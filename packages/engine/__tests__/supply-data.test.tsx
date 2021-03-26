@@ -152,6 +152,7 @@ describe('supply data', () => {
     )
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
+    console.log(wrapper.html())
     wrapper.find('input[data-testid="name-input"]').simulate('change', {
       target: {
         name: 'name',

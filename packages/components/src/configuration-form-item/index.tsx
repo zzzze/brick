@@ -1,5 +1,8 @@
 import React, { RefObject, useCallback, useContext, useEffect, useRef } from 'react'
 import ConfigurationFormContext from './configuration-form-context'
+import cloneDeep from 'lodash/cloneDeep'
+import set from 'lodash/set'
+import get from 'lodash/get'
 
 interface EventData {
   target: {
@@ -12,6 +15,7 @@ interface FormItemCommonProps {
   name: string
   label: string
   value?: unknown
+  'data-testid'?: string
   ref?: RefObject<{ value: unknown }>
   onChange?: (data: EventData) => void
 }
@@ -20,15 +24,14 @@ interface FormItemProps extends FormItemCommonProps {
   children: React.ReactElement<FormItemCommonProps>
 }
 
-const FormItem: React.FC<FormItemProps> = ({ label, name, children }: FormItemProps) => {
+const FormItem: React.FC<FormItemProps> = ({ label, name, children, ...props }: FormItemProps) => {
   const child = React.Children.only(children)
   const context = useContext(ConfigurationFormContext)
   const onChange = useCallback(
     (event: EventData) => {
-      context.onChange({
-        ...context.data,
-        [event.target.name]: event.target.value,
-      })
+      let newData = cloneDeep(context.data)
+      newData = set(newData, event.target.name, event.target.value)
+      context.onChange(newData)
     },
     [context.data]
   )
@@ -37,8 +40,8 @@ const FormItem: React.FC<FormItemProps> = ({ label, name, children }: FormItemPr
     if (context.autoCommit || !ref.current) {
       return
     }
-    ref.current.value = context.data[name]
-  }, [context.data[name]])
+    ref.current.value = get(context.data, name) || null
+  }, [context.data, name])
   return (
     <div className="config-form__item">
       <label className="config-form__label" htmlFor="id">
@@ -47,14 +50,16 @@ const FormItem: React.FC<FormItemProps> = ({ label, name, children }: FormItemPr
       {context.autoCommit &&
         React.cloneElement(child, {
           name,
-          value: context.data[name],
+          value: get(context.data, name),
           onChange,
+          ...props,
         })}
       {!context.autoCommit &&
         React.cloneElement(child, {
           name,
           ref,
           onChange,
+          ...props,
         })}
     </div>
   )

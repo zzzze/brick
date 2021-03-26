@@ -3,7 +3,6 @@ import demoTest from '@brick/tools/tests/demoTest'
 import { Engine } from '@/index'
 import { BrickContainer } from '@brick/components'
 import { Brick, ChildrenType, BrickInstance } from '@/types'
-import { ConfigurationFormItem as FormItem } from '@brick/components'
 import { StringType, NumberType, BooleanType } from '../src/data/data-type'
 
 const View: Brick = {
@@ -12,9 +11,6 @@ const View: Brick = {
     name: 'string',
   },
   childrenType: ChildrenType.MULTIPLE,
-  renderConfigForm() {
-    return <></>
-  },
   render(args: BrickInstance) {
     return <BrickContainer>{args.children}</BrickContainer>
   },
@@ -27,13 +23,6 @@ const Text: Brick = {
     content: 'string',
   },
   childrenType: ChildrenType.NONE,
-  renderConfigForm() {
-    return (
-      <FormItem label="edit Text: " name="content">
-        <input data-testid="content-input" />
-      </FormItem>
-    )
-  },
   render(args: BrickInstance) {
     return <BrickContainer tag="span">{args.data.content as string}</BrickContainer>
   },
@@ -45,9 +34,6 @@ const ViewWithCustomRender: Brick = {
   dataTypes: {},
   childrenType: ChildrenType.MULTIPLE,
   canCustomizeRender: true,
-  renderConfigForm() {
-    return <></>
-  },
   render(args: BrickInstance) {
     void args
     return <></>

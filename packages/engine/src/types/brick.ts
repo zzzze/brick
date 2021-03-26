@@ -1,5 +1,5 @@
 import { DataTypeDefinition } from '@/data/normalize-data-type'
-import {Action} from '../action/compile-action'
+import { Action } from '../action/compile-action'
 
 export enum ChildrenType {
   SINGLE = 'single',
@@ -52,7 +52,6 @@ export interface Brick {
   eventNames?: string[] // events triggered by brick
   defaultHandlers?: Record<string, string> // handler for event
   childrenType: ChildrenType
-  renderConfigForm: () => React.ReactElement
   render: Render
   canCustomizeRender?: boolean
   version: string

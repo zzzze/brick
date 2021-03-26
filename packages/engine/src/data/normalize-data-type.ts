@@ -1,6 +1,9 @@
+import { ReactElement } from 'react'
 import { DataType } from './data-type'
 
-export type DataTypeDefinition<T = unknown> = Omit<DataType<T>, 'isValid'>
+export interface DataTypeDefinition<T = unknown> extends Omit<DataType<T>, 'isValid' | 'formItem'> {
+  formItem?: () => ReactElement
+}
 
 function checkTypeIsString(dataType: string | DataTypeDefinition): dataType is string {
   return typeof dataType === 'string'

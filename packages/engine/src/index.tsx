@@ -81,12 +81,15 @@ class Engine extends React.Component<EngineProps, EngineState> {
    * lifecycle
    */
   componentDidMount(): void {
-    document.addEventListener('keypress', this._handleKeyPress)
+    document.onkeydown = this._handleKeyPress
   }
   componentWillUnmount(): void {
-    document.removeEventListener('keypress', this._handleKeyPress)
+    document.onkeydown = null
   }
   componentDidUpdate(_: EngineProps, prevState: EngineState): void {
+    if (this.props.autoCommit) {
+      this._transactionCommit()
+    }
     if (this._isUndoRedo) {
       return
     }
@@ -130,17 +133,24 @@ class Engine extends React.Component<EngineProps, EngineState> {
     this._transaction = TransactionState.END
     this._commitConfig()
   }
+  _transactionRollback = (): void => {
+    this._stagingConfig = null
+    this._transaction = TransactionState.END
+  }
   _commitConfig = (): void => {
     if (!this._stagingConfig) {
       return
     }
+    const stagingConfig = this._stagingConfig
     this.setState(
-      (state) => ({
-        ...state,
-        config: {
-          ...(this._stagingConfig as Config),
-        },
-      }),
+      (state) => {
+        return {
+          ...state,
+          config: {
+            ...stagingConfig,
+          },
+        }
+      },
       () => {
         this._forwardDiffs = []
         this._stagingConfig = null
@@ -177,17 +187,21 @@ class Engine extends React.Component<EngineProps, EngineState> {
       }
     )
   }
-  _handleKeyPress = (event: KeyboardEvent): void => {
+  _handleKeyPress = (event: KeyboardEvent): boolean => {
     if (!event.ctrlKey || event.key.toLowerCase() !== 'z') {
-      return
+      return true
     }
     this._undeOrRedo(event.shiftKey)
+    return false
   }
 
   /**
    * render
    */
   render(): React.ReactNode {
+    if (!this.props.autoCommit) {
+      this._transaction = TransactionState.START
+    }
     return (
       <EnginxContext.Provider
         value={{
@@ -198,6 +212,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
           mode: this.props.mode || EngineMode.EDIT,
           transactionBegin: this._transactionBegin,
           transactionCommit: this._transactionCommit,
+          transactionRollback: this._transactionRollback,
           autoCommit: !!this.props.autoCommit,
         }}>
         <DndProvider backend={HTML5Backend}>

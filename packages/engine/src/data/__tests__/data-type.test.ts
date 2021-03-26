@@ -1,5 +1,5 @@
 import { StringType, NumberType, BooleanType } from '../data-type'
-import normalizeDataType from '../normalize-data-type'
+import normalizeDataType, { DataTypeDefinition } from '../normalize-data-type'
 
 describe('normalizeDataType', () => {
   test('', () => {
@@ -8,7 +8,7 @@ describe('normalizeDataType', () => {
       [NumberType.type]: NumberType,
       [BooleanType.type]: BooleanType,
     }
-    const dataType = {
+    const dataType: Record<string, string | DataTypeDefinition> = {
       aa: 'string',
       bb: {
         type: 'number',

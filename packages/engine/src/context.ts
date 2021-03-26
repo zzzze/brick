@@ -22,6 +22,7 @@ interface ContextType {
   mode: EngineMode
   transactionBegin: () => void
   transactionCommit: () => void
+  transactionRollback: () => void
   autoCommit: boolean
 }
 
@@ -33,6 +34,7 @@ const EnginxContext = React.createContext<ContextType>({
   mode: EngineMode.EDIT,
   transactionBegin: () => {}, // eslint-disable-line  @typescript-eslint/no-empty-function
   transactionCommit: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  transactionRollback: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   autoCommit: false,
 })
 

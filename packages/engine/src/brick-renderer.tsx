@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useEffect, useContext } from 'react'
+import React, { useCallback, useMemo, useContext } from 'react'
 import { BrickInstance, Config, SetConfig, SetConfigFn, BrickContext } from './types'
 import BrickWrapper from './brick-wrapper'
 import EnginxContext from './context'
@@ -26,16 +26,6 @@ interface BrickRenderProps {
 
 const BrickRenderer: React.FC<BrickRenderProps> = ({ config, context, setConfig, ...props }: BrickRenderProps) => {
   const engineCtx = useContext(EnginxContext)
-  useEffect(() => {
-    if (!engineCtx.autoCommit) {
-      engineCtx.transactionBegin()
-    }
-  })
-  useEffect(() => {
-    if (engineCtx.autoCommit) {
-      engineCtx.transactionCommit()
-    }
-  }, [engineCtx.autoCommit])
   const brick = useMemo(() => {
     const brick = engineCtx.bricks[config.name]
     if (!brick) {

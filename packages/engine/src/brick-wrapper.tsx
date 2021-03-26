@@ -1,7 +1,7 @@
 import React, { Children, cloneElement, useRef, useCallback, useContext, useMemo, useState, RefObject } from 'react'
 import { ChildrenType, Config, DataObject, EngineMode, SetConfig } from './types'
-import { BrickContainerProps, ConfigurationFormContext } from '@brick/components'
-import CommonConfigurationForm from './common-configuration-form'
+import { BrickContainerProps } from '@brick/components'
+import ConfigurationForm from './configuration-form'
 import EnginxContext from './context'
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
@@ -332,16 +332,12 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     context.transactionCommit()
   }, [props.onRemoveItemFormParent])
   const configForm = context.renderConfigurationForm(
-    <CommonConfigurationForm config={props.config} onConfigChange={props.onConfigChange}>
-      <ConfigurationFormContext.Provider
-        value={{
-          data: props.config.data || {},
-          onChange: handleChange,
-          autoCommit: context.autoCommit,
-        }}>
-        {brick.renderConfigForm()}
-      </ConfigurationFormContext.Provider>
-    </CommonConfigurationForm>,
+    <ConfigurationForm
+      config={props.config}
+      onConfigChange={props.onConfigChange}
+      onDataChange={handleChange}
+      autoCommit={context.autoCommit}
+    />,
     {
       ee: context.ee,
       connectDragSource: drag,

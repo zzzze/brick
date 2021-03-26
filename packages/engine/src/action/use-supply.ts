@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import {Actions} from './parse-actions'
+import { Actions } from './parse-actions'
 import { Config, BrickContext, VALUE_PARAM_PATTERN, idPrefix } from '../types'
 import { interpreteParam } from '../utils'
 import parseActions from './parse-actions'

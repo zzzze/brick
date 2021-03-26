@@ -4,11 +4,11 @@ import { Engine } from '@brick/engine'
 const config = {
   name: 'ViewWithCustomRender',
   _key: '001',
-  render: `args => {
+  render: `instance => {
     return (
       <div>
         <span>foo</span>
-        {args.children}
+        {instance.children}
       </div>
     )
   }`,

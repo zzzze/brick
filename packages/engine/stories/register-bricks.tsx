@@ -1,8 +1,7 @@
 import React from 'react'
 import { Engine } from '../src'
 import { Brick, ChildrenType, BrickInstance } from '../src/types'
-import { ConfigurationFormItem as FormItem } from '@brick/components'
-import { StringType, NumberType, BooleanType } from '../src/data/data-type'
+import { StringType, NumberType, BooleanType, ObjectType, CodeType } from '../src/data/data-type'
 
 const View: Brick = {
   name: 'View',
@@ -10,13 +9,6 @@ const View: Brick = {
     name: 'string',
   },
   childrenType: ChildrenType.MULTIPLE,
-  renderConfigForm() {
-    return (
-      <FormItem label="name" name="name">
-        <input />
-      </FormItem>
-    )
-  },
   render(args: BrickInstance) {
     return <div>{args.children}</div>
   },
@@ -30,13 +22,6 @@ const Text: Brick = {
   },
   childrenType: ChildrenType.NONE,
   canCustomizeRender: true,
-  renderConfigForm() {
-    return (
-      <FormItem label="content" name="content">
-        <input />
-      </FormItem>
-    )
-  },
   render(instance: BrickInstance) {
     return <span>{instance.data.content as string}</span>
   },
@@ -50,13 +35,6 @@ const Image: Brick = {
   },
   childrenType: ChildrenType.NONE,
   canCustomizeRender: true,
-  renderConfigForm() {
-    return (
-      <FormItem label="src" name="src">
-        <input />
-      </FormItem>
-    )
-  },
   render(args: BrickInstance) {
     return <img style={{ width: 100 }} src={args.data.src as string} />
   },
@@ -67,13 +45,6 @@ const Input: Brick = {
   name: 'Input',
   dataTypes: {},
   childrenType: ChildrenType.NONE,
-  renderConfigForm() {
-    return (
-      <FormItem label="src" name="src">
-        <input />
-      </FormItem>
-    )
-  },
   eventNames: ['onChange'],
   render(instance: BrickInstance) {
     return <input onChange={instance.handlers['onChange']} />
@@ -97,13 +68,6 @@ const TextWithAction: Brick = {
       })
     }`,
   },
-  renderConfigForm() {
-    return (
-      <FormItem label="content" name="content">
-        <input />
-      </FormItem>
-    )
-  },
   render(instance: BrickInstance) {
     return (
       <span data-testid="element-with-action" onClick={instance.handlers['onClick']}>
@@ -124,4 +88,6 @@ export default (): void => {
   Engine.registerDataType(StringType)
   Engine.registerDataType(NumberType)
   Engine.registerDataType(BooleanType)
+  Engine.registerDataType(ObjectType)
+  Engine.registerDataType(CodeType)
 }

@@ -1,6 +1,7 @@
 {
   "name": "View",
   "id": "container",
+  "_key": "001",
   "data": {
     "name": "bazx"
   },
@@ -16,6 +17,7 @@
   "children": [
     {
       "name": "Text",
+      "_key": "002",
       "data": {
         "content": "{{$supply.$container.text}}"
       },
@@ -23,6 +25,7 @@
     },
     {
       "name": "Text",
+      "_key": "003",
       "data": {
         "content": "fooo"
       },
@@ -30,6 +33,7 @@
     },
     {
       "name": "View",
+      "_key": "004",
       "id": "container2",
       "supply": {
         "actions": {
@@ -39,6 +43,7 @@
       "children": [
         {
           "name": "TextWithAction",
+          "_key": "005",
           "actions": {
             "click": "function($this, $supply) {\n window.xx = $supply;\n                 $supply.actions.$container2.onClick($this.data.content)\n                }",
             "handleClick": "function($this, $supply) {\n                  $this.actions.click($this, $supply)\n                }"
@@ -56,9 +61,11 @@
     },
     {
       "name": "View",
+      "_key": "006",
       "children": [
         {
           "name": "Text",
+          "_key": "007",
           "data": {
             "content": "{{$supply.$container.text}}"
           },

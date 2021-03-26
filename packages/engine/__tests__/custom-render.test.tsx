@@ -12,13 +12,12 @@ describe('custom-render', () => {
     const config: Config = {
       name: 'ViewWithCustomRender',
       _key: '001',
-      render: `args => {
-        const BrickContainer = require('@brick/components').BrickContainer
+      render: `instance => {
         return (
-          <BrickContainer tag="div">
+          <div>
             <span>foo</span>
-            {args.children}
-          </BrickContainer>
+            {instance.children}
+          </div>
         )
       }`,
       version: '0.0.1',
