@@ -123,7 +123,7 @@ const isHoverOnDragItemOrItsChild = (config: Config, key: string): boolean => {
   return false
 }
 
-const offset = 10
+const offset = 12
 
 // The area trigger insert item to the hovered element
 const isInAdditionActionTriggerAera = (rect: DOMRect, clientOffset: XYCoord) => {
