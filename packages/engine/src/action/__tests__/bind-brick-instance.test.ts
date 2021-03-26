@@ -12,18 +12,18 @@ describe('parseActions', () => {
         (ctx.result = a - b - ($this.data.a as number))) as Action,
     }
     const instance: BrickInstance = {
+      key: '001',
       data: {
         a: 4,
       },
       actions: {},
       handlers: {},
-      supply: {
+      context: {
         data: {},
         actions: {},
       },
       setData: () => console.log(),
       emit: () => console.log(),
-      isBrickInstance: true,
     }
     bindBrickInstance(actions, instance)
     const ctx = { result: 0 }
