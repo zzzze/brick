@@ -1,6 +1,6 @@
 import { Action } from '../compile-action'
 import { Actions } from '../parse-actions'
-import bindBrickInstance from '../bind-data'
+import bindBrickInstance from '../bind-brick-instance'
 import { BrickInstance } from '@/types'
 
 describe('parseActions', () => {
