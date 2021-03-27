@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useContext } from 'react'
+import React, { useState, useCallback, useEffect, useContext, useRef } from 'react'
 import { RenderConfigurationForm, RenderConfigurationFormOptions } from './context'
 import clx from 'classnames'
 import { FaEdit } from 'react-icons/fa'
@@ -8,6 +8,7 @@ import EnginxContext from './context'
 
 export default (node: JSX.Element, options: RenderConfigurationFormOptions): ReturnType<RenderConfigurationForm> => {
   const context = useContext(EnginxContext)
+  const [style, setStyle] = useState<React.CSSProperties>({top: -1, right: -1})
   const [configFormVisible, setConfigFormVisible] = useState(false)
   const handleShowConfigForm = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation()
@@ -38,8 +39,28 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
       options.ee.off('close-config-form', hideConfigForm)
     }
   }, [])
+  const container = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const style = {right: -1, top: -1}
+    if (!configFormVisible || !container.current) {
+      setStyle(style)
+      return
+    }
+    const rect = container.current.getBoundingClientRect()
+    const leftOverflow = rect.x
+    if (leftOverflow < 0) {
+      style.right = leftOverflow
+    }
+    const bottomOverflow = window.innerHeight - rect.bottom
+    if (bottomOverflow < 0) {
+      style.top = bottomOverflow
+    }
+    setStyle(style)
+  }, [configFormVisible])
   return (
     <div
+      ref={container}
+      style={style}
       className={clx('brick__config-form', {
         'brick__config-form--active': configFormVisible,
       })}>
