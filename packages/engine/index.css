@@ -59,6 +59,8 @@ div.brick__with-config-form + div.brick__with-config-form {
   top: 0;
   right: 0;
   z-index: 100;
+  font-size: 16px;
+  color: #333;
 }
 
 .brick__config-form--active {

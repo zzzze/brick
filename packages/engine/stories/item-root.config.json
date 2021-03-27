@@ -21,7 +21,19 @@
       "name": "Image",
       "_key": "009",
       "data": {
-        "src": "https://img.iplaysoft.com/wp-content/uploads/2019/free-images/free_stock_photo.jpg!0x0.webp"
+        "src": "https://img.iplaysoft.com/wp-content/uploads/2019/free-images/free_stock_photo.jpg!0x0.webp",
+        "styleInEditor": {
+          "width": 100,
+          "display": "block"
+        },
+        "wrapperStyle": {
+          "width": 100,
+          "display": "block"
+        },
+        "style": {
+          "width": 100,
+          "display": "block"
+        }
       },
       "version": "0.0.1"
     },
@@ -89,16 +101,17 @@
           },
           "render": "(instance) => {return <span>content: {instance.data.content}</span>}",
           "version": "0.0.1"
+        },
+        {
+          "name": "Text",
+          "_key": "003",
+          "data": {
+            "content": "fooo",
+            "style": { "color": "blue", "fontSize": "24px" }
+          },
+          "version": "0.0.1"
         }
       ],
-      "version": "0.0.1"
-    },
-    {
-      "name": "Text",
-      "_key": "003",
-      "data": {
-        "content": "fooo"
-      },
       "version": "0.0.1"
     }
   ],

@@ -15,7 +15,7 @@ describe('Engine', () => {
       _key: '001',
       version: '0.0.1',
     }
-    const wrapper = mount(<Engine autoCommit config={config} />)
+    const wrapper = mount(<Engine autoCommitMode config={config} />)
     // show
     wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
     expect(wrapper.html()).toContain('edit View')
@@ -47,7 +47,7 @@ describe('Engine', () => {
       ],
       version: '0.0.1',
     }
-    const wrapper = mount(<Engine autoCommit config={config} />)
+    const wrapper = mount(<Engine autoCommitMode config={config} />)
     expect(wrapper.html()).toContain('hello world')
   })
 
@@ -70,7 +70,7 @@ describe('Engine', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} autoCommit config={config} />
+        <Engine ref={ref} autoCommitMode config={config} />
       </>
     )
     wrapper.find('span[data-testid="edit-btn"]').at(1).simulate('click')
@@ -82,6 +82,11 @@ describe('Engine', () => {
         {
           name: 'Text',
           _key: '002',
+          actions: {},
+          supply: {
+            actions: {},
+            data: {},
+          },
           data: {
             content: 'bar',
           },
@@ -111,7 +116,7 @@ describe('Engine', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} autoCommit config={config} />
+        <Engine ref={ref} autoCommitMode config={config} />
       </>
     )
     wrapper.find('span[data-testid="edit-btn"]').at(1).simulate('click')
@@ -128,6 +133,11 @@ describe('Engine', () => {
         {
           name: 'Text',
           _key: '002',
+          actions: {},
+          supply: {
+            data: {},
+            actions: {},
+          },
           data: {
             content: 'foo',
           },
@@ -158,7 +168,7 @@ describe('Engine', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} autoCommit config={config} />
+        <Engine ref={ref} autoCommitMode config={config} />
       </>
     )
     wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
@@ -185,6 +195,10 @@ describe('Engine', () => {
       ],
       actions: {
         handleClick: 'function(){}',
+      },
+      supply: {
+        actions: {},
+        data: {},
       },
       version: '0.0.1',
     })

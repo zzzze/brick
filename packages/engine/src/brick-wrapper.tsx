@@ -1,5 +1,5 @@
 import React, { Children, cloneElement, useRef, useCallback, useContext, useMemo, useState, RefObject } from 'react'
-import { ChildrenType, Config, DataObject, EngineMode, SetConfig } from './types'
+import { ChildrenType, Config, DataObject, SetConfig } from './types'
 import { BrickContainerProps } from '@brick/components'
 import ConfigurationForm from './configuration-form'
 import EnginxContext from './context'
@@ -165,6 +165,9 @@ const isInBackwardActionTriggerAera = (rect: DOMRect, clientOffset: XYCoord) => 
 
 const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => {
   const context = useContext(EnginxContext)
+  if (context.previewMode) {
+    return props.children
+  }
   const brick = useMemo(() => {
     const brick = context.bricks[props.config.name]
     if (!brick) {
@@ -193,9 +196,6 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
   }, [])
   const child: React.ReactElement<BrickContainerPropsWithRef> = Children.only(props.children)
   const canDrop = (item: IDragItem, monitor: DropTargetMonitor) => {
-    if (context.mode !== EngineMode.EDIT) {
-      return false
-    }
     if (!brickContainer.current) {
       return false
     }
@@ -254,7 +254,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         onRemove: props.onRemoveItemFormParent,
       },
       canDrag() {
-        return context.mode === EngineMode.EDIT
+        return true
       },
       isDragging: (monitor: DragSourceMonitor) => {
         return (monitor.getItem() as IDragItem).config._key === props.config._key
@@ -331,12 +331,14 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     props.onRemoveItemFormParent && props.onRemoveItemFormParent(props.config._key)
     context.transactionCommit()
   }, [props.onRemoveItemFormParent])
-  const configForm = context.renderConfigurationForm(
+  const isVoidElement = useMemo(() => isTypeString(child.type) && voidElements.includes(child.type), [child.type])
+  const configurationForm = context.renderConfigurationForm(
     <ConfigurationForm
       config={props.config}
       onConfigChange={props.onConfigChange}
       onDataChange={handleChange}
       autoCommit={context.autoCommit}
+      isVoidElement={isVoidElement}
     />,
     {
       ee: context.ee,
@@ -345,18 +347,14 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     }
   )
   preview(drop(brickContainer))
-  const configurationForm = useMemo(() => {
-    return context.mode === EngineMode.EDIT ? configForm : null
-  }, [context.mode, configForm])
   const className = useMemo(() => {
-    return clx('brick', {
-      'brick__with-config-form': context.mode === EngineMode.EDIT,
+    return clx('brick', 'brick__with-config-form', {
       'brick__with-config-form--dragging': isDragging,
       'brick__with-config-form--hovered': isOverCurrent && !isDragging,
     })
-  }, [child.props.className, context.mode, isDragging, isOverCurrent, isDragging])
+  }, [child.props.className, isDragging, isOverCurrent, isDragging])
   const actionArea = useMemo(() => {
-    return context.mode === EngineMode.EDIT && !props.isRoot
+    return !props.isRoot
       ? [
           <DragOver key="left" className="brick__action-area brick__action-area-left" />,
           <DragOver key="right" className="brick__action-area brick__action-area-right" />,
@@ -364,15 +362,20 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           <DragOver key="bottom" className="brick__action-area brick__action-area-bottom" />,
         ]
       : []
-  }, [context.mode, props.isRoot])
-  if (isTypeString(child.type) && voidElements.includes(child.type)) {
+  }, [props.isRoot])
+  if (isTypeString(child.type) && isVoidElement) {
     let Tag: 'span' | 'div' = 'span'
     if (blockLevelElement.includes(child.type)) {
       Tag = 'div'
     }
     return (
-      <Tag ref={brickContainer as RefObject<HTMLDivElement>} className={className}>
-        {child}
+      <Tag
+        ref={brickContainer as RefObject<HTMLDivElement>}
+        style={(props.config.data?.wrapperStyle as React.CSSProperties) ?? {}}
+        className={className}>
+        {cloneElement<BrickContainerPropsWithRef>(child, {
+          style: props.config.data?.styleInEditor as React.CSSProperties,
+        })}
         {configurationForm}
         {actionArea}
       </Tag>

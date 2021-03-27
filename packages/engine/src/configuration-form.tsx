@@ -11,6 +11,7 @@ interface PropsConfigurationFormProps {
   onConfigChange: SetConfig
   onDataChange: (data: DataObject) => void
   autoCommit: boolean
+  isVoidElement: boolean
 }
 
 const defaultFormItems: Record<string, DataTypeDefinition> = {
@@ -40,6 +41,16 @@ const defaultFormItems: Record<string, DataTypeDefinition> = {
     default: '',
     label: 'Render',
   },
+  'data.wrapperStyle': {
+    type: 'object',
+    default: {},
+    label: 'Wrapper Style',
+  },
+  'data.styleInEditor': {
+    type: 'object',
+    default: {},
+    label: 'Style in Editor',
+  },
 }
 
 const ConfigurationForm = ({
@@ -47,6 +58,7 @@ const ConfigurationForm = ({
   onConfigChange,
   onDataChange,
   autoCommit,
+  isVoidElement,
 }: PropsConfigurationFormProps): JSX.Element | null => {
   const engineCtx = useContext(EnginxContext)
   const brick = useMemo(() => {
@@ -85,6 +97,9 @@ const ConfigurationForm = ({
         {defaultFormItemKeys.map((key) => {
           const td = defaultFormItemFullDefs[key]
           if (key === 'render' && !brick.canCustomizeRender) {
+            return null
+          }
+          if (['data.wrapperStyle', 'data.styleInEditor'].includes(key) && !isVoidElement) {
             return null
           }
           return (

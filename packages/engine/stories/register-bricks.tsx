@@ -7,10 +7,11 @@ const View: Brick = {
   name: 'View',
   dataTypes: {
     name: 'string',
+    style: 'object',
   },
   childrenType: ChildrenType.MULTIPLE,
-  render(args: BrickInstance) {
-    return <div>{args.children}</div>
+  render(instance: BrickInstance) {
+    return <div style={instance.data.style as React.CSSProperties}>{instance.children}</div>
   },
   version: '0.0.1',
 }
@@ -19,11 +20,12 @@ const Text: Brick = {
   name: 'Text',
   dataTypes: {
     content: 'string',
+    style: 'object',
   },
   childrenType: ChildrenType.NONE,
   canCustomizeRender: true,
   render(instance: BrickInstance) {
-    return <span>{instance.data.content as string}</span>
+    return <span style={instance.data.style as React.CSSProperties}>{instance.data.content as string}</span>
   },
   version: '0.0.1',
 }
@@ -32,22 +34,25 @@ const Image: Brick = {
   name: 'Image',
   dataTypes: {
     src: 'string',
+    style: 'object',
   },
   childrenType: ChildrenType.NONE,
   canCustomizeRender: true,
-  render(args: BrickInstance) {
-    return <img style={{ width: 100 }} src={args.data.src as string} />
+  render(instance: BrickInstance) {
+    return <img style={instance.data.style as React.CSSProperties} src={instance.data.src as string} />
   },
   version: '0.0.1',
 }
 
 const Input: Brick = {
   name: 'Input',
-  dataTypes: {},
+  dataTypes: {
+    style: 'object',
+  },
   childrenType: ChildrenType.NONE,
   eventNames: ['onChange'],
   render(instance: BrickInstance) {
-    return <input onChange={instance.handlers['onChange']} />
+    return <input style={instance.data.style as React.CSSProperties} onChange={instance.handlers['onChange']} />
   },
   version: '0.0.1',
 }
@@ -56,6 +61,7 @@ const TextWithAction: Brick = {
   name: 'TextWithAction',
   dataTypes: {
     content: 'string',
+    style: 'object',
   },
   childrenType: ChildrenType.NONE,
   eventNames: ['onClick'],
@@ -70,7 +76,10 @@ const TextWithAction: Brick = {
   },
   render(instance: BrickInstance) {
     return (
-      <span data-testid="element-with-action" onClick={instance.handlers['onClick']}>
+      <span
+        style={instance.data.style as React.CSSProperties}
+        data-testid="element-with-action"
+        onClick={instance.handlers['onClick']}>
         {instance.data.content as string}
       </span>
     )

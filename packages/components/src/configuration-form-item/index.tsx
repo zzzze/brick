@@ -50,7 +50,7 @@ const FormItem: React.FC<FormItemProps> = ({ label, name, children, ...props }: 
       {context.autoCommit &&
         React.cloneElement(child, {
           name,
-          value: get(context.data, name),
+          value: get(context.data, name) || '',
           onChange,
           ...props,
         })}

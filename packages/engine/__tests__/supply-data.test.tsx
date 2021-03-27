@@ -28,7 +28,7 @@ describe('supply data', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine autoCommit ref={ref} config={config} />
+        <Engine autoCommitMode ref={ref} config={config} />
       </>
     )
     wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
@@ -44,6 +44,7 @@ describe('supply data', () => {
     expect(ref.current?.getConfig()).toEqual({
       name: 'View',
       _key: '001',
+      actions: {},
       children: [
         {
           name: 'Text',
@@ -59,6 +60,7 @@ describe('supply data', () => {
           baz: '123',
           bar: '456',
         },
+        actions: {},
       },
       version: '0.0.1',
     })
@@ -95,7 +97,7 @@ describe('supply data', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine autoCommit ref={ref} config={config} />
+        <Engine autoCommitMode ref={ref} config={config} />
       </>
     )
     expect(wrapper.html()).toContain('foo')
@@ -147,12 +149,11 @@ describe('supply data', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine autoCommit ref={ref} config={config} />
+        <Engine autoCommitMode ref={ref} config={config} />
       </>
     )
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
-    console.log(wrapper.html())
     wrapper.find('input[data-testid="name-input"]').simulate('change', {
       target: {
         name: 'name',
@@ -198,7 +199,7 @@ describe('supply data', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine autoCommit ref={ref} config={config} />
+        <Engine autoCommitMode ref={ref} config={config} />
       </>
     )
     expect(wrapper.html()).toContain('baz')

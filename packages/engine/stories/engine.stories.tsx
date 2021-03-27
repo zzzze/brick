@@ -2,7 +2,7 @@ import React, { useCallback, useRef } from 'react'
 import { Story, Meta } from '@storybook/react'
 import itemConfig from './item-root.config.json'
 import { Engine, EngineProps } from '../src'
-import { Config, EngineMode } from '../src/types'
+import { Config } from '../src/types'
 import registerBricks from './register-bricks'
 import './style.css'
 import '../index.css'
@@ -43,20 +43,7 @@ Default.args = {
   },
 }
 
-export const ItemRootWithHandler = Template.bind({})
-ItemRootWithHandler.args = {
-  config: itemConfig as Config,
-  mode: EngineMode.EDIT,
-}
-
 export const WithHandler = Template.bind({})
 WithHandler.args = {
   config: itemConfig as Config,
-  mode: EngineMode.EDIT,
-}
-
-export const PreviewMode = Template.bind({})
-PreviewMode.args = {
-  config: itemConfig as Config,
-  mode: EngineMode.PREVIEW,
 }

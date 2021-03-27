@@ -9,19 +9,29 @@ import EnginxContext from './context'
 export default (node: JSX.Element, options: RenderConfigurationFormOptions): ReturnType<RenderConfigurationForm> => {
   const context = useContext(EnginxContext)
   const [configFormVisible, setConfigFormVisible] = useState(false)
-  const handleShowConfigForm = useCallback(() => {
+  const handleShowConfigForm = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
     options.ee.emit('close-config-form')
     setConfigFormVisible(true)
   }, [])
   const hideConfigForm = useCallback(() => setConfigFormVisible(false), [])
-  const handleHideConfigForm = useCallback(() => {
+  const handleHideConfigForm = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
     context.transactionRollback()
     hideConfigForm()
     setConfigFormVisible(false)
   }, [])
-  const handleCommit = useCallback(() => {
+  const handleCommit = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
     context.transactionCommit()
   }, [])
+  const handleRemove = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation()
+      options.removeItem()
+    },
+    [options.removeItem]
+  )
   useEffect(() => {
     options.ee.on('close-config-form', hideConfigForm)
     return () => {
@@ -50,7 +60,7 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
             className="brick__config-form-remove-btn"
             title="remove"
             data-testid="remove-btn"
-            onClick={options.removeItem}>
+            onClick={handleRemove}>
             <AiTwotoneDelete />
           </span>
           <span

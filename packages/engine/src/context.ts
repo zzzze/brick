@@ -1,4 +1,4 @@
-import { Brick, EngineMode } from './types'
+import { Brick } from './types'
 import React from 'react'
 import EventEmitter from 'eventemitter3'
 import { ConnectDragSource } from 'react-dnd'
@@ -19,7 +19,7 @@ interface ContextType {
   bricks: Record<string, Brick>
   dataTypes: Record<string, DataType>
   ee: EventEmitter
-  mode: EngineMode
+  previewMode: boolean
   transactionBegin: () => void
   transactionCommit: () => void
   transactionRollback: () => void
@@ -31,7 +31,7 @@ const EnginxContext = React.createContext<ContextType>({
   bricks: {},
   dataTypes: {},
   ee: new EventEmitter(),
-  mode: EngineMode.EDIT,
+  previewMode: false,
   transactionBegin: () => {}, // eslint-disable-line  @typescript-eslint/no-empty-function
   transactionCommit: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   transactionRollback: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function

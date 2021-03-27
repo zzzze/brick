@@ -1,5 +1,5 @@
 import React from 'react'
-import { Config, Brick, EngineMode, SetConfigFn } from './types'
+import { Config, Brick, SetConfigFn } from './types'
 import EnginxContext, { RenderConfigurationForm } from './context'
 import BrickRenderer from './brick-renderer'
 import EventEmitter from 'eventemitter3'
@@ -26,8 +26,8 @@ export interface EngineProps {
    * Render configuration form of brick
    */
   renderConfigurationForm?: RenderConfigurationForm
-  mode?: EngineMode
-  autoCommit?: boolean
+  previewMode?: boolean
+  autoCommitMode?: boolean
 }
 
 interface EngineState {
@@ -87,7 +87,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
     document.onkeydown = null
   }
   componentDidUpdate(_: EngineProps, prevState: EngineState): void {
-    if (this.props.autoCommit) {
+    if (this.props.autoCommitMode) {
       this._transactionCommit()
     }
     if (this._isUndoRedo) {
@@ -199,7 +199,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
    * render
    */
   render(): React.ReactNode {
-    if (!this.props.autoCommit) {
+    if (!this.props.autoCommitMode) {
       this._transaction = TransactionState.START
     }
     return (
@@ -209,11 +209,11 @@ class Engine extends React.Component<EngineProps, EngineState> {
           bricks: Engine.bricks,
           dataTypes: Engine.dataTypes,
           ee,
-          mode: this.props.mode || EngineMode.EDIT,
+          previewMode: !!this.props.previewMode,
           transactionBegin: this._transactionBegin,
           transactionCommit: this._transactionCommit,
           transactionRollback: this._transactionRollback,
-          autoCommit: !!this.props.autoCommit,
+          autoCommit: !!this.props.autoCommitMode,
         }}>
         <DndProvider backend={HTML5Backend}>
           {this.state.config && (
