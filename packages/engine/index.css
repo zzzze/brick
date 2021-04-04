@@ -26,6 +26,10 @@ div.brick__with-config-form + div.brick__with-config-form {
   display: none;
 }
 
+.brick__config-form-close-btn {
+  font-size: 20px;
+}
+
 .brick__with-config-form .brick__config-form--active .brick__config-form-btn-g2 {
   display: block;
 }
@@ -60,10 +64,13 @@ div.brick__with-config-form + div.brick__with-config-form {
   right: 0;
   z-index: 100;
   font-size: 16px;
+  max-height: 80vh;
+  overflow-y: auto;
   color: #333;
 }
 
 .brick__config-form--active {
+  width: 500px;
   background: #fff;
   z-index: 100;
   padding: 10px;
@@ -188,11 +195,44 @@ div.brick__with-config-form + div.brick__with-config-form {
 /* ---------------------------------------------------- */
 .config-form__item {
   display: flex;
-  margin: 10px 0;
+  position: relative;
+  margin: 20px 0;
+}
+
+.config-form__item-btg {
+  position: absolute;
+  right: 0;
+  display: none;
+}
+
+.config-form__item:hover .config-form__item-btg,
+.config-form__item--edit .config-form__item-btg {
+  display: block;
 }
 
 .config-form__label {
-  min-width: 150px;
+  min-width: 120px;
+  margin-right: 10px;
+  font-weight: 500;
+}
+
+.config-form__item--edit {
+  flex-wrap: wrap;
+}
+
+.config-form__item--edit .config-form__label {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.config-form__value {
+  word-break: break-all;
+  color: #999;
+}
+
+.config-form__item-btn {
+  margin-top: 5px;
+  margin-left: 10px;
 }
 /* ---------------------------------------------------- */
 /* config-form                                          */

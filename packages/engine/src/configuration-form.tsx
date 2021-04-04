@@ -12,6 +12,7 @@ interface PropsConfigurationFormProps {
   onDataChange: (data: DataObject) => void
   autoCommit: boolean
   isVoidElement: boolean
+  getPopupContainer?: () => HTMLElement
 }
 
 const defaultFormItems: Record<string, DataTypeDefinition> = {
@@ -46,10 +47,11 @@ const defaultFormItems: Record<string, DataTypeDefinition> = {
     default: {},
     label: 'Wrapper Style',
   },
-  'data.styleInEditor': {
+  'data.styleOverride': {
     type: 'object',
     default: {},
-    label: 'Style in Editor',
+    label: 'Style override',
+    tips: 'override brick style in edit mode',
   },
 }
 
@@ -59,6 +61,7 @@ const ConfigurationForm = ({
   onDataChange,
   autoCommit,
   isVoidElement,
+  getPopupContainer,
 }: PropsConfigurationFormProps): JSX.Element | null => {
   const engineCtx = useContext(EnginxContext)
   const brick = useMemo(() => {
@@ -92,6 +95,7 @@ const ConfigurationForm = ({
         value={{
           data: { ...config } as Record<string, unknown>,
           onChange: handleChange,
+          commit: engineCtx.transactionCommit,
           autoCommit,
         }}>
         {defaultFormItemKeys.map((key) => {
@@ -99,11 +103,17 @@ const ConfigurationForm = ({
           if (key === 'render' && !brick.canCustomizeRender) {
             return null
           }
-          if (['data.wrapperStyle', 'data.styleInEditor'].includes(key) && !isVoidElement) {
+          if (['data.wrapperStyle'].includes(key) && !isVoidElement) {
             return null
           }
           return (
-            <FormItem key={key} data-testid={td.testID} label={td?.label || key} name={key}>
+            <FormItem
+              key={key}
+              getPopupContainer={getPopupContainer}
+              tips={td.tips}
+              data-testid={td.testID}
+              label={td?.label || key}
+              name={key}>
               {td.formItem()}
             </FormItem>
           )
@@ -113,6 +123,7 @@ const ConfigurationForm = ({
         value={{
           data: config.data || {},
           onChange: onDataChange,
+          commit: engineCtx.transactionCommit,
           autoCommit,
         }}>
         {Object.keys(dataTypes).map((key) => {
@@ -121,7 +132,13 @@ const ConfigurationForm = ({
             return null
           }
           return (
-            <FormItem key={key} data-testid={td.testID} label={td?.label || key} name={key}>
+            <FormItem
+              key={key}
+              getPopupContainer={getPopupContainer}
+              tips={td.tips}
+              data-testid={td.testID}
+              label={td?.label || key}
+              name={key}>
               {td.formItem()}
             </FormItem>
           )

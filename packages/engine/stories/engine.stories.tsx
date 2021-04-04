@@ -1,9 +1,11 @@
 import React, { useCallback, useRef } from 'react'
 import { Story, Meta } from '@storybook/react'
 import itemConfig from './item-root.config.json'
+import githubStylePageConfig from './github-style-page.config.json'
 import { Engine, EngineProps } from '../src'
 import { Config } from '../src/types'
 import registerBricks from './register-bricks'
+import '@brick/components/lib/tooltip.css'
 import './style.css'
 import '../index.css'
 
@@ -46,4 +48,9 @@ Default.args = {
 export const WithHandler = Template.bind({})
 WithHandler.args = {
   config: itemConfig as Config,
+}
+
+export const GithubStylePage = Template.bind({})
+GithubStylePage.args = {
+  config: githubStylePageConfig as Config,
 }

@@ -1,8 +1,12 @@
-import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { ChangeEvent, useCallback, useEffect, useMemo, useState, useImperativeHandle } from 'react'
 import isPlainObject from 'lodash/isPlainObject'
 import { ObjectInputProps } from '../object-input-props'
 
-export const ObjectKeyValueInput: React.FC<ObjectInputProps> = (props: ObjectInputProps) => {
+interface Instance {
+  value: Record<string, string>
+}
+
+export const ObjectKeyValueInput = React.forwardRef<Instance, ObjectInputProps>((props: ObjectInputProps, ref) => {
   const [value, setValue] = useState(props.value)
   const [keys, setKeys] = useState<string[]>(() => {
     const value = props.value || {}
@@ -41,6 +45,19 @@ export const ObjectKeyValueInput: React.FC<ObjectInputProps> = (props: ObjectInp
     },
     [props.name, props.onChange]
   )
+  const instance = useMemo(() => {
+    const obj = { value: {} }
+    Object.defineProperty(obj, 'value', {
+      set(newValue: Record<string, string>) {
+        if (newValue) {
+          setValue(newValue)
+          setKeys(Object.keys(newValue))
+        }
+      },
+    })
+    return obj
+  }, [])
+  useImperativeHandle(ref, () => instance)
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const [index, inputType] = event.target.name.split('-')
@@ -105,4 +122,4 @@ export const ObjectKeyValueInput: React.FC<ObjectInputProps> = (props: ObjectInp
       })}
     </div>
   )
-}
+})

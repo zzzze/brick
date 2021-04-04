@@ -135,7 +135,6 @@ class Engine extends React.Component<EngineProps, EngineState> {
   }
   _transactionRollback = (): void => {
     this._stagingConfig = null
-    this._transaction = TransactionState.END
   }
   _commitConfig = (): void => {
     if (!this._stagingConfig) {

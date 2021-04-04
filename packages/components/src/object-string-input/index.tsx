@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useEffect, useState, useImperativeHandle, useRef, useMemo } from 'react'
+import React, { ChangeEvent, useCallback, useEffect, useState, useImperativeHandle, useMemo } from 'react'
 import isPlainObject from 'lodash/isPlainObject'
 import { ObjectInputProps } from '../object-input-props'
 
@@ -20,7 +20,6 @@ export const ObjectStringInput = React.forwardRef<Instance, ObjectInputProps>((p
     },
     [props.name, props.onChange]
   )
-  const inputRef = useRef<HTMLTextAreaElement>(null)
   const instance = useMemo(() => {
     const obj = { value: '' }
     Object.defineProperty(obj, 'value', {
@@ -56,5 +55,5 @@ export const ObjectStringInput = React.forwardRef<Instance, ObjectInputProps>((p
     },
     [triggerChange]
   )
-  return <textarea name={props.name} ref={inputRef} value={valueStr} onChange={handleChange} />
+  return <textarea className={props.className} name={props.name} value={valueStr} onChange={handleChange} />
 })

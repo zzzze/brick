@@ -3,12 +3,12 @@ import { RenderConfigurationForm, RenderConfigurationFormOptions } from './conte
 import clx from 'classnames'
 import { FaEdit } from 'react-icons/fa'
 import { FiMove } from 'react-icons/fi'
-import { AiTwotoneDelete } from 'react-icons/ai'
+import { AiTwotoneDelete, AiFillCloseCircle } from 'react-icons/ai'
 import EnginxContext from './context'
 
 export default (node: JSX.Element, options: RenderConfigurationFormOptions): ReturnType<RenderConfigurationForm> => {
   const context = useContext(EnginxContext)
-  const [style, setStyle] = useState<React.CSSProperties>({top: -1, right: -1})
+  const [style, setStyle] = useState<React.CSSProperties>({ top: -1, right: -1 })
   const [configFormVisible, setConfigFormVisible] = useState(false)
   const handleShowConfigForm = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation()
@@ -21,10 +21,6 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
     context.transactionRollback()
     hideConfigForm()
     setConfigFormVisible(false)
-  }, [])
-  const handleCommit = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation()
-    context.transactionCommit()
   }, [])
   const handleRemove = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -41,7 +37,7 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
   }, [])
   const container = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    const style = {right: -1, top: -1}
+    const style = { right: -1, top: -1 }
     if (!configFormVisible || !container.current) {
       setStyle(style)
       return
@@ -57,23 +53,29 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
     }
     setStyle(style)
   }, [configFormVisible])
+  const getPopupContainer = useCallback(() => {
+    return container.current
+  }, [])
+  const stopClickPropagation = useCallback((event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation()
+  }, [])
   return (
     <div
       ref={container}
       style={style}
+      onClick={stopClickPropagation}
       className={clx('brick__config-form', {
         'brick__config-form--active': configFormVisible,
       })}>
       {configFormVisible ? (
         <div className="brick__config-form-btn-g2">
-          <button data-testid="close-btn" onClick={handleHideConfigForm}>
-            close
-          </button>
-          {!context.autoCommit && (
-            <button data-testid="commit-btn" onClick={handleCommit}>
-              commit
-            </button>
-          )}
+          <span
+            className="brick__config-form-close-btn"
+            data-testid="close-btn"
+            onClick={handleHideConfigForm}
+            title="close">
+            <AiFillCloseCircle />
+          </span>
         </div>
       ) : (
         <div className="brick__config-form-btn-g1">
@@ -96,7 +98,10 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
           </span>
         </div>
       )}
-      {configFormVisible && node}
+      {configFormVisible &&
+        React.cloneElement(React.Children.only(node), {
+          getPopupContainer,
+        })}
     </div>
   )
 }
