@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import { ObjectKeyValueInput } from '@brick/components'
 import isPlainObject from 'lodash/isPlainObject'
-import './style.css'
 
 export interface TypeValidator {
   (value: unknown): boolean

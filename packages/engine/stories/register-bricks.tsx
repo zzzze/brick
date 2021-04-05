@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import { Engine } from '../src'
 import { Brick, ChildrenType, BrickInstance } from '../src/types'
 import { StringType, NumberType, BooleanType, ObjectType, CodeType } from '../src/data/data-type'
@@ -8,10 +8,17 @@ const View: Brick = {
   dataTypes: {
     name: 'string',
     style: 'object',
+    styleOverride: 'object',
   },
   childrenType: ChildrenType.MULTIPLE,
   render(instance: BrickInstance) {
-    return <div style={instance.data.style as React.CSSProperties}>{instance.children}</div>
+    const style = useMemo(() => {
+      return {
+        ...(instance.data.style as React.CSSProperties),
+        ...(instance.editing ? instance.data.styleOverride as React.CSSProperties : {}),
+      }
+    }, [instance])
+    return <div style={style}>{instance.children}</div>
   },
   version: '0.0.1',
 }
@@ -21,11 +28,18 @@ const Text: Brick = {
   dataTypes: {
     content: 'string',
     style: 'object',
+    styleOverride: 'object',
   },
   childrenType: ChildrenType.NONE,
   canCustomizeRender: true,
   render(instance: BrickInstance) {
-    return <span style={instance.data.style as React.CSSProperties}>{instance.data.content as string}</span>
+    const style = useMemo(() => {
+      return {
+        ...(instance.data.style as React.CSSProperties),
+        ...(instance.editing ? instance.data.styleOverride as React.CSSProperties : {}),
+      }
+    }, [instance])
+    return <span style={style}>{instance.data.content as string}</span>
   },
   version: '0.0.1',
 }
@@ -35,11 +49,18 @@ const Image: Brick = {
   dataTypes: {
     src: 'string',
     style: 'object',
+    styleOverride: 'object',
   },
   childrenType: ChildrenType.NONE,
   canCustomizeRender: true,
   render(instance: BrickInstance) {
-    return <img style={instance.data.style as React.CSSProperties} src={instance.data.src as string} />
+    const style = useMemo(() => {
+      return {
+        ...(instance.data.style as React.CSSProperties),
+        ...(instance.editing ? instance.data.styleOverride as React.CSSProperties : {}),
+      }
+    }, [instance])
+    return <img style={style} src={instance.data.src as string} />
   },
   version: '0.0.1',
 }
@@ -48,11 +69,18 @@ const Input: Brick = {
   name: 'Input',
   dataTypes: {
     style: 'object',
+    styleOverride: 'object',
   },
   childrenType: ChildrenType.NONE,
   eventNames: ['onChange'],
   render(instance: BrickInstance) {
-    return <input style={instance.data.style as React.CSSProperties} onChange={instance.handlers['onChange']} />
+    const style = useMemo(() => {
+      return {
+        ...(instance.data.style as React.CSSProperties),
+        ...(instance.editing ? instance.data.styleOverride as React.CSSProperties : {}),
+      }
+    }, [instance])
+    return <input style={style} onChange={instance.handlers['onChange']} />
   },
   version: '0.0.1',
 }
@@ -62,6 +90,7 @@ const TextWithAction: Brick = {
   dataTypes: {
     content: 'string',
     style: 'object',
+    styleOverride: 'object',
   },
   childrenType: ChildrenType.NONE,
   eventNames: ['onClick'],
@@ -75,9 +104,15 @@ const TextWithAction: Brick = {
     }`,
   },
   render(instance: BrickInstance) {
+    const style = useMemo(() => {
+      return {
+        ...(instance.data.style as React.CSSProperties),
+        ...(instance.editing ? instance.data.styleOverride as React.CSSProperties : {}),
+      }
+    }, [instance])
     return (
       <span
-        style={instance.data.style as React.CSSProperties}
+        style={style}
         data-testid="element-with-action"
         onClick={instance.handlers['onClick']}>
         {instance.data.content as string}

@@ -4,7 +4,8 @@ import EnginxContext from './context'
 import { DataTypeDefinition } from './data/normalize-data-type'
 import { DataType } from './data/data-type'
 import normalizeDataType from './data/normalize-data-type'
-import { ConfigurationFormContext, ConfigurationFormItem as FormItem } from '@brick/components'
+import FormItem from './form-item/form-item'
+import ConfigurationFormContext from './form-item/context'
 
 interface PropsConfigurationFormProps {
   config: Config
@@ -21,6 +22,7 @@ const defaultFormItems: Record<string, DataTypeDefinition> = {
     default: '',
     label: 'ID',
     placeholder: 'ID of brick instance',
+    tips: 'ID of brick instance',
   },
   actions: {
     type: 'object',
@@ -46,12 +48,6 @@ const defaultFormItems: Record<string, DataTypeDefinition> = {
     type: 'object',
     default: {},
     label: 'Wrapper Style',
-  },
-  'data.styleOverride': {
-    type: 'object',
-    default: {},
-    label: 'Style override',
-    tips: 'override brick style in edit mode',
   },
 }
 

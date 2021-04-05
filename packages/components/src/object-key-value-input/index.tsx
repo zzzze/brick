@@ -1,6 +1,8 @@
 import React, { ChangeEvent, useCallback, useEffect, useMemo, useState, useImperativeHandle } from 'react'
 import isPlainObject from 'lodash/isPlainObject'
 import { ObjectInputProps } from '../object-input-props'
+import { AiOutlinePlusCircle } from 'react-icons/ai'
+import Item from './item'
 
 interface Instance {
   value: Record<string, string>
@@ -12,6 +14,7 @@ export const ObjectKeyValueInput = React.forwardRef<Instance, ObjectInputProps>(
     const value = props.value || {}
     return Object.keys(value)
   })
+  const [expandKey, setExpandKey] = useState<string | null>(null)
   useEffect(() => {
     if (!isPlainObject(props.value)) {
       triggerChange({})
@@ -52,6 +55,7 @@ export const ObjectKeyValueInput = React.forwardRef<Instance, ObjectInputProps>(
         if (newValue) {
           setValue(newValue)
           setKeys(Object.keys(newValue))
+          triggerChange(newValue)
         }
       },
     })
@@ -59,7 +63,7 @@ export const ObjectKeyValueInput = React.forwardRef<Instance, ObjectInputProps>(
   }, [])
   useImperativeHandle(ref, () => instance)
   const handleChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
+    (event: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
       const [index, inputType] = event.target.name.split('-')
       const newValue = keys.reduce<Record<string, string>>((result, key, i) => {
         if (index != i.toString()) {
@@ -81,16 +85,19 @@ export const ObjectKeyValueInput = React.forwardRef<Instance, ObjectInputProps>(
     },
     [keys, value]
   )
-  const handleAddItem = useCallback(() => {
-    const newKeys = keys.slice()
-    newKeys.push('')
-    setKeys(newKeys)
-  }, [keys])
   const isAddBtnDisabled = useMemo(() => {
     return keys.includes('')
   }, [keys])
+  const handleAddItem = useCallback(() => {
+    if (isAddBtnDisabled) {
+      return
+    }
+    const newKeys = keys.slice()
+    newKeys.push('')
+    setKeys(newKeys)
+  }, [keys, isAddBtnDisabled])
   const handleDeleteItem = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
+    (event: React.MouseEvent<HTMLElement>) => {
       const newValue = {
         ...value,
       }
@@ -105,21 +112,15 @@ export const ObjectKeyValueInput = React.forwardRef<Instance, ObjectInputProps>(
     [keys, value]
   )
   return (
-    <div>
-      <button data-testid="add-item" disabled={isAddBtnDisabled} onClick={handleAddItem}>
-        add
-      </button>
+    <div style={{...props.style, width: '100%'}}>
       {keys.map((key, index) => {
-        return (
-          <div key={index}>
-            <input name={`${index}-label`} type="text" value={key} onChange={handleChange} />
-            <input name={`${index}-value`} type="text" value={value?.[key] || ''} onChange={handleChange} />
-            <button data-testid={`remove-btn-${index}`} data-index={index} onClick={handleDeleteItem}>
-              delete
-            </button>
-          </div>
-        )
+        return <Item value={value} expandKey={expandKey} setExpandKey={setExpandKey} index={index} key={index} label={key} handleChange={handleChange} handleDeleteItem={handleDeleteItem} />
       })}
+      {!isAddBtnDisabled && (
+        <div style={{display: 'inline-block'}} data-testid="add-item" title="add item" onClick={handleAddItem}>
+          <AiOutlinePlusCircle />
+        </div>
+      )}
     </div>
   )
 })

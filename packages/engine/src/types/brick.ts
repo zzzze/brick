@@ -36,6 +36,7 @@ export interface BrickInstance {
   context: BrickContext
   setData: SetData
   emit: Emit
+  editing: boolean
   children?: React.ReactNode
 }
 

@@ -69,7 +69,7 @@ describe('ObjectKeyValueInput', () => {
       value = data.target.value
     }
     const wrapper = mount(<ObjectKeyValueInput name="object" value={value} onChange={handleChange} />)
-    wrapper.find('button[data-testid="add-item"]').simulate('click')
+    wrapper.find('[data-testid="add-item"]').simulate('click')
     wrapper.find('input[name="1-label"]').simulate('change', {
       target: {
         name: '1-label',
@@ -97,7 +97,7 @@ describe('ObjectKeyValueInput', () => {
       value = data.target.value
     }
     const wrapper = mount(<ObjectKeyValueInput name="object" value={value} onChange={handleChange} />)
-    wrapper.find('button[data-testid="remove-btn-0"]').simulate('click')
+    wrapper.find('[data-testid="remove-btn-0"]').simulate('click')
     expect(value).toEqual({
       baz: '123',
     })

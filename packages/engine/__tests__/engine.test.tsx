@@ -21,7 +21,7 @@ describe('Engine', () => {
     expect(wrapper.html()).toContain('edit View')
 
     // hide
-    wrapper.find('button[data-testid="close-btn"]').at(0).simulate('click')
+    wrapper.find('[data-testid="close-btn"]').at(0).simulate('click')
     expect(wrapper.html()).not.toContain('edit View')
   })
 

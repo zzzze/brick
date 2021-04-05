@@ -110,7 +110,7 @@ describe('supply data', () => {
         }),
       },
     })
-    wrapper.find('button[data-testid="close-btn"]').at(0).simulate('click')
+    wrapper.find('[data-testid="close-btn"]').at(0).simulate('click')
     expect(wrapper.html()).not.toContain('foo')
     expect(wrapper.html()).toContain('123')
   })
@@ -210,7 +210,7 @@ describe('supply data', () => {
         value: 'bar',
       },
     })
-    wrapper.find('button[data-testid="close-btn"]').at(0).simulate('click')
+    wrapper.find('[data-testid="close-btn"]').at(0).simulate('click')
     expect(wrapper.html()).not.toContain('baz')
     expect(wrapper.html()).toContain('bar')
   })

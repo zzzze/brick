@@ -1,3 +1,5 @@
+import {CSSProperties} from "react"
+
 export interface ObjectInputEventData {
   target: {
     name: string
@@ -10,4 +12,5 @@ export interface ObjectInputProps {
   value?: Record<string, string>
   onChange?: (data: ObjectInputEventData) => void
   className?: string
+  style?: CSSProperties
 }

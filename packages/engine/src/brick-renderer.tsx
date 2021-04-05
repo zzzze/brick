@@ -116,6 +116,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, context, setConfig,
     data,
     context,
     actions,
+    editing: !engineCtx.previewMode,
     key: config._key,
   }
   useMemo(() => {

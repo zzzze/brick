@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Config, Brick, SetConfigFn } from './types'
 import EnginxContext, { RenderConfigurationForm } from './context'
 import BrickRenderer from './brick-renderer'
@@ -48,6 +48,13 @@ class Engine extends React.Component<EngineProps, EngineState> {
   }
   static registerDataType(dataType: DataType): void {
     Engine.dataTypes[dataType.type] = dataType
+  }
+  static registerFormItem(type: string, formItem: () => ReactElement): void {
+    const dataType = Engine.dataTypes[type]
+    if (!dataType) {
+      throw Error(`data type (${type}) not found`)
+    }
+    dataType.formItem = formItem
   }
 
   /**
