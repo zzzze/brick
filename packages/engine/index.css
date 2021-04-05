@@ -66,6 +66,7 @@ div.brick__with-config-form + div.brick__with-config-form {
   font-size: 16px;
   max-height: 80vh;
   overflow-y: auto;
+  overflow-x: hidden;
   color: #333;
 }
 
@@ -99,8 +100,6 @@ div.brick__with-config-form + div.brick__with-config-form {
 /* ---------------------------------------------------- */
 /* brick__with-config-form                              */
 /* ---------------------------------------------------- */
-
-
 
 /* ---------------------------------------------------- */
 /* brick__action-area                                   */
@@ -192,8 +191,6 @@ div.brick__with-config-form + div.brick__with-config-form {
 /* brick__action-area                                   */
 /* ---------------------------------------------------- */
 
-
-
 /* ---------------------------------------------------- */
 /* config-form                                          */
 /* ---------------------------------------------------- */
@@ -242,8 +239,6 @@ div.brick__with-config-form + div.brick__with-config-form {
 /* config-form                                          */
 /* ---------------------------------------------------- */
 
-
-
 /* ---------------------------------------------------- */
 /* formitem                                          */
 /* ---------------------------------------------------- */
@@ -265,3 +260,9 @@ div.brick__with-config-form + div.brick__with-config-form {
 /* ---------------------------------------------------- */
 /* formitem                                          */
 /* ---------------------------------------------------- */
+
+.monaco-editor,
+.monaco-editor .margin,
+.monaco-editor-background {
+  background-color: transparent !important;
+}

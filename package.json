@@ -14,7 +14,7 @@
     "build:dev": "webpack --progress",
     "build": "rollup --config",
     "lint": "eslint ./",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -s ./ -p 6006",
     "build-storybook": "build-storybook",
     "deploy-storybook": "storybook-to-ghpages --out=storybook-static",
     "rollup": "rollup --config"

@@ -55,5 +55,13 @@ export const ObjectStringInput = React.forwardRef<Instance, ObjectInputProps>((p
     },
     [triggerChange]
   )
-  return <textarea className={props.className} style={props.style} name={props.name} value={valueStr} onChange={handleChange} />
+  return (
+    <textarea
+      className={props.className}
+      style={props.style}
+      name={props.name}
+      value={valueStr}
+      onChange={handleChange}
+    />
+  )
 })

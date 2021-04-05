@@ -63,7 +63,7 @@ export const ObjectKeyValueInput = React.forwardRef<Instance, ObjectInputProps>(
   }, [])
   useImperativeHandle(ref, () => instance)
   const handleChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const [index, inputType] = event.target.name.split('-')
       const newValue = keys.reduce<Record<string, string>>((result, key, i) => {
         if (index != i.toString()) {
@@ -112,12 +112,23 @@ export const ObjectKeyValueInput = React.forwardRef<Instance, ObjectInputProps>(
     [keys, value]
   )
   return (
-    <div style={{...props.style, width: '100%'}}>
+    <div style={{ ...props.style, width: '100%' }}>
       {keys.map((key, index) => {
-        return <Item value={value} expandKey={expandKey} setExpandKey={setExpandKey} index={index} key={index} label={key} handleChange={handleChange} handleDeleteItem={handleDeleteItem} />
+        return (
+          <Item
+            value={value}
+            expandKey={expandKey}
+            setExpandKey={setExpandKey}
+            index={index}
+            key={index}
+            label={key}
+            handleChange={handleChange}
+            handleDeleteItem={handleDeleteItem}
+          />
+        )
       })}
       {!isAddBtnDisabled && (
-        <div style={{display: 'inline-block'}} data-testid="add-item" title="add item" onClick={handleAddItem}>
+        <div style={{ display: 'inline-block' }} data-testid="add-item" title="add item" onClick={handleAddItem}>
           <AiOutlinePlusCircle />
         </div>
       )}

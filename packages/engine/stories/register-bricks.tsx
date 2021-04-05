@@ -1,7 +1,8 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 import { Engine } from '../src'
 import { Brick, ChildrenType, BrickInstance } from '../src/types'
 import { StringType, NumberType, BooleanType, ObjectType, CodeType } from '../src/data/data-type'
+import { Editor } from '@brick/components'
 
 const View: Brick = {
   name: 'View',
@@ -15,7 +16,7 @@ const View: Brick = {
     const style = useMemo(() => {
       return {
         ...(instance.data.style as React.CSSProperties),
-        ...(instance.editing ? instance.data.styleOverride as React.CSSProperties : {}),
+        ...(instance.editing ? (instance.data.styleOverride as React.CSSProperties) : {}),
       }
     }, [instance])
     return <div style={style}>{instance.children}</div>
@@ -36,7 +37,7 @@ const Text: Brick = {
     const style = useMemo(() => {
       return {
         ...(instance.data.style as React.CSSProperties),
-        ...(instance.editing ? instance.data.styleOverride as React.CSSProperties : {}),
+        ...(instance.editing ? (instance.data.styleOverride as React.CSSProperties) : {}),
       }
     }, [instance])
     return <span style={style}>{instance.data.content as string}</span>
@@ -57,7 +58,7 @@ const Image: Brick = {
     const style = useMemo(() => {
       return {
         ...(instance.data.style as React.CSSProperties),
-        ...(instance.editing ? instance.data.styleOverride as React.CSSProperties : {}),
+        ...(instance.editing ? (instance.data.styleOverride as React.CSSProperties) : {}),
       }
     }, [instance])
     return <img style={style} src={instance.data.src as string} />
@@ -77,7 +78,7 @@ const Input: Brick = {
     const style = useMemo(() => {
       return {
         ...(instance.data.style as React.CSSProperties),
-        ...(instance.editing ? instance.data.styleOverride as React.CSSProperties : {}),
+        ...(instance.editing ? (instance.data.styleOverride as React.CSSProperties) : {}),
       }
     }, [instance])
     return <input style={style} onChange={instance.handlers['onChange']} />
@@ -107,14 +108,11 @@ const TextWithAction: Brick = {
     const style = useMemo(() => {
       return {
         ...(instance.data.style as React.CSSProperties),
-        ...(instance.editing ? instance.data.styleOverride as React.CSSProperties : {}),
+        ...(instance.editing ? (instance.data.styleOverride as React.CSSProperties) : {}),
       }
     }, [instance])
     return (
-      <span
-        style={style}
-        data-testid="element-with-action"
-        onClick={instance.handlers['onClick']}>
+      <span style={style} data-testid="element-with-action" onClick={instance.handlers['onClick']}>
         {instance.data.content as string}
       </span>
     )
@@ -134,4 +132,6 @@ export default (): void => {
   Engine.registerDataType(BooleanType)
   Engine.registerDataType(ObjectType)
   Engine.registerDataType(CodeType)
+
+  Engine.registerFormItem('code', () => <Editor style={{ width: '100%', height: 200 }} />)
 }
