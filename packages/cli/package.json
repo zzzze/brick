@@ -5,6 +5,9 @@
   "bin": {
     "brick": "cli.js"
   },
+  "scripts": {
+    "type-check": "tsc --project tsconfig.eslint.json"
+  },
   "dependencies": {
     "@types/lodash-webpack-plugin": "^0.11.4",
     "babel-loader": "^8.2.2",

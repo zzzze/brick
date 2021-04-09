@@ -1,6 +1,5 @@
 import React, { Children, cloneElement, useRef, useCallback, useContext, useMemo, useState, RefObject } from 'react'
 import { ChildrenType, Config, DataObject, SetConfig } from './types'
-import { BrickContainerProps } from '@brick/components'
 import ConfigurationForm from './configuration-form'
 import EnginxContext from './context'
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
@@ -113,7 +112,7 @@ export interface IDragItem {
   onRemove?: (key: string) => void
 }
 
-interface BrickContainerPropsWithRef extends React.PropsWithChildren<BrickContainerProps> {
+interface IBrickContainer extends React.PropsWithChildren<React.HTMLAttributes<HTMLElement>> {
   ref?: React.RefObject<HTMLElement>
 }
 
@@ -198,7 +197,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       }
     })
   }, [])
-  const child: React.ReactElement<BrickContainerPropsWithRef> = Children.only(props.children)
+  const child: React.ReactElement<IBrickContainer> = Children.only(props.children)
   const canDrop = (item: IDragItem, monitor: DropTargetMonitor) => {
     if (!brickContainer.current) {
       return false
@@ -348,6 +347,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       ee: context.ee,
       connectDragSource: drag,
       removeItem: onRemove,
+      config: props.config,
     }
   )
   preview(drop(brickContainer))
@@ -395,7 +395,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         ref={brickContainer as RefObject<HTMLDivElement>}
         style={(props.config.data?.wrapperStyle as React.CSSProperties) ?? {}}
         className={className}>
-        {cloneElement<BrickContainerPropsWithRef>(child, {
+        {cloneElement<IBrickContainer>(child, {
           style,
         })}
         {configurationForm}
@@ -403,7 +403,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       </Tag>
     )
   }
-  return cloneElement<BrickContainerPropsWithRef>(
+  return cloneElement<IBrickContainer>(
     child,
     {
       ref: brickContainer,

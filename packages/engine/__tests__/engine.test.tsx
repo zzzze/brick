@@ -1,8 +1,8 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import 'jest-enzyme'
-import { Engine } from '@/index'
-import { Config } from '@/types'
+import { Engine } from '../src/index'
+import { Config } from '../src/types'
 import './register-bricks'
 import './register-data-types'
 
@@ -17,11 +17,11 @@ describe('Engine', () => {
     }
     const wrapper = mount(<Engine autoCommitMode config={config} />)
     // show
-    wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
+    wrapper.find('[data-testid="001-edit-btn"]').last().simulate('click')
     expect(wrapper.html()).toContain('edit View')
 
     // hide
-    wrapper.find('[data-testid="close-btn"]').at(0).simulate('click')
+    wrapper.find('[data-testid="001-close-btn"]').last().simulate('click')
     expect(wrapper.html()).not.toContain('edit View')
   })
 
@@ -73,8 +73,11 @@ describe('Engine', () => {
         <Engine ref={ref} autoCommitMode config={config} />
       </>
     )
-    wrapper.find('span[data-testid="edit-btn"]').at(1).simulate('click')
-    wrapper.find('input[data-testid="content-input"]').simulate('change', { target: { name: 'content', value: 'bar' } })
+    wrapper.find('[data-testid="002-edit-btn"]').last().simulate('click')
+    wrapper
+      .find('[data-testid="002-content-input"]')
+      .last()
+      .simulate('change', { target: { name: 'content', value: 'bar' } })
     expect(ref.current?.getConfig()).toEqual({
       name: 'View',
       _key: '001',
@@ -119,13 +122,16 @@ describe('Engine', () => {
         <Engine ref={ref} autoCommitMode config={config} />
       </>
     )
-    wrapper.find('span[data-testid="edit-btn"]').at(1).simulate('click')
-    wrapper.find('input[name="id"]').simulate('change', {
-      target: {
-        name: 'id',
-        value: 'baz',
-      },
-    })
+    wrapper.find('[data-testid="002-edit-btn"]').last().simulate('click')
+    wrapper
+      .find('[data-testid="002-id"]')
+      .last()
+      .simulate('change', {
+        target: {
+          name: 'id',
+          value: 'baz',
+        },
+      })
     expect(ref.current?.getConfig()).toEqual({
       name: 'View',
       _key: '001',
@@ -171,15 +177,18 @@ describe('Engine', () => {
         <Engine ref={ref} autoCommitMode config={config} />
       </>
     )
-    wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
-    wrapper.find('textarea[name="actions"]').simulate('change', {
-      target: {
-        name: 'actions',
-        value: JSON.stringify({
-          handleClick: 'function(){}',
-        }),
-      },
-    })
+    wrapper.find('[data-testid="001-edit-btn"]').last().simulate('click')
+    wrapper
+      .find('[data-testid="001-actions"]')
+      .last()
+      .simulate('change', {
+        target: {
+          name: 'actions',
+          value: JSON.stringify({
+            handleClick: 'function(){}',
+          }),
+        },
+      })
     expect(ref.current?.getConfig()).toEqual({
       name: 'View',
       _key: '001',

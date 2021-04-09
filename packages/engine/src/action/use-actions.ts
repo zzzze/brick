@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Actions } from './parse-actions'
-import { Action } from './compile-action'
+import { Action } from '../types'
 import { Config, BrickContext } from '../types'
 import parseActions from './parse-actions'
 

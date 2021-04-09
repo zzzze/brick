@@ -6,7 +6,12 @@ import virtual from '@rollup/plugin-virtual'
 import json from '@rollup/plugin-json'
 import copy from 'rollup-plugin-copy'
 import path from 'path'
+import replace from '@rollup/plugin-replace'
+import { readFileSync } from 'fs'
 import pkg from './package.json'
+
+let types = readFileSync('packages/engine/src/types/brick-instance.ts', { encoding: 'utf8' })
+types = types.replace(/\bexport\b/g, 'declare')
 
 export default (prefix) => [
   {
@@ -36,6 +41,9 @@ export default (prefix) => [
             rename: 'tooltip.css',
           },
         ],
+      }),
+      replace({
+        __BRICK_INSTANCE_TYPES__: JSON.stringify(types),
       }),
     ],
     external: [

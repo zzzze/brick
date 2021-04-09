@@ -1,8 +1,7 @@
 import React from 'react'
 import demoTest from '@brick/tools/tests/demoTest'
-import { Engine } from '@/index'
-import { BrickContainer } from '@brick/components'
-import { Brick, ChildrenType, BrickInstance } from '@/types'
+import { Engine } from '../src/index'
+import { Brick, ChildrenType, BrickInstance } from '../src/types'
 import { StringType, NumberType, BooleanType } from '../src/data/data-type'
 
 const View: Brick = {
@@ -12,7 +11,7 @@ const View: Brick = {
   },
   childrenType: ChildrenType.MULTIPLE,
   render(args: BrickInstance) {
-    return <BrickContainer>{args.children}</BrickContainer>
+    return <div>{args.children}</div>
   },
   version: '0.0.1',
 }
@@ -24,7 +23,7 @@ const Text: Brick = {
   },
   childrenType: ChildrenType.NONE,
   render(args: BrickInstance) {
-    return <BrickContainer tag="span">{args.data.content as string}</BrickContainer>
+    return <span>{args.data.content as string}</span>
   },
   version: '0.0.1',
 }

@@ -2,6 +2,7 @@
 /// <reference path="../../../../node_modules/monaco-editor/monaco.d.ts" />
 
 declare const __DEV__: boolean
+declare const __BRICK_INSTANCE_TYPES__: string
 
 declare namespace NodeJS {
   interface Global {

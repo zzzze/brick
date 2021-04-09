@@ -108,8 +108,7 @@ const FormItem: React.FC<FormItemProps> = ({
           {typeof value === 'object' ? JSON.stringify(value) : String(value || '')}
         </div>
       )}
-      {isEditMode &&
-        context.autoCommit &&
+      {context.autoCommit &&
         React.cloneElement(child, {
           name,
           value: value || '',
@@ -117,11 +116,11 @@ const FormItem: React.FC<FormItemProps> = ({
           style: {
             ...child.props.style,
             ...style,
+            display: isEditMode ? 'block' : 'none',
           },
           ...props,
         })}
-      {isEditMode &&
-        !context.autoCommit &&
+      {!context.autoCommit &&
         React.cloneElement(child, {
           name,
           ref,
@@ -129,6 +128,7 @@ const FormItem: React.FC<FormItemProps> = ({
           style: {
             ...child.props.style,
             ...style,
+            display: isEditMode ? 'block' : 'none',
           },
           ...props,
         })}

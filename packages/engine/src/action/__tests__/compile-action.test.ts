@@ -1,4 +1,5 @@
-import compileAction, { Action } from '../compile-action'
+import compileAction from '../compile-action'
+import { Action } from '../../types'
 
 describe('compileAction', () => {
   test('compile function string correctly', () => {

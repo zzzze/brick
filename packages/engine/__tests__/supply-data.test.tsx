@@ -1,8 +1,8 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import 'jest-enzyme'
-import { Engine } from '@/index'
-import { Config } from '@/types'
+import { Engine } from '../src/index'
+import { Config } from '../src/types'
 import './register-bricks'
 import './register-data-types'
 
@@ -31,16 +31,19 @@ describe('supply data', () => {
         <Engine autoCommitMode ref={ref} config={config} />
       </>
     )
-    wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
-    wrapper.find('textarea[name="supply.data"]').simulate('change', {
-      target: {
-        name: 'supply',
-        value: JSON.stringify({
-          baz: '123',
-          bar: '456',
-        }),
-      },
-    })
+    wrapper.find('[data-testid="001-edit-btn"]').last().simulate('click')
+    wrapper
+      .find('[data-testid="001-supply.data"]')
+      .last()
+      .simulate('change', {
+        target: {
+          name: 'supply',
+          value: JSON.stringify({
+            baz: '123',
+            bar: '456',
+          }),
+        },
+      })
     expect(ref.current?.getConfig()).toEqual({
       name: 'View',
       _key: '001',
@@ -101,16 +104,19 @@ describe('supply data', () => {
       </>
     )
     expect(wrapper.html()).toContain('foo')
-    wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
-    wrapper.find('textarea[name="supply.data"]').simulate('change', {
-      target: {
-        name: 'supply',
-        value: JSON.stringify({
-          text: 123,
-        }),
-      },
-    })
-    wrapper.find('[data-testid="close-btn"]').at(0).simulate('click')
+    wrapper.find('[data-testid="001-edit-btn"]').last().simulate('click')
+    wrapper
+      .find('[data-testid="001-supply.data"]')
+      .last()
+      .simulate('change', {
+        target: {
+          name: 'supply',
+          value: JSON.stringify({
+            text: 123,
+          }),
+        },
+      })
+    wrapper.find('[data-testid="001-close-btn"]').last().simulate('click')
     expect(wrapper.html()).not.toContain('foo')
     expect(wrapper.html()).toContain('123')
   })
@@ -153,13 +159,16 @@ describe('supply data', () => {
       </>
     )
     expect(wrapper.html()).toContain('baz')
-    wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
-    wrapper.find('input[data-testid="name-input"]').simulate('change', {
-      target: {
-        name: 'name',
-        value: 'bar',
-      },
-    })
+    wrapper.find('[data-testid="001-edit-btn"]').last().simulate('click')
+    wrapper
+      .find('[data-testid="001-name-input"]')
+      .last()
+      .simulate('change', {
+        target: {
+          name: 'name',
+          value: 'bar',
+        },
+      })
     expect(wrapper.html()).not.toContain('baz')
     expect(wrapper.html()).toContain('bar')
   })
@@ -203,14 +212,17 @@ describe('supply data', () => {
       </>
     )
     expect(wrapper.html()).toContain('baz')
-    wrapper.find('span[data-testid="edit-btn"]').at(0).simulate('click')
-    wrapper.find('input[data-testid="name-input"]').simulate('change', {
-      target: {
-        name: 'name',
-        value: 'bar',
-      },
-    })
-    wrapper.find('[data-testid="close-btn"]').at(0).simulate('click')
+    wrapper.find('[data-testid="001-edit-btn"]').last().simulate('click')
+    wrapper
+      .find('[data-testid="001-name-input"]')
+      .last()
+      .simulate('change', {
+        target: {
+          name: 'name',
+          value: 'bar',
+        },
+      })
+    wrapper.find('[data-testid="001-close-btn"]').last().simulate('click')
     expect(wrapper.html()).not.toContain('baz')
     expect(wrapper.html()).toContain('bar')
   })

@@ -1,5 +1,6 @@
-import { Action } from '../compile-action'
 import parseActions, { ActionObj } from '../parse-actions'
+import { Action } from '../../types'
+
 describe('parseActions', () => {
   test('parse actions string correctly', () => {
     const actionObj: ActionObj = {

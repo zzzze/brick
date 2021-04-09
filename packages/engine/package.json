@@ -7,6 +7,9 @@
   "files": [
     "lib/"
   ],
+  "scripts": {
+    "type-check": "tsc --project tsconfig.eslint.json"
+  },
   "sideEffects": false,
   "peerDependencies": {
     "react": "^17.0.1",

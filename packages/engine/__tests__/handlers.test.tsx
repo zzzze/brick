@@ -1,8 +1,8 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import 'jest-enzyme'
-import { Engine } from '@/index'
-import { Config } from '@/types'
+import { Engine } from '../src/index'
+import { Config } from '../src/types'
 import './register-bricks'
 import './register-data-types'
 

@@ -1,6 +1,6 @@
 import 'jest-enzyme'
 import React from 'react'
-import { Engine } from '@/index'
+import { Engine } from '../src/index'
 import { StringType, NumberType, BooleanType, ObjectType, CodeType } from '../src/data/data-type'
 import { ObjectStringInput } from '@brick/components'
 

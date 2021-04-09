@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, forwardRef, useMemo, useImperativeHandle, CSSProperties } from 'react'
+import React, { useRef, useEffect, forwardRef, useMemo, useImperativeHandle, CSSProperties, useState } from 'react'
 
 interface EventData {
   target: {
@@ -39,39 +39,7 @@ function initMonaco() {
   })
 
   // extra libraries
-  const libSource = `
-    declare interface BrickContext {
-      data?: Record<string, unknown>
-      actions?: Record<string, unknown>
-    }
-    declare type DataObject = Record<string, unknown>
-    declare interface SetDataFn {
-      (data: DataObject): DataObject
-    }
-    declare interface SetData {
-      (fn: SetDataFn, options: SetDataOptions): void
-    }
-    declare interface SetDataOptions {
-      setToConfig?: boolean
-    }
-    declare interface SetData {
-      (fn: SetDataFn, options: SetDataOptions): void
-    }
-    declare interface Emit {
-      (event: string, ...args: unknown[]): void
-    }
-    declare interface BrickInstance {
-      key: string
-      data: DataObject
-      actions: Record<string, Action>
-      handlers: Record<string, Action>
-      context: BrickContext
-      setData: SetData
-      emit: Emit
-      editing: boolean
-      children?: React.ReactElement
-    }
-  `
+  const libSource = __BRICK_INSTANCE_TYPES__
   const libUri = 'ts:filename/brick-instance.d.ts'
   monaco.languages.typescript.javascriptDefaults.addExtraLib(libSource, libUri)
   monaco.editor.createModel(libSource, 'typescript', monaco.Uri.parse(libUri))
@@ -79,33 +47,42 @@ function initMonaco() {
 
 const Editor = forwardRef<Instance, IEditorProps>((props, ref) => {
   const divEl = useRef<HTMLDivElement>(null)
-  let editor: monaco.editor.IStandaloneCodeEditor
+  const [editor, setEditor] = useState<monaco.editor.IStandaloneCodeEditor | null>(null)
   useEffect(() => {
     if (divEl.current) {
       initMonaco()
-      editor = monaco.editor.create(divEl.current, {
+      const _editor = monaco.editor.create(divEl.current, {
         value: props.value,
         language: 'typescript',
         minimap: {
           enabled: false,
         },
       })
-      editor.onDidChangeModelContent(() => {
+      _editor.onDidChangeModelContent(() => {
         props.onChange &&
           props.onChange({
             target: {
               name: props.name ?? '',
-              value: editor.getValue(),
+              value: _editor?.getValue() ?? '',
             },
           })
       })
+      setEditor(_editor)
     }
     return () => {
-      editor.dispose()
+      editor?.dispose()
     }
   }, [])
+  useEffect(() => {
+    if (editor && props.style?.display != 'none') {
+      editor?.layout()
+    }
+  }, [editor, props.style?.display])
   const instance = useMemo(() => {
     const obj = { value: '' }
+    if (!editor) {
+      return obj
+    }
     Object.defineProperty(obj, 'value', {
       set(newValue: string) {
         if (newValue && editor) {
@@ -114,7 +91,7 @@ const Editor = forwardRef<Instance, IEditorProps>((props, ref) => {
       },
     })
     return obj
-  }, [])
+  }, [editor])
   useImperativeHandle(ref, () => instance)
   return (
     <div

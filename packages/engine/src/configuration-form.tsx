@@ -107,7 +107,7 @@ const ConfigurationForm = ({
               key={key}
               getPopupContainer={getPopupContainer}
               tips={td.tips}
-              data-testid={td.testID}
+              data-testid={`${config._key}-${td.testID ?? key}`}
               label={td?.label || key}
               name={key}>
               {td.formItem()}
@@ -132,7 +132,7 @@ const ConfigurationForm = ({
               key={key}
               getPopupContainer={getPopupContainer}
               tips={td.tips}
-              data-testid={td.testID}
+              data-testid={`${config._key}-${td.testID ?? key}`}
               label={td?.label || key}
               name={key}>
               {td.formItem()}

@@ -13,7 +13,7 @@ exports[`renders ./packages/engine/demo/basic.md correctly 1`] = `
     >
       <span
         class="brick__config-form-remove-btn"
-        data-testid="remove-btn"
+        data-testid="001-remove-btn"
         title="remove"
       >
         <svg
@@ -35,7 +35,7 @@ exports[`renders ./packages/engine/demo/basic.md correctly 1`] = `
       </span>
       <span
         class="brick__config-form-edit-btn"
-        data-testid="edit-btn"
+        data-testid="001-edit-btn"
         title="edit"
       >
         <svg
@@ -112,7 +112,7 @@ exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
     >
       <span
         class="brick__config-form-remove-btn"
-        data-testid="remove-btn"
+        data-testid="001-remove-btn"
         title="remove"
       >
         <svg
@@ -134,7 +134,7 @@ exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
       </span>
       <span
         class="brick__config-form-edit-btn"
-        data-testid="edit-btn"
+        data-testid="001-edit-btn"
         title="edit"
       >
         <svg
@@ -206,7 +206,7 @@ exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
       >
         <span
           class="brick__config-form-remove-btn"
-          data-testid="remove-btn"
+          data-testid="002-remove-btn"
           title="remove"
         >
           <svg
@@ -228,7 +228,7 @@ exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
         </span>
         <span
           class="brick__config-form-edit-btn"
-          data-testid="edit-btn"
+          data-testid="002-edit-btn"
           title="edit"
         >
           <svg
@@ -314,7 +314,7 @@ exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
       >
         <span
           class="brick__config-form-remove-btn"
-          data-testid="remove-btn"
+          data-testid="003-remove-btn"
           title="remove"
         >
           <svg
@@ -336,7 +336,7 @@ exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
         </span>
         <span
           class="brick__config-form-edit-btn"
-          data-testid="edit-btn"
+          data-testid="003-edit-btn"
           title="edit"
         >
           <svg
@@ -426,7 +426,7 @@ exports[`renders ./packages/engine/demo/custom-render.md correctly 1`] = `
     >
       <span
         class="brick__config-form-remove-btn"
-        data-testid="remove-btn"
+        data-testid="001-remove-btn"
         title="remove"
       >
         <svg
@@ -448,7 +448,7 @@ exports[`renders ./packages/engine/demo/custom-render.md correctly 1`] = `
       </span>
       <span
         class="brick__config-form-edit-btn"
-        data-testid="edit-btn"
+        data-testid="001-edit-btn"
         title="edit"
       >
         <svg
@@ -523,7 +523,7 @@ exports[`renders ./packages/engine/demo/custom-render.md correctly 1`] = `
       >
         <span
           class="brick__config-form-remove-btn"
-          data-testid="remove-btn"
+          data-testid="002-remove-btn"
           title="remove"
         >
           <svg
@@ -545,7 +545,7 @@ exports[`renders ./packages/engine/demo/custom-render.md correctly 1`] = `
         </span>
         <span
           class="brick__config-form-edit-btn"
-          data-testid="edit-btn"
+          data-testid="002-edit-btn"
           title="edit"
         >
           <svg
@@ -635,7 +635,7 @@ exports[`renders ./packages/engine/demo/supply.md correctly 1`] = `
     >
       <span
         class="brick__config-form-remove-btn"
-        data-testid="remove-btn"
+        data-testid="001-remove-btn"
         title="remove"
       >
         <svg
@@ -657,7 +657,7 @@ exports[`renders ./packages/engine/demo/supply.md correctly 1`] = `
       </span>
       <span
         class="brick__config-form-edit-btn"
-        data-testid="edit-btn"
+        data-testid="001-edit-btn"
         title="edit"
       >
         <svg
@@ -729,7 +729,7 @@ exports[`renders ./packages/engine/demo/supply.md correctly 1`] = `
       >
         <span
           class="brick__config-form-remove-btn"
-          data-testid="remove-btn"
+          data-testid="002-remove-btn"
           title="remove"
         >
           <svg
@@ -751,7 +751,7 @@ exports[`renders ./packages/engine/demo/supply.md correctly 1`] = `
         </span>
         <span
           class="brick__config-form-edit-btn"
-          data-testid="edit-btn"
+          data-testid="002-edit-btn"
           title="edit"
         >
           <svg
@@ -823,7 +823,7 @@ exports[`renders ./packages/engine/demo/supply.md correctly 1`] = `
         >
           <span
             class="brick__config-form-remove-btn"
-            data-testid="remove-btn"
+            data-testid="003-remove-btn"
             title="remove"
           >
             <svg
@@ -845,7 +845,7 @@ exports[`renders ./packages/engine/demo/supply.md correctly 1`] = `
           </span>
           <span
             class="brick__config-form-edit-btn"
-            data-testid="edit-btn"
+            data-testid="003-edit-btn"
             title="edit"
           >
             <svg
@@ -948,7 +948,7 @@ exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
     >
       <span
         class="brick__config-form-remove-btn"
-        data-testid="remove-btn"
+        data-testid="001-remove-btn"
         title="remove"
       >
         <svg
@@ -970,7 +970,7 @@ exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
       </span>
       <span
         class="brick__config-form-edit-btn"
-        data-testid="edit-btn"
+        data-testid="001-edit-btn"
         title="edit"
       >
         <svg
@@ -1042,7 +1042,7 @@ exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
       >
         <span
           class="brick__config-form-remove-btn"
-          data-testid="remove-btn"
+          data-testid="002-remove-btn"
           title="remove"
         >
           <svg
@@ -1064,7 +1064,7 @@ exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
         </span>
         <span
           class="brick__config-form-edit-btn"
-          data-testid="edit-btn"
+          data-testid="002-edit-btn"
           title="edit"
         >
           <svg
@@ -1136,7 +1136,7 @@ exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
         >
           <span
             class="brick__config-form-remove-btn"
-            data-testid="remove-btn"
+            data-testid="003-remove-btn"
             title="remove"
           >
             <svg
@@ -1158,7 +1158,7 @@ exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
           </span>
           <span
             class="brick__config-form-edit-btn"
-            data-testid="edit-btn"
+            data-testid="003-edit-btn"
             title="edit"
           >
             <svg
@@ -1261,7 +1261,7 @@ exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
     >
       <span
         class="brick__config-form-remove-btn"
-        data-testid="remove-btn"
+        data-testid="001-remove-btn"
         title="remove"
       >
         <svg
@@ -1283,7 +1283,7 @@ exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
       </span>
       <span
         class="brick__config-form-edit-btn"
-        data-testid="edit-btn"
+        data-testid="001-edit-btn"
         title="edit"
       >
         <svg
@@ -1355,7 +1355,7 @@ exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
       >
         <span
           class="brick__config-form-remove-btn"
-          data-testid="remove-btn"
+          data-testid="002-remove-btn"
           title="remove"
         >
           <svg
@@ -1377,7 +1377,7 @@ exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
         </span>
         <span
           class="brick__config-form-edit-btn"
-          data-testid="edit-btn"
+          data-testid="002-edit-btn"
           title="edit"
         >
           <svg
@@ -1449,7 +1449,7 @@ exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
         >
           <span
             class="brick__config-form-remove-btn"
-            data-testid="remove-btn"
+            data-testid="003-remove-btn"
             title="remove"
           >
             <svg
@@ -1471,7 +1471,7 @@ exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
           </span>
           <span
             class="brick__config-form-edit-btn"
-            data-testid="edit-btn"
+            data-testid="003-edit-btn"
             title="edit"
           >
             <svg
@@ -1575,7 +1575,7 @@ exports[`renders ./packages/engine/demo/supply-with-style.md correctly 1`] = `
     >
       <span
         class="brick__config-form-remove-btn"
-        data-testid="remove-btn"
+        data-testid="001-remove-btn"
         title="remove"
       >
         <svg
@@ -1597,7 +1597,7 @@ exports[`renders ./packages/engine/demo/supply-with-style.md correctly 1`] = `
       </span>
       <span
         class="brick__config-form-edit-btn"
-        data-testid="edit-btn"
+        data-testid="001-edit-btn"
         title="edit"
       >
         <svg
@@ -1669,7 +1669,7 @@ exports[`renders ./packages/engine/demo/supply-with-style.md correctly 1`] = `
       >
         <span
           class="brick__config-form-remove-btn"
-          data-testid="remove-btn"
+          data-testid="002-remove-btn"
           title="remove"
         >
           <svg
@@ -1691,7 +1691,7 @@ exports[`renders ./packages/engine/demo/supply-with-style.md correctly 1`] = `
         </span>
         <span
           class="brick__config-form-edit-btn"
-          data-testid="edit-btn"
+          data-testid="002-edit-btn"
           title="edit"
         >
           <svg
@@ -1763,7 +1763,7 @@ exports[`renders ./packages/engine/demo/supply-with-style.md correctly 1`] = `
         >
           <span
             class="brick__config-form-remove-btn"
-            data-testid="remove-btn"
+            data-testid="003-remove-btn"
             title="remove"
           >
             <svg
@@ -1785,7 +1785,7 @@ exports[`renders ./packages/engine/demo/supply-with-style.md correctly 1`] = `
           </span>
           <span
             class="brick__config-form-edit-btn"
-            data-testid="edit-btn"
+            data-testid="003-edit-btn"
             title="edit"
           >
             <svg
@@ -1888,7 +1888,7 @@ exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
     >
       <span
         class="brick__config-form-remove-btn"
-        data-testid="remove-btn"
+        data-testid="001-remove-btn"
         title="remove"
       >
         <svg
@@ -1910,7 +1910,7 @@ exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
       </span>
       <span
         class="brick__config-form-edit-btn"
-        data-testid="edit-btn"
+        data-testid="001-edit-btn"
         title="edit"
       >
         <svg
@@ -1982,7 +1982,7 @@ exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
       >
         <span
           class="brick__config-form-remove-btn"
-          data-testid="remove-btn"
+          data-testid="002-remove-btn"
           title="remove"
         >
           <svg
@@ -2004,7 +2004,7 @@ exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
         </span>
         <span
           class="brick__config-form-edit-btn"
-          data-testid="edit-btn"
+          data-testid="002-edit-btn"
           title="edit"
         >
           <svg
@@ -2076,7 +2076,7 @@ exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
         >
           <span
             class="brick__config-form-remove-btn"
-            data-testid="remove-btn"
+            data-testid="003-remove-btn"
             title="remove"
           >
             <svg
@@ -2098,7 +2098,7 @@ exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
           </span>
           <span
             class="brick__config-form-edit-btn"
-            data-testid="edit-btn"
+            data-testid="003-edit-btn"
             title="edit"
           >
             <svg

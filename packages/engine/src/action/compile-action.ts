@@ -1,10 +1,5 @@
 import { transform } from '@babel/standalone'
-
-export interface Action {
-  (...args: unknown[]): void
-  binded?: boolean
-  instance_key?: string
-}
+import { Action } from '../types/brick-instance'
 
 export type Func = string | (() => Action)
 

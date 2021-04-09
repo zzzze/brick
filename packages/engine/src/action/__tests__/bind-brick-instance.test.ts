@@ -1,7 +1,6 @@
-import { Action } from '../compile-action'
 import { Actions } from '../parse-actions'
 import bindBrickInstance from '../bind-brick-instance'
-import { BrickInstance } from '@/types'
+import { BrickInstance, Action } from '../../types'
 
 describe('parseActions', () => {
   test('parse actions string correctly', () => {

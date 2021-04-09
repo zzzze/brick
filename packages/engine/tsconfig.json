@@ -8,5 +8,5 @@
     "declaration": true,
     "outDir": "lib"
   },
-  "exclude": ["lib"]
+  "exclude": ["lib", "__tests__", "src/**/__tests__/*", "stories"]
 }

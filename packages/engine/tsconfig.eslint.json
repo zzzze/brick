@@ -2,5 +2,14 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": true
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "./__tests__/*.test.tsx",
+    "./__tests__/*.test.ts",
+    "./stories/*.tsx",
+    "./stories/*.ts"
+  ],
+  "exclude": ["lib"]
 }

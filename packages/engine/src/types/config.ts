@@ -1,5 +1,6 @@
 import { Func } from '@/action/compile-action'
-import { DataObject, Render } from './brick'
+import { Render } from './brick'
+import { DataObject } from './brick-instance'
 
 export const idPrefix = '$'
 

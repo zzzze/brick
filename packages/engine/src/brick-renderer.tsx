@@ -11,7 +11,7 @@ import useInstanceHandlers from './use-instance-handlers'
 import normalizeDataType from './data/normalize-data-type'
 import useData from './data/use-data'
 import bindBrickInstance from './action/bind-brick-instance'
-import { Action } from './action/compile-action'
+import { Action } from './types'
 
 interface BrickRenderProps {
   config: Config
