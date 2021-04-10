@@ -9,7 +9,9 @@
     "./__tests__/*.test.tsx",
     "./__tests__/*.test.ts",
     "./stories/*.tsx",
-    "./stories/*.ts"
+    "./stories/*.ts",
+    "index.pure.ts",
+    "index.ts"
   ],
   "exclude": ["lib"]
 }
