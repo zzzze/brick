@@ -2,11 +2,11 @@ import EnginxContext from '../context'
 import { useContext, useEffect, useMemo } from 'react'
 import { Actions } from './parse-actions'
 import { Action } from '../types'
-import { Config, BrickContext } from '../types'
+import { Blueprint, BrickContext } from '../types'
 import parseActions from './parse-actions'
 
 export default function useActions(
-  config: Config,
+  config: Blueprint,
   context: BrickContext,
   actions: Record<string, Action>
 ): Record<string, Action> {

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useContext } from 'react'
-import { Emit, SetConfig, SetData, SetDataFn, SetDataOptions } from './types'
+import { Emit, SetBlueprint, SetData, SetDataFn, SetDataOptions } from './types'
 import EnginxContext from './context'
 
 export interface InstanceHandlers {
@@ -9,16 +9,16 @@ export interface InstanceHandlers {
 
 export default function useInstanceHandlers(
   data: Record<string, unknown>,
-  setConfig: SetConfig,
+  setBlueprint: SetBlueprint,
   setData: React.Dispatch<React.SetStateAction<Record<string, unknown>>>
 ): InstanceHandlers {
   const context = useContext(EnginxContext)
   const handleSetData = useCallback(
     (fn: SetDataFn, options: SetDataOptions = {}): void => {
       const newData = fn(data)
-      if (options.setToConfig) {
-        setConfig((config) => ({
-          ...config,
+      if (options.setToBlueprint) {
+        setBlueprint((blueprint) => ({
+          ...blueprint,
           data: newData,
         }))
       } else {

@@ -11,7 +11,7 @@ export interface Supply {
 
 export type CustomRender = string | (() => Render)
 
-export interface Config {
+export interface Blueprint {
   _key: string
   name: string // brick name
   version: string // brick version
@@ -20,15 +20,15 @@ export interface Config {
   actions?: Record<string, Func> // define action which can be used by supply or handler
   handlers?: Record<string, Func> // define handler of event that triggered by brick instance
   supply?: Supply // provide data for child brick instance
-  children?: Config[]
+  children?: Blueprint[]
   listeners?: Record<string, Func> // listeners use for register event listeners of EventEmitter
   render?: CustomRender // custom render
 }
 
-export interface SetConfigFn {
-  (config: Readonly<Config>): Config
+export interface SetBlueprintFn {
+  (config: Readonly<Blueprint>): Blueprint
 }
 
-export interface SetConfig {
-  (fn: SetConfigFn, cb?: () => void): void
+export interface SetBlueprint {
+  (fn: SetBlueprintFn, cb?: () => void): void
 }

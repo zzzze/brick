@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import BrickWrapper from './brick-wrapper'
 import BrickRenderer, { BrickRenderProps } from './brick-renderer'
-import { Config, SetConfig } from './types'
+import { Blueprint, SetBlueprint } from './types'
 
 interface IErrorBoundaryProps {
   children: ReactElement<typeof BrickRenderer>
@@ -39,12 +39,12 @@ class ErrorBoundary extends React.Component<IErrorBoundaryProps, IErrorBoundaryS
     }
   }
 
-  get config(): Config {
-    return (this.props.children.props as BrickRenderProps).config
+  get blueprint(): Blueprint {
+    return (this.props.children.props as BrickRenderProps).blueprint
   }
 
-  get parentConfig(): Config | undefined {
-    return (this.props.children.props as BrickRenderProps).parentConfig
+  get parentBlueprint(): Blueprint | undefined {
+    return (this.props.children.props as BrickRenderProps).parentBlueprint
   }
 
   get isRoot(): boolean | undefined {
@@ -55,25 +55,25 @@ class ErrorBoundary extends React.Component<IErrorBoundaryProps, IErrorBoundaryS
     return (this.props.children.props as BrickRenderProps).onRemoveItemFromParent
   }
 
-  get onAddToOrMoveInParent(): ((config: Config, key: string, action: string) => void) | undefined {
+  get onAddToOrMoveInParent(): ((blueprint: Blueprint, key: string, action: string) => void) | undefined {
     return (this.props.children.props as BrickRenderProps).onAddToOrMoveInParent
   }
 
-  get setConfig(): SetConfig {
-    return (this.props.children.props as BrickRenderProps).setConfig
+  get setBlueprint(): SetBlueprint {
+    return (this.props.children.props as BrickRenderProps).setBlueprint
   }
 
   render(): React.ReactNode {
     if (this.state.error) {
       return (
         <BrickWrapper
-          key={this.config._key}
+          key={this.blueprint._key}
           onRemoveItemFormParent={this.onRemoveItemFromParent}
           onAddToOrMoveInParent={this.onAddToOrMoveInParent}
-          config={this.config}
+          blueprint={this.blueprint}
           isRoot={this.isRoot}
-          parentConfig={this.parentConfig}
-          onConfigChange={this.setConfig}>
+          parentBlueprint={this.parentBlueprint}
+          onBlueprintChange={this.setBlueprint}>
           <pre>{String(this.state.error)}</pre>
         </BrickWrapper>
       )

@@ -1,7 +1,7 @@
-import { Config } from '../types'
+import { Blueprint } from '../types'
 
-export const copyConfig = (config: Config): Config => {
-  const newConfig: Config = {
+export const copyConfig = (config: Blueprint): Blueprint => {
+  const newConfig: Blueprint = {
     ...config,
   }
   if (config.supply) {

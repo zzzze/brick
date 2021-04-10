@@ -1,5 +1,5 @@
 import React, { Children, cloneElement, useRef, useCallback, useContext, useMemo, useState, RefObject } from 'react'
-import { ChildrenType, Config, DataObject, SetConfig } from './types'
+import { ChildrenType, Blueprint, DataObject, SetBlueprint } from './types'
 import ConfigurationForm from './configuration-form'
 import EnginxContext from './context'
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
@@ -7,7 +7,7 @@ import { XYCoord } from 'dnd-core'
 import clx from 'classnames'
 import debounce from 'lodash/debounce'
 
-const ITEM_TYPE = 'brick-config'
+const ITEM_TYPE = 'brick-instance'
 
 interface DragOverProps {
   className?: string
@@ -76,14 +76,14 @@ const voidElements = [
   'wbr',
 ]
 
-export const createRemoveItemFromParentFn = (setConfig: SetConfig) => (key: string): void => {
-  setConfig((config) => {
-    if (!config.children || !config.children.length) {
-      return config
+export const createRemoveItemFromParentFn = (setBlueprint: SetBlueprint) => (key: string): void => {
+  setBlueprint((blueprint) => {
+    if (!blueprint.children || !blueprint.children.length) {
+      return blueprint
     }
-    const children = config.children.filter((item) => item._key !== key)
+    const children = blueprint.children.filter((item) => item._key !== key)
     return {
-      ...config,
+      ...blueprint,
       children,
     }
   })
@@ -107,18 +107,18 @@ const DragOver: React.FC<DragOverProps> = ({ className }: DragOverProps) => {
 
 interface BrickWrapperProps {
   children: React.ReactElement<React.PropsWithChildren<unknown>>
-  config: Config
-  parentConfig?: Config
-  onConfigChange: SetConfig
+  blueprint: Blueprint
+  parentBlueprint?: Blueprint
+  onBlueprintChange: SetBlueprint
   style?: React.CSSProperties
   onRemoveItemFormParent?: (key: string) => void
-  onAddToOrMoveInParent?: (config: Config, anchorKey: string, action: string) => void
+  onAddToOrMoveInParent?: (blueprint: Blueprint, anchorKey: string, action: string) => void
   isRoot?: boolean
 }
 
 export interface IDragItem {
   type: string
-  config: Config
+  blueprint: Blueprint
   lastAction: string
   onRemove?: (key: string) => void
 }
@@ -127,12 +127,12 @@ interface IBrickContainer extends React.PropsWithChildren<React.HTMLAttributes<H
   ref?: React.RefObject<HTMLElement>
 }
 
-const isHoverOnDragItemOrItsChild = (config: Config, key: string): boolean => {
-  if (config._key === key) {
+const isHoverOnDragItemOrItsChild = (blueprint: Blueprint, key: string): boolean => {
+  if (blueprint._key === key) {
     return true
   }
-  if (Array.isArray(config.children)) {
-    return config.children.some((child) => isHoverOnDragItemOrItsChild(child, key))
+  if (Array.isArray(blueprint.children)) {
+    return blueprint.children.some((child) => isHoverOnDragItemOrItsChild(child, key))
   }
   return false
 }
@@ -183,27 +183,27 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     return props.children
   }
   const brick = useMemo(() => {
-    const brick = context.bricks[props.config.name]
+    const brick = context.bricks[props.blueprint.name]
     if (!brick) {
-      throw Error(`brick (${props.config.name}) not found`)
+      throw Error(`brick (${props.blueprint.name}) not found`)
     }
     return brick
-  }, [context.bricks, props.config])
+  }, [context.bricks, props.blueprint])
   const parentBrick = useMemo(() => {
-    if (!props.parentConfig) {
+    if (!props.parentBlueprint) {
       return null
     }
-    const brick = context.bricks[props.parentConfig.name]
+    const brick = context.bricks[props.parentBlueprint.name]
     if (!brick) {
-      throw Error(`brick (${props.parentConfig.name}) not found`)
+      throw Error(`brick (${props.parentBlueprint.name}) not found`)
     }
     return brick
-  }, [context.bricks, props.parentConfig])
+  }, [context.bricks, props.parentBlueprint])
   const brickContainer = useRef<HTMLElement>(null)
   const handleChange = useCallback((newProps: DataObject) => {
-    props.onConfigChange((config: Config) => {
+    props.onBlueprintChange((blueprint: Blueprint) => {
       return {
-        ...config,
+        ...blueprint,
         data: newProps,
       }
     })
@@ -216,7 +216,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     if (!monitor.isOver({ shallow: true })) {
       return false
     }
-    if (isHoverOnDragItemOrItsChild(item.config, props.config._key)) {
+    if (isHoverOnDragItemOrItsChild(item.blueprint, props.blueprint._key)) {
       // drag and hover on itself or its children
       return false
     }
@@ -227,7 +227,10 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       clientOffset || { x: -1, y: -1 }
     )
     if (inAdditionActionTriggerAera) {
-      if (Array.isArray(props.config.children) && props.config.children.some((c) => c._key === item.config._key)) {
+      if (
+        Array.isArray(props.blueprint.children) &&
+        props.blueprint.children.some((c) => c._key === item.blueprint._key)
+      ) {
         // item is in the container already
         return false
       }
@@ -236,8 +239,8 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       }
       if (
         brick.childrenType === ChildrenType.SINGLE &&
-        Array.isArray(props.config.children) &&
-        props.config.children.length > 0
+        Array.isArray(props.blueprint.children) &&
+        props.blueprint.children.length > 0
       ) {
         return false
       }
@@ -250,9 +253,9 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     if (inForwardActionTriggerAera || inBackwardActionTriggerAera) {
       if (
         parentBrick?.childrenType === ChildrenType.SINGLE &&
-        props?.parentConfig &&
-        Array.isArray(props?.parentConfig?.children) &&
-        props?.parentConfig.children.length > 0
+        props?.parentBlueprint &&
+        Array.isArray(props?.parentBlueprint?.children) &&
+        props?.parentBlueprint.children.length > 0
       ) {
         return false
       }
@@ -261,33 +264,33 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
   }
   const handleRemoveFromParent = useCallback(
     (key: string) => {
-      createRemoveItemFromParentFn(props.onConfigChange)(key)
+      createRemoveItemFromParentFn(props.onBlueprintChange)(key)
     },
-    [props.onConfigChange]
+    [props.onBlueprintChange]
   )
   const handleAddChild = useCallback(
-    (_config: Config) => {
-      props.onConfigChange((config) => {
-        let children: Config[] = []
-        if (config.children && config.children.length) {
-          children = config.children.slice()
+    (_blueprint: Blueprint) => {
+      props.onBlueprintChange((blueprint) => {
+        let children: Blueprint[] = []
+        if (blueprint.children && blueprint.children.length) {
+          children = blueprint.children.slice()
         }
         children.push({
-          ..._config,
+          ..._blueprint,
         })
         return {
-          ...config,
+          ...blueprint,
           children,
         }
       })
     },
-    [props.onConfigChange]
+    [props.onBlueprintChange]
   )
   const [{ isDragging }, drag, preview] = useDrag(
     {
       item: {
         type: ITEM_TYPE,
-        config: props.config,
+        blueprint: props.blueprint,
         lastAction: '',
         onRemove: props.onRemoveItemFormParent,
       },
@@ -295,7 +298,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         return true
       },
       isDragging: (monitor: DragSourceMonitor) => {
-        return (monitor.getItem() as IDragItem).config._key === props.config._key
+        return (monitor.getItem() as IDragItem).blueprint._key === props.blueprint._key
       },
       collect: (monitor: DragSourceMonitor) => ({
         isDragging: monitor.isDragging(),
@@ -323,13 +326,16 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           hoverBoundingRect,
           clientOffset || { x: -1, y: -1 }
         )
-        if (inAdditionActionTriggerAera && item.lastAction !== `addition-${props.config._key}-${item.config._key}`) {
+        if (
+          inAdditionActionTriggerAera &&
+          item.lastAction !== `addition-${props.blueprint._key}-${item.blueprint._key}`
+        ) {
           context.transactionBegin()
-          item.onRemove && item.onRemove(item.config._key)
-          handleAddChild(item.config)
+          item.onRemove && item.onRemove(item.blueprint._key)
+          handleAddChild(item.blueprint)
           context.transactionCommit()
           item.onRemove = handleRemoveFromParent
-          item.lastAction = `addition-${props.config._key}-${item.config._key}`
+          item.lastAction = `addition-${props.blueprint._key}-${item.blueprint._key}`
         }
         if (props.isRoot) {
           return
@@ -338,25 +344,31 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           hoverBoundingRect,
           clientOffset || { x: -1, y: -1 }
         )
-        if (inForwardActionTriggerAera && item.lastAction !== `forward-${props.config._key}-${item.config._key}`) {
+        if (
+          inForwardActionTriggerAera &&
+          item.lastAction !== `forward-${props.blueprint._key}-${item.blueprint._key}`
+        ) {
           context.transactionBegin()
-          item.onRemove && item.onRemove(item.config._key)
-          props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.config, props.config._key, 'forward')
+          item.onRemove && item.onRemove(item.blueprint._key)
+          props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.blueprint, props.blueprint._key, 'forward')
           context.transactionCommit()
           item.onRemove = props.onRemoveItemFormParent
-          item.lastAction = `forward-${props.config._key}-${item.config._key}`
+          item.lastAction = `forward-${props.blueprint._key}-${item.blueprint._key}`
         }
         const inBackwardActionTriggerAera = isInBackwardActionTriggerAera(
           hoverBoundingRect,
           clientOffset || { x: -1, y: -1 }
         )
-        if (inBackwardActionTriggerAera && item.lastAction !== `backward-${props.config._key}-${item.config._key}`) {
+        if (
+          inBackwardActionTriggerAera &&
+          item.lastAction !== `backward-${props.blueprint._key}-${item.blueprint._key}`
+        ) {
           context.transactionBegin()
-          item.onRemove && item.onRemove(item.config._key)
-          props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.config, props.config._key, 'backward')
+          item.onRemove && item.onRemove(item.blueprint._key)
+          props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.blueprint, props.blueprint._key, 'backward')
           context.transactionCommit()
           item.onRemove = props.onRemoveItemFormParent
-          item.lastAction = `backward-${props.config._key}-${item.config._key}`
+          item.lastAction = `backward-${props.blueprint._key}-${item.blueprint._key}`
         }
       }, 20),
       collect: (monitor: DropTargetMonitor) => ({
@@ -366,14 +378,14 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     [props]
   )
   const onRemove = useCallback(() => {
-    props.onRemoveItemFormParent && props.onRemoveItemFormParent(props.config._key)
+    props.onRemoveItemFormParent && props.onRemoveItemFormParent(props.blueprint._key)
     context.transactionCommit()
   }, [props.onRemoveItemFormParent])
   const isVoidElement = useMemo(() => isTypeString(child.type) && voidElements.includes(child.type), [child.type])
   const configurationForm = context.renderConfigurationForm(
     <ConfigurationForm
-      config={props.config}
-      onConfigChange={props.onConfigChange}
+      blueprint={props.blueprint}
+      onBlueprintChange={props.onBlueprintChange}
       onDataChange={handleChange}
       autoCommit={context.autoCommit}
       isVoidElement={isVoidElement}
@@ -382,7 +394,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       ee: context.ee,
       connectDragSource: drag,
       removeItem: onRemove,
-      config: props.config,
+      blueprint: props.blueprint,
     }
   )
   preview(drop(brickContainer))
@@ -405,13 +417,13 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
   const style = useMemo(() => {
     let style: Record<string, unknown> = {}
     let styleOverride: Record<string, unknown> = {}
-    if (props.config.data && isObject(props.config.data.style)) {
-      style = props.config.data.style
+    if (props.blueprint.data && isObject(props.blueprint.data.style)) {
+      style = props.blueprint.data.style
     } else {
       style = {}
     }
-    if (props.config.data && isObject(props.config.data.styleOverride)) {
-      styleOverride = props.config.data.styleOverride
+    if (props.blueprint.data && isObject(props.blueprint.data.styleOverride)) {
+      styleOverride = props.blueprint.data.styleOverride
     } else {
       styleOverride = {}
     }
@@ -419,7 +431,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       ...style,
       ...styleOverride,
     }
-  }, [props.config.data?.style, props.config.data?.styleOverride])
+  }, [props.blueprint.data?.style, props.blueprint.data?.styleOverride])
   if (isTypeString(child.type) && isVoidElement) {
     let Tag: 'span' | 'div' = 'span'
     if (blockLevelElement.includes(child.type)) {
@@ -428,7 +440,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     return (
       <Tag
         ref={brickContainer as RefObject<HTMLDivElement>}
-        style={(props.config.data?.wrapperStyle as React.CSSProperties) ?? {}}
+        style={(props.blueprint.data?.wrapperStyle as React.CSSProperties) ?? {}}
         className={className}>
         {cloneElement<IBrickContainer>(child, {
           style,

@@ -6,7 +6,7 @@
     "name": "baz"
   },
   "actions": {
-    "onClick": "function(instance, name) {\n            instance.setData(function(data) {\n    console.log('000001', data);\n          return Object.assign({}, data, {\n                name: name,\n              })\n            }, {\n              setToConfig: true,\n            })\n          }"
+    "onClick": "function(instance, name) {\n            instance.setData(function(data) {\n    console.log('000001', data);\n          return Object.assign({}, data, {\n                name: name,\n              })\n            }, {\n              setToBlueprint: true,\n            })\n          }"
   },
   "supply": {
     "data": {

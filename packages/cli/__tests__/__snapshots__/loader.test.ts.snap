@@ -20,7 +20,7 @@ exports[`load module correctly 1`] = `
                 name: name,
               })
             }, {
-              setToConfig: true,
+              setToBlueprint: true,
             })
           }
     }

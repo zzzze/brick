@@ -1,15 +1,15 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import 'jest-enzyme'
-import { Engine } from '../src/index'
-import { Config } from '../src/types'
+import { Engine } from '../src/engine'
+import { Blueprint } from '../src/types'
 import './register-bricks'
 
 React.useLayoutEffect = React.useEffect
 
 describe('custom-render', () => {
   test('', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'ViewWithCustomRender',
       _key: '001',
       render: `instance => {
@@ -22,7 +22,7 @@ describe('custom-render', () => {
       }`,
       version: '0.0.1',
     }
-    const wrapper = mount(<Engine config={config} />)
+    const wrapper = mount(<Engine blueprint={blueprint} />)
     expect(wrapper.html()).toContain('foo')
   })
 })

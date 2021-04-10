@@ -1,6 +1,6 @@
 import React from 'react'
 import demoTest from '@brick/tools/tests/demoTest'
-import { Engine } from '../src/index'
+import { Engine } from '../src/engine'
 import { Brick, ChildrenType, BrickInstance } from '../src/types'
 import { StringType, NumberType, BooleanType } from '../src/data/data-type'
 

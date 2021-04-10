@@ -1,7 +1,7 @@
 ```tsx
 import { Engine } from '@brick/engine'
 
-const config = {
+const blueprint = {
   name: 'View',
   _key: '001',
   children: [
@@ -25,5 +25,5 @@ const config = {
   version: '0.0.1',
 }
 
-ReactDOM.render(<Engine config={config} />, mountNode)
+ReactDOM.render(<Engine blueprint={blueprint} />, mountNode)
 ```

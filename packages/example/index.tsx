@@ -2,7 +2,7 @@ import { BrickInstance, Engine } from '@brick/engine'
 import { Brick, ChildrenType } from '@brick/engine'
 import React, { useCallback } from 'react'
 import ReactDOM from 'react-dom'
-import config from './brick.config.json'
+import blueprint from './brick.config.json'
 
 const View: Brick = {
   name: 'View',
@@ -72,4 +72,4 @@ Engine.registerBrick(View)
 Engine.registerBrick(Text)
 Engine.registerBrick(TextWithAction)
 
-ReactDOM.render(<Engine config={config} />, document.body)
+ReactDOM.render(<Engine blueprint={blueprint} />, document.body)

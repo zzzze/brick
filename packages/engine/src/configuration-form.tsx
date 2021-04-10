@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useContext } from 'react'
-import { Config, SetConfig, DataObject } from '@/types'
+import { Blueprint, SetBlueprint, DataObject } from '@/types'
 import EnginxContext from './context'
 import { DataTypeDefinition } from './data/normalize-data-type'
 import { DataType } from './data/data-type'
@@ -8,8 +8,8 @@ import FormItem from './form-item/form-item'
 import ConfigurationFormContext from './form-item/context'
 
 interface PropsConfigurationFormProps {
-  config: Config
-  onConfigChange: SetConfig
+  blueprint: Blueprint
+  onBlueprintChange: SetBlueprint
   onDataChange: (data: DataObject) => void
   autoCommit: boolean
   isVoidElement: boolean
@@ -52,8 +52,8 @@ const defaultFormItems: Record<string, DataTypeDefinition> = {
 }
 
 const ConfigurationForm = ({
-  config,
-  onConfigChange,
+  blueprint,
+  onBlueprintChange,
   onDataChange,
   autoCommit,
   isVoidElement,
@@ -61,12 +61,12 @@ const ConfigurationForm = ({
 }: PropsConfigurationFormProps): JSX.Element | null => {
   const engineCtx = useContext(EnginxContext)
   const brick = useMemo(() => {
-    return engineCtx.bricks[config.name]
-  }, [engineCtx.bricks, config])
+    return engineCtx.bricks[blueprint.name]
+  }, [engineCtx.bricks, blueprint])
   const handleChange = useCallback((data: Record<string, unknown>) => {
-    onConfigChange((config) => {
+    onBlueprintChange((blueprint) => {
       return {
-        ...config,
+        ...blueprint,
         ...data,
       }
     })
@@ -89,7 +89,7 @@ const ConfigurationForm = ({
     <>
       <ConfigurationFormContext.Provider
         value={{
-          data: { ...config } as Record<string, unknown>,
+          data: { ...blueprint } as Record<string, unknown>,
           onChange: handleChange,
           commit: engineCtx.transactionCommit,
           autoCommit,
@@ -107,7 +107,7 @@ const ConfigurationForm = ({
               key={key}
               getPopupContainer={getPopupContainer}
               tips={td.tips}
-              data-testid={`${config._key}-${td.testID ?? key}`}
+              data-testid={`${blueprint._key}-${td.testID ?? key}`}
               label={td?.label || key}
               name={key}>
               {td.formItem()}
@@ -117,7 +117,7 @@ const ConfigurationForm = ({
       </ConfigurationFormContext.Provider>
       <ConfigurationFormContext.Provider
         value={{
-          data: config.data || {},
+          data: blueprint.data || {},
           onChange: onDataChange,
           commit: engineCtx.transactionCommit,
           autoCommit,
@@ -132,7 +132,7 @@ const ConfigurationForm = ({
               key={key}
               getPopupContainer={getPopupContainer}
               tips={td.tips}
-              data-testid={`${config._key}-${td.testID ?? key}`}
+              data-testid={`${blueprint._key}-${td.testID ?? key}`}
               label={td?.label || key}
               name={key}>
               {td.formItem()}

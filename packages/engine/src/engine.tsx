@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Config, Brick, SetConfigFn } from './types'
+import { Blueprint, Brick, SetBlueprintFn } from './types'
 import EnginxContext, { RenderConfigurationForm } from './context'
 import BrickRenderer from './brick-renderer'
 import EventEmitter from 'eventemitter3'
@@ -21,7 +21,7 @@ export interface EngineProps {
   /**
    * Configuration for engine
    */
-  config: Config | null
+  blueprint: Blueprint | null
   /**
    * Render configuration form of brick
    */
@@ -31,7 +31,7 @@ export interface EngineProps {
 }
 
 interface EngineState {
-  config: Config | null
+  blueprint: Blueprint | null
 }
 
 /**
@@ -63,7 +63,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
   constructor(props: EngineProps) {
     super(props)
     this.state = {
-      config: props.config,
+      blueprint: props.blueprint,
     }
     this._renderConfigurationForm = props.renderConfigurationForm || renderConfigurationForm
   }
@@ -72,16 +72,16 @@ class Engine extends React.Component<EngineProps, EngineState> {
    * state
    */
   state: EngineState = {
-    config: null,
+    blueprint: null,
   }
 
   /**
    * inner properties
    */
   _transaction: TransactionState = TransactionState.END
-  _stagingConfig: Config | null = null
-  _backwardDiffs: Diff.Diff<Config | null>[][] = []
-  _forwardDiffs: Diff.Diff<Config | null>[][] = []
+  _stagingBlueprint: Blueprint | null = null
+  _backwardDiffs: Diff.Diff<Blueprint | null>[][] = []
+  _forwardDiffs: Diff.Diff<Blueprint | null>[][] = []
   _isUndoRedo = false
 
   /**
@@ -100,7 +100,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
     if (this._isUndoRedo) {
       return
     }
-    const diff = Diff.diff(prevState.config, this.state.config)
+    const diff = Diff.diff(prevState.blueprint, this.state.blueprint)
     if (diff) {
       this._backwardDiffs.push(diff)
     }
@@ -109,8 +109,8 @@ class Engine extends React.Component<EngineProps, EngineState> {
   /**
    * exposed methods
    */
-  getConfig(): Config | null {
-    return this.state.config
+  getBlueprint(): Blueprint | null {
+    return this.state.blueprint
   }
   undo(): void {
     this._undeOrRedo()
@@ -123,43 +123,43 @@ class Engine extends React.Component<EngineProps, EngineState> {
    * inner methods
    */
   _renderConfigurationForm: RenderConfigurationForm
-  _handleSetConfig = (fn: SetConfigFn): void => {
-    if (this._stagingConfig == null) {
-      this._stagingConfig = this.state.config
+  _handleSetBlueprint = (fn: SetBlueprintFn): void => {
+    if (this._stagingBlueprint == null) {
+      this._stagingBlueprint = this.state.blueprint
     }
-    this._stagingConfig = fn(this._stagingConfig as Config)
+    this._stagingBlueprint = fn(this._stagingBlueprint as Blueprint)
     if (this._transaction == TransactionState.END) {
-      this._commitConfig()
+      this._commitBlueprint()
     }
   }
   _transactionBegin = (): void => {
-    this._commitConfig()
+    this._commitBlueprint()
     this._transaction = TransactionState.START
   }
   _transactionCommit = (): void => {
     this._transaction = TransactionState.END
-    this._commitConfig()
+    this._commitBlueprint()
   }
   _transactionRollback = (): void => {
-    this._stagingConfig = null
+    this._stagingBlueprint = null
   }
-  _commitConfig = (): void => {
-    if (!this._stagingConfig) {
+  _commitBlueprint = (): void => {
+    if (!this._stagingBlueprint) {
       return
     }
-    const stagingConfig = this._stagingConfig
+    const stagingBlueprint = this._stagingBlueprint
     this.setState(
       (state) => {
         return {
           ...state,
-          config: {
-            ...stagingConfig,
+          blueprint: {
+            ...stagingBlueprint,
           },
         }
       },
       () => {
         this._forwardDiffs = []
-        this._stagingConfig = null
+        this._stagingBlueprint = null
       }
     )
   }
@@ -175,18 +175,18 @@ class Engine extends React.Component<EngineProps, EngineState> {
     if (diffs) {
       diffsStackB.push(diffs)
     }
-    const config = cloneDeep(this.state.config)
+    const blueprint = cloneDeep(this.state.blueprint)
     diffs?.forEach((diff) => {
       if (redo) {
-        Diff.applyChange<Config | null>(config, config, diff)
+        Diff.applyChange<Blueprint | null>(blueprint, blueprint, diff)
       } else {
-        Diff.revertChange<Config | null>(config, config, diff)
+        Diff.revertChange<Blueprint | null>(blueprint, blueprint, diff)
       }
     })
     this.setState(
       (state) => ({
         ...state,
-        config,
+        blueprint,
       }),
       () => {
         this._isUndoRedo = false
@@ -222,12 +222,12 @@ class Engine extends React.Component<EngineProps, EngineState> {
           autoCommit: !!this.props.autoCommitMode,
         }}>
         <DndProvider backend={HTML5Backend}>
-          {this.state.config && (
+          {this.state.blueprint && (
             <BrickRenderer
               isRoot
               context={{ data: {}, actions: { $global: {} } }}
-              config={this.state.config}
-              setConfig={this._handleSetConfig}
+              blueprint={this.state.blueprint}
+              setBlueprint={this._handleSetBlueprint}
             />
           )}
         </DndProvider>

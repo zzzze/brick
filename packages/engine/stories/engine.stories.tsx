@@ -2,12 +2,12 @@ import React, { useCallback, useRef } from 'react'
 import { Story, Meta } from '@storybook/react'
 import itemConfig from './item-root.config.json'
 import githubStylePageConfig from './github-style-page.config.json'
-import { Engine, EngineProps } from '../src'
-import { Config } from '../src/types'
+import { Engine, EngineProps } from '../src/engine'
 import registerBricks from './register-bricks'
 import '@brick/components/lib/tooltip.css'
 import './style.css'
 import '../index.css'
+import { Blueprint } from '../src/types'
 
 export default {
   title: 'Example/Engine',
@@ -35,7 +35,7 @@ const Template: Story<EngineProps> = (args) => {
 
 export const Default = Template.bind({})
 Default.args = {
-  config: {
+  blueprint: {
     name: 'Text',
     _key: '001',
     data: {
@@ -47,10 +47,10 @@ Default.args = {
 
 export const WithHandler = Template.bind({})
 WithHandler.args = {
-  config: itemConfig as Config,
+  blueprint: itemConfig as Blueprint,
 }
 
 export const GithubStylePage = Template.bind({})
 GithubStylePage.args = {
-  config: githubStylePageConfig as Config,
+  blueprint: githubStylePageConfig as Blueprint,
 }

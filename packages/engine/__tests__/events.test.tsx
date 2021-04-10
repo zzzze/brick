@@ -1,8 +1,8 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import 'jest-enzyme'
-import { Engine } from '../src/index'
-import { Config } from '../src/types'
+import { Engine } from '../src/engine'
+import { Blueprint } from '../src/types'
 import './register-bricks'
 import './register-data-types'
 
@@ -10,7 +10,7 @@ React.useLayoutEffect = React.useEffect
 
 describe('events', () => {
   test('emit event', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'TextWithOnClickEvent',
       _key: '001',
       listeners: {
@@ -20,7 +20,7 @@ describe('events', () => {
               content: '123456',
             })
           }, {
-            setToConfig: true,
+            setToBlueprint: true,
           })
         }`,
       },
@@ -37,20 +37,20 @@ describe('events', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} blueprint={blueprint} />
       </>
     )
-    expect(config.data?.['content']).toEqual('foo')
+    expect(blueprint.data?.['content']).toEqual('foo')
     expect(wrapper.html()).toContain('foo')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
     expect(wrapper.html()).not.toContain('foo')
     expect(wrapper.html()).toContain('123456')
-    const config2 = ref.current?.getConfig() as Config
+    const config2 = ref.current?.getBlueprint() as Blueprint
     expect(config2.data?.['content']).toEqual('123456')
   })
 
   test('emit event - use action', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'TextWithOnClickEvent',
       _key: '001',
       actions: {
@@ -60,7 +60,7 @@ describe('events', () => {
               content: '123456',
             })
           }, {
-            setToConfig: true,
+            setToBlueprint: true,
           })
         }`,
       },
@@ -80,20 +80,20 @@ describe('events', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} blueprint={blueprint} />
       </>
     )
-    expect(config.data?.['content']).toEqual('foo')
+    expect(blueprint.data?.['content']).toEqual('foo')
     expect(wrapper.html()).toContain('foo')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
     expect(wrapper.html()).not.toContain('foo')
     expect(wrapper.html()).toContain('123456')
-    const config2 = ref.current?.getConfig() as Config
+    const config2 = ref.current?.getBlueprint() as Blueprint
     expect(config2.data?.['content']).toEqual('123456')
   })
 
   test('emit event - from children', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       data: {
@@ -106,7 +106,7 @@ describe('events', () => {
               name: '123456',
             })
           }, {
-            setToConfig: true,
+            setToBlueprint: true,
           })
         }`,
       },
@@ -135,7 +135,7 @@ describe('events', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} blueprint={blueprint} />
       </>
     )
     expect(wrapper.html()).toContain('foo')
@@ -146,7 +146,7 @@ describe('events', () => {
   })
 
   test('emit event - from sibling', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       data: {
@@ -166,7 +166,7 @@ describe('events', () => {
                   name: '123456',
                 })
               }, {
-                setToConfig: true,
+                setToBlueprint: true,
               })
             }`,
           },
@@ -206,7 +206,7 @@ describe('events', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} blueprint={blueprint} />
       </>
     )
     expect(wrapper.html()).toContain('foo')
@@ -217,7 +217,7 @@ describe('events', () => {
   })
 
   test('emit event - from children sibling', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       children: [
@@ -234,7 +234,7 @@ describe('events', () => {
                   name: '123456',
                 })
               }, {
-                setToConfig: true,
+                setToBlueprint: true,
               })
             }`,
           },
@@ -281,7 +281,7 @@ describe('events', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} blueprint={blueprint} />
       </>
     )
     expect(wrapper.html()).toContain('foo')

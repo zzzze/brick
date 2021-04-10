@@ -71,7 +71,7 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
         <div className="brick__config-form-btn-g2">
           <span
             className="brick__config-form-close-btn"
-            data-testid={`${options.config._key}-close-btn`}
+            data-testid={`${options.blueprint._key}-close-btn`}
             onClick={handleHideConfigForm}
             title="close">
             <AiFillCloseCircle />
@@ -82,14 +82,14 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
           <span
             className="brick__config-form-remove-btn"
             title="remove"
-            data-testid={`${options.config._key}-remove-btn`}
+            data-testid={`${options.blueprint._key}-remove-btn`}
             onClick={handleRemove}>
             <AiTwotoneDelete />
           </span>
           <span
             className="brick__config-form-edit-btn"
             title="edit"
-            data-testid={`${options.config._key}-edit-btn`}
+            data-testid={`${options.blueprint._key}-edit-btn`}
             onClick={handleShowConfigForm}>
             <FaEdit />
           </span>

@@ -12,7 +12,7 @@ const config = `
       "text": "{{$this.name}}"
     },
     "actions": {
-      "onClick": "name => {\\n            setData(function(data) {\\n    console.log('000001', data);\\n          return Object.assign({}, data, {\\n                name: name,\\n              })\\n            }, {\\n              setToConfig: true,\\n            })\\n          }"
+      "onClick": "name => {\\n            setData(function(data) {\\n    console.log('000001', data);\\n          return Object.assign({}, data, {\\n                name: name,\\n              })\\n            }, {\\n              setToBlueprint: true,\\n            })\\n          }"
     }
   },
   "handlers": {

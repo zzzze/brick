@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import 'jest-enzyme'
-import { Engine } from '../src/index'
+import { Engine } from '../src/engine'
 import { Brick, ChildrenType, BrickInstance } from '../src/types'
 
 const View: Brick = {

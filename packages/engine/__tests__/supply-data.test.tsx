@@ -1,8 +1,8 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import 'jest-enzyme'
-import { Engine } from '../src/index'
-import { Config } from '../src/types'
+import { Engine } from '../src/engine'
+import { Blueprint } from '../src/types'
 import './register-bricks'
 import './register-data-types'
 
@@ -10,7 +10,7 @@ React.useLayoutEffect = React.useEffect
 
 describe('supply data', () => {
   test('update supply', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       children: [
@@ -28,7 +28,7 @@ describe('supply data', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine autoCommitMode ref={ref} config={config} />
+        <Engine autoCommitMode ref={ref} blueprint={blueprint} />
       </>
     )
     wrapper.find('[data-testid="001-edit-btn"]').last().simulate('click')
@@ -44,7 +44,7 @@ describe('supply data', () => {
           }),
         },
       })
-    expect(ref.current?.getConfig()).toEqual({
+    expect(ref.current?.getBlueprint()).toEqual({
       name: 'View',
       _key: '001',
       actions: {},
@@ -70,7 +70,7 @@ describe('supply data', () => {
   })
 
   test('use and update supply', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       supply: {
@@ -100,7 +100,7 @@ describe('supply data', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine autoCommitMode ref={ref} config={config} />
+        <Engine autoCommitMode ref={ref} blueprint={blueprint} />
       </>
     )
     expect(wrapper.html()).toContain('foo')
@@ -122,7 +122,7 @@ describe('supply data', () => {
   })
 
   test('inject supply from data', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       data: {
@@ -155,7 +155,7 @@ describe('supply data', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine autoCommitMode ref={ref} config={config} />
+        <Engine autoCommitMode ref={ref} blueprint={blueprint} />
       </>
     )
     expect(wrapper.html()).toContain('baz')
@@ -174,7 +174,7 @@ describe('supply data', () => {
   })
 
   test('inject supply from data and use id as namespace', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       id: 'container',
@@ -208,7 +208,7 @@ describe('supply data', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine autoCommitMode ref={ref} config={config} />
+        <Engine autoCommitMode ref={ref} blueprint={blueprint} />
       </>
     )
     expect(wrapper.html()).toContain('baz')

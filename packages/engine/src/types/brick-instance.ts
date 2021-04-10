@@ -3,7 +3,7 @@ export interface SetDataFn {
 }
 
 export interface SetDataOptions {
-  setToConfig?: boolean // whether set data into config, if false set data at runtime only
+  setToBlueprint?: boolean // whether set data into blueprint, if false set data at runtime only
 }
 
 export interface SetData {

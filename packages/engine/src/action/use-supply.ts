@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 import { Actions } from './parse-actions'
-import { Config, BrickContext, VALUE_PARAM_PATTERN, idPrefix } from '../types'
+import { Blueprint, BrickContext, VALUE_PARAM_PATTERN, idPrefix } from '../types'
 import { interpreteParam } from '../utils'
 import parseActions from './parse-actions'
 
 export default function useSupply(
-  config: Config,
+  config: Blueprint,
   context: BrickContext,
   data: Record<string, unknown>,
   actions: Actions

@@ -1,4 +1,4 @@
-import { Brick, Config } from './types'
+import { Brick, Blueprint } from './types'
 import React from 'react'
 import EventEmitter from 'eventemitter3'
 import { ConnectDragSource } from 'react-dnd'
@@ -8,7 +8,7 @@ export interface RenderConfigurationFormOptions {
   ee: EventEmitter
   connectDragSource: ConnectDragSource
   removeItem: () => void
-  config: Config
+  blueprint: Blueprint
 }
 
 export interface RenderConfigurationForm {

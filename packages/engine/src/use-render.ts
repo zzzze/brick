@@ -1,14 +1,14 @@
 import { useMemo } from 'react'
-import { Brick, Config, Render } from './types'
+import { Brick, Blueprint, Render } from './types'
 import compileCustomRender from './compile-custom-render'
 
-export default function useRender(brick: Brick, config: Config): Render {
+export default function useRender(brick: Brick, blueprint: Blueprint): Render {
   const customRender = useMemo<null | Render>(() => {
-    if (!brick.canCustomizeRender || !config.render) {
+    if (!brick.canCustomizeRender || !blueprint.render) {
       return null
     }
-    return compileCustomRender(config.render)
-  }, [config.render, brick.canCustomizeRender])
+    return compileCustomRender(blueprint.render)
+  }, [blueprint.render, brick.canCustomizeRender])
   return useMemo(() => {
     if (brick.canCustomizeRender && customRender) {
       return customRender

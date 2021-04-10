@@ -1,8 +1,8 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import 'jest-enzyme'
-import { Engine } from '../src/index'
-import { Config } from '../src/types'
+import { Engine } from '../src/engine'
+import { Blueprint } from '../src/types'
 import './register-bricks'
 import './register-data-types'
 
@@ -10,7 +10,7 @@ React.useLayoutEffect = React.useEffect
 
 describe('handlers', () => {
   test('use default action', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       id: 'container',
       _key: '001',
@@ -44,7 +44,7 @@ describe('handlers', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} blueprint={blueprint} />
       </>
     )
     expect(wrapper.html()).toContain('baz')
@@ -54,7 +54,7 @@ describe('handlers', () => {
   })
 
   test('use custom action - set data at runtime only', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       id: 'container',
@@ -97,18 +97,18 @@ describe('handlers', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} blueprint={blueprint} />
       </>
     )
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
     expect(wrapper.html()).not.toContain('baz')
     expect(wrapper.html()).toContain('123')
-    expect(ref.current?.getConfig()).toMatchObject(config)
+    expect(ref.current?.getBlueprint()).toMatchObject(blueprint)
   })
 
   test('use custom action - set data to config', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       id: 'container',
@@ -138,7 +138,7 @@ describe('handlers', () => {
                       content: '123',
                     })
                   }, {
-                    setToConfig: true,
+                    setToBlueprint: true,
                   })
                 }`,
               },
@@ -153,15 +153,15 @@ describe('handlers', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} blueprint={blueprint} />
       </>
     )
-    expect(config.children?.[0].children?.[0].data?.['content']).toEqual('{{$container.text}}')
+    expect(blueprint.children?.[0].children?.[0].data?.['content']).toEqual('{{$container.text}}')
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
     expect(wrapper.html()).not.toContain('baz')
     expect(wrapper.html()).toContain('123')
-    const config2 = ref.current?.getConfig() as Config
+    const config2 = ref.current?.getBlueprint() as Blueprint
     expect(config2.children?.[0].children?.[0].data?.['content']).toEqual('123')
   })
 })

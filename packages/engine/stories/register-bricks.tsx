@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Engine } from '../src'
+import { Engine } from '../src/engine'
 import { Brick, ChildrenType, BrickInstance } from '../src/types'
 import { StringType, NumberType, BooleanType, ObjectType, CodeType } from '../src/data/data-type'
 import { Editor } from '@brick/components'

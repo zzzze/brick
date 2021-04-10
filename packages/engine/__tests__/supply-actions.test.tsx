@@ -1,8 +1,8 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import 'jest-enzyme'
-import { Engine } from '../src/index'
-import { Config } from '../src/types'
+import { Engine } from '../src/engine'
+import { Blueprint } from '../src/types'
 import './register-bricks'
 import './register-data-types'
 
@@ -10,7 +10,7 @@ React.useLayoutEffect = React.useEffect
 
 describe('supply actions', () => {
   test('trigger action from supply', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       id: 'container',
@@ -41,7 +41,7 @@ describe('supply actions', () => {
                     name: '123456',
                   })
                 }, {
-                  setToConfig: true,
+                  setToBlueprint: true,
                 })
               }`,
             },
@@ -67,20 +67,20 @@ describe('supply actions', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} blueprint={blueprint} />
       </>
     )
-    expect(config.children?.[0].data?.['name']).toEqual('{{$container.text}}')
+    expect(blueprint.children?.[0].data?.['name']).toEqual('{{$container.text}}')
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
     expect(wrapper.html()).not.toContain('baz')
     expect(wrapper.html()).toContain('123456')
-    const config2 = ref.current?.getConfig() as Config
+    const config2 = ref.current?.getBlueprint() as Blueprint
     expect(config2.children?.[0].data?.['name']).toEqual('123456')
   })
 
   test('trigger global action from supply', async () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       id: 'container',
@@ -113,7 +113,7 @@ describe('supply actions', () => {
                     name: '123456',
                   })
                 }, {
-                  setToConfig: true,
+                  setToBlueprint: true,
                 })
               }`,
             },
@@ -139,21 +139,21 @@ describe('supply actions', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} blueprint={blueprint} />
       </>
     )
-    expect(config.children?.[0].data?.['name']).toEqual('{{$container.text}}')
+    expect(blueprint.children?.[0].data?.['name']).toEqual('{{$container.text}}')
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
     await new Promise((resolve) => setTimeout(resolve, 100))
     expect(wrapper.html()).not.toContain('baz')
     expect(wrapper.html()).toContain('123456')
-    const config2 = ref.current?.getConfig() as Config
+    const config2 = ref.current?.getBlueprint() as Blueprint
     expect(config2.children?.[0].data?.['name']).toEqual('123456')
   })
 
   test('data action between sibling', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       id: 'container',
@@ -171,7 +171,7 @@ describe('supply actions', () => {
                 name: '123456',
               })
             }, {
-              setToConfig: true,
+              setToBlueprint: true,
             })
           }`,
         },
@@ -216,20 +216,20 @@ describe('supply actions', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} blueprint={blueprint} />
       </>
     )
-    expect(config.data?.['name']).toEqual('baz')
+    expect(blueprint.data?.['name']).toEqual('baz')
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
     expect(wrapper.html()).not.toContain('baz')
     expect(wrapper.html()).toContain('123456')
-    const config2 = ref.current?.getConfig() as Config
+    const config2 = ref.current?.getBlueprint() as Blueprint
     expect(config2.data?.['name']).toEqual('123456')
   })
 
   test('trigger action with param', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       id: 'container',
@@ -247,7 +247,7 @@ describe('supply actions', () => {
                 name: name,
               })
             }, {
-              setToConfig: true,
+              setToBlueprint: true,
             })
           }`,
         },
@@ -294,20 +294,20 @@ describe('supply actions', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} blueprint={blueprint} />
       </>
     )
-    expect(config.data?.['name']).toEqual('baz')
+    expect(blueprint.data?.['name']).toEqual('baz')
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
     expect(wrapper.html()).not.toContain('baz')
     expect(wrapper.html()).toContain('123456789')
-    const config2 = ref.current?.getConfig() as Config
+    const config2 = ref.current?.getBlueprint() as Blueprint
     expect(config2.data?.['name']).toEqual('123456789')
   })
 
   test('trigger action provided by supply with param', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       id: 'container',
@@ -325,7 +325,7 @@ describe('supply actions', () => {
                 name: name,
               })
             }, {
-              setToConfig: true,
+              setToBlueprint: true,
             })
           }`,
         },
@@ -378,20 +378,20 @@ describe('supply actions', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} blueprint={blueprint} />
       </>
     )
-    expect(config.data?.['name']).toEqual('baz')
+    expect(blueprint.data?.['name']).toEqual('baz')
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
     expect(wrapper.html()).not.toContain('baz')
     expect(wrapper.html()).toContain('123456789')
-    const config2 = ref.current?.getConfig() as Config
+    const config2 = ref.current?.getBlueprint() as Blueprint
     expect(config2.data?.['name']).toEqual('123456789')
   })
 
   test('use action as handler', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       id: 'container',
@@ -409,7 +409,7 @@ describe('supply actions', () => {
                 name: name,
               })
             }, {
-              setToConfig: true,
+              setToBlueprint: true,
             })
           }`,
         },
@@ -465,20 +465,20 @@ describe('supply actions', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} blueprint={blueprint} />
       </>
     )
-    expect(config.data?.['name']).toEqual('baz')
+    expect(blueprint.data?.['name']).toEqual('baz')
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
     expect(wrapper.html()).not.toContain('baz')
     expect(wrapper.html()).toContain('123456789')
-    const config2 = ref.current?.getConfig() as Config
+    const config2 = ref.current?.getBlueprint() as Blueprint
     expect(config2.data?.['name']).toEqual('123456789')
   })
 
   test('invoke action in another action', () => {
-    const config: Config = {
+    const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       id: 'container',
@@ -496,7 +496,7 @@ describe('supply actions', () => {
                 name: name,
               })
             }, {
-              setToConfig: true,
+              setToBlueprint: true,
             })
           }`,
         },
@@ -555,15 +555,15 @@ describe('supply actions', () => {
     const ref = React.createRef<Engine>()
     const wrapper = mount(
       <>
-        <Engine ref={ref} config={config} />
+        <Engine ref={ref} blueprint={blueprint} />
       </>
     )
-    expect(config.data?.['name']).toEqual('baz')
+    expect(blueprint.data?.['name']).toEqual('baz')
     expect(wrapper.html()).toContain('baz')
     wrapper.find('span[data-testid="element-with-action"]').simulate('click')
     expect(wrapper.html()).not.toContain('baz')
     expect(wrapper.html()).toContain('123456789')
-    const config2 = ref.current?.getConfig() as Config
+    const config2 = ref.current?.getBlueprint() as Blueprint
     expect(config2.data?.['name']).toEqual('123456789')
   })
 })

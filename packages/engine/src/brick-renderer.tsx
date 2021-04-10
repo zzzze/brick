@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useContext } from 'react'
-import { BrickInstance, Config, SetConfig, SetConfigFn, BrickContext } from './types'
+import { BrickInstance, Blueprint, SetBlueprint, SetBlueprintFn, BrickContext } from './types'
 import BrickWrapper, { createRemoveItemFromParentFn } from './brick-wrapper'
 import EnginxContext from './context'
 import useRender from './use-render'
@@ -15,40 +15,45 @@ import ErrorBoundary from './error-boundary'
 import { Action } from './types'
 
 export interface BrickRenderProps {
-  config: Config
-  parentConfig?: Config
+  blueprint: Blueprint
+  parentBlueprint?: Blueprint
   context: BrickContext
-  setConfig: SetConfig
+  setBlueprint: SetBlueprint
   onRemoveItemFromParent?: (key: string) => void
-  onAddToOrMoveInParent?: (config: Config, anchorKey: string, action: string) => void
-  onDrop?: (_config: Config) => void
+  onAddToOrMoveInParent?: (blueprint: Blueprint, anchorKey: string, action: string) => void
+  onDrop?: (_blueprint: Blueprint) => void
   isRoot?: boolean
 }
 
-const BrickRenderer: React.FC<BrickRenderProps> = ({ config, context, setConfig, ...props }: BrickRenderProps) => {
+const BrickRenderer: React.FC<BrickRenderProps> = ({
+  blueprint: blueprint,
+  context,
+  setBlueprint,
+  ...props
+}: BrickRenderProps) => {
   const engineCtx = useContext(EnginxContext)
   const brick = useMemo(() => {
-    const brick = engineCtx.bricks[config.name]
+    const brick = engineCtx.bricks[blueprint.name]
     if (!brick) {
-      throw Error(`brick (${config.name}) not found`)
+      throw Error(`brick (${blueprint.name}) not found`)
     }
     return brick
-  }, [engineCtx.bricks, config])
+  }, [engineCtx.bricks, blueprint])
   const dataTypes = useMemo(() => {
     return normalizeDataType(engineCtx.dataTypes, brick.dataTypes)
   }, [engineCtx.dataTypes, brick.dataTypes])
-  const [data, setData] = useData(dataTypes, config.data ?? {}, context.data ?? {})
-  const instanceHandlers = useInstanceHandlers(data, setConfig, setData)
-  const actions = useActions(config, context)
-  const listeners = useListeners(config, context, actions)
-  const handlers = useHandlers(brick, config, context, actions)
-  const supply = useSupply(config, context, data, actions)
-  const handleSetStateForChildren = useCallback((fn: (config: Readonly<Config>) => Config, key: string) => {
-    setConfig((config) => {
-      if (!config.children || !config.children.length) {
-        return config
+  const [data, setData] = useData(dataTypes, blueprint.data ?? {}, context.data ?? {})
+  const instanceHandlers = useInstanceHandlers(data, setBlueprint, setData)
+  const actions = useActions(blueprint, context)
+  const listeners = useListeners(blueprint, context, actions)
+  const handlers = useHandlers(brick, blueprint, context, actions)
+  const supply = useSupply(blueprint, context, data, actions)
+  const handleSetStateForChildren = useCallback((fn: (blueprint: Readonly<Blueprint>) => Blueprint, key: string) => {
+    setBlueprint((blueprint) => {
+      if (!blueprint.children || !blueprint.children.length) {
+        return blueprint
       }
-      const children = config.children.map((child) => {
+      const children = blueprint.children.map((child) => {
         if (child._key !== key) {
           return child
         } else {
@@ -56,26 +61,26 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, context, setConfig,
         }
       })
       return {
-        ...config,
+        ...blueprint,
         children,
       }
     })
   }, [])
   const handleRemoveFromParent = useCallback(
     (key: string) => {
-      createRemoveItemFromParentFn(setConfig)(key)
+      createRemoveItemFromParentFn(setBlueprint)(key)
     },
-    [setConfig]
+    [setBlueprint]
   )
-  const handleAddToOrMoveInParent = useCallback((_config: Config, anchorKey: string, action: string) => {
-    setConfig((config) => {
-      if (!config.children || !config.children.length) {
-        return config
+  const handleAddToOrMoveInParent = useCallback((_blueprint: Blueprint, anchorKey: string, action: string) => {
+    setBlueprint((blueprint) => {
+      if (!blueprint.children || !blueprint.children.length) {
+        return blueprint
       }
-      const children = config.children.filter((c) => c._key !== _config._key)
+      const children = blueprint.children.filter((c) => c._key !== _blueprint._key)
       let anchorIndex = -1
-      for (let i = 0; i < config.children.length; i++) {
-        if (config.children[i]._key === anchorKey) {
+      for (let i = 0; i < blueprint.children.length; i++) {
+        if (blueprint.children[i]._key === anchorKey) {
           anchorIndex = i
           break
         }
@@ -84,9 +89,9 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, context, setConfig,
         throw Error(`anchor node not found (key: ${anchorKey})`)
       }
       const insertIndex = action === 'forward' ? anchorIndex : anchorIndex + 1
-      children.splice(insertIndex, 0, _config)
+      children.splice(insertIndex, 0, _blueprint)
       return {
-        ...config,
+        ...blueprint,
         children,
       }
     })
@@ -97,7 +102,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, context, setConfig,
     context,
     actions,
     editing: !engineCtx.previewMode,
-    key: config._key,
+    key: blueprint._key,
   }
   useMemo(() => {
     bindBrickInstance(actions, brickInstance)
@@ -109,40 +114,40 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({ config, context, setConfig,
     bindBrickInstance(handlers, brickInstance)
   }, [handlers])
   useMemo(() => {
-    if (Object.keys(config.supply?.actions || {}).length) {
-      if (config.id) {
-        bindBrickInstance((supply.actions?.[`$${config.id}`] || {}) as Record<string, Action>, brickInstance)
+    if (Object.keys(blueprint.supply?.actions || {}).length) {
+      if (blueprint.id) {
+        bindBrickInstance((supply.actions?.[`$${blueprint.id}`] || {}) as Record<string, Action>, brickInstance)
       } else {
         bindBrickInstance((supply.actions?.$global || {}) as Record<string, Action>, brickInstance)
       }
     }
   }, [supply.actions])
-  const render = useRender(brick, config)
+  const render = useRender(brick, blueprint)
   return (
     <BrickWrapper
-      key={config._key}
+      key={blueprint._key}
       onRemoveItemFormParent={props.onRemoveItemFromParent}
       onAddToOrMoveInParent={props.onAddToOrMoveInParent}
-      config={config}
+      blueprint={blueprint}
       isRoot={props.isRoot}
-      parentConfig={props.parentConfig}
-      onConfigChange={setConfig}>
+      parentBlueprint={props.parentBlueprint}
+      onBlueprintChange={setBlueprint}>
       {render({
         ...brickInstance,
         actions,
         handlers,
         children:
-          Array.isArray(config.children) &&
-          config.children.map((child) => {
+          Array.isArray(blueprint.children) &&
+          blueprint.children.map((child) => {
             return (
               <ErrorBoundary key={child._key}>
                 <BrickRenderer
-                  parentConfig={config}
-                  config={child}
+                  parentBlueprint={blueprint}
+                  blueprint={child}
                   context={supply}
                   onAddToOrMoveInParent={handleAddToOrMoveInParent}
                   onRemoveItemFromParent={handleRemoveFromParent}
-                  setConfig={(fn: SetConfigFn) => handleSetStateForChildren(fn, child._key)}
+                  setBlueprint={(fn: SetBlueprintFn) => handleSetStateForChildren(fn, child._key)}
                 />
               </ErrorBoundary>
             )
