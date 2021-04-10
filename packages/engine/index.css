@@ -1,3 +1,7 @@
+.brick {
+  --font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
 /* ---------------------------------------------------- */
 /* brick__with-config-form                              */
 /* ---------------------------------------------------- */
@@ -273,4 +277,14 @@ div.brick__with-config-form + div.brick__with-config-form {
 .monaco-editor .margin,
 .monaco-editor-background {
   background-color: transparent !important;
+}
+
+.error-boundary {
+  font-family: monospace;
+  white-space: pre;
+}
+
+.error-boundary > * {
+  font-family: var(--font-family);
+  white-space: initial;
 }

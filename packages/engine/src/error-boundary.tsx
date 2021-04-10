@@ -74,7 +74,7 @@ class ErrorBoundary extends React.Component<IErrorBoundaryProps, IErrorBoundaryS
           isRoot={this.isRoot}
           parentBlueprint={this.parentBlueprint}
           onBlueprintChange={this.setBlueprint}>
-          <pre>{String(this.state.error)}</pre>
+          <div className="error-boundary">{String(this.state.error)}</div>
         </BrickWrapper>
       )
     }

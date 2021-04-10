@@ -9,6 +9,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import Diff from 'deep-diff'
 import cloneDeep from 'lodash/cloneDeep'
 import { DataType } from './data/data-type'
+import ErrorBoundary from './error-boundary'
 
 const ee = new EventEmitter()
 
@@ -221,14 +222,16 @@ class Engine extends React.Component<EngineProps, EngineState> {
           transactionRollback: this._transactionRollback,
           autoCommit: !!this.props.autoCommitMode,
         }}>
-        <DndProvider backend={HTML5Backend}>
+        <DndProvider backend={HTML5Backend} key="dnd-provider">
           {this.state.blueprint && (
-            <BrickRenderer
-              isRoot
-              context={{ data: {}, actions: { $global: {} } }}
-              blueprint={this.state.blueprint}
-              setBlueprint={this._handleSetBlueprint}
-            />
+            <ErrorBoundary key={this.state.blueprint._key}>
+              <BrickRenderer
+                isRoot
+                context={{ data: {}, actions: { $global: {} } }}
+                blueprint={this.state.blueprint}
+                setBlueprint={this._handleSetBlueprint}
+              />
+            </ErrorBoundary>
           )}
         </DndProvider>
       </EnginxContext.Provider>
