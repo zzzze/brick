@@ -9,13 +9,19 @@ export default function compileCustomRender(fn: CustomRender): Render {
     if (typeof fn === 'function') {
       render = fn()
     } else {
-      fn = `render = ${fn}`
-      fn =
-        transform(fn, {
-          filename: 'render.tsx',
-          presets: ['env', 'react', 'typescript'],
-        }).code || ''
-      eval(fn)
+      if (!fn.startsWith('render =')) {
+        fn = `render = ${fn}`
+      }
+      try {
+        fn =
+          transform(fn, {
+            filename: 'render.tsx',
+            presets: ['env', 'react', 'typescript'],
+          }).code || ''
+        eval(fn)
+      } catch (err) {
+        render = () => <pre key="error">Error: {String(err)}</pre>
+      }
     }
     return render(args)
   }

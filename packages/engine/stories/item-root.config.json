@@ -96,7 +96,7 @@
           "data": {
             "content": "hello world"
           },
-          "render": "(instance) => {return <span>content: {instance.data.content}</span>}",
+          "render": "(instance: BrickInstance) => {\n\treturn (\n\t\t<span>content: {instance.data.content}</span>\n\t)\n}",
           "version": "0.0.1"
         },
         {

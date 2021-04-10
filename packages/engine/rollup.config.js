@@ -40,7 +40,10 @@ export default (prefix) => [
     },
     plugins: [
       virtual({
-        './brick-wrapper': `export default ({children}) => children`,
+        './brick-wrapper': `
+          export default ({children}) => children
+          export const createRemoveItemFromParentFn = () => () => null
+        `,
         './render-config-form': `export default () => null`,
       }),
       typescript({

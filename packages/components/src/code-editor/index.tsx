@@ -54,6 +54,7 @@ const Editor = forwardRef<Instance, IEditorProps>((props, ref) => {
       const _editor = monaco.editor.create(divEl.current, {
         value: props.value,
         language: 'typescript',
+        tabSize: 2,
         minimap: {
           enabled: false,
         },

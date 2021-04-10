@@ -76,6 +76,19 @@ const voidElements = [
   'wbr',
 ]
 
+export const createRemoveItemFromParentFn = (setConfig: SetConfig) => (key: string): void => {
+  setConfig((config) => {
+    if (!config.children || !config.children.length) {
+      return config
+    }
+    const children = config.children.filter((item) => item._key !== key)
+    return {
+      ...config,
+      children,
+    }
+  })
+}
+
 const DragOver: React.FC<DragOverProps> = ({ className }: DragOverProps) => {
   const [hover, setHover] = useState(false)
   const handleMouseOver = useCallback(() => setHover(true), [])
@@ -99,9 +112,7 @@ interface BrickWrapperProps {
   onConfigChange: SetConfig
   style?: React.CSSProperties
   onRemoveItemFormParent?: (key: string) => void
-  onRemoveChild?: (key: string) => void
   onAddToOrMoveInParent?: (config: Config, anchorKey: string, action: string) => void
-  onDrop?: (config: Config) => void
   isRoot?: boolean
 }
 
@@ -248,6 +259,30 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     }
     return true
   }
+  const handleRemoveFromParent = useCallback(
+    (key: string) => {
+      createRemoveItemFromParentFn(props.onConfigChange)(key)
+    },
+    [props.onConfigChange]
+  )
+  const handleAddChild = useCallback(
+    (_config: Config) => {
+      props.onConfigChange((config) => {
+        let children: Config[] = []
+        if (config.children && config.children.length) {
+          children = config.children.slice()
+        }
+        children.push({
+          ..._config,
+        })
+        return {
+          ...config,
+          children,
+        }
+      })
+    },
+    [props.onConfigChange]
+  )
   const [{ isDragging }, drag, preview] = useDrag(
     {
       item: {
@@ -291,9 +326,9 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         if (inAdditionActionTriggerAera && item.lastAction !== `addition-${props.config._key}-${item.config._key}`) {
           context.transactionBegin()
           item.onRemove && item.onRemove(item.config._key)
-          props.onDrop && props.onDrop(item.config)
+          handleAddChild(item.config)
           context.transactionCommit()
-          item.onRemove = props.onRemoveChild
+          item.onRemove = handleRemoveFromParent
           item.lastAction = `addition-${props.config._key}-${item.config._key}`
         }
         if (props.isRoot) {
@@ -415,4 +450,5 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     ...actionArea
   )
 }
+
 export default BrickWrapper
