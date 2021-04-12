@@ -1,0 +1,74 @@
+.select {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px;
+  border: solid var(--border-width) var(--border-color);
+  border-radius: var(--border-radius);
+}
+
+.select__arrow {
+  margin-left: 10px;
+  font-size: 12px;
+  transition: transform 200ms ease;
+  opacity: .5;
+}
+
+.select--active .select__arrow {
+  transform: rotate(90deg);
+}
+
+.select__overlay {
+  position: absolute;
+  border-radius: 5px;
+  max-width: 300px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  transform-origin: 15px -5px ;
+  z-index: 9999;
+}
+
+.select__overlay::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: -10px;
+  border-style: solid;
+  border-width: 5px;
+  border-color: transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.8);
+}
+
+.select__overlay.fade-down-enter {
+  opacity: 0;
+  transform: scale(0.4) translateY(-20px);
+}
+
+.select__overlay.fade-down-exit {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.select__overlay.fade-down-enter-active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition: all 200ms;
+}
+
+.select__overlay.fade-down-exit-active {
+  opacity: 0;
+  transform: scale(0.4) translateY(-20px);
+  transition: all 200ms;
+}
+
+:not(.select) > .select-option {
+  display: block;
+  min-width: 100px;
+  height: 30px;
+  line-height: 30px;
+  padding: 5px 0;
+}
+
+:not(.select) > .select-option:not(:last-child) {
+  border-bottom: solid 1px rgba(255, 255, 255, .3);
+}

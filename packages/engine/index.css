@@ -1,5 +1,8 @@
 .brick {
   --font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  --border-radius: 5px;
+  --border-color: #ccc;
+  --border-width: 1px;
 }
 
 /* ---------------------------------------------------- */

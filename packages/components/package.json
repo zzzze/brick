@@ -20,6 +20,7 @@
     "@types/react-transition-group": "^4.4.1"
   },
   "dependencies": {
+    "classnames": "^2.3.1",
     "react-icons": "^4.2.0",
     "react-transition-group": "^4.4.1"
   }
