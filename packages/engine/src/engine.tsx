@@ -10,7 +10,7 @@ import Diff from 'deep-diff'
 import cloneDeep from 'lodash/cloneDeep'
 import { DataType } from './data/data-type'
 import ErrorBoundary from './error-boundary'
-import {BackendFactory} from 'dnd-core'
+import { BackendFactory } from 'dnd-core'
 
 const ee = new EventEmitter()
 

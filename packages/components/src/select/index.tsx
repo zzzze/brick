@@ -1,7 +1,16 @@
-import React, { useCallback, useState, ReactElement, useMemo, PropsWithChildren, Children, cloneElement, useEffect } from 'react'
+import React, {
+  useCallback,
+  useState,
+  ReactElement,
+  useMemo,
+  PropsWithChildren,
+  Children,
+  cloneElement,
+  useEffect,
+} from 'react'
 import ReactDOM from 'react-dom'
 import { CSSTransition } from 'react-transition-group'
-import {BsChevronRight} from "react-icons/bs"
+import { BsChevronRight } from 'react-icons/bs'
 import cls from 'classnames'
 
 export interface SelectProps<T> {
@@ -25,12 +34,12 @@ export interface OptionProps<T> {
   onClick?: (value: T) => void
 }
 
-function Option<T> (props: PropsWithChildren<OptionProps<T>>): ReactElement {
+function Option<T>(props: PropsWithChildren<OptionProps<T>>): ReactElement {
   const handleClick = useCallback(() => {
     props.onClick && props.onClick(props.value)
   }, [props.value])
   return (
-    <span className={cls("select-option", props.className)} onClick={handleClick}>
+    <span className={cls('select-option', props.className)} onClick={handleClick}>
       {props.children}
     </span>
   )
@@ -57,7 +66,7 @@ function offsetFromContainer(node: HTMLElement | null, container: HTMLElement): 
   }
 }
 
-function Select<T> (props: SelectProps<T>): ReactElement {
+function Select<T>(props: SelectProps<T>): ReactElement {
   const [showOptions, setShowOptions] = useState(false)
   const ref = React.useRef<HTMLElement>(null)
   const container = useMemo(() => {
@@ -66,14 +75,17 @@ function Select<T> (props: SelectProps<T>): ReactElement {
     }
     return props.getContainer()
   }, [props.getContainer])
-  const handleClickOutside = useCallback((event: MouseEvent) => {
-    if (!ref.current) {
-      return
-    }
-    if (ref.current !== event.target && !ref.current.contains(event.target as Node)) {
-      setShowOptions(false)
-    }
-  }, [ref.current])
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if (!ref.current) {
+        return
+      }
+      if (ref.current !== event.target && !ref.current.contains(event.target as Node)) {
+        setShowOptions(false)
+      }
+    },
+    [ref.current]
+  )
   useEffect(() => {
     document.addEventListener('click', handleClickOutside, false)
     return () => {
@@ -94,10 +106,10 @@ function Select<T> (props: SelectProps<T>): ReactElement {
       return null
     }
     let selectedOption: ReactElement<OptionProps<T>> | T | null = null
-    Children.forEach(props.children, child => {
+    Children.forEach(props.children, (child) => {
       if (child.props.value === props.value) {
         selectedOption = cloneElement(child, {
-          className: "",
+          className: '',
         })
       }
     })
@@ -119,7 +131,7 @@ function Select<T> (props: SelectProps<T>): ReactElement {
     return ReactDOM.createPortal(
       <CSSTransition in={showOptions} timeout={200} unmountOnExit classNames="fade-down">
         <div className="select__overlay" style={style}>
-          {Children.map(props.children, child => {
+          {Children.map(props.children, (child) => {
             return cloneElement(child, {
               onClick: handleValueChange,
             })
@@ -130,12 +142,18 @@ function Select<T> (props: SelectProps<T>): ReactElement {
     )
   }, [showOptions, container])
   const handleClick = useCallback(() => setShowOptions(true), [])
-  const className = useMemo(() => cls("select", {
-    "select--active": showOptions,
-  }), [showOptions])
+  const className = useMemo(
+    () =>
+      cls('select', {
+        'select--active': showOptions,
+      }),
+    [showOptions]
+  )
   return (
     <>
-      <span className={className} ref={ref} onClick={handleClick}>{value} <BsChevronRight className="select__arrow" /></span>
+      <span className={className} ref={ref} onClick={handleClick}>
+        {value} <BsChevronRight className="select__arrow" />
+      </span>
       {overlay}
     </>
   )
