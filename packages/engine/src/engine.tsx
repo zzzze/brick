@@ -10,6 +10,7 @@ import Diff from 'deep-diff'
 import cloneDeep from 'lodash/cloneDeep'
 import { DataType } from './data/data-type'
 import ErrorBoundary from './error-boundary'
+import {BackendFactory} from 'dnd-core'
 
 const ee = new EventEmitter()
 
@@ -29,6 +30,7 @@ export interface EngineProps {
   renderConfigurationForm?: RenderConfigurationForm
   previewMode?: boolean
   autoCommitMode?: boolean
+  dndBackend?: BackendFactory
 }
 
 interface EngineState {
@@ -36,7 +38,7 @@ interface EngineState {
 }
 
 /**
- * Engine render bricks according to the configuration
+ * Engine render bricks according to the blueprint.
  */
 class Engine extends React.Component<EngineProps, EngineState> {
   /**
@@ -84,6 +86,12 @@ class Engine extends React.Component<EngineProps, EngineState> {
   _backwardDiffs: Diff.Diff<Blueprint | null>[][] = []
   _forwardDiffs: Diff.Diff<Blueprint | null>[][] = []
   _isUndoRedo = false
+  get _dndBackend(): BackendFactory {
+    if (!this.props.dndBackend) {
+      return HTML5Backend
+    }
+    return this.props.dndBackend
+  }
 
   /**
    * lifecycle
@@ -222,7 +230,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
           transactionRollback: this._transactionRollback,
           autoCommit: !!this.props.autoCommitMode,
         }}>
-        <DndProvider backend={HTML5Backend} key="dnd-provider">
+        <DndProvider backend={this._dndBackend} key="dnd-provider">
           {this.state.blueprint && (
             <ErrorBoundary key={this.state.blueprint._key}>
               <BrickRenderer
