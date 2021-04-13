@@ -11,7 +11,9 @@ module.exports = {
   webpackFinal: async (config, { configType }) => {
     config.plugins.push(
       new CopyPlugin({
-        patterns: [{ from: path.resolve(__dirname, '../node_modules/monaco-editor/min/vs'), to: 'vs' }],
+        patterns: [
+          { from: path.resolve(__dirname, '../node_modules/monaco-editor/min/vs'), to: 'vs' },
+        ],
       })
     )
     return config
