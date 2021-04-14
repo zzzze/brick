@@ -13,4 +13,5 @@ export interface ObjectInputProps {
   onChange?: (data: ObjectInputEventData) => void
   className?: string
   style?: CSSProperties
+  getOverlayContainer?: () => HTMLElement
 }

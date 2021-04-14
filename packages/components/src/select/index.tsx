@@ -1,15 +1,30 @@
-import React, { useCallback, useState, ReactElement, useMemo, PropsWithChildren, Children, cloneElement, useEffect } from 'react'
+import React, {
+  useCallback,
+  useState,
+  ReactElement,
+  useMemo,
+  PropsWithChildren,
+  Children,
+  cloneElement,
+  useEffect,
+} from 'react'
 import ReactDOM from 'react-dom'
 import { CSSTransition } from 'react-transition-group'
-import {BsChevronRight} from "react-icons/bs"
+import { BsChevronRight } from 'react-icons/bs'
 import cls from 'classnames'
+
+export interface IOption<T> {
+  label: string
+  value: T
+}
 
 export interface SelectProps<T> {
   value?: T
   className?: string
+  options?: IOption<T>[]
   onChange?: (value: T) => void
-  getContainer?: () => HTMLElement
-  children: React.ReactElement<OptionProps<T>>[]
+  getOverlayContainer?: () => HTMLElement
+  children?: React.ReactElement<OptionProps<T>>[]
 }
 
 interface IOffset {
@@ -17,7 +32,7 @@ interface IOffset {
   y: number
 }
 
-const name = 'tooltip-container'
+const optionMenuContainerName = 'tooltip-container'
 
 export interface OptionProps<T> {
   value: T
@@ -25,12 +40,12 @@ export interface OptionProps<T> {
   onClick?: (value: T) => void
 }
 
-function Option<T> (props: PropsWithChildren<OptionProps<T>>): ReactElement {
+function Option<T>(props: PropsWithChildren<OptionProps<T>>): ReactElement {
   const handleClick = useCallback(() => {
     props.onClick && props.onClick(props.value)
   }, [props.value])
   return (
-    <span className={cls("select-option", props.className)} onClick={handleClick}>
+    <span className={cls('select-option', props.className)} onClick={handleClick}>
       {props.children}
     </span>
   )
@@ -57,55 +72,77 @@ function offsetFromContainer(node: HTMLElement | null, container: HTMLElement): 
   }
 }
 
-function Select<T> (props: SelectProps<T>): ReactElement {
+function Select<T>(props: SelectProps<T>): ReactElement {
   const [showOptions, setShowOptions] = useState(false)
+  const [optionMenuId] = useState(Math.random().toString(36).slice(2))
   const ref = React.useRef<HTMLElement>(null)
   const container = useMemo(() => {
-    if (!props.getContainer) {
+    if (!props.getOverlayContainer) {
       return document.body
     }
-    return props.getContainer()
-  }, [props.getContainer])
-  const handleClickOutside = useCallback((event: MouseEvent) => {
-    if (!ref.current) {
-      return
-    }
-    if (ref.current !== event.target && !ref.current.contains(event.target as Node)) {
-      setShowOptions(false)
-    }
-  }, [ref.current])
+    return props.getOverlayContainer()
+  }, [props.getOverlayContainer])
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if (!ref.current) {
+        return
+      }
+      if (ref.current !== event.target && !ref.current.contains(event.target as Node)) {
+        setShowOptions(false)
+      }
+    },
+    [ref.current]
+  )
   useEffect(() => {
-    document.addEventListener('click', handleClickOutside, false)
+    window.addEventListener('click', handleClickOutside, true)
     return () => {
-      document.removeEventListener('click', handleClickOutside, false)
+      window.removeEventListener('click', handleClickOutside, true)
+      container
     }
   }, [])
-  const tooltip: Element = useMemo(() => {
-    let element = container.getElementsByClassName(name)?.[0]
+  useEffect(() => {
+    return () => {
+      const element = container.getElementsByClassName(`${optionMenuContainerName}-${optionMenuId}`)?.[0]
+      if (element) {
+        container.removeChild(element)
+      }
+    }
+  }, [container])
+
+  const overlayContainer: Element = useMemo(() => {
+    let element = container.getElementsByClassName(`${optionMenuContainerName}-${optionMenuId}`)?.[0]
     if (!element) {
       element = document.createElement('div') as HTMLElement
-      element.className = name
+      element.className = optionMenuContainerName
       container.appendChild(element)
     }
     return element
-  }, [])
+  }, [container])
   const value = useMemo(() => {
     if (!props.value) {
       return null
     }
-    let selectedOption: ReactElement<OptionProps<T>> | T | null = null
-    Children.forEach(props.children, child => {
-      if (child.props.value === props.value) {
-        selectedOption = cloneElement(child, {
-          className: "",
-        })
-      }
-    })
+    let selectedOption: ReactElement<OptionProps<T>> | string | null = null
+    if (props.options) {
+      props.options.map((option) => {
+        if (option.value === props.value) {
+          selectedOption = option.label
+        }
+      })
+    } else {
+      Children.forEach(props.children, (child) => {
+        if (child && child.props.value === props.value) {
+          selectedOption = cloneElement(child, {
+            className: '',
+          })
+        }
+      })
+    }
     if (selectedOption === null) {
-      selectedOption = props.value
+      selectedOption = ''
     }
     return selectedOption
-  }, [props.children, props.value])
+  }, [props.children, props.value, props.options])
   const handleValueChange = useCallback((value: T) => {
     props.onChange && props.onChange(value)
   }, [])
@@ -119,23 +156,39 @@ function Select<T> (props: SelectProps<T>): ReactElement {
     return ReactDOM.createPortal(
       <CSSTransition in={showOptions} timeout={200} unmountOnExit classNames="fade-down">
         <div className="select__overlay" style={style}>
-          {Children.map(props.children, child => {
-            return cloneElement(child, {
-              onClick: handleValueChange,
-            })
-          })}
+          {props.options &&
+            props.options.map((option) => {
+              return (
+                <span key={option.label} className="select-option" onClick={() => handleValueChange(option.value)}>
+                  {option.label}
+                </span>
+              )
+            })}
+          {!props.options &&
+            props.children &&
+            Children.map(props.children, (child) => {
+              return cloneElement(child, {
+                onClick: handleValueChange,
+              })
+            })}
         </div>
       </CSSTransition>,
-      tooltip
+      overlayContainer
     )
-  }, [showOptions, container])
+  }, [showOptions, container, props.options])
   const handleClick = useCallback(() => setShowOptions(true), [])
-  const className = useMemo(() => cls("select", {
-    "select--active": showOptions,
-  }), [showOptions])
+  const className = useMemo(
+    () =>
+      cls('select', {
+        'select--active': showOptions,
+      }),
+    [showOptions]
+  )
   return (
     <>
-      <span className={className} ref={ref} onClick={handleClick}>{value} <BsChevronRight className="select__arrow" /></span>
+      <span className={className} ref={ref} onClick={handleClick}>
+        {value} <BsChevronRight className="select__arrow" />
+      </span>
       {overlay}
     </>
   )

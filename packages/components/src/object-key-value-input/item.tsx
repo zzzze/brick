@@ -1,5 +1,6 @@
-import React, { ChangeEvent, CSSProperties, FC, MouseEvent, useCallback, useMemo } from 'react'
+import React, { ChangeEvent, CSSProperties, FC, MouseEvent, useCallback, useMemo, useState } from 'react'
 import { AiOutlineExpand, AiOutlineMinusCircle, AiOutlineCompress } from 'react-icons/ai'
+import { IOption, Select } from '../select'
 
 interface ItemProps {
   value?: Record<string, string>
@@ -9,11 +10,13 @@ interface ItemProps {
   setExpandKey: (key: string | null) => void
   handleChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
   handleDeleteItem: (event: MouseEvent<HTMLElement>) => void
+  getOverlayContainer?: () => HTMLElement
 }
 
 const valueInputWrapperStyle: CSSProperties = {
   position: 'relative',
   flex: 1,
+  marginRight: 10,
 }
 
 const valueInputBtnStyle: CSSProperties = {
@@ -22,8 +25,30 @@ const valueInputBtnStyle: CSSProperties = {
   top: 6,
 }
 
+enum InputType {
+  STRING = 'string',
+  CODE = 'code',
+  BOOLEAN = 'boolean',
+}
+
+const inputTypeOptions: IOption<InputType>[] = [
+  {
+    label: 'String',
+    value: InputType.STRING,
+  },
+  {
+    label: 'Code',
+    value: InputType.CODE,
+  },
+  {
+    label: 'Boolean',
+    value: InputType.BOOLEAN,
+  },
+]
+
 const Item: FC<ItemProps> = ({ value, index, label, handleChange, handleDeleteItem, ...props }: ItemProps) => {
   const itemValue = useMemo(() => value?.[label] || '', [value, label])
+  const [inputType, setInputType] = useState(InputType.STRING)
   const enterExpand = useCallback(() => props.setExpandKey(label), [label])
   const exitExpand = useCallback(() => props.setExpandKey(null), [])
   const isExpand = useMemo(() => props.expandKey === label, [props.expandKey, label])
@@ -32,7 +57,7 @@ const Item: FC<ItemProps> = ({ value, index, label, handleChange, handleDeleteIt
       <input
         placeholder="key"
         className="formitem-input"
-        style={{ width: 100, flex: 'unset', marginRight: 10 }}
+        style={{ width: 100, height: 16, lineHeight: '16px', flex: 'unset', marginRight: 10 }}
         name={`${index}-label`}
         type="text"
         value={label}
@@ -42,7 +67,7 @@ const Item: FC<ItemProps> = ({ value, index, label, handleChange, handleDeleteIt
         <input
           placeholder="value"
           className="formitem-input"
-          style={{ paddingRight: 30, boxSizing: 'border-box', width: '100%' }}
+          style={{ paddingRight: 30, lineHeight: '16px', boxSizing: 'border-box', width: '100%' }}
           name={`${index}-value`}
           type="text"
           value={itemValue}
@@ -52,6 +77,12 @@ const Item: FC<ItemProps> = ({ value, index, label, handleChange, handleDeleteIt
           <AiOutlineExpand />
         </div>
       </div>
+      <Select<InputType>
+        value={inputType}
+        options={inputTypeOptions}
+        onChange={setInputType}
+        getOverlayContainer={props.getOverlayContainer}
+      />
       <div
         style={{ paddingTop: 6, marginLeft: 10 }}
         data-testid={`remove-btn-${index}`}

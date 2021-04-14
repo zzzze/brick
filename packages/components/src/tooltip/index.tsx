@@ -5,7 +5,7 @@ import debounce from 'lodash/debounce'
 
 export interface TooltipProps {
   content: React.ReactElement | string
-  getContainer?: () => HTMLElement
+  getOverlayContainer?: () => HTMLElement
   children: React.ReactElement
 }
 
@@ -51,11 +51,11 @@ const Tooltip: FC<TooltipProps> = (props: TooltipProps) => {
     handleHoverChange(false)
   }, [])
   const container = useMemo(() => {
-    if (!props.getContainer) {
+    if (!props.getOverlayContainer) {
       return document.body
     }
-    return props.getContainer()
-  }, [props.getContainer])
+    return props.getOverlayContainer()
+  }, [props.getOverlayContainer])
   const tooltip: Element = useMemo(() => {
     let element = container.getElementsByClassName(name)?.[0]
     if (!element) {

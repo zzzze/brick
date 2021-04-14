@@ -17,7 +17,8 @@
     "storybook": "start-storybook -s ./ -p 6006",
     "build-storybook": "build-storybook",
     "deploy-storybook": "storybook-to-ghpages --out=storybook-static",
-    "rollup": "rollup --config"
+    "rollup": "rollup --config",
+    "prepare": "husky install"
   },
   "license": "MIT",
   "devDependencies": {

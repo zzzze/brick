@@ -124,6 +124,7 @@ export const ObjectKeyValueInput = React.forwardRef<Instance, ObjectInputProps>(
             label={key}
             handleChange={handleChange}
             handleDeleteItem={handleDeleteItem}
+            getOverlayContainer={props.getOverlayContainer}
           />
         )
       })}

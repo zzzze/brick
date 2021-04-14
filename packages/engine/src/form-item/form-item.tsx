@@ -35,7 +35,7 @@ interface FormItemCommonProps {
   ref?: RefObject<{ value: unknown }>
   tips?: ReactElement | string
   onChange?: (data: EventData) => void
-  getPopupContainer?: () => HTMLElement
+  getOverlayContainer?: () => HTMLElement
 }
 
 interface FormItemProps extends FormItemCommonProps {
@@ -47,7 +47,7 @@ const FormItem: React.FC<FormItemProps> = ({
   name,
   children,
   style,
-  getPopupContainer,
+  getOverlayContainer,
   tips,
   ...props
 }: FormItemProps) => {
@@ -80,6 +80,22 @@ const FormItem: React.FC<FormItemProps> = ({
     context.commit()
     exitEditMode()
   }, [])
+  const childProps = useMemo(() => {
+    const props: Partial<FormItemCommonProps> = {
+      name,
+      ref,
+      onChange,
+      style: {
+        ...child.props.style,
+        ...style,
+        display: isEditMode ? 'block' : 'none',
+      },
+    }
+    if (typeof child.type !== 'string') {
+      props.getOverlayContainer = getOverlayContainer
+    }
+    return props
+  }, [child, getOverlayContainer, isEditMode])
   return (
     <div
       className={clx('config-form__item', {
@@ -88,7 +104,7 @@ const FormItem: React.FC<FormItemProps> = ({
       <label className="config-form__label" htmlFor="id">
         {label}
         {tips && (
-          <Tooltip getContainer={getPopupContainer} content={tips}>
+          <Tooltip getOverlayContainer={getOverlayContainer} content={tips}>
             <span style={{ verticalAlign: 'middle', marginLeft: 5 }}>
               <AiOutlineQuestionCircle />
             </span>
@@ -110,26 +126,13 @@ const FormItem: React.FC<FormItemProps> = ({
       )}
       {context.autoCommit &&
         React.cloneElement(child, {
-          name,
           value: value || '',
-          onChange,
-          style: {
-            ...child.props.style,
-            ...style,
-            display: isEditMode ? 'block' : 'none',
-          },
+          ...childProps,
           ...props,
         })}
       {!context.autoCommit &&
         React.cloneElement(child, {
-          name,
-          ref,
-          onChange,
-          style: {
-            ...child.props.style,
-            ...style,
-            display: isEditMode ? 'block' : 'none',
-          },
+          ...childProps,
           ...props,
         })}
       <div className="config-form__item-btg">

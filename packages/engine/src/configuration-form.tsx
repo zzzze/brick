@@ -105,7 +105,7 @@ const ConfigurationForm = ({
           return (
             <FormItem
               key={key}
-              getPopupContainer={getPopupContainer}
+              getOverlayContainer={getPopupContainer}
               tips={td.tips}
               data-testid={`${blueprint._key}-${td.testID ?? key}`}
               label={td?.label || key}
@@ -130,7 +130,7 @@ const ConfigurationForm = ({
           return (
             <FormItem
               key={key}
-              getPopupContainer={getPopupContainer}
+              getOverlayContainer={getPopupContainer}
               tips={td.tips}
               data-testid={`${blueprint._key}-${td.testID ?? key}`}
               label={td?.label || key}
