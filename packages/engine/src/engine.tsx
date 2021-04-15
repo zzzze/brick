@@ -10,13 +10,9 @@ import Diff from 'deep-diff'
 import cloneDeep from 'lodash/cloneDeep'
 import { DataType } from './data/data-type'
 import ErrorBoundary from './error-boundary'
+import { BackendFactory } from 'dnd-core'
 
 const ee = new EventEmitter()
-
-enum TransactionState {
-  START = 'start',
-  END = 'end',
-}
 
 export interface EngineProps {
   /**
@@ -29,6 +25,7 @@ export interface EngineProps {
   renderConfigurationForm?: RenderConfigurationForm
   previewMode?: boolean
   autoCommitMode?: boolean
+  dndBackend?: BackendFactory
 }
 
 interface EngineState {
@@ -36,7 +33,7 @@ interface EngineState {
 }
 
 /**
- * Engine render bricks according to the configuration
+ * Engine render bricks according to the blueprint.
  */
 class Engine extends React.Component<EngineProps, EngineState> {
   /**
@@ -79,11 +76,17 @@ class Engine extends React.Component<EngineProps, EngineState> {
   /**
    * inner properties
    */
-  _transaction: TransactionState = TransactionState.END
-  _stagingBlueprint: Blueprint | null = null
-  _backwardDiffs: Diff.Diff<Blueprint | null>[][] = []
-  _forwardDiffs: Diff.Diff<Blueprint | null>[][] = []
-  _isUndoRedo = false
+  private _isInTransaction = false
+  private _stagingBlueprint: Blueprint | null = null
+  private _backwardDiffs: Diff.Diff<Blueprint | null>[][] = []
+  private _forwardDiffs: Diff.Diff<Blueprint | null>[][] = []
+  private _isUndoRedo = false
+  private get _dndBackend(): BackendFactory {
+    if (!this.props.dndBackend) {
+      return HTML5Backend
+    }
+    return this.props.dndBackend
+  }
 
   /**
    * lifecycle
@@ -123,28 +126,28 @@ class Engine extends React.Component<EngineProps, EngineState> {
   /**
    * inner methods
    */
-  _renderConfigurationForm: RenderConfigurationForm
-  _handleSetBlueprint = (fn: SetBlueprintFn): void => {
+  private _renderConfigurationForm: RenderConfigurationForm
+  private _handleSetBlueprint = (fn: SetBlueprintFn): void => {
     if (this._stagingBlueprint == null) {
       this._stagingBlueprint = this.state.blueprint
     }
     this._stagingBlueprint = fn(this._stagingBlueprint as Blueprint)
-    if (this._transaction == TransactionState.END) {
+    if (!this._isInTransaction) {
       this._commitBlueprint()
     }
   }
-  _transactionBegin = (): void => {
+  private _transactionBegin = (): void => {
     this._commitBlueprint()
-    this._transaction = TransactionState.START
+    this._isInTransaction = true
   }
-  _transactionCommit = (): void => {
-    this._transaction = TransactionState.END
+  private _transactionCommit = (): void => {
+    this._isInTransaction = false
     this._commitBlueprint()
   }
-  _transactionRollback = (): void => {
+  private _transactionRollback = (): void => {
     this._stagingBlueprint = null
   }
-  _commitBlueprint = (): void => {
+  private _commitBlueprint = (): void => {
     if (!this._stagingBlueprint) {
       return
     }
@@ -164,7 +167,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
       }
     )
   }
-  _undeOrRedo(redo = false): void {
+  private _undeOrRedo(redo = false): void {
     this._isUndoRedo = true
     let diffsStackA = this._backwardDiffs
     let diffsStackB = this._forwardDiffs
@@ -194,7 +197,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
       }
     )
   }
-  _handleKeyPress = (event: KeyboardEvent): boolean => {
+  private _handleKeyPress = (event: KeyboardEvent): boolean => {
     if (!event.ctrlKey || event.key.toLowerCase() !== 'z') {
       return true
     }
@@ -207,7 +210,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
    */
   render(): React.ReactNode {
     if (!this.props.autoCommitMode) {
-      this._transaction = TransactionState.START
+      this._isInTransaction = true
     }
     return (
       <EnginxContext.Provider
@@ -222,7 +225,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
           transactionRollback: this._transactionRollback,
           autoCommit: !!this.props.autoCommitMode,
         }}>
-        <DndProvider backend={HTML5Backend} key="dnd-provider">
+        <DndProvider backend={this._dndBackend} key="dnd-provider">
           {this.state.blueprint && (
             <ErrorBoundary key={this.state.blueprint._key}>
               <BrickRenderer
