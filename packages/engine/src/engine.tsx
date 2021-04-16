@@ -89,6 +89,10 @@ class Engine extends React.Component<EngineProps, EngineState> {
     }
     return this.props.dndBackend
   }
+  private _registerBrick = (brick: Brick): void => {
+    Engine.bricks[brick.name] = brick
+    this.forceUpdate()
+  }
 
   /**
    * lifecycle
@@ -227,6 +231,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
             transactionCommit: this._transactionCommit,
             transactionRollback: this._transactionRollback,
             autoCommit: !!this.props.autoCommitMode,
+            registerBrick: this._registerBrick,
           }}>
           <DndProvider backend={this._dndBackend} key="dnd-provider">
             <BrickMenu getContainer={this.props.getMenuContainer} bricks={Object.values(Engine.bricks)} />

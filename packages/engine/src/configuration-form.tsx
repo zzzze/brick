@@ -7,6 +7,7 @@ import normalizeDataType from './data/normalize-data-type'
 import FormItem from './form-item/form-item'
 import ConfigurationFormContext from './form-item/context'
 import { InputType } from '@brick/components'
+import clusterBrick from './cluster-brick'
 
 interface PropsConfigurationFormProps {
   blueprint: Blueprint
@@ -90,8 +91,13 @@ const ConfigurationForm = ({
   const dataTypes = useMemo(() => {
     return normalizeDataType(engineCtx.dataTypes, brick.dataTypes)
   }, [engineCtx.dataTypes, brick.dataTypes])
+  const handleClick = useCallback(() => {
+    const newBrick = clusterBrick(engineCtx.bricks, blueprint)
+    engineCtx.registerBrick(newBrick)
+  }, [brick])
   return (
     <>
+      <button onClick={handleClick}>click</button>
       <ConfigurationFormContext.Provider
         value={{
           data: { ...blueprint } as Record<string, unknown>,

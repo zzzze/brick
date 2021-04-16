@@ -25,6 +25,7 @@ interface ContextType {
   transactionCommit: () => void
   transactionRollback: () => void
   autoCommit: boolean
+  registerBrick: (brick: Brick) => void
 }
 
 const EnginxContext = React.createContext<ContextType>({
@@ -37,6 +38,7 @@ const EnginxContext = React.createContext<ContextType>({
   transactionCommit: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   transactionRollback: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   autoCommit: false,
+  registerBrick: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
 })
 
 export default EnginxContext

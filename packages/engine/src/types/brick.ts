@@ -11,6 +11,11 @@ export interface Render {
   (args: BrickInstance): React.ReactElement
 }
 
+export interface BrickGroupMap {
+  name: string
+  children?: BrickGroupMap[]
+}
+
 export interface Brick {
   name: string
   dataTypes: Record<string, string | DataTypeDefinition>
@@ -21,4 +26,8 @@ export interface Brick {
   renderMenu?: () => React.ReactElement
   canCustomizeRender?: boolean
   version: string
+}
+
+export interface BrickGroup extends Brick {
+  map: BrickGroupMap
 }
