@@ -50,7 +50,7 @@ WithHandler.args = {
   blueprint: itemConfig as Blueprint,
 }
 
-export const GithubStylePage = Template.bind({})
-GithubStylePage.args = {
+export const WebPage = Template.bind({})
+WebPage.args = {
   blueprint: githubStylePageConfig as Blueprint,
 }

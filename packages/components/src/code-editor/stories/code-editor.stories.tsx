@@ -28,4 +28,8 @@ const Template: Story<IEditorProps> = (args) => {
 export const Default = Template.bind({})
 Default.args = {
   value: 'function x() {\n\tconsole.log("Hello world!");\n}',
+  style: {
+    width: '100%',
+    height: 300,
+  },
 }

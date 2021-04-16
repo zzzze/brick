@@ -20,6 +20,7 @@ module.exports = {
       './packages/components/tsconfig.eslint.json',
       './packages/example/tsconfig.eslint.json',
       './packages/cli/tsconfig.eslint.json',
+      './packages/shared/tsconfig.eslint.json',
     ],
     tsconfigRootDir: __dirname,
     sourceType: 'module',

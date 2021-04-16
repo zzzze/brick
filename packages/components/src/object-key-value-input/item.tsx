@@ -1,16 +1,21 @@
-import React, { ChangeEvent, CSSProperties, FC, MouseEvent, useCallback, useMemo, useState } from 'react'
+import React, { CSSProperties, FC, MouseEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { AiOutlineExpand, AiOutlineMinusCircle, AiOutlineCompress } from 'react-icons/ai'
+import { Editor } from '../code-editor'
 import { IOption, Select } from '../select'
+import { EventData } from '@brick/shared/types/form'
+import { FUNCTION_STR } from '@brick/shared/pattern'
+import { Switch } from '../switch'
 
 interface ItemProps {
-  value?: Record<string, string>
   index: number
   label: string
   expandKey: string | null
   setExpandKey: (key: string | null) => void
-  handleChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  handleChange: (event: EventData<unknown>) => void
   handleDeleteItem: (event: MouseEvent<HTMLElement>) => void
+  value?: Record<string, string>
   getOverlayContainer?: () => HTMLElement
+  types?: InputType[]
 }
 
 const valueInputWrapperStyle: CSSProperties = {
@@ -25,7 +30,7 @@ const valueInputBtnStyle: CSSProperties = {
   top: 6,
 }
 
-enum InputType {
+export enum InputType {
   STRING = 'string',
   CODE = 'code',
   BOOLEAN = 'boolean',
@@ -52,6 +57,17 @@ const Item: FC<ItemProps> = ({ value, index, label, handleChange, handleDeleteIt
   const enterExpand = useCallback(() => props.setExpandKey(label), [label])
   const exitExpand = useCallback(() => props.setExpandKey(null), [])
   const isExpand = useMemo(() => props.expandKey === label, [props.expandKey, label])
+  const typeOptions = useMemo(() => {
+    if (!props.types) {
+      return inputTypeOptions
+    }
+    return inputTypeOptions.filter((item) => props.types?.includes(item.value))
+  }, [props.types])
+  useEffect(() => {
+    if (FUNCTION_STR.test(itemValue)) {
+      setInputType(InputType.CODE)
+    }
+  }, [itemValue])
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', margin: '10px 0' }} key={index}>
       <input
@@ -64,25 +80,34 @@ const Item: FC<ItemProps> = ({ value, index, label, handleChange, handleDeleteIt
         onChange={handleChange}
       />
       <div style={{ ...valueInputWrapperStyle, visibility: isExpand ? 'hidden' : 'visible' }}>
-        <input
-          placeholder="value"
-          className="formitem-input"
-          style={{ paddingRight: 30, lineHeight: '16px', boxSizing: 'border-box', width: '100%' }}
-          name={`${index}-value`}
-          type="text"
-          value={itemValue}
-          onChange={handleChange}
-        />
-        <div style={valueInputBtnStyle} onClick={enterExpand} title="expand">
-          <AiOutlineExpand />
-        </div>
+        {inputType === InputType.BOOLEAN && (
+          <Switch value={!!itemValue} name={`${index}-value`} onChange={handleChange} />
+        )}
+        {inputType !== InputType.BOOLEAN && (
+          <>
+            <input
+              placeholder="value"
+              className="formitem-input"
+              style={{ paddingRight: 30, lineHeight: '16px', boxSizing: 'border-box', width: '100%' }}
+              name={`${index}-value`}
+              type="text"
+              value={itemValue}
+              onChange={handleChange}
+            />
+            <div style={valueInputBtnStyle} onClick={enterExpand} title="expand">
+              <AiOutlineExpand />
+            </div>
+          </>
+        )}
       </div>
-      <Select<InputType>
-        value={inputType}
-        options={inputTypeOptions}
-        onChange={setInputType}
-        getOverlayContainer={props.getOverlayContainer}
-      />
+      {typeOptions.length > 1 && (
+        <Select<InputType>
+          value={inputType}
+          options={typeOptions}
+          onChange={setInputType}
+          getOverlayContainer={props.getOverlayContainer}
+        />
+      )}
       <div
         style={{ paddingTop: 6, marginLeft: 10 }}
         data-testid={`remove-btn-${index}`}
@@ -93,13 +118,23 @@ const Item: FC<ItemProps> = ({ value, index, label, handleChange, handleDeleteIt
       </div>
       {isExpand && (
         <div style={{ width: '100%', position: 'relative', marginTop: 5 }}>
-          <textarea
-            className="formitem-textarea"
-            style={{ width: '100%', height: 200, paddingBottom: 30, boxSizing: 'border-box' }}
-            name={`${index}-value`}
-            value={itemValue}
-            onChange={handleChange}
-          />
+          {inputType === InputType.CODE && (
+            <Editor
+              value={itemValue}
+              name={`${index}-value`}
+              onChange={handleChange}
+              style={{ width: '100%', height: 200 }}
+            />
+          )}
+          {inputType !== InputType.CODE && (
+            <textarea
+              className="formitem-textarea"
+              style={{ width: '100%', height: 200, paddingBottom: 30, boxSizing: 'border-box' }}
+              name={`${index}-value`}
+              value={itemValue}
+              onChange={handleChange}
+            />
+          )}
           <div title="reduce" style={{ textAlign: 'right', position: 'absolute', bottom: 10, right: 10 }}>
             <AiOutlineCompress className="config-form__item-btn" onClick={exitExpand} />
           </div>

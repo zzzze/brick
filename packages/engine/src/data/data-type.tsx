@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { ObjectKeyValueInput } from '@brick/components'
+import { InputType, ObjectKeyValueInput } from '@brick/components'
 import isPlainObject from 'lodash/isPlainObject'
 
 export interface TypeValidator {
@@ -15,6 +15,7 @@ export interface DataType<T = unknown> {
   tips?: ReactElement | string
   formItem: () => ReactElement
   isValid: TypeValidator
+  fieldTypes?: InputType[] // for object type
 }
 
 export type DataConfig = Record<string, DataType>

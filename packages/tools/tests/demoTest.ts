@@ -6,7 +6,7 @@ import 'jest-enzyme'
 
 React.useLayoutEffect = React.useEffect
 /* eslint-disable */
-;(ReactDOM as any).createPortal = jest.fn(modal => modal)
+;(ReactDOM as any).createPortal = jest.fn((modal) => modal)
 /* eslint-enable */
 
 export default function demoTest(component: string): void {

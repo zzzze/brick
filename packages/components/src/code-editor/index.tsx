@@ -1,16 +1,10 @@
 import React, { useRef, useEffect, forwardRef, useMemo, useImperativeHandle, CSSProperties, useState } from 'react'
-
-interface EventData {
-  target: {
-    name: string
-    value: string
-  }
-}
+import { EventData } from '@brick/shared/types/form'
 
 export interface IEditorProps {
   value?: string
   name?: string
-  onChange?: (data: EventData) => void
+  onChange?: (data: EventData<string>) => void
   style?: CSSProperties
   className?: string
 }
@@ -39,7 +33,7 @@ function initMonaco() {
   })
 
   // extra libraries
-  const libSource = __BRICK_INSTANCE_TYPES__
+  const libSource = window.__BRICK_INSTANCE_TYPES__
   const libUri = 'ts:filename/brick-instance.d.ts'
   monaco.languages.typescript.javascriptDefaults.addExtraLib(libSource, libUri)
   monaco.editor.createModel(libSource, 'typescript', monaco.Uri.parse(libUri))

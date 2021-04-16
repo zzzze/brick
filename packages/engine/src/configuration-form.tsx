@@ -6,6 +6,7 @@ import { DataType } from './data/data-type'
 import normalizeDataType from './data/normalize-data-type'
 import FormItem from './form-item/form-item'
 import ConfigurationFormContext from './form-item/context'
+import { InputType } from '@brick/components'
 
 interface PropsConfigurationFormProps {
   blueprint: Blueprint
@@ -28,16 +29,19 @@ const defaultFormItems: Record<string, DataTypeDefinition> = {
     type: 'object',
     default: {},
     label: 'Actions',
+    fieldTypes: [InputType.CODE, InputType.STRING],
   },
   'supply.data': {
     type: 'object',
     default: {},
     label: 'Supply Data',
+    fieldTypes: [InputType.STRING, InputType.BOOLEAN],
   },
   'supply.actions': {
     type: 'object',
     default: {},
     label: 'Supply Actions',
+    fieldTypes: [InputType.CODE, InputType.STRING],
   },
   render: {
     type: 'code',
@@ -48,6 +52,7 @@ const defaultFormItems: Record<string, DataTypeDefinition> = {
     type: 'object',
     default: {},
     label: 'Wrapper Style',
+    fieldTypes: [InputType.STRING],
   },
 }
 
@@ -109,6 +114,7 @@ const ConfigurationForm = ({
               tips={td.tips}
               data-testid={`${blueprint._key}-${td.testID ?? key}`}
               label={td?.label || key}
+              types={td.fieldTypes}
               name={key}>
               {td.formItem()}
             </FormItem>
@@ -133,6 +139,7 @@ const ConfigurationForm = ({
               getOverlayContainer={getPopupContainer}
               tips={td.tips}
               data-testid={`${blueprint._key}-${td.testID ?? key}`}
+              types={[InputType.STRING]}
               label={td?.label || key}
               name={key}>
               {td.formItem()}

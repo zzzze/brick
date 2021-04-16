@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import { ObjectKeyValueInput } from '../'
-import { ObjectInputEventData } from '../../object-input-props'
+import { types } from '@brick/shared'
 
 describe('ObjectKeyValueInput', () => {
   let handleChange: jest.Mock
@@ -65,8 +65,8 @@ describe('ObjectKeyValueInput', () => {
     let value: Record<string, string> = {
       foo: 'bar',
     }
-    const handleChange = (data: ObjectInputEventData) => {
-      value = data.target.value
+    const handleChange = (data: types.EventData<unknown>) => {
+      value = data.target.value as Record<string, string>
     }
     const wrapper = mount(<ObjectKeyValueInput name="object" value={value} onChange={handleChange} />)
     wrapper.find('[data-testid="add-item"]').simulate('click')
@@ -93,8 +93,8 @@ describe('ObjectKeyValueInput', () => {
       foo: 'bar',
       baz: '123',
     }
-    const handleChange = (data: ObjectInputEventData) => {
-      value = data.target.value
+    const handleChange = (data: types.EventData<unknown>) => {
+      value = data.target.value as Record<string, string>
     }
     const wrapper = mount(<ObjectKeyValueInput name="object" value={value} onChange={handleChange} />)
     wrapper.find('[data-testid="remove-btn-0"]').simulate('click')

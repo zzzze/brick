@@ -48,7 +48,7 @@ export const ObjectStringInput = React.forwardRef<Instance, ObjectInputProps>((p
         const obj = JSON.parse(value) as Record<string, string>
         triggerChange(obj)
       } catch (err) {
-        if (__DEV__) {
+        if (window.__DEV__) {
           console.error(err)
         }
       }

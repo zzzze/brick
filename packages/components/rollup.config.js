@@ -43,7 +43,7 @@ export default (prefix) => [
         ],
       }),
       replace({
-        __BRICK_INSTANCE_TYPES__: JSON.stringify(types),
+        'window.__BRICK_INSTANCE_TYPES__': JSON.stringify(types),
       }),
     ],
     external: [

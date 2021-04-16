@@ -12,7 +12,7 @@ import React, {
 import ConfigurationFormContext from './context'
 import cloneDeep from 'lodash/cloneDeep'
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
-import { Tooltip } from '@brick/components'
+import { InputType, Tooltip } from '@brick/components'
 import { FaEdit } from 'react-icons/fa'
 import { AiFillCheckCircle, AiFillCloseCircle } from 'react-icons/ai'
 import set from 'lodash/set'
@@ -36,6 +36,7 @@ interface FormItemCommonProps {
   tips?: ReactElement | string
   onChange?: (data: EventData) => void
   getOverlayContainer?: () => HTMLElement
+  types?: InputType[] // for ObjectKeyValueInput only
 }
 
 interface FormItemProps extends FormItemCommonProps {

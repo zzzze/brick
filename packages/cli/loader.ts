@@ -1,3 +1,4 @@
+import { FUNCTION_STR } from '@brick/shared/pattern'
 const flagMap: Record<string, string> = {}
 
 function setFuncFlag(value: unknown, label = 'brickroot', path = ''): unknown {
@@ -25,7 +26,7 @@ function setFuncFlag(value: unknown, label = 'brickroot', path = ''): unknown {
   if (
     ['brickroot-supply-actions', 'brickroot-actions', 'brickroot-handlers', 'brickroot-listeners'].includes(path) &&
     typeof value === 'string' &&
-    /^\s*function\s*\(|^(\w+|\((\s*\w+,?)*\))\s*=>\s*/.test(value)
+    FUNCTION_STR.test(value)
   ) {
     const key = Math.random().toString(36).slice(2).toUpperCase()
     flagMap[key] = `function (setData, emit) {
