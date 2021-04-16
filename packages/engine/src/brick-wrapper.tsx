@@ -7,7 +7,7 @@ import { XYCoord } from 'dnd-core'
 import clx from 'classnames'
 import debounce from 'lodash/debounce'
 
-const ITEM_TYPE = 'brick-instance'
+export const ITEM_TYPE = 'brick-instance'
 
 interface DragOverProps {
   className?: string

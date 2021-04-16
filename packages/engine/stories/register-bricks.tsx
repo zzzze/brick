@@ -1,8 +1,17 @@
-import React, { useMemo } from 'react'
+import React, { CSSProperties, useMemo } from 'react'
 import { Engine } from '../src/engine'
 import { Brick, ChildrenType, BrickInstance } from '../src/types'
 import { StringType, NumberType, BooleanType, ObjectType, CodeType } from '../src/data/data-type'
 import { Editor } from '@brick/components'
+
+const menuStyle: CSSProperties = {
+  display: 'inline-block',
+  marginRight: 10,
+  border: 'solid 1px #ccc',
+  borderRadius: 5,
+  padding: '5px 10px',
+  cursor: 'move',
+}
 
 const View: Brick = {
   name: 'View',
@@ -20,6 +29,9 @@ const View: Brick = {
       }
     }, [instance])
     return <div style={style}>{instance.children}</div>
+  },
+  renderMenu() {
+    return <div style={menuStyle}>View</div>
   },
   version: '0.0.1',
 }
@@ -42,6 +54,9 @@ const Text: Brick = {
     }, [instance])
     return <span style={style}>{instance.data.content as string}</span>
   },
+  renderMenu() {
+    return <div style={menuStyle}>Text</div>
+  },
   version: '0.0.1',
 }
 
@@ -63,6 +78,9 @@ const Image: Brick = {
     }, [instance])
     return <img style={style} src={instance.data.src as string} />
   },
+  renderMenu() {
+    return <div style={menuStyle}>Image</div>
+  },
   version: '0.0.1',
 }
 
@@ -82,6 +100,9 @@ const Input: Brick = {
       }
     }, [instance])
     return <input style={style} onChange={instance.handlers['onChange']} />
+  },
+  renderMenu() {
+    return <div style={menuStyle}>Input</div>
   },
   version: '0.0.1',
 }
@@ -116,6 +137,9 @@ const TextWithAction: Brick = {
         {instance.data.content as string}
       </span>
     )
+  },
+  renderMenu() {
+    return <div style={menuStyle}>TextWithAction</div>
   },
   version: '0.0.1',
 }

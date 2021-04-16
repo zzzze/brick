@@ -43,8 +43,10 @@ export default (prefix) => [
         './brick-wrapper': `
           export default ({children}) => children
           export const createRemoveItemFromParentFn = () => () => null
+          export const ITEM_TYPE = 'brick-instance'
         `,
         './render-config-form': `export default () => null`,
+        './brick-menu': `export default () => null`,
       }),
       typescript({
         tsconfig: path.join(prefix, 'tsconfig.json'),

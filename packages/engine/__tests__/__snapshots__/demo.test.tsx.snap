@@ -1,200 +1,135 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders ./packages/engine/demo/basic.md correctly 1`] = `
-<span
-  class="brick brick__with-config-form"
->
+Array [
   <div
-    class="brick__config-form"
-    style="top:-1px;right:-1px"
+    style="display:flex"
+  >
+    <div>
+      View
+    </div>
+    <div>
+      Text
+    </div>
+    <div>
+      ViewWithCustomRender
+    </div>
+  </div>,
+  <span
+    class="brick brick__with-config-form"
   >
     <div
-      class="brick__config-form-btn-g1"
+      class="brick__config-form"
+      style="top:-1px;right:-1px"
     >
-      <span
-        class="brick__config-form-remove-btn"
-        data-testid="001-remove-btn"
-        title="remove"
+      <div
+        class="brick__config-form-btn-g1"
       >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 1024 1024"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
+        <span
+          class="brick__config-form-remove-btn"
+          data-testid="001-remove-btn"
+          title="remove"
         >
-          <path
-            d="M292.7 840h438.6l24.2-512h-487z"
-          />
-          <path
-            d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-edit-btn"
-        data-testid="001-edit-btn"
-        title="edit"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 576 512"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 1024 1024"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M292.7 840h438.6l24.2-512h-487z"
+            />
+            <path
+              d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
+            />
+          </svg>
+        </span>
+        <span
+          class="brick__config-form-edit-btn"
+          data-testid="001-edit-btn"
+          title="edit"
         >
-          <path
-            d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-move-btn"
-        title="move"
-      >
-        <svg
-          fill="none"
-          height="1em"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 576 512"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+            />
+          </svg>
+        </span>
+        <span
+          class="brick__config-form-move-btn"
+          title="move"
         >
-          <polyline
-            points="5 9 2 12 5 15"
-          />
-          <polyline
-            points="9 5 12 2 15 5"
-          />
-          <polyline
-            points="15 19 12 22 9 19"
-          />
-          <polyline
-            points="19 9 22 12 19 15"
-          />
-          <line
-            x1="2"
-            x2="22"
-            y1="12"
-            y2="12"
-          />
-          <line
-            x1="12"
-            x2="12"
-            y1="2"
-            y2="22"
-          />
-        </svg>
-      </span>
+          <svg
+            fill="none"
+            height="1em"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <polyline
+              points="5 9 2 12 5 15"
+            />
+            <polyline
+              points="9 5 12 2 15 5"
+            />
+            <polyline
+              points="15 19 12 22 9 19"
+            />
+            <polyline
+              points="19 9 22 12 19 15"
+            />
+            <line
+              x1="2"
+              x2="22"
+              y1="12"
+              y2="12"
+            />
+            <line
+              x1="12"
+              x2="12"
+              y1="2"
+              y2="22"
+            />
+          </svg>
+        </span>
+      </div>
     </div>
-  </div>
-  hello world
-</span>
+    hello world
+  </span>,
+]
 `;
 
 exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
-<div
-  class="brick brick__with-config-form"
->
+Array [
   <div
-    class="brick__config-form"
-    style="top:-1px;right:-1px"
+    style="display:flex"
   >
-    <div
-      class="brick__config-form-btn-g1"
-    >
-      <span
-        class="brick__config-form-remove-btn"
-        data-testid="001-remove-btn"
-        title="remove"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 1024 1024"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M292.7 840h438.6l24.2-512h-487z"
-          />
-          <path
-            d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-edit-btn"
-        data-testid="001-edit-btn"
-        title="edit"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 576 512"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-move-btn"
-        title="move"
-      >
-        <svg
-          fill="none"
-          height="1em"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <polyline
-            points="5 9 2 12 5 15"
-          />
-          <polyline
-            points="9 5 12 2 15 5"
-          />
-          <polyline
-            points="15 19 12 22 9 19"
-          />
-          <polyline
-            points="19 9 22 12 19 15"
-          />
-          <line
-            x1="2"
-            x2="22"
-            y1="12"
-            y2="12"
-          />
-          <line
-            x1="12"
-            x2="12"
-            y1="2"
-            y2="22"
-          />
-        </svg>
-      </span>
+    <div>
+      View
     </div>
-  </div>
-  <span
+    <div>
+      Text
+    </div>
+    <div>
+      ViewWithCustomRender
+    </div>
+  </div>,
+  <div
     class="brick brick__with-config-form"
   >
     <div
@@ -206,7 +141,7 @@ exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
       >
         <span
           class="brick__config-form-remove-btn"
-          data-testid="002-remove-btn"
+          data-testid="001-remove-btn"
           title="remove"
         >
           <svg
@@ -228,7 +163,7 @@ exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
         </span>
         <span
           class="brick__config-form-edit-btn"
-          data-testid="002-edit-btn"
+          data-testid="001-edit-btn"
           title="edit"
         >
           <svg
@@ -288,529 +223,114 @@ exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
         </span>
       </div>
     </div>
-    hello
-    <div
-      class="brick__action-area brick__action-area-left"
-    />
-    <div
-      class="brick__action-area brick__action-area-right"
-    />
-    <div
-      class="brick__action-area brick__action-area-top"
-    />
-    <div
-      class="brick__action-area brick__action-area-bottom"
-    />
-  </span>
-  <span
-    class="brick brick__with-config-form"
-  >
-    <div
-      class="brick__config-form"
-      style="top:-1px;right:-1px"
+    <span
+      class="brick brick__with-config-form"
     >
       <div
-        class="brick__config-form-btn-g1"
+        class="brick__config-form"
+        style="top:-1px;right:-1px"
       >
-        <span
-          class="brick__config-form-remove-btn"
-          data-testid="003-remove-btn"
-          title="remove"
+        <div
+          class="brick__config-form-btn-g1"
         >
-          <svg
-            fill="currentColor"
-            height="1em"
-            stroke="currentColor"
-            stroke-width="0"
-            viewBox="0 0 1024 1024"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
+          <span
+            class="brick__config-form-remove-btn"
+            data-testid="002-remove-btn"
+            title="remove"
           >
-            <path
-              d="M292.7 840h438.6l24.2-512h-487z"
-            />
-            <path
-              d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
-            />
-          </svg>
-        </span>
-        <span
-          class="brick__config-form-edit-btn"
-          data-testid="003-edit-btn"
-          title="edit"
-        >
-          <svg
-            fill="currentColor"
-            height="1em"
-            stroke="currentColor"
-            stroke-width="0"
-            viewBox="0 0 576 512"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
+            <svg
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 1024 1024"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M292.7 840h438.6l24.2-512h-487z"
+              />
+              <path
+                d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
+              />
+            </svg>
+          </span>
+          <span
+            class="brick__config-form-edit-btn"
+            data-testid="002-edit-btn"
+            title="edit"
           >
-            <path
-              d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
-            />
-          </svg>
-        </span>
-        <span
-          class="brick__config-form-move-btn"
-          title="move"
-        >
-          <svg
-            fill="none"
-            height="1em"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
+            <svg
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 576 512"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+              />
+            </svg>
+          </span>
+          <span
+            class="brick__config-form-move-btn"
+            title="move"
           >
-            <polyline
-              points="5 9 2 12 5 15"
-            />
-            <polyline
-              points="9 5 12 2 15 5"
-            />
-            <polyline
-              points="15 19 12 22 9 19"
-            />
-            <polyline
-              points="19 9 22 12 19 15"
-            />
-            <line
-              x1="2"
-              x2="22"
-              y1="12"
-              y2="12"
-            />
-            <line
-              x1="12"
-              x2="12"
-              y1="2"
-              y2="22"
-            />
-          </svg>
-        </span>
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polyline
+                points="5 9 2 12 5 15"
+              />
+              <polyline
+                points="9 5 12 2 15 5"
+              />
+              <polyline
+                points="15 19 12 22 9 19"
+              />
+              <polyline
+                points="19 9 22 12 19 15"
+              />
+              <line
+                x1="2"
+                x2="22"
+                y1="12"
+                y2="12"
+              />
+              <line
+                x1="12"
+                x2="12"
+                y1="2"
+                y2="22"
+              />
+            </svg>
+          </span>
+        </div>
       </div>
-    </div>
-    world
-    <div
-      class="brick__action-area brick__action-area-left"
-    />
-    <div
-      class="brick__action-area brick__action-area-right"
-    />
-    <div
-      class="brick__action-area brick__action-area-top"
-    />
-    <div
-      class="brick__action-area brick__action-area-bottom"
-    />
-  </span>
-</div>
-`;
-
-exports[`renders ./packages/engine/demo/custom-render.md correctly 1`] = `
-<div
-  class="brick brick__with-config-form"
->
-  <div
-    class="brick__config-form"
-    style="top:-1px;right:-1px"
-  >
-    <div
-      class="brick__config-form-btn-g1"
-    >
-      <span
-        class="brick__config-form-remove-btn"
-        data-testid="001-remove-btn"
-        title="remove"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 1024 1024"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M292.7 840h438.6l24.2-512h-487z"
-          />
-          <path
-            d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-edit-btn"
-        data-testid="001-edit-btn"
-        title="edit"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 576 512"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-move-btn"
-        title="move"
-      >
-        <svg
-          fill="none"
-          height="1em"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <polyline
-            points="5 9 2 12 5 15"
-          />
-          <polyline
-            points="9 5 12 2 15 5"
-          />
-          <polyline
-            points="15 19 12 22 9 19"
-          />
-          <polyline
-            points="19 9 22 12 19 15"
-          />
-          <line
-            x1="2"
-            x2="22"
-            y1="12"
-            y2="12"
-          />
-          <line
-            x1="12"
-            x2="12"
-            y1="2"
-            y2="22"
-          />
-        </svg>
-      </span>
-    </div>
-  </div>
-  <span>
-    foo
-  </span>
-  <span
-    class="brick brick__with-config-form"
-  >
-    <div
-      class="brick__config-form"
-      style="top:-1px;right:-1px"
-    >
+      hello
       <div
-        class="brick__config-form-btn-g1"
-      >
-        <span
-          class="brick__config-form-remove-btn"
-          data-testid="002-remove-btn"
-          title="remove"
-        >
-          <svg
-            fill="currentColor"
-            height="1em"
-            stroke="currentColor"
-            stroke-width="0"
-            viewBox="0 0 1024 1024"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M292.7 840h438.6l24.2-512h-487z"
-            />
-            <path
-              d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
-            />
-          </svg>
-        </span>
-        <span
-          class="brick__config-form-edit-btn"
-          data-testid="002-edit-btn"
-          title="edit"
-        >
-          <svg
-            fill="currentColor"
-            height="1em"
-            stroke="currentColor"
-            stroke-width="0"
-            viewBox="0 0 576 512"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
-            />
-          </svg>
-        </span>
-        <span
-          class="brick__config-form-move-btn"
-          title="move"
-        >
-          <svg
-            fill="none"
-            height="1em"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <polyline
-              points="5 9 2 12 5 15"
-            />
-            <polyline
-              points="9 5 12 2 15 5"
-            />
-            <polyline
-              points="15 19 12 22 9 19"
-            />
-            <polyline
-              points="19 9 22 12 19 15"
-            />
-            <line
-              x1="2"
-              x2="22"
-              y1="12"
-              y2="12"
-            />
-            <line
-              x1="12"
-              x2="12"
-              y1="2"
-              y2="22"
-            />
-          </svg>
-        </span>
-      </div>
-    </div>
-    bar
-    <div
-      class="brick__action-area brick__action-area-left"
-    />
-    <div
-      class="brick__action-area brick__action-area-right"
-    />
-    <div
-      class="brick__action-area brick__action-area-top"
-    />
-    <div
-      class="brick__action-area brick__action-area-bottom"
-    />
-  </span>
-</div>
-`;
-
-exports[`renders ./packages/engine/demo/supply.md correctly 1`] = `
-<div
-  class="brick brick__with-config-form"
->
-  <div
-    class="brick__config-form"
-    style="top:-1px;right:-1px"
-  >
-    <div
-      class="brick__config-form-btn-g1"
-    >
-      <span
-        class="brick__config-form-remove-btn"
-        data-testid="001-remove-btn"
-        title="remove"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 1024 1024"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M292.7 840h438.6l24.2-512h-487z"
-          />
-          <path
-            d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-edit-btn"
-        data-testid="001-edit-btn"
-        title="edit"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 576 512"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-move-btn"
-        title="move"
-      >
-        <svg
-          fill="none"
-          height="1em"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <polyline
-            points="5 9 2 12 5 15"
-          />
-          <polyline
-            points="9 5 12 2 15 5"
-          />
-          <polyline
-            points="15 19 12 22 9 19"
-          />
-          <polyline
-            points="19 9 22 12 19 15"
-          />
-          <line
-            x1="2"
-            x2="22"
-            y1="12"
-            y2="12"
-          />
-          <line
-            x1="12"
-            x2="12"
-            y1="2"
-            y2="22"
-          />
-        </svg>
-      </span>
-    </div>
-  </div>
-  <div
-    class="brick brick__with-config-form"
-  >
-    <div
-      class="brick__config-form"
-      style="top:-1px;right:-1px"
-    >
+        class="brick__action-area brick__action-area-left"
+      />
       <div
-        class="brick__config-form-btn-g1"
-      >
-        <span
-          class="brick__config-form-remove-btn"
-          data-testid="002-remove-btn"
-          title="remove"
-        >
-          <svg
-            fill="currentColor"
-            height="1em"
-            stroke="currentColor"
-            stroke-width="0"
-            viewBox="0 0 1024 1024"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M292.7 840h438.6l24.2-512h-487z"
-            />
-            <path
-              d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
-            />
-          </svg>
-        </span>
-        <span
-          class="brick__config-form-edit-btn"
-          data-testid="002-edit-btn"
-          title="edit"
-        >
-          <svg
-            fill="currentColor"
-            height="1em"
-            stroke="currentColor"
-            stroke-width="0"
-            viewBox="0 0 576 512"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
-            />
-          </svg>
-        </span>
-        <span
-          class="brick__config-form-move-btn"
-          title="move"
-        >
-          <svg
-            fill="none"
-            height="1em"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <polyline
-              points="5 9 2 12 5 15"
-            />
-            <polyline
-              points="9 5 12 2 15 5"
-            />
-            <polyline
-              points="15 19 12 22 9 19"
-            />
-            <polyline
-              points="19 9 22 12 19 15"
-            />
-            <line
-              x1="2"
-              x2="22"
-              y1="12"
-              y2="12"
-            />
-            <line
-              x1="12"
-              x2="12"
-              y1="2"
-              y2="22"
-            />
-          </svg>
-        </span>
-      </div>
-    </div>
+        class="brick__action-area brick__action-area-right"
+      />
+      <div
+        class="brick__action-area brick__action-area-top"
+      />
+      <div
+        class="brick__action-area brick__action-area-bottom"
+      />
+    </span>
     <span
       class="brick brick__with-config-form"
     >
@@ -905,7 +425,7 @@ exports[`renders ./packages/engine/demo/supply.md correctly 1`] = `
           </span>
         </div>
       </div>
-      foo
+      world
       <div
         class="brick__action-area brick__action-area-left"
       />
@@ -919,117 +439,25 @@ exports[`renders ./packages/engine/demo/supply.md correctly 1`] = `
         class="brick__action-area brick__action-area-bottom"
       />
     </span>
-    <div
-      class="brick__action-area brick__action-area-left"
-    />
-    <div
-      class="brick__action-area brick__action-area-right"
-    />
-    <div
-      class="brick__action-area brick__action-area-top"
-    />
-    <div
-      class="brick__action-area brick__action-area-bottom"
-    />
-  </div>
-</div>
+  </div>,
+]
 `;
 
-exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
-<div
-  class="brick brick__with-config-form"
->
+exports[`renders ./packages/engine/demo/custom-render.md correctly 1`] = `
+Array [
   <div
-    class="brick__config-form"
-    style="top:-1px;right:-1px"
+    style="display:flex"
   >
-    <div
-      class="brick__config-form-btn-g1"
-    >
-      <span
-        class="brick__config-form-remove-btn"
-        data-testid="001-remove-btn"
-        title="remove"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 1024 1024"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M292.7 840h438.6l24.2-512h-487z"
-          />
-          <path
-            d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-edit-btn"
-        data-testid="001-edit-btn"
-        title="edit"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 576 512"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-move-btn"
-        title="move"
-      >
-        <svg
-          fill="none"
-          height="1em"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <polyline
-            points="5 9 2 12 5 15"
-          />
-          <polyline
-            points="9 5 12 2 15 5"
-          />
-          <polyline
-            points="15 19 12 22 9 19"
-          />
-          <polyline
-            points="19 9 22 12 19 15"
-          />
-          <line
-            x1="2"
-            x2="22"
-            y1="12"
-            y2="12"
-          />
-          <line
-            x1="12"
-            x2="12"
-            y1="2"
-            y2="22"
-          />
-        </svg>
-      </span>
+    <div>
+      View
     </div>
-  </div>
+    <div>
+      Text
+    </div>
+    <div>
+      ViewWithCustomRender
+    </div>
+  </div>,
   <div
     class="brick brick__with-config-form"
   >
@@ -1042,7 +470,7 @@ exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
       >
         <span
           class="brick__config-form-remove-btn"
-          data-testid="002-remove-btn"
+          data-testid="001-remove-btn"
           title="remove"
         >
           <svg
@@ -1064,7 +492,7 @@ exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
         </span>
         <span
           class="brick__config-form-edit-btn"
-          data-testid="002-edit-btn"
+          data-testid="001-edit-btn"
           title="edit"
         >
           <svg
@@ -1124,6 +552,9 @@ exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
         </span>
       </div>
     </div>
+    <span>
+      foo
+    </span>
     <span
       class="brick brick__with-config-form"
     >
@@ -1136,7 +567,7 @@ exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
         >
           <span
             class="brick__config-form-remove-btn"
-            data-testid="003-remove-btn"
+            data-testid="002-remove-btn"
             title="remove"
           >
             <svg
@@ -1158,7 +589,7 @@ exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
           </span>
           <span
             class="brick__config-form-edit-btn"
-            data-testid="003-edit-btn"
+            data-testid="002-edit-btn"
             title="edit"
           >
             <svg
@@ -1232,117 +663,681 @@ exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
         class="brick__action-area brick__action-area-bottom"
       />
     </span>
+  </div>,
+]
+`;
+
+exports[`renders ./packages/engine/demo/supply.md correctly 1`] = `
+Array [
+  <div
+    style="display:flex"
+  >
+    <div>
+      View
+    </div>
+    <div>
+      Text
+    </div>
+    <div>
+      ViewWithCustomRender
+    </div>
+  </div>,
+  <div
+    class="brick brick__with-config-form"
+  >
     <div
-      class="brick__action-area brick__action-area-left"
-    />
+      class="brick__config-form"
+      style="top:-1px;right:-1px"
+    >
+      <div
+        class="brick__config-form-btn-g1"
+      >
+        <span
+          class="brick__config-form-remove-btn"
+          data-testid="001-remove-btn"
+          title="remove"
+        >
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 1024 1024"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M292.7 840h438.6l24.2-512h-487z"
+            />
+            <path
+              d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
+            />
+          </svg>
+        </span>
+        <span
+          class="brick__config-form-edit-btn"
+          data-testid="001-edit-btn"
+          title="edit"
+        >
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 576 512"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+            />
+          </svg>
+        </span>
+        <span
+          class="brick__config-form-move-btn"
+          title="move"
+        >
+          <svg
+            fill="none"
+            height="1em"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <polyline
+              points="5 9 2 12 5 15"
+            />
+            <polyline
+              points="9 5 12 2 15 5"
+            />
+            <polyline
+              points="15 19 12 22 9 19"
+            />
+            <polyline
+              points="19 9 22 12 19 15"
+            />
+            <line
+              x1="2"
+              x2="22"
+              y1="12"
+              y2="12"
+            />
+            <line
+              x1="12"
+              x2="12"
+              y1="2"
+              y2="22"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
     <div
-      class="brick__action-area brick__action-area-right"
-    />
+      class="brick brick__with-config-form"
+    >
+      <div
+        class="brick__config-form"
+        style="top:-1px;right:-1px"
+      >
+        <div
+          class="brick__config-form-btn-g1"
+        >
+          <span
+            class="brick__config-form-remove-btn"
+            data-testid="002-remove-btn"
+            title="remove"
+          >
+            <svg
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 1024 1024"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M292.7 840h438.6l24.2-512h-487z"
+              />
+              <path
+                d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
+              />
+            </svg>
+          </span>
+          <span
+            class="brick__config-form-edit-btn"
+            data-testid="002-edit-btn"
+            title="edit"
+          >
+            <svg
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 576 512"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+              />
+            </svg>
+          </span>
+          <span
+            class="brick__config-form-move-btn"
+            title="move"
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polyline
+                points="5 9 2 12 5 15"
+              />
+              <polyline
+                points="9 5 12 2 15 5"
+              />
+              <polyline
+                points="15 19 12 22 9 19"
+              />
+              <polyline
+                points="19 9 22 12 19 15"
+              />
+              <line
+                x1="2"
+                x2="22"
+                y1="12"
+                y2="12"
+              />
+              <line
+                x1="12"
+                x2="12"
+                y1="2"
+                y2="22"
+              />
+            </svg>
+          </span>
+        </div>
+      </div>
+      <span
+        class="brick brick__with-config-form"
+      >
+        <div
+          class="brick__config-form"
+          style="top:-1px;right:-1px"
+        >
+          <div
+            class="brick__config-form-btn-g1"
+          >
+            <span
+              class="brick__config-form-remove-btn"
+              data-testid="003-remove-btn"
+              title="remove"
+            >
+              <svg
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 1024 1024"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M292.7 840h438.6l24.2-512h-487z"
+                />
+                <path
+                  d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
+                />
+              </svg>
+            </span>
+            <span
+              class="brick__config-form-edit-btn"
+              data-testid="003-edit-btn"
+              title="edit"
+            >
+              <svg
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 576 512"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+                />
+              </svg>
+            </span>
+            <span
+              class="brick__config-form-move-btn"
+              title="move"
+            >
+              <svg
+                fill="none"
+                height="1em"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <polyline
+                  points="5 9 2 12 5 15"
+                />
+                <polyline
+                  points="9 5 12 2 15 5"
+                />
+                <polyline
+                  points="15 19 12 22 9 19"
+                />
+                <polyline
+                  points="19 9 22 12 19 15"
+                />
+                <line
+                  x1="2"
+                  x2="22"
+                  y1="12"
+                  y2="12"
+                />
+                <line
+                  x1="12"
+                  x2="12"
+                  y1="2"
+                  y2="22"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+        foo
+        <div
+          class="brick__action-area brick__action-area-left"
+        />
+        <div
+          class="brick__action-area brick__action-area-right"
+        />
+        <div
+          class="brick__action-area brick__action-area-top"
+        />
+        <div
+          class="brick__action-area brick__action-area-bottom"
+        />
+      </span>
+      <div
+        class="brick__action-area brick__action-area-left"
+      />
+      <div
+        class="brick__action-area brick__action-area-right"
+      />
+      <div
+        class="brick__action-area brick__action-area-top"
+      />
+      <div
+        class="brick__action-area brick__action-area-bottom"
+      />
+    </div>
+  </div>,
+]
+`;
+
+exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
+Array [
+  <div
+    style="display:flex"
+  >
+    <div>
+      View
+    </div>
+    <div>
+      Text
+    </div>
+    <div>
+      ViewWithCustomRender
+    </div>
+  </div>,
+  <div
+    class="brick brick__with-config-form"
+  >
     <div
-      class="brick__action-area brick__action-area-top"
-    />
+      class="brick__config-form"
+      style="top:-1px;right:-1px"
+    >
+      <div
+        class="brick__config-form-btn-g1"
+      >
+        <span
+          class="brick__config-form-remove-btn"
+          data-testid="001-remove-btn"
+          title="remove"
+        >
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 1024 1024"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M292.7 840h438.6l24.2-512h-487z"
+            />
+            <path
+              d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
+            />
+          </svg>
+        </span>
+        <span
+          class="brick__config-form-edit-btn"
+          data-testid="001-edit-btn"
+          title="edit"
+        >
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 576 512"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+            />
+          </svg>
+        </span>
+        <span
+          class="brick__config-form-move-btn"
+          title="move"
+        >
+          <svg
+            fill="none"
+            height="1em"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <polyline
+              points="5 9 2 12 5 15"
+            />
+            <polyline
+              points="9 5 12 2 15 5"
+            />
+            <polyline
+              points="15 19 12 22 9 19"
+            />
+            <polyline
+              points="19 9 22 12 19 15"
+            />
+            <line
+              x1="2"
+              x2="22"
+              y1="12"
+              y2="12"
+            />
+            <line
+              x1="12"
+              x2="12"
+              y1="2"
+              y2="22"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
     <div
-      class="brick__action-area brick__action-area-bottom"
-    />
-  </div>
-</div>
+      class="brick brick__with-config-form"
+    >
+      <div
+        class="brick__config-form"
+        style="top:-1px;right:-1px"
+      >
+        <div
+          class="brick__config-form-btn-g1"
+        >
+          <span
+            class="brick__config-form-remove-btn"
+            data-testid="002-remove-btn"
+            title="remove"
+          >
+            <svg
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 1024 1024"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M292.7 840h438.6l24.2-512h-487z"
+              />
+              <path
+                d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
+              />
+            </svg>
+          </span>
+          <span
+            class="brick__config-form-edit-btn"
+            data-testid="002-edit-btn"
+            title="edit"
+          >
+            <svg
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 576 512"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+              />
+            </svg>
+          </span>
+          <span
+            class="brick__config-form-move-btn"
+            title="move"
+          >
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polyline
+                points="5 9 2 12 5 15"
+              />
+              <polyline
+                points="9 5 12 2 15 5"
+              />
+              <polyline
+                points="15 19 12 22 9 19"
+              />
+              <polyline
+                points="19 9 22 12 19 15"
+              />
+              <line
+                x1="2"
+                x2="22"
+                y1="12"
+                y2="12"
+              />
+              <line
+                x1="12"
+                x2="12"
+                y1="2"
+                y2="22"
+              />
+            </svg>
+          </span>
+        </div>
+      </div>
+      <span
+        class="brick brick__with-config-form"
+      >
+        <div
+          class="brick__config-form"
+          style="top:-1px;right:-1px"
+        >
+          <div
+            class="brick__config-form-btn-g1"
+          >
+            <span
+              class="brick__config-form-remove-btn"
+              data-testid="003-remove-btn"
+              title="remove"
+            >
+              <svg
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 1024 1024"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M292.7 840h438.6l24.2-512h-487z"
+                />
+                <path
+                  d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
+                />
+              </svg>
+            </span>
+            <span
+              class="brick__config-form-edit-btn"
+              data-testid="003-edit-btn"
+              title="edit"
+            >
+              <svg
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 576 512"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+                />
+              </svg>
+            </span>
+            <span
+              class="brick__config-form-move-btn"
+              title="move"
+            >
+              <svg
+                fill="none"
+                height="1em"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <polyline
+                  points="5 9 2 12 5 15"
+                />
+                <polyline
+                  points="9 5 12 2 15 5"
+                />
+                <polyline
+                  points="15 19 12 22 9 19"
+                />
+                <polyline
+                  points="19 9 22 12 19 15"
+                />
+                <line
+                  x1="2"
+                  x2="22"
+                  y1="12"
+                  y2="12"
+                />
+                <line
+                  x1="12"
+                  x2="12"
+                  y1="2"
+                  y2="22"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+        bar
+        <div
+          class="brick__action-area brick__action-area-left"
+        />
+        <div
+          class="brick__action-area brick__action-area-right"
+        />
+        <div
+          class="brick__action-area brick__action-area-top"
+        />
+        <div
+          class="brick__action-area brick__action-area-bottom"
+        />
+      </span>
+      <div
+        class="brick__action-area brick__action-area-left"
+      />
+      <div
+        class="brick__action-area brick__action-area-right"
+      />
+      <div
+        class="brick__action-area brick__action-area-top"
+      />
+      <div
+        class="brick__action-area brick__action-area-bottom"
+      />
+    </div>
+  </div>,
+]
 `;
 
 exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
-<div
-  class="brick brick__with-config-form"
->
+Array [
   <div
-    class="brick__config-form"
-    style="top:-1px;right:-1px"
+    style="display:flex"
   >
-    <div
-      class="brick__config-form-btn-g1"
-    >
-      <span
-        class="brick__config-form-remove-btn"
-        data-testid="001-remove-btn"
-        title="remove"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 1024 1024"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M292.7 840h438.6l24.2-512h-487z"
-          />
-          <path
-            d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-edit-btn"
-        data-testid="001-edit-btn"
-        title="edit"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 576 512"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-move-btn"
-        title="move"
-      >
-        <svg
-          fill="none"
-          height="1em"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <polyline
-            points="5 9 2 12 5 15"
-          />
-          <polyline
-            points="9 5 12 2 15 5"
-          />
-          <polyline
-            points="15 19 12 22 9 19"
-          />
-          <polyline
-            points="19 9 22 12 19 15"
-          />
-          <line
-            x1="2"
-            x2="22"
-            y1="12"
-            y2="12"
-          />
-          <line
-            x1="12"
-            x2="12"
-            y1="2"
-            y2="22"
-          />
-        </svg>
-      </span>
+    <div>
+      View
     </div>
-  </div>
+    <div>
+      Text
+    </div>
+    <div>
+      ViewWithCustomRender
+    </div>
+  </div>,
   <div
     class="brick brick__with-config-form"
   >
@@ -1355,7 +1350,7 @@ exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
       >
         <span
           class="brick__config-form-remove-btn"
-          data-testid="002-remove-btn"
+          data-testid="001-remove-btn"
           title="remove"
         >
           <svg
@@ -1377,7 +1372,7 @@ exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
         </span>
         <span
           class="brick__config-form-edit-btn"
-          data-testid="002-edit-btn"
+          data-testid="001-edit-btn"
           title="edit"
         >
           <svg
@@ -1437,7 +1432,7 @@ exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
         </span>
       </div>
     </div>
-    <span
+    <div
       class="brick brick__with-config-form"
     >
       <div
@@ -1449,7 +1444,7 @@ exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
         >
           <span
             class="brick__config-form-remove-btn"
-            data-testid="003-remove-btn"
+            data-testid="002-remove-btn"
             title="remove"
           >
             <svg
@@ -1471,7 +1466,7 @@ exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
           </span>
           <span
             class="brick__config-form-edit-btn"
-            data-testid="003-edit-btn"
+            data-testid="002-edit-btn"
             title="edit"
           >
             <svg
@@ -1531,7 +1526,114 @@ exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
           </span>
         </div>
       </div>
-      foo
+      <span
+        class="brick brick__with-config-form"
+      >
+        <div
+          class="brick__config-form"
+          style="top:-1px;right:-1px"
+        >
+          <div
+            class="brick__config-form-btn-g1"
+          >
+            <span
+              class="brick__config-form-remove-btn"
+              data-testid="003-remove-btn"
+              title="remove"
+            >
+              <svg
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 1024 1024"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M292.7 840h438.6l24.2-512h-487z"
+                />
+                <path
+                  d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
+                />
+              </svg>
+            </span>
+            <span
+              class="brick__config-form-edit-btn"
+              data-testid="003-edit-btn"
+              title="edit"
+            >
+              <svg
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 576 512"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+                />
+              </svg>
+            </span>
+            <span
+              class="brick__config-form-move-btn"
+              title="move"
+            >
+              <svg
+                fill="none"
+                height="1em"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <polyline
+                  points="5 9 2 12 5 15"
+                />
+                <polyline
+                  points="9 5 12 2 15 5"
+                />
+                <polyline
+                  points="15 19 12 22 9 19"
+                />
+                <polyline
+                  points="19 9 22 12 19 15"
+                />
+                <line
+                  x1="2"
+                  x2="22"
+                  y1="12"
+                  y2="12"
+                />
+                <line
+                  x1="12"
+                  x2="12"
+                  y1="2"
+                  y2="22"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+        foo
+        <div
+          class="brick__action-area brick__action-area-left"
+        />
+        <div
+          class="brick__action-area brick__action-area-right"
+        />
+        <div
+          class="brick__action-area brick__action-area-top"
+        />
+        <div
+          class="brick__action-area brick__action-area-bottom"
+        />
+      </span>
       <div
         class="brick__action-area brick__action-area-left"
       />
@@ -1544,121 +1646,29 @@ exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
       <div
         class="brick__action-area brick__action-area-bottom"
       />
-    </span>
-    <div
-      class="brick__action-area brick__action-area-left"
-    />
-    <div
-      class="brick__action-area brick__action-area-right"
-    />
-    <div
-      class="brick__action-area brick__action-area-top"
-    />
-    <div
-      class="brick__action-area brick__action-area-bottom"
-    />
-  </div>
-</div>
+    </div>
+  </div>,
+]
 `;
 
 exports[`renders ./packages/engine/demo/supply-with-style.md correctly 1`] = `
-<div
-  class="brick brick__with-config-form"
-  style="color:red"
->
+Array [
   <div
-    class="brick__config-form"
-    style="top:-1px;right:-1px"
+    style="display:flex"
   >
-    <div
-      class="brick__config-form-btn-g1"
-    >
-      <span
-        class="brick__config-form-remove-btn"
-        data-testid="001-remove-btn"
-        title="remove"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 1024 1024"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M292.7 840h438.6l24.2-512h-487z"
-          />
-          <path
-            d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-edit-btn"
-        data-testid="001-edit-btn"
-        title="edit"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 576 512"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-move-btn"
-        title="move"
-      >
-        <svg
-          fill="none"
-          height="1em"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <polyline
-            points="5 9 2 12 5 15"
-          />
-          <polyline
-            points="9 5 12 2 15 5"
-          />
-          <polyline
-            points="15 19 12 22 9 19"
-          />
-          <polyline
-            points="19 9 22 12 19 15"
-          />
-          <line
-            x1="2"
-            x2="22"
-            y1="12"
-            y2="12"
-          />
-          <line
-            x1="12"
-            x2="12"
-            y1="2"
-            y2="22"
-          />
-        </svg>
-      </span>
+    <div>
+      View
     </div>
-  </div>
+    <div>
+      Text
+    </div>
+    <div>
+      ViewWithCustomRender
+    </div>
+  </div>,
   <div
     class="brick brick__with-config-form"
+    style="color:red"
   >
     <div
       class="brick__config-form"
@@ -1669,7 +1679,7 @@ exports[`renders ./packages/engine/demo/supply-with-style.md correctly 1`] = `
       >
         <span
           class="brick__config-form-remove-btn"
-          data-testid="002-remove-btn"
+          data-testid="001-remove-btn"
           title="remove"
         >
           <svg
@@ -1691,7 +1701,7 @@ exports[`renders ./packages/engine/demo/supply-with-style.md correctly 1`] = `
         </span>
         <span
           class="brick__config-form-edit-btn"
-          data-testid="002-edit-btn"
+          data-testid="001-edit-btn"
           title="edit"
         >
           <svg
@@ -1751,7 +1761,7 @@ exports[`renders ./packages/engine/demo/supply-with-style.md correctly 1`] = `
         </span>
       </div>
     </div>
-    <span
+    <div
       class="brick brick__with-config-form"
     >
       <div
@@ -1763,7 +1773,7 @@ exports[`renders ./packages/engine/demo/supply-with-style.md correctly 1`] = `
         >
           <span
             class="brick__config-form-remove-btn"
-            data-testid="003-remove-btn"
+            data-testid="002-remove-btn"
             title="remove"
           >
             <svg
@@ -1785,7 +1795,7 @@ exports[`renders ./packages/engine/demo/supply-with-style.md correctly 1`] = `
           </span>
           <span
             class="brick__config-form-edit-btn"
-            data-testid="003-edit-btn"
+            data-testid="002-edit-btn"
             title="edit"
           >
             <svg
@@ -1845,7 +1855,114 @@ exports[`renders ./packages/engine/demo/supply-with-style.md correctly 1`] = `
           </span>
         </div>
       </div>
-      foo
+      <span
+        class="brick brick__with-config-form"
+      >
+        <div
+          class="brick__config-form"
+          style="top:-1px;right:-1px"
+        >
+          <div
+            class="brick__config-form-btn-g1"
+          >
+            <span
+              class="brick__config-form-remove-btn"
+              data-testid="003-remove-btn"
+              title="remove"
+            >
+              <svg
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 1024 1024"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M292.7 840h438.6l24.2-512h-487z"
+                />
+                <path
+                  d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
+                />
+              </svg>
+            </span>
+            <span
+              class="brick__config-form-edit-btn"
+              data-testid="003-edit-btn"
+              title="edit"
+            >
+              <svg
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 576 512"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+                />
+              </svg>
+            </span>
+            <span
+              class="brick__config-form-move-btn"
+              title="move"
+            >
+              <svg
+                fill="none"
+                height="1em"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <polyline
+                  points="5 9 2 12 5 15"
+                />
+                <polyline
+                  points="9 5 12 2 15 5"
+                />
+                <polyline
+                  points="15 19 12 22 9 19"
+                />
+                <polyline
+                  points="19 9 22 12 19 15"
+                />
+                <line
+                  x1="2"
+                  x2="22"
+                  y1="12"
+                  y2="12"
+                />
+                <line
+                  x1="12"
+                  x2="12"
+                  y1="2"
+                  y2="22"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+        foo
+        <div
+          class="brick__action-area brick__action-area-left"
+        />
+        <div
+          class="brick__action-area brick__action-area-right"
+        />
+        <div
+          class="brick__action-area brick__action-area-top"
+        />
+        <div
+          class="brick__action-area brick__action-area-bottom"
+        />
+      </span>
       <div
         class="brick__action-area brick__action-area-left"
       />
@@ -1858,118 +1975,26 @@ exports[`renders ./packages/engine/demo/supply-with-style.md correctly 1`] = `
       <div
         class="brick__action-area brick__action-area-bottom"
       />
-    </span>
-    <div
-      class="brick__action-area brick__action-area-left"
-    />
-    <div
-      class="brick__action-area brick__action-area-right"
-    />
-    <div
-      class="brick__action-area brick__action-area-top"
-    />
-    <div
-      class="brick__action-area brick__action-area-bottom"
-    />
-  </div>
-</div>
+    </div>
+  </div>,
+]
 `;
 
 exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
-<div
-  class="brick brick__with-config-form"
->
+Array [
   <div
-    class="brick__config-form"
-    style="top:-1px;right:-1px"
+    style="display:flex"
   >
-    <div
-      class="brick__config-form-btn-g1"
-    >
-      <span
-        class="brick__config-form-remove-btn"
-        data-testid="001-remove-btn"
-        title="remove"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 1024 1024"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M292.7 840h438.6l24.2-512h-487z"
-          />
-          <path
-            d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-edit-btn"
-        data-testid="001-edit-btn"
-        title="edit"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 576 512"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
-          />
-        </svg>
-      </span>
-      <span
-        class="brick__config-form-move-btn"
-        title="move"
-      >
-        <svg
-          fill="none"
-          height="1em"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <polyline
-            points="5 9 2 12 5 15"
-          />
-          <polyline
-            points="9 5 12 2 15 5"
-          />
-          <polyline
-            points="15 19 12 22 9 19"
-          />
-          <polyline
-            points="19 9 22 12 19 15"
-          />
-          <line
-            x1="2"
-            x2="22"
-            y1="12"
-            y2="12"
-          />
-          <line
-            x1="12"
-            x2="12"
-            y1="2"
-            y2="22"
-          />
-        </svg>
-      </span>
+    <div>
+      View
     </div>
-  </div>
+    <div>
+      Text
+    </div>
+    <div>
+      ViewWithCustomRender
+    </div>
+  </div>,
   <div
     class="brick brick__with-config-form"
   >
@@ -1982,7 +2007,7 @@ exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
       >
         <span
           class="brick__config-form-remove-btn"
-          data-testid="002-remove-btn"
+          data-testid="001-remove-btn"
           title="remove"
         >
           <svg
@@ -2004,7 +2029,7 @@ exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
         </span>
         <span
           class="brick__config-form-edit-btn"
-          data-testid="002-edit-btn"
+          data-testid="001-edit-btn"
           title="edit"
         >
           <svg
@@ -2064,7 +2089,7 @@ exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
         </span>
       </div>
     </div>
-    <span
+    <div
       class="brick brick__with-config-form"
     >
       <div
@@ -2076,7 +2101,7 @@ exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
         >
           <span
             class="brick__config-form-remove-btn"
-            data-testid="003-remove-btn"
+            data-testid="002-remove-btn"
             title="remove"
           >
             <svg
@@ -2098,7 +2123,7 @@ exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
           </span>
           <span
             class="brick__config-form-edit-btn"
-            data-testid="003-edit-btn"
+            data-testid="002-edit-btn"
             title="edit"
           >
             <svg
@@ -2158,7 +2183,114 @@ exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
           </span>
         </div>
       </div>
-      baz
+      <span
+        class="brick brick__with-config-form"
+      >
+        <div
+          class="brick__config-form"
+          style="top:-1px;right:-1px"
+        >
+          <div
+            class="brick__config-form-btn-g1"
+          >
+            <span
+              class="brick__config-form-remove-btn"
+              data-testid="003-remove-btn"
+              title="remove"
+            >
+              <svg
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 1024 1024"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M292.7 840h438.6l24.2-512h-487z"
+                />
+                <path
+                  d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-504-72h304v72H360v-72zm371.3 656H292.7l-24.2-512h487l-24.2 512z"
+                />
+              </svg>
+            </span>
+            <span
+              class="brick__config-form-edit-btn"
+              data-testid="003-edit-btn"
+              title="edit"
+            >
+              <svg
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 576 512"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"
+                />
+              </svg>
+            </span>
+            <span
+              class="brick__config-form-move-btn"
+              title="move"
+            >
+              <svg
+                fill="none"
+                height="1em"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <polyline
+                  points="5 9 2 12 5 15"
+                />
+                <polyline
+                  points="9 5 12 2 15 5"
+                />
+                <polyline
+                  points="15 19 12 22 9 19"
+                />
+                <polyline
+                  points="19 9 22 12 19 15"
+                />
+                <line
+                  x1="2"
+                  x2="22"
+                  y1="12"
+                  y2="12"
+                />
+                <line
+                  x1="12"
+                  x2="12"
+                  y1="2"
+                  y2="22"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+        baz
+        <div
+          class="brick__action-area brick__action-area-left"
+        />
+        <div
+          class="brick__action-area brick__action-area-right"
+        />
+        <div
+          class="brick__action-area brick__action-area-top"
+        />
+        <div
+          class="brick__action-area brick__action-area-bottom"
+        />
+      </span>
       <div
         class="brick__action-area brick__action-area-left"
       />
@@ -2171,19 +2303,7 @@ exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
       <div
         class="brick__action-area brick__action-area-bottom"
       />
-    </span>
-    <div
-      class="brick__action-area brick__action-area-left"
-    />
-    <div
-      class="brick__action-area brick__action-area-right"
-    />
-    <div
-      class="brick__action-area brick__action-area-top"
-    />
-    <div
-      class="brick__action-area brick__action-area-bottom"
-    />
-  </div>
-</div>
+    </div>
+  </div>,
+]
 `;

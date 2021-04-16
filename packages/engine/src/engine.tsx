@@ -11,6 +11,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import { DataType } from './data/data-type'
 import ErrorBoundary from './error-boundary'
 import { BackendFactory } from 'dnd-core'
+import BrickMenu from './brick-menu'
 
 const ee = new EventEmitter()
 
@@ -26,6 +27,7 @@ export interface EngineProps {
   previewMode?: boolean
   autoCommitMode?: boolean
   dndBackend?: BackendFactory
+  getMenuContainer?: () => Element
 }
 
 interface EngineState {
@@ -213,31 +215,34 @@ class Engine extends React.Component<EngineProps, EngineState> {
       this._isInTransaction = true
     }
     return (
-      <EnginxContext.Provider
-        value={{
-          renderConfigurationForm: this._renderConfigurationForm,
-          bricks: Engine.bricks,
-          dataTypes: Engine.dataTypes,
-          ee,
-          previewMode: !!this.props.previewMode,
-          transactionBegin: this._transactionBegin,
-          transactionCommit: this._transactionCommit,
-          transactionRollback: this._transactionRollback,
-          autoCommit: !!this.props.autoCommitMode,
-        }}>
-        <DndProvider backend={this._dndBackend} key="dnd-provider">
-          {this.state.blueprint && (
-            <ErrorBoundary key={this.state.blueprint._key}>
-              <BrickRenderer
-                isRoot
-                context={{ data: {}, actions: { $global: {} } }}
-                blueprint={this.state.blueprint}
-                setBlueprint={this._handleSetBlueprint}
-              />
-            </ErrorBoundary>
-          )}
-        </DndProvider>
-      </EnginxContext.Provider>
+      <>
+        <EnginxContext.Provider
+          value={{
+            renderConfigurationForm: this._renderConfigurationForm,
+            bricks: Engine.bricks,
+            dataTypes: Engine.dataTypes,
+            ee,
+            previewMode: !!this.props.previewMode,
+            transactionBegin: this._transactionBegin,
+            transactionCommit: this._transactionCommit,
+            transactionRollback: this._transactionRollback,
+            autoCommit: !!this.props.autoCommitMode,
+          }}>
+          <DndProvider backend={this._dndBackend} key="dnd-provider">
+            <BrickMenu getContainer={this.props.getMenuContainer} bricks={Object.values(Engine.bricks)} />
+            {this.state.blueprint && (
+              <ErrorBoundary key={this.state.blueprint._key}>
+                <BrickRenderer
+                  isRoot
+                  context={{ data: {}, actions: { $global: {} } }}
+                  blueprint={this.state.blueprint}
+                  setBlueprint={this._handleSetBlueprint}
+                />
+              </ErrorBoundary>
+            )}
+          </DndProvider>
+        </EnginxContext.Provider>
+      </>
     )
   }
 }

@@ -30,6 +30,7 @@
     "eventemitter3": "^4.0.7",
     "lodash": "^4.17.20",
     "monaco-editor": "^0.23.0",
+    "nanoid": "^3.1.22",
     "react-dnd": "^13.1.1",
     "react-dnd-html5-backend": "^12.1.1",
     "react-icons": "^4.2.0"

@@ -13,12 +13,12 @@ export interface Render {
 
 export interface Brick {
   name: string
-  icon?: string
   dataTypes: Record<string, string | DataTypeDefinition>
   eventNames?: string[] // events triggered by brick
   defaultHandlers?: Record<string, string> // handler for event
   childrenType: ChildrenType
   render: Render
+  renderMenu?: () => React.ReactElement
   canCustomizeRender?: boolean
   version: string
 }
