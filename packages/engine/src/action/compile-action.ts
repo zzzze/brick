@@ -16,12 +16,14 @@ function checkFnIsAction(fn: string | Action): fn is () => Action {
  *    function, "c => (a, b) => a + b + c", will be compile to function, "(a, b) => a + b + c".
  */
 export default function compileAction(fn: Func): Action {
-  return (...args: unknown[]) => {
-    let action: Action = () => {} // eslint-disable-line prefer-const, @typescript-eslint/no-empty-function
+  let fnStr = ''
+  const action = (...args: unknown[]) => {
+    let _action: Action = () => {} // eslint-disable-line prefer-const, @typescript-eslint/no-empty-function
     if (checkFnIsAction(fn)) {
-      action = fn()
+      _action = fn()
     } else {
-      fn = `action = ${fn}`
+      fnStr = fn
+      fn = `_action = ${fn}`
       fn =
         transform(fn, {
           filename: 'action.ts',
@@ -29,6 +31,10 @@ export default function compileAction(fn: Func): Action {
         }).code || ''
       eval(fn)
     }
-    return action(...args)
+    return _action(...args)
   }
+  if (fnStr) {
+    action.__source = fnStr
+  }
+  return action
 }

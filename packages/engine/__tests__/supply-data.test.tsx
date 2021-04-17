@@ -58,6 +58,7 @@ describe('supply data', () => {
           version: '0.0.1',
         },
       ],
+      handlers: {},
       supply: {
         data: {
           baz: '123',

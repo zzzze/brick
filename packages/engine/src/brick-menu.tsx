@@ -23,7 +23,7 @@ const BrickMenu: FC<BrickMenuProps> = (props: BrickMenuProps) => {
   if (container) {
     return ReactDOM.createPortal(items, container)
   }
-  return <div style={{ display: 'flex' }}>{items}</div>
+  return <div style={{ display: 'flex', margin: 10 }}>{items}</div>
 }
 
 export default BrickMenu

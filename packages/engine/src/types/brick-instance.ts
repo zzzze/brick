@@ -17,6 +17,7 @@ export interface BrickContext {
 
 export interface Action {
   (...args: unknown[]): void
+  __source?: string
   binded?: boolean
   instance_key?: string
 }

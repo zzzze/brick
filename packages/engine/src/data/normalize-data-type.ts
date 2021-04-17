@@ -5,7 +5,7 @@ export interface DataTypeDefinition<T = unknown> extends Omit<DataType<T>, 'isVa
   formItem?: () => ReactElement
 }
 
-function checkTypeIsString(dataType: string | DataTypeDefinition): dataType is string {
+export function checkTypeIsString(dataType: string | DataTypeDefinition): dataType is string {
   return typeof dataType === 'string'
 }
 

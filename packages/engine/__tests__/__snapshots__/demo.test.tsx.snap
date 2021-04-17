@@ -3,15 +3,21 @@
 exports[`renders ./packages/engine/demo/basic.md correctly 1`] = `
 Array [
   <div
-    style="display:flex"
+    style="display:flex;margin:10px"
   >
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       View
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       Text
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       ViewWithCustomRender
     </div>
   </div>,
@@ -117,15 +123,21 @@ Array [
 exports[`renders ./packages/engine/demo/children.md correctly 1`] = `
 Array [
   <div
-    style="display:flex"
+    style="display:flex;margin:10px"
   >
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       View
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       Text
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       ViewWithCustomRender
     </div>
   </div>,
@@ -446,15 +458,21 @@ Array [
 exports[`renders ./packages/engine/demo/custom-render.md correctly 1`] = `
 Array [
   <div
-    style="display:flex"
+    style="display:flex;margin:10px"
   >
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       View
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       Text
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       ViewWithCustomRender
     </div>
   </div>,
@@ -670,15 +688,21 @@ Array [
 exports[`renders ./packages/engine/demo/supply.md correctly 1`] = `
 Array [
   <div
-    style="display:flex"
+    style="display:flex;margin:10px"
   >
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       View
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       Text
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       ViewWithCustomRender
     </div>
   </div>,
@@ -998,15 +1022,21 @@ Array [
 exports[`renders ./packages/engine/demo/supply-from-data.md correctly 1`] = `
 Array [
   <div
-    style="display:flex"
+    style="display:flex;margin:10px"
   >
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       View
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       Text
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       ViewWithCustomRender
     </div>
   </div>,
@@ -1326,15 +1356,21 @@ Array [
 exports[`renders ./packages/engine/demo/supply-with-id.md correctly 1`] = `
 Array [
   <div
-    style="display:flex"
+    style="display:flex;margin:10px"
   >
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       View
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       Text
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       ViewWithCustomRender
     </div>
   </div>,
@@ -1654,21 +1690,26 @@ Array [
 exports[`renders ./packages/engine/demo/supply-with-style.md correctly 1`] = `
 Array [
   <div
-    style="display:flex"
+    style="display:flex;margin:10px"
   >
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       View
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       Text
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       ViewWithCustomRender
     </div>
   </div>,
   <div
     class="brick brick__with-config-form"
-    style="color:red"
   >
     <div
       class="brick__config-form"
@@ -1983,15 +2024,21 @@ Array [
 exports[`renders ./packages/engine/demo/supply-without-id.md correctly 1`] = `
 Array [
   <div
-    style="display:flex"
+    style="display:flex;margin:10px"
   >
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       View
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       Text
     </div>
-    <div>
+    <div
+      style="display:inline-block;margin-right:10px;border:solid 1px #ccc;border-radius:5px;padding:5px 10px;cursor:move"
+    >
       ViewWithCustomRender
     </div>
   </div>,

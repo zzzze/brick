@@ -9,7 +9,11 @@ export interface Supply {
   actions?: Record<string, string>
 }
 
-export type CustomRender = string | (() => Render)
+export interface CustomRenderFn {
+  (): Render
+}
+
+export type CustomRender = string | CustomRenderFn
 
 export interface Blueprint {
   _key: string

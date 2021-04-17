@@ -86,6 +86,7 @@ describe('Engine', () => {
           name: 'Text',
           _key: '002',
           actions: {},
+          handlers: {},
           supply: {
             actions: {},
             data: {},
@@ -140,6 +141,7 @@ describe('Engine', () => {
           name: 'Text',
           _key: '002',
           actions: {},
+          handlers: {},
           supply: {
             data: {},
             actions: {},
@@ -202,6 +204,7 @@ describe('Engine', () => {
           version: '0.0.1',
         },
       ],
+      handlers: {},
       actions: {
         handleClick: 'function(){}',
       },

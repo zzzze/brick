@@ -32,6 +32,12 @@ const defaultFormItems: Record<string, DataTypeDefinition> = {
     label: 'Actions',
     fieldTypes: [InputType.CODE, InputType.STRING],
   },
+  handlers: {
+    type: 'object',
+    default: {},
+    label: 'Handlers',
+    fieldTypes: [InputType.CODE, InputType.STRING],
+  },
   'supply.data': {
     type: 'object',
     default: {},
@@ -92,12 +98,21 @@ const ConfigurationForm = ({
     return normalizeDataType(engineCtx.dataTypes, brick.dataTypes)
   }, [engineCtx.dataTypes, brick.dataTypes])
   const handleClick = useCallback(() => {
-    const newBrick = clusterBrick(engineCtx.bricks, blueprint)
+    const newBrick = clusterBrick(blueprint)
+    const r = window.prompt("Please enter new brick name")
+    if (r) {
+      newBrick.name = r
+    }
     engineCtx.registerBrick(newBrick)
   }, [brick])
+  const hasChildren = useMemo(() => {
+    return Array.isArray(blueprint.children) && !!blueprint.children.length
+  }, [blueprint])
   return (
     <>
-      <button onClick={handleClick}>click</button>
+      {hasChildren && (
+        <button onClick={handleClick} style={{marginBottom: 10}}>Cluster</button>
+      )}
       <ConfigurationFormContext.Provider
         value={{
           data: { ...blueprint } as Record<string, unknown>,

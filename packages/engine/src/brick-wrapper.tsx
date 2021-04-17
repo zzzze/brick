@@ -17,10 +17,6 @@ function isTypeString(obj: unknown): obj is string {
   return typeof obj === 'string'
 }
 
-function isObject(obj: unknown): obj is Record<string, unknown> {
-  return typeof obj === 'object'
-}
-
 const blockLevelElement = [
   'address',
   'article',
@@ -414,24 +410,6 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         ]
       : []
   }, [props.isRoot])
-  const style = useMemo(() => {
-    let style: Record<string, unknown> = {}
-    let styleOverride: Record<string, unknown> = {}
-    if (props.blueprint.data && isObject(props.blueprint.data.style)) {
-      style = props.blueprint.data.style
-    } else {
-      style = {}
-    }
-    if (props.blueprint.data && isObject(props.blueprint.data.styleOverride)) {
-      styleOverride = props.blueprint.data.styleOverride
-    } else {
-      styleOverride = {}
-    }
-    return {
-      ...style,
-      ...styleOverride,
-    }
-  }, [props.blueprint.data?.style, props.blueprint.data?.styleOverride])
   if (isTypeString(child.type) && isVoidElement) {
     let Tag: 'span' | 'div' = 'span'
     if (blockLevelElement.includes(child.type)) {
@@ -442,9 +420,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         ref={brickContainer as RefObject<HTMLDivElement>}
         style={(props.blueprint.data?.wrapperStyle as React.CSSProperties) ?? {}}
         className={className}>
-        {cloneElement<IBrickContainer>(child, {
-          style,
-        })}
+        {cloneElement<IBrickContainer>(child)}
         {configurationForm}
         {actionArea}
       </Tag>
@@ -455,7 +431,6 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     {
       ref: brickContainer,
       className: clx(child.props.className, className),
-      style,
     },
     configurationForm,
     ...Children.toArray(child.props.children),

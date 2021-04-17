@@ -1,16 +1,22 @@
 import { CustomRender, Render, BrickInstance } from './types'
 import { transform } from '@babel/standalone'
 
+function customRenderIsString(fn: CustomRender): fn is string {
+  return typeof fn === 'string'
+}
+
 export default function compileCustomRender(fn: CustomRender): Render {
-  return (args: BrickInstance) => {
+  let fnStr = ''
+  const render: Render = (args: BrickInstance) => {
     const React: unknown = require('react') // eslint-disable-line @typescript-eslint/no-var-requires
     void React // cheak on compiler
-    let render: Render = function () {} as any // eslint-disable-line
-    if (typeof fn === 'function') {
-      render = fn()
+    let _render: Render = function () {} as any // eslint-disable-line
+    if (!customRenderIsString(fn)) {
+      _render = fn()
     } else {
-      if (!fn.startsWith('render =')) {
-        fn = `render = ${fn}`
+      fnStr = fn
+      if (!fn.startsWith('_render =')) {
+        fn = `_render = ${fn}`
       }
       try {
         fn =
@@ -20,9 +26,13 @@ export default function compileCustomRender(fn: CustomRender): Render {
           }).code || ''
         eval(fn)
       } catch (err) {
-        render = () => <pre key="error">Error: {String(err)}</pre>
+        _render = () => <pre key="error">Error: {String(err)}</pre>
       }
     }
-    return render(args)
+    return _render(args)
   }
+  if (fnStr) {
+    render.__source = fnStr
+  }
+  return render
 }

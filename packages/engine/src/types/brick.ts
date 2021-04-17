@@ -1,5 +1,6 @@
 import { DataTypeDefinition } from '@/data/normalize-data-type'
-import { BrickInstance } from './brick-instance'
+import {CustomRender} from './blueprint'
+import { BrickInstance, DataObject } from './brick-instance'
 
 export enum ChildrenType {
   SINGLE = 'single',
@@ -9,11 +10,18 @@ export enum ChildrenType {
 
 export interface Render {
   (args: BrickInstance): React.ReactElement
+  __source?: string
 }
 
 export interface BrickGroupMap {
   name: string
+  data?: DataObject
+  render?: CustomRender
   children?: BrickGroupMap[]
+}
+
+export function isBrickGroup(brick: Brick): brick is BrickGroup {
+  return typeof (brick as BrickGroup).map === 'object'
 }
 
 export interface Brick {
