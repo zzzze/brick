@@ -387,7 +387,6 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       isVoidElement={isVoidElement}
     />,
     {
-      ee: context.ee,
       connectDragSource: drag,
       removeItem: onRemove,
       blueprint: props.blueprint,

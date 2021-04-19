@@ -1,18 +1,17 @@
 import { Brick, Blueprint } from './types'
-import React from 'react'
+import React, { ReactElement, ReactPortal } from 'react'
 import EventEmitter from 'eventemitter3'
 import { ConnectDragSource } from 'react-dnd'
 import { DataType } from './data/data-type'
 
 export interface RenderConfigurationFormOptions {
-  ee: EventEmitter
   connectDragSource: ConnectDragSource
   removeItem: () => void
   blueprint: Blueprint
 }
 
 export interface RenderConfigurationForm {
-  (node: JSX.Element, options: RenderConfigurationFormOptions): JSX.Element | null
+  (node: JSX.Element, options: RenderConfigurationFormOptions): ReactElement | ReactPortal | null
 }
 
 interface ContextType {
@@ -26,6 +25,8 @@ interface ContextType {
   transactionRollback: () => void
   autoCommit: boolean
   registerBrick: (brick: Brick) => void
+  selectInstance: (key: string | null) => void
+  selectedInstance: string | null
 }
 
 const EnginxContext = React.createContext<ContextType>({
@@ -39,6 +40,8 @@ const EnginxContext = React.createContext<ContextType>({
   transactionRollback: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   autoCommit: false,
   registerBrick: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  selectInstance: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  selectedInstance: null,
 })
 
 export default EnginxContext

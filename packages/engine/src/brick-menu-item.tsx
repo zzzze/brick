@@ -3,7 +3,7 @@ import { useDrag } from 'react-dnd'
 import { ITEM_TYPE } from './brick-wrapper'
 import { Brick, BrickGroup, isBrickGroup } from './types'
 import { nanoid } from 'nanoid'
-import {compactBrick} from './cluster-brick'
+import { compactBrick } from './cluster-brick'
 import EnginxContext from './context'
 
 const menuStyle: CSSProperties = {
@@ -74,7 +74,11 @@ const BrickMenuItem: FC<BrickMenuItemProps> = (props: BrickMenuItemProps) => {
       style: menuStyle,
     })
   }
-  return <div style={menuStyle} ref={drag}>{props.brick.name}</div>
+  return (
+    <div style={menuStyle} ref={drag}>
+      {props.brick.name}
+    </div>
+  )
 }
 
 export { BrickMenuItem }

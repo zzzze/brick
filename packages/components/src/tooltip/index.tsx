@@ -56,7 +56,10 @@ const Tooltip: FC<TooltipProps> = (props: TooltipProps) => {
     }
     return props.getOverlayContainer()
   }, [props.getOverlayContainer])
-  const tooltip: Element = useMemo(() => {
+  const tooltip: Element | null = useMemo(() => {
+    if (!container) {
+      return null
+    }
     let element = container.getElementsByClassName(name)?.[0]
     if (!element) {
       element = document.createElement('div') as HTMLElement
@@ -64,8 +67,11 @@ const Tooltip: FC<TooltipProps> = (props: TooltipProps) => {
       container.appendChild(element)
     }
     return element
-  }, [])
+  }, [container])
   const overlay = useMemo(() => {
+    if (!tooltip) {
+      return null
+    }
     const rect = ref.current?.getBoundingClientRect() || { width: 0, height: 0 }
     const offset = offsetFromContainer(ref.current, container)
     const style: React.CSSProperties = {

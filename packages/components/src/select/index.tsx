@@ -102,6 +102,9 @@ function Select<T>(props: SelectProps<T>): ReactElement {
   }, [])
   useEffect(() => {
     return () => {
+      if (!container) {
+        return
+      }
       const element = container.getElementsByClassName(`${optionMenuContainerName}-${optionMenuId}`)?.[0]
       if (element) {
         container.removeChild(element)
@@ -109,7 +112,10 @@ function Select<T>(props: SelectProps<T>): ReactElement {
     }
   }, [container])
 
-  const overlayContainer: Element = useMemo(() => {
+  const overlayContainer: Element | null = useMemo(() => {
+    if (!container) {
+      return null
+    }
     let element = container.getElementsByClassName(`${optionMenuContainerName}-${optionMenuId}`)?.[0]
     if (!element) {
       element = document.createElement('div') as HTMLElement
@@ -147,6 +153,9 @@ function Select<T>(props: SelectProps<T>): ReactElement {
     props.onChange && props.onChange(value)
   }, [])
   const overlay = useMemo(() => {
+    if (!overlayContainer) {
+      return null
+    }
     const rect = ref.current?.getBoundingClientRect() || { width: 0, height: 0 }
     const offset = offsetFromContainer(ref.current, container)
     const style: React.CSSProperties = {

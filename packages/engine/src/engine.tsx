@@ -32,6 +32,7 @@ export interface EngineProps {
 
 interface EngineState {
   blueprint: Blueprint | null
+  selectedInstance: string | null
 }
 
 /**
@@ -63,6 +64,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
   constructor(props: EngineProps) {
     super(props)
     this.state = {
+      ...this.state,
       blueprint: props.blueprint,
     }
     this._renderConfigurationForm = props.renderConfigurationForm || renderConfigurationForm
@@ -73,6 +75,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
    */
   state: EngineState = {
     blueprint: null,
+    selectedInstance: null,
   }
 
   /**
@@ -210,6 +213,11 @@ class Engine extends React.Component<EngineProps, EngineState> {
     this._undeOrRedo(event.shiftKey)
     return false
   }
+  private _selectInstance = (key: string | null): void => {
+    this.setState({
+      selectedInstance: key,
+    })
+  }
 
   /**
    * render
@@ -232,6 +240,8 @@ class Engine extends React.Component<EngineProps, EngineState> {
             transactionRollback: this._transactionRollback,
             autoCommit: !!this.props.autoCommitMode,
             registerBrick: this._registerBrick,
+            selectInstance: this._selectInstance,
+            selectedInstance: this.state.selectedInstance,
           }}>
           <DndProvider backend={this._dndBackend} key="dnd-provider">
             <BrickMenu getContainer={this.props.getMenuContainer} bricks={Object.values(Engine.bricks)} />

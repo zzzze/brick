@@ -1,7 +1,17 @@
 import React from 'react'
 import compileCustomRender from './compile-custom-render'
-import {checkTypeIsString, DataTypeDefinition} from './data/normalize-data-type'
-import { Blueprint, Brick, BrickGroup, BrickGroupMap, BrickInstance, ChildrenType, Render, SetDataFn, SetDataOptions } from './types'
+import { checkTypeIsString, DataTypeDefinition } from './data/normalize-data-type'
+import {
+  Blueprint,
+  Brick,
+  BrickGroup,
+  BrickGroupMap,
+  BrickInstance,
+  ChildrenType,
+  Render,
+  SetDataFn,
+  SetDataOptions,
+} from './types'
 
 function copyData(brick: Brick, bgm: BrickGroupMap, context: Partial<BrickGroup>): Record<string, string> {
   return Object.keys(brick.dataTypes).reduce<Record<string, string>>((acc, cur) => {
@@ -22,16 +32,16 @@ function embedData(td: DataTypeDefinition | string, value: unknown): DataTypeDef
   }
   return {
     type: td,
-    default: value
+    default: value,
   }
 }
 
-function copyEvent(brick: Brick, context: Partial<Brick> ) {
+function copyEvent(brick: Brick, context: Partial<Brick>) {
   if (!context.eventNames) {
     context.eventNames = []
     context.defaultHandlers = {}
   }
-  brick.eventNames?.map(name => {
+  brick.eventNames?.map((name) => {
     if (!context?.eventNames?.includes(name)) {
       context.eventNames?.push(name)
     }
@@ -91,7 +101,7 @@ function constructBrickMap(blueprint: Blueprint): BrickGroupMap {
     render: blueprint.render,
   }
   if (Array.isArray(blueprint.children)) {
-    map.children = blueprint.children.map(child => constructBrickMap(child))
+    map.children = blueprint.children.map((child) => constructBrickMap(child))
   }
   return map
 }

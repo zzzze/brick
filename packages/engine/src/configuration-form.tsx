@@ -99,7 +99,7 @@ const ConfigurationForm = ({
   }, [engineCtx.dataTypes, brick.dataTypes])
   const handleClick = useCallback(() => {
     const newBrick = clusterBrick(blueprint)
-    const r = window.prompt("Please enter new brick name")
+    const r = window.prompt('Please enter new brick name')
     if (r) {
       newBrick.name = r
     }
@@ -111,7 +111,9 @@ const ConfigurationForm = ({
   return (
     <>
       {hasChildren && (
-        <button onClick={handleClick} style={{marginBottom: 10}}>Cluster</button>
+        <button onClick={handleClick} style={{ marginBottom: 10 }}>
+          Cluster
+        </button>
       )}
       <ConfigurationFormContext.Provider
         value={{

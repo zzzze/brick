@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useContext, useRef } from 'react'
+import React, { useState, useCallback, useEffect, useContext, useRef, useMemo } from 'react'
 import { RenderConfigurationForm, RenderConfigurationFormOptions } from './context'
 import clx from 'classnames'
 import { FaEdit } from 'react-icons/fa'
@@ -9,18 +9,23 @@ import EnginxContext from './context'
 export default (node: JSX.Element, options: RenderConfigurationFormOptions): ReturnType<RenderConfigurationForm> => {
   const context = useContext(EnginxContext)
   const [style, setStyle] = useState<React.CSSProperties>({ top: -1, right: -1 })
-  const [configFormVisible, setConfigFormVisible] = useState(false)
-  const handleShowConfigForm = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation()
-    options.ee.emit('close-config-form')
-    setConfigFormVisible(true)
-  }, [])
-  const hideConfigForm = useCallback(() => setConfigFormVisible(false), [])
+  const configFormVisible = useMemo(() => context.selectedInstance === options.blueprint._key, [
+    context.selectedInstance,
+    options.blueprint._key,
+  ])
+  const handleShowConfigForm = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation()
+      context.selectInstance(options.blueprint._key)
+    },
+    [options.blueprint._key]
+  )
+  const hideConfigForm = useCallback(() => context.selectInstance(null), [])
   const handleHideConfigForm = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation()
     context.transactionRollback()
     hideConfigForm()
-    setConfigFormVisible(false)
+    context.selectInstance(null)
   }, [])
   const handleRemove = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -29,12 +34,6 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
     },
     [options.removeItem]
   )
-  useEffect(() => {
-    options.ee.on('close-config-form', hideConfigForm)
-    return () => {
-      options.ee.off('close-config-form', hideConfigForm)
-    }
-  }, [])
   const container = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const style = { right: -1, top: -1 }
@@ -98,7 +97,7 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
           </span>
         </div>
       )}
-      {configFormVisible &&
+      {context.selectedInstance === options.blueprint._key &&
         React.cloneElement(React.Children.only(node), {
           getPopupContainer,
         })}

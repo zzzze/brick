@@ -1,5 +1,5 @@
 import { DataTypeDefinition } from '@/data/normalize-data-type'
-import {CustomRender} from './blueprint'
+import { CustomRender } from './blueprint'
 import { BrickInstance, DataObject } from './brick-instance'
 
 export enum ChildrenType {
