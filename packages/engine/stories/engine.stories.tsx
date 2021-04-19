@@ -25,7 +25,7 @@ const Template: Story<EngineProps> = (args) => {
     ref.current?.redo()
   }, [])
   return (
-    <div>
+    <div key={JSON.stringify(args.blueprint)}>
       <button onClick={handleUndo}>undo</button>
       <button onClick={handleRedo}>redo</button>
       <Engine ref={ref} {...args} />
