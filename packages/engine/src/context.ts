@@ -27,6 +27,7 @@ interface ContextType {
   registerBrick: (brick: Brick) => void
   selectInstance: (key: string | null) => void
   selectedInstance: string | null
+  getConfigurationPanelContainer: () => HTMLElement | null
 }
 
 const EnginxContext = React.createContext<ContextType>({
@@ -42,6 +43,7 @@ const EnginxContext = React.createContext<ContextType>({
   registerBrick: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   selectInstance: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   selectedInstance: null,
+  getConfigurationPanelContainer: () => null,
 })
 
 export default EnginxContext

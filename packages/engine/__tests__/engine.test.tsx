@@ -5,23 +5,37 @@ import { Engine } from '../src/engine'
 import { Blueprint } from '../src/types'
 import './register-bricks'
 import './register-data-types'
-
 React.useLayoutEffect = React.useEffect
 
+const themeOverride = {
+  transitions: {
+    duration: {
+      shortest: 0,
+      shorter: 0,
+      short: 0,
+      standard: 0,
+      complex: 0,
+      enteringScreen: 0,
+      leavingScreen: 0,
+    },
+  },
+}
+
 describe('Engine', () => {
-  test('toggle config form', () => {
+  test('toggle config form', async () => {
     const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
       version: '0.0.1',
     }
-    const wrapper = mount(<Engine autoCommitMode blueprint={blueprint} />)
+    const wrapper = mount(<Engine autoCommitMode theme={themeOverride} blueprint={blueprint} />)
     // show
     wrapper.find('[data-testid="001-edit-btn"]').last().simulate('click')
     expect(wrapper.html()).toContain('edit View')
 
     // hide
     wrapper.find('[data-testid="001-close-btn"]').last().simulate('click')
+    await new Promise((reslove) => setTimeout(reslove, 0))
     expect(wrapper.html()).not.toContain('edit View')
   })
 

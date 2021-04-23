@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { createRef, ReactElement } from 'react'
 import { Blueprint, Brick, SetBlueprintFn } from './types'
 import EnginxContext, { RenderConfigurationForm } from './context'
 import BrickRenderer from './brick-renderer'
@@ -12,6 +12,10 @@ import { DataType } from './data/data-type'
 import ErrorBoundary from './error-boundary'
 import { BackendFactory } from 'dnd-core'
 import BrickMenu from './brick-menu'
+import { JssProvider, ThemeProvider } from 'react-jss'
+import ConfigurationPanel from './configuration-panel'
+import { types, theme } from '@brick/shared'
+import merge from 'lodash/merge'
 
 const ee = new EventEmitter()
 
@@ -28,6 +32,8 @@ export interface EngineProps {
   autoCommitMode?: boolean
   dndBackend?: BackendFactory
   getMenuContainer?: () => Element
+  getConfigurationPanelContainer?: () => HTMLElement
+  theme?: types.DeepPartial<theme.Theme>
 }
 
 interface EngineState {
@@ -96,6 +102,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
     Engine.bricks[brick.name] = brick
     this.forceUpdate()
   }
+  private _configurationPanel = createRef<HTMLElement>()
 
   /**
    * lifecycle
@@ -218,6 +225,12 @@ class Engine extends React.Component<EngineProps, EngineState> {
       selectedInstance: key,
     })
   }
+  private _getConfigurationPanelContainer = () => {
+    if (this.props.getConfigurationPanelContainer) {
+      return this.props.getConfigurationPanelContainer()
+    }
+    return this._configurationPanel.current
+  }
 
   /**
    * render
@@ -228,38 +241,43 @@ class Engine extends React.Component<EngineProps, EngineState> {
     }
     return (
       <>
-        <EnginxContext.Provider
-          value={{
-            renderConfigurationForm: this._renderConfigurationForm,
-            bricks: Engine.bricks,
-            dataTypes: Engine.dataTypes,
-            ee,
-            previewMode: !!this.props.previewMode,
-            transactionBegin: this._transactionBegin,
-            transactionCommit: this._transactionCommit,
-            transactionRollback: this._transactionRollback,
-            autoCommit: !!this.props.autoCommitMode,
-            registerBrick: this._registerBrick,
-            selectInstance: this._selectInstance,
-            selectedInstance: this.state.selectedInstance,
-          }}>
-          <DndProvider backend={this._dndBackend} key="dnd-provider">
-            <BrickMenu getContainer={this.props.getMenuContainer} bricks={Object.values(Engine.bricks)} />
-            {this.state.blueprint && (
-              <ErrorBoundary key={this.state.blueprint._key}>
-                <BrickRenderer
-                  isRoot
-                  context={{ data: {}, actions: { $global: {} } }}
-                  blueprint={this.state.blueprint}
-                  setBlueprint={this._handleSetBlueprint}
-                />
-              </ErrorBoundary>
-            )}
-          </DndProvider>
-        </EnginxContext.Provider>
+        <JssProvider>
+          <ThemeProvider theme={merge(theme.defaultTheme, this.props.theme)}>
+            <EnginxContext.Provider
+              value={{
+                renderConfigurationForm: this._renderConfigurationForm,
+                bricks: Engine.bricks,
+                dataTypes: Engine.dataTypes,
+                ee,
+                previewMode: !!this.props.previewMode,
+                transactionBegin: this._transactionBegin,
+                transactionCommit: this._transactionCommit,
+                transactionRollback: this._transactionRollback,
+                autoCommit: !!this.props.autoCommitMode,
+                registerBrick: this._registerBrick,
+                selectInstance: this._selectInstance,
+                selectedInstance: this.state.selectedInstance,
+                getConfigurationPanelContainer: this._getConfigurationPanelContainer,
+              }}>
+              <DndProvider backend={this._dndBackend} key="dnd-provider">
+                <BrickMenu getContainer={this.props.getMenuContainer} bricks={Object.values(Engine.bricks)} />
+                <ConfigurationPanel ref={this._configurationPanel} />
+                {this.state.blueprint && (
+                  <ErrorBoundary key={this.state.blueprint._key}>
+                    <BrickRenderer
+                      isRoot
+                      context={{ data: {}, actions: { $global: {} } }}
+                      blueprint={this.state.blueprint}
+                      setBlueprint={this._handleSetBlueprint}
+                    />
+                  </ErrorBoundary>
+                )}
+              </DndProvider>
+            </EnginxContext.Provider>
+          </ThemeProvider>
+        </JssProvider>
       </>
     )
   }
 }
-
 export { Engine }

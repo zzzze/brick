@@ -47,10 +47,9 @@ export default (prefix) => [
       }),
     ],
     external: [
-      ...Object.keys(pkg.dependencies || {}),
-      ...Object.keys(pkg.peerDependencies || {}),
+      ...Object.keys(pkg.dependencies || {}).map((key) => new RegExp(`${key}(/.*)?`)),
+      ...Object.keys(pkg.peerDependencies || {}).map((key) => new RegExp(`${key}(/.*)?`)),
       'tslib',
-      /lodash(\/.*)?/,
     ],
   },
 ]

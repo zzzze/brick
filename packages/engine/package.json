@@ -19,7 +19,8 @@
     "@brick/tools": "^0.0.1",
     "@rollup/plugin-virtual": "^2.0.3",
     "@types/classnames": "^2.2.11",
-    "@types/react-icons": "^3.0.0"
+    "@types/react-icons": "^3.0.0",
+    "@types/react-transition-group": "^4.4.1"
   },
   "dependencies": {
     "@babel/standalone": "^7.12.12",
@@ -33,6 +34,8 @@
     "nanoid": "^3.1.22",
     "react-dnd": "^13.1.1",
     "react-dnd-html5-backend": "^12.1.1",
-    "react-icons": "^4.2.0"
+    "react-icons": "^4.2.0",
+    "react-jss": "^10.6.0",
+    "react-transition-group": "^4.4.1"
   }
 }

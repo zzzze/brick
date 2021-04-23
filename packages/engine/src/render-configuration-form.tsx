@@ -1,10 +1,12 @@
 import React, { useState, useCallback, useEffect, useContext, useRef, useMemo } from 'react'
+import ReactDOM from 'react-dom'
 import { RenderConfigurationForm, RenderConfigurationFormOptions } from './context'
 import clx from 'classnames'
 import { FaEdit } from 'react-icons/fa'
 import { FiMove } from 'react-icons/fi'
-import { AiTwotoneDelete, AiFillCloseCircle } from 'react-icons/ai'
+import { AiTwotoneDelete } from 'react-icons/ai'
 import EnginxContext from './context'
+import { Transition } from 'react-transition-group'
 
 export default (node: JSX.Element, options: RenderConfigurationFormOptions): ReturnType<RenderConfigurationForm> => {
   const context = useContext(EnginxContext)
@@ -20,13 +22,6 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
     },
     [options.blueprint._key]
   )
-  const hideConfigForm = useCallback(() => context.selectInstance(null), [])
-  const handleHideConfigForm = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation()
-    context.transactionRollback()
-    hideConfigForm()
-    context.selectInstance(null)
-  }, [])
   const handleRemove = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation()
@@ -52,6 +47,7 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
     }
     setStyle(style)
   }, [configFormVisible])
+  const configurationPanelcontainer = context.getConfigurationPanelContainer()
   const getPopupContainer = useCallback(() => {
     return container.current
   }, [])
@@ -59,48 +55,37 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
     event.stopPropagation()
   }, [])
   return (
-    <div
-      ref={container}
-      style={style}
-      onClick={stopClickPropagation}
-      className={clx('brick__config-form', {
-        'brick__config-form--active': configFormVisible,
-      })}>
-      {configFormVisible ? (
-        <div className="brick__config-form-btn-g2">
-          <span
-            className="brick__config-form-close-btn"
-            data-testid={`${options.blueprint._key}-close-btn`}
-            onClick={handleHideConfigForm}
-            title="close">
-            <AiFillCloseCircle />
-          </span>
-        </div>
-      ) : (
-        <div className="brick__config-form-btn-g1">
-          <span
-            className="brick__config-form-remove-btn"
-            title="remove"
-            data-testid={`${options.blueprint._key}-remove-btn`}
-            onClick={handleRemove}>
-            <AiTwotoneDelete />
-          </span>
-          <span
-            className="brick__config-form-edit-btn"
-            title="edit"
-            data-testid={`${options.blueprint._key}-edit-btn`}
-            onClick={handleShowConfigForm}>
-            <FaEdit />
-          </span>
-          <span className="brick__config-form-move-btn" title="move" ref={options.connectDragSource}>
-            <FiMove />
-          </span>
-        </div>
-      )}
-      {context.selectedInstance === options.blueprint._key &&
-        React.cloneElement(React.Children.only(node), {
-          getPopupContainer,
-        })}
+    <div ref={container} style={style} onClick={stopClickPropagation} className={clx('brick__config-form')}>
+      <div className="brick__config-form-btn-g1">
+        <span
+          className="brick__config-form-remove-btn"
+          title="remove"
+          data-testid={`${options.blueprint._key}-remove-btn`}
+          onClick={handleRemove}>
+          <AiTwotoneDelete />
+        </span>
+        <span
+          className="brick__config-form-edit-btn"
+          title="edit"
+          data-testid={`${options.blueprint._key}-edit-btn`}
+          onClick={handleShowConfigForm}>
+          <FaEdit />
+        </span>
+        <span className="brick__config-form-move-btn" title="move" ref={options.connectDragSource}>
+          <FiMove />
+        </span>
+      </div>
+      <Transition in={configFormVisible} timeout={300} unmountOnExit>
+        {() =>
+          configurationPanelcontainer &&
+          ReactDOM.createPortal(
+            React.cloneElement(React.Children.only(node), {
+              getPopupContainer,
+            }),
+            configurationPanelcontainer
+          )
+        }
+      </Transition>
     </div>
   )
 }

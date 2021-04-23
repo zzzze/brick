@@ -1,16 +1,16 @@
 {
   "name": "View",
-  "id": "container",
   "_key": "001",
+  "id": "container",
   "data": {
-    "name": "bazx"
+    "name": "baz"
   },
   "supply": {
     "data": {
       "text": "{{$this.name}}"
     },
     "actions": {
-      "onClick": "name => {\n            setData(function(data) {\n    console.log('000001', data);\n          return Object.assign({}, data, {\n                name: name,\n              })\n            }, {\n              setToBlueprint: true,\n            })\n          }"
+      "onClick": "function(instance, name) {\n            instance.setData(function(data) {\n    console.log('000001', data);\n          return Object.assign({}, data, {\n                name: name,\n              })\n            }, {\n              setToBlueprint: true,\n            })\n          }"
     }
   },
   "render": "args => <div>abc</div>",
@@ -19,7 +19,7 @@
       "name": "Text",
       "_key": "002",
       "data": {
-        "content": "{{$supply.$container.text}}"
+        "content": "{{$container.text}}"
       },
       "version": "0.0.1"
     },
@@ -37,7 +37,7 @@
       "id": "container2",
       "supply": {
         "actions": {
-          "onClick": "{{$supply.$container.onClick}}"
+          "onClick": "{{$container.onClick}}"
         }
       },
       "children": [
@@ -45,8 +45,7 @@
           "name": "TextWithAction",
           "_key": "005",
           "actions": {
-            "click": "function($this, $supply) {\n window.xx = $supply;\n                 $supply.actions.$container2.onClick($this.data.content)\n                }",
-            "handleClick": "function($this, $supply) {\n                  $this.actions.click($this, $supply)\n                }"
+            "handleClick": "function(instance, ...args) {\n console.log('abc', instance, args)\n                  instance.context.actions.$container2.onClick(instance.data.content)\n                }"
           },
           "handlers": {
             "onClick": "{{$this.handleClick}}"
@@ -67,7 +66,7 @@
           "name": "Text",
           "_key": "007",
           "data": {
-            "content": "{{$supply.$container.text}}"
+            "content": "{{$container.text}}"
           },
           "version": "0.0.1"
         }

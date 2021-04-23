@@ -21,6 +21,7 @@ Array [
       ViewWithCustomRender
     </div>
   </div>,
+  <div />,
   <span
     class="brick brick__with-config-form"
   >
@@ -141,6 +142,7 @@ Array [
       ViewWithCustomRender
     </div>
   </div>,
+  <div />,
   <div
     class="brick brick__with-config-form"
   >
@@ -476,6 +478,7 @@ Array [
       ViewWithCustomRender
     </div>
   </div>,
+  <div />,
   <div
     class="brick brick__with-config-form"
   >
@@ -706,6 +709,7 @@ Array [
       ViewWithCustomRender
     </div>
   </div>,
+  <div />,
   <div
     class="brick brick__with-config-form"
   >
@@ -1040,6 +1044,7 @@ Array [
       ViewWithCustomRender
     </div>
   </div>,
+  <div />,
   <div
     class="brick brick__with-config-form"
   >
@@ -1374,6 +1379,7 @@ Array [
       ViewWithCustomRender
     </div>
   </div>,
+  <div />,
   <div
     class="brick brick__with-config-form"
   >
@@ -1708,6 +1714,7 @@ Array [
       ViewWithCustomRender
     </div>
   </div>,
+  <div />,
   <div
     class="brick brick__with-config-form"
   >
@@ -2042,6 +2049,7 @@ Array [
       ViewWithCustomRender
     </div>
   </div>,
+  <div />,
   <div
     class="brick brick__with-config-form"
   >
