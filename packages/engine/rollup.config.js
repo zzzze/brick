@@ -26,7 +26,12 @@ export default (prefix) => [
       }),
       commonjs(),
     ],
-    external: [...Object.keys(pkg.dependencies), ...Object.keys(pkg.peerDependencies), 'tslib', /lodash(\/.*)?/],
+    external: [
+      ...Object.keys(pkg.dependencies || {}).map((key) => new RegExp(`${key}(/.*)?`)),
+      ...Object.keys(pkg.peerDependencies || {}).map((key) => new RegExp(`${key}(/.*)?`)),
+      'tslib',
+      /lodash(\/.*)?/,
+    ],
     onwarn: (warning, next) => {
       if (warning.code === 'EVAL') return
       next(warning)
