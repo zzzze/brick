@@ -1,5 +1,5 @@
 import { Brick, Blueprint } from './types'
-import React, { ReactElement, ReactPortal } from 'react'
+import React, { createRef, ReactElement, ReactPortal, RefObject } from 'react'
 import EventEmitter from 'eventemitter3'
 import { ConnectDragSource } from 'react-dnd'
 import { DataType } from './data/data-type'
@@ -16,6 +16,7 @@ export interface RenderConfigurationForm {
 
 interface ContextType {
   renderConfigurationForm: RenderConfigurationForm
+  configurationFormContainerRef: RefObject<HTMLElement>
   bricks: Record<string, Brick>
   dataTypes: Record<string, DataType>
   ee: EventEmitter
@@ -32,6 +33,7 @@ interface ContextType {
 
 const EnginxContext = React.createContext<ContextType>({
   renderConfigurationForm: () => null,
+  configurationFormContainerRef: createRef(),
   bricks: {},
   dataTypes: {},
   ee: new EventEmitter(),

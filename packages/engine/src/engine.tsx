@@ -246,6 +246,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
             <EnginxContext.Provider
               value={{
                 renderConfigurationForm: this._renderConfigurationForm,
+                configurationFormContainerRef: createRef(),
                 bricks: Engine.bricks,
                 dataTypes: Engine.dataTypes,
                 ee,

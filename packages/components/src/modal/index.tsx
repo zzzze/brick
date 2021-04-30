@@ -1,4 +1,13 @@
-import React, { FC, PropsWithChildren, useMemo, useRef } from 'react'
+import React, {
+  FC,
+  MouseEvent as ReactMouseEvent,
+  PropsWithChildren,
+  RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react'
 import { createUseStyles, useTheme } from 'react-jss'
 import clx from 'classnames'
 import { theme } from '@brick/shared'
@@ -62,6 +71,7 @@ const useStyles = createUseStyles(
         transform: 'scale(0.1)',
         opacity: 0,
         transition: ({ duration }: StyleProps) => `all ${duration}ms ease-in-out`,
+        overflowY: 'auto',
       },
       modalWrapperEntering: {
         transform: 'scale(0.1)',
@@ -80,18 +90,11 @@ const useStyles = createUseStyles(
         opacity: 0,
       },
       modal: {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
+        margin: `${theme.spacing.Lg * 4}px auto`,
         width: 600,
         padding: theme.spacing.Lg,
-        transform: 'translate(-50%, -50%)',
         borderRadius: theme.shape.borderRadius,
         backgroundColor: theme.palette.background.default,
-      },
-      content: {
-        maxHeight: '80vh',
-        overflowY: 'auto',
       },
       header: {
         display: 'flex',
@@ -122,6 +125,8 @@ export interface ModalProps {
   onClose?: () => void
   closeBtnProps?: ModalCloseBtnProps
   transitionDuration?: number
+  maskClosable?: boolean
+  containerRef?: RefObject<HTMLElement>
 }
 
 const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
@@ -129,6 +134,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
   const theme: theme.Theme = useTheme()
   const duration = transitionDuration ?? theme.transitions.duration.short
   const containerRef = useRef<HTMLDivElement>(null)
+  const modalRef = useRef<HTMLDivElement>(null)
   const classes = useStyles({
     duration,
   })
@@ -141,6 +147,27 @@ const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
       }
     }
   }, [visible])
+  useEffect(() => {
+    if (visible && typeof window !== 'undefined') {
+      const overflow = window.document.body.style.overflow
+      window.document.body.style.overflow = 'hidden'
+      return () => {
+        window.document.body.style.overflow = overflow
+      }
+    }
+    return () => null
+  }, [visible])
+  const handleClickModalWrapper = useCallback(
+    (event: ReactMouseEvent<HTMLDivElement>) => {
+      if (!props.maskClosable || !props.onClose) {
+        return
+      }
+      if (!modalRef.current || !modalRef.current.contains(event.target as Node)) {
+        props.onClose()
+      }
+    },
+    [props.maskClosable, props.onClose]
+  )
   return (
     <div ref={containerRef}>
       <Transition in={visible} timeout={{ appear: 0, enter: 0, exit: duration }} unmountOnExit>
@@ -160,6 +187,8 @@ const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
       <Transition in={visible} timeout={{ appear: 0, enter: 0, exit: duration }} unmountOnExit>
         {(state) => (
           <div
+            onClick={handleClickModalWrapper}
+            ref={props.containerRef as RefObject<HTMLDivElement>}
             className={clx(classes.modalWrapper, {
               [classes.modalWrapperEntering]: state === ENTERING,
               [classes.modalWrapperEntered]: state === ENTERED,
@@ -167,7 +196,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = (props) => {
               [classes.modalWrapperExited]: state === EXITED,
             })}
             style={{ transformOrigin: `${pos.current?.left ?? 0}px ${pos.current?.top ?? 0}px` }}>
-            <div className={clx(classes.modal)}>
+            <div className={clx(classes.modal)} ref={modalRef}>
               <div className={classes.header}>
                 <div className={classes.title}>{props.title}</div>
                 <div

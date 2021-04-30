@@ -6,10 +6,7 @@ import { Modal } from '@brick/components'
 
 const useStyles = createUseStyles(
   {
-    content: {
-      maxHeight: '80vh',
-      overflowY: 'auto',
-    },
+    content: {},
   },
   { name: 'ConfigurationPanel' }
 )
@@ -37,8 +34,10 @@ const ConfigurationPanel = forwardRef<HTMLElement>((_, ref) => {
   return (
     <Modal
       transitionDuration={duration}
+      containerRef={context.configurationFormContainerRef}
       visible={visible}
       onClose={handleHideConfigPanel}
+      maskClosable
       closeBtnProps={closeBtnProps}>
       <div className={classes.content} ref={ref as RefObject<HTMLDivElement>} />
     </Modal>

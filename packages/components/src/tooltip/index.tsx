@@ -1,7 +1,11 @@
 import React, { useCallback, useState, FC, useMemo } from 'react'
 import ReactDOM from 'react-dom'
-import { CSSTransition } from 'react-transition-group'
+import { theme } from '@brick/shared'
+import { Transition } from 'react-transition-group'
+import { createUseStyles } from 'react-jss'
 import debounce from 'lodash/debounce'
+import { EXITED, ENTERING, ENTERED, EXITING } from 'react-transition-group/Transition'
+import clx from 'classnames'
 
 export interface TooltipProps {
   content: React.ReactElement | string
@@ -15,6 +19,54 @@ interface IOffset {
 }
 
 const name = 'tooltip-container'
+
+const borderWidth = 5
+const arrowOffsetY = 10
+
+const useStyles = createUseStyles(
+  (theme: theme.Theme) => {
+    return {
+      tooltip: {
+        position: 'absolute',
+        borderRadius: '5px',
+        maxWidth: '300px',
+        padding: '10px',
+        background: 'rgba(0, 0, 0, 0.8)',
+        color: '#fff',
+        transformOrigin: '-5px 15px',
+        zIndex: 9999,
+        transition: `all ${theme.transitions.duration.shortest}ms`,
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          left: '-10px',
+          top: `${arrowOffsetY}px`,
+          borderStyle: 'solid',
+          borderWidth: borderWidth,
+          borderColor: 'transparent',
+          borderRightColor: 'rgba(0, 0, 0, 0.8)',
+        },
+      },
+      tooltipEntering: {
+        opacity: 0,
+        transform: 'scale(0.4) translateX(-20px)',
+      },
+      tooltipEntered: {
+        opacity: 1,
+        transform: 'scale(1) translateX(0)',
+      },
+      tooltipExiting: {
+        opacity: 0,
+        transform: 'scale(0.4) translateX(-20px)',
+      },
+      tooltipExited: {
+        opacity: 0,
+        transform: 'scale(0.4) translateX(-20px)',
+      },
+    }
+  },
+  { name: 'Tooltip' }
+)
 
 function offsetFromContainer(node: HTMLElement | null, container: HTMLElement): IOffset {
   if (!node || !node.offsetParent) {
@@ -38,6 +90,7 @@ function offsetFromContainer(node: HTMLElement | null, container: HTMLElement): 
 }
 
 const Tooltip: FC<TooltipProps> = (props: TooltipProps) => {
+  const classes = useStyles()
   const [isHover, setIsHover] = useState(false)
   const ref = React.useRef<HTMLElement>(null)
   const handleHoverChange = useCallback(
@@ -55,7 +108,7 @@ const Tooltip: FC<TooltipProps> = (props: TooltipProps) => {
       return document.body
     }
     return props.getOverlayContainer()
-  }, [props.getOverlayContainer])
+  }, [isHover])
   const tooltip: Element | null = useMemo(() => {
     if (!container) {
       return null
@@ -75,15 +128,26 @@ const Tooltip: FC<TooltipProps> = (props: TooltipProps) => {
     const rect = ref.current?.getBoundingClientRect() || { width: 0, height: 0 }
     const offset = offsetFromContainer(ref.current, container)
     const style: React.CSSProperties = {
-      top: offset.y + rect.height / 2 - 12.5,
+      top: offset.y - borderWidth - arrowOffsetY + rect.height / 2,
       left: offset.x + rect.width + 10,
     }
     return ReactDOM.createPortal(
-      <CSSTransition in={isHover} timeout={200} unmountOnExit classNames="fade">
-        <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className="tooltip" style={style}>
-          {props.content}
-        </div>
-      </CSSTransition>,
+      <Transition in={isHover} timeout={200} unmountOnExit>
+        {(state) => (
+          <div
+            className={clx(classes.tooltip, {
+              [classes.tooltipEntering]: state === ENTERING,
+              [classes.tooltipEntered]: state === ENTERED,
+              [classes.tooltipExiting]: state === EXITING,
+              [classes.tooltipExited]: state === EXITED,
+            })}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            style={style}>
+            {props.content}
+          </div>
+        )}
+      </Transition>,
       tooltip
     )
   }, [isHover, container])
