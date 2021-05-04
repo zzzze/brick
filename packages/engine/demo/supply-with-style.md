@@ -40,5 +40,9 @@ const blueprint = {
   version: '0.0.1',
 }
 
-ReactDOM.render(<Engine blueprint={blueprint} />, mountNode)
+const generateID = (rule, sheet) => {
+  return `${sheet?.options.classNamePrefix ?? ''}${rule.key}`
+}
+
+ReactDOM.render(<Engine blueprint={blueprint} generateJssID={generateID} />, mountNode)
 ```

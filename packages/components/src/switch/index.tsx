@@ -1,8 +1,17 @@
-import React, { CSSProperties, FC, useCallback, useEffect, useState } from 'react'
+import React, {
+  CSSProperties,
+  ForwardedRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from 'react'
 import { EventData } from '@brick/shared/types/form'
 
 export interface SwitchProps {
   value?: boolean
+  defaultValue?: boolean
   onChange?: (value: EventData<unknown>) => void
   name?: string
   hidden?: boolean
@@ -30,22 +39,53 @@ const sliderStyle: CSSProperties = {
   background: '#fff',
 }
 
-const Switch: FC<SwitchProps> = (props: SwitchProps) => {
+interface Instance {
+  value: boolean
+}
+
+const Switch = React.forwardRef((props: SwitchProps, ref: ForwardedRef<Instance>) => {
   const [value, setValue] = useState(props.value)
+  const triggerChange = useCallback(
+    (value: boolean) => {
+      props.onChange &&
+        props.onChange({
+          target: {
+            name: props.name ?? '',
+            value,
+          },
+        })
+    },
+    [props.name, props.onChange]
+  )
   useEffect(() => {
-    setValue(props.value)
+    if (typeof value === 'undefined' && typeof props.defaultValue !== 'undefined') {
+      setValue(props.defaultValue)
+      triggerChange(props.defaultValue)
+    }
+  }, [value])
+  const instance = useMemo(() => {
+    const obj = { value: false }
+    Object.defineProperty(obj, 'value', {
+      set(newValue: boolean) {
+        if (typeof newValue !== 'undefined') {
+          setValue(newValue)
+          triggerChange(newValue)
+        }
+      },
+    })
+    return obj
+  }, [triggerChange])
+  useImperativeHandle(ref, () => instance)
+  useEffect(() => {
+    if (typeof props.value !== 'undefined') {
+      setValue(props.value)
+    }
   }, [props.value])
   const handleClick = useCallback(() => {
     const newValue = !value
     setValue(newValue)
-    props.onChange &&
-      props.onChange({
-        target: {
-          name: props.name ?? '',
-          value: newValue,
-        },
-      })
-  }, [value])
+    triggerChange(newValue)
+  }, [value, triggerChange])
   return (
     <div
       onClick={handleClick}
@@ -63,6 +103,6 @@ const Switch: FC<SwitchProps> = (props: SwitchProps) => {
         }}></div>
     </div>
   )
-}
+})
 
 export { Switch }

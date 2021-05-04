@@ -94,6 +94,11 @@ const ConfigurationForm = ({
       return result
     }, {})
   }, [engineCtx.dataTypes])
+  const data = useMemo(() => {
+    return {
+      ...blueprint,
+    }
+  }, [blueprint])
   const dataTypes = useMemo(() => {
     return normalizeDataType(engineCtx.dataTypes, brick.dataTypes)
   }, [engineCtx.dataTypes, brick.dataTypes])
@@ -117,7 +122,7 @@ const ConfigurationForm = ({
       )}
       <ConfigurationFormContext.Provider
         value={{
-          data: { ...blueprint } as Record<string, unknown>,
+          data,
           onChange: handleChange,
           commit: engineCtx.transactionCommit,
           autoCommit,
@@ -138,6 +143,7 @@ const ConfigurationForm = ({
               data-testid={`${blueprint._key}-${td.testID ?? key}`}
               label={td?.label || key}
               types={td.fieldTypes}
+              canUseExpression={td.canUseExpression}
               name={key}>
               {td.formItem()}
             </FormItem>
@@ -146,7 +152,7 @@ const ConfigurationForm = ({
       </ConfigurationFormContext.Provider>
       <ConfigurationFormContext.Provider
         value={{
-          data: blueprint.data || {},
+          data: data.data ?? {},
           onChange: onDataChange,
           commit: engineCtx.transactionCommit,
           autoCommit,
@@ -159,11 +165,13 @@ const ConfigurationForm = ({
           return (
             <FormItem
               key={key}
+              defaultValue={td.default}
               getOverlayContainer={getPopupContainer}
               tips={td.tips}
               data-testid={`${blueprint._key}-${td.testID ?? key}`}
               types={[InputType.STRING]}
               label={td?.label || key}
+              canUseExpression={td.canUseExpression}
               name={key}>
               {td.formItem()}
             </FormItem>

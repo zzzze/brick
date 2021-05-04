@@ -54,7 +54,7 @@ export default function parseData(dataConfig: DataConfig, data: DataObject, pSup
         throw Error('circular dependence')
       }
       traversedKeys = traversedKeys.concat(key)
-      let value = data[key] || dataConfig[key].default
+      let value = data[key] ?? dataConfig[key].default
       if (typeof value === 'string' && VALUE_PARAM_PATTERN.test(value)) {
         const match = /^\{\{\s*\$this\.(\w+)\.?/.exec(value)
         const dependentData: DataObject = {}

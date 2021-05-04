@@ -18,6 +18,7 @@ export type CustomRender = string | CustomRenderFn
 export interface Blueprint {
   _key: string
   name: string // brick name
+  if?: boolean
   version: string // brick version
   id?: string // brick instance id
   data?: DataObject // data for brick instance

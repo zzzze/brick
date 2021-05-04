@@ -17,6 +17,7 @@ export interface DataType<T = unknown> {
   formItem: () => ReactElement
   isValid: TypeValidator
   fieldTypes?: InputType[] // for object type
+  canUseExpression?: boolean
 }
 
 export type DataConfig = Record<string, DataType>

@@ -12,12 +12,14 @@ import { DataType } from './data/data-type'
 import ErrorBoundary from './error-boundary'
 import { BackendFactory } from 'dnd-core'
 import BrickMenu from './brick-menu'
-import { JssProvider, ThemeProvider } from 'react-jss'
+import { JssProvider, ThemeProvider, createGenerateId } from 'react-jss'
 import ConfigurationPanel from './configuration-panel'
 import { types, theme } from '@brick/shared'
 import merge from 'lodash/merge'
 
 const ee = new EventEmitter()
+
+const generateId = createGenerateId()
 
 export interface EngineProps {
   /**
@@ -34,6 +36,7 @@ export interface EngineProps {
   getMenuContainer?: () => Element
   getConfigurationPanelContainer?: () => HTMLElement
   theme?: types.DeepPartial<theme.Theme>
+  generateJssID?: ReturnType<typeof createGenerateId>
 }
 
 interface EngineState {
@@ -241,7 +244,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
     }
     return (
       <>
-        <JssProvider>
+        <JssProvider generateId={this.props.generateJssID ?? generateId}>
           <ThemeProvider theme={merge(theme.defaultTheme, this.props.theme)}>
             <EnginxContext.Provider
               value={{

@@ -33,6 +33,7 @@ interface EventData {
 interface FormItemCommonProps {
   name: string
   label: string
+  defaultValue?: unknown
   value?: unknown
   style?: CSSProperties
   'data-testid'?: string
@@ -41,6 +42,7 @@ interface FormItemCommonProps {
   onChange?: (data: EventData) => void
   getOverlayContainer?: () => HTMLElement
   types?: InputType[] // for ObjectKeyValueInput only
+  canUseExpression?: boolean
 }
 
 interface FormItemProps extends FormItemCommonProps {
@@ -108,6 +110,7 @@ const FormItem: React.FC<FormItemProps> = ({
   style,
   getOverlayContainer,
   tips,
+  defaultValue,
   ...props
 }: FormItemProps) => {
   const classes = useStyles()
@@ -128,8 +131,8 @@ const FormItem: React.FC<FormItemProps> = ({
     if (context.autoCommit || !ref.current) {
       return
     }
-    ref.current.value = get(context.data, name) || null
-  }, [context.data, name, isEditMode, ref])
+    ref.current.value = get(context.data, name) ?? defaultValue ?? null
+  }, [context.data, name, isEditMode, ref, defaultValue])
   const value = useMemo(() => get(context.data, name), [context.data, name])
   useEffect(() => {
     if (typePredication.isString(value) && /^\{\{.*\}\}$/.test(value)) {
@@ -154,6 +157,7 @@ const FormItem: React.FC<FormItemProps> = ({
       name,
       ref,
       onChange,
+      defaultValue,
       style: {
         ...child.props.style,
         ...style,
@@ -203,10 +207,14 @@ const FormItem: React.FC<FormItemProps> = ({
       )}
       {isEditMode && (
         <div className={classes.itemBtnGroup}>
-          <input checked={useExpr} type="checkbox" id={`form-item-${label}`} onChange={handleCheckboxChange} />
-          <label className={classes.expressionCheckbox} htmlFor={`form-item-${label}`}>
-            Expression
-          </label>
+          {props.canUseExpression && (
+            <>
+              <input checked={useExpr} type="checkbox" id={`form-item-${label}`} onChange={handleCheckboxChange} />
+              <label className={classes.expressionCheckbox} htmlFor={`form-item-${label}`}>
+                Expression
+              </label>
+            </>
+          )}
           <AiFillCheckCircle title="confirm" className={classes.itemBtn} onClick={handleCommit} />
           <AiFillCloseCircle title="cancel" className={classes.itemBtn} onClick={exitEditMode} />
         </div>

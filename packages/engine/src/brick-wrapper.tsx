@@ -41,6 +41,9 @@ const useStyles = createUseStyles(
       brickHovered: {
         backgroundColor: '#efefef',
       },
+      brickHidden: {
+        opacity: 0.5,
+      },
       brickConfigFormActive: {},
       brickConfigForm: {
         position: 'absolute',
@@ -237,6 +240,7 @@ const DragOver: React.FC<DragOverProps> = ({ className }: DragOverProps) => {
 }
 
 interface BrickWrapperProps {
+  hidden?: boolean
   children: React.ReactElement<React.PropsWithChildren<unknown>>
   blueprint: Blueprint
   parentBlueprint?: Blueprint
@@ -311,9 +315,6 @@ const isInBackwardActionTriggerAera = (rect: DOMRect, clientOffset: XYCoord) => 
 const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => {
   const context = useContext(EnginxContext)
   const classes = useStyles()
-  if (context.previewMode) {
-    return props.children
-  }
   const brick = useMemo(() => {
     const brick = context.bricks[props.blueprint.name]
     if (!brick) {
@@ -537,8 +538,9 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     return clx('brick', classes.brickWithConfigForm, {
       [classes.brickDragging]: isDragging,
       [classes.brickHovered]: isOverCurrent && !isDragging,
+      [classes.brickHidden]: props.hidden,
     })
-  }, [child.props.className, isDragging, isOverCurrent, isDragging])
+  }, [child.props.className, isDragging, isOverCurrent, isDragging, props.hidden])
   const actionArea = useMemo(() => {
     return !props.isRoot
       ? [
@@ -564,6 +566,9 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         {actionArea}
       </Tag>
     )
+  }
+  if (context.previewMode) {
+    return props.children
   }
   return cloneElement<IBrickContainer>(
     child,

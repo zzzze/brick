@@ -8,12 +8,17 @@ import '@brick/components/lib/tooltip.css'
 import './style.css'
 import '../index.css'
 import { Blueprint } from '../src/types'
+import { Rule, StyleSheet } from 'jss'
 
 export default {
   title: 'Example/Engine',
   component: Engine,
   argTypes: {},
 } as Meta
+
+const generateID = (rule: Rule, sheet?: StyleSheet) => {
+  return `${sheet?.options.classNamePrefix ?? ''}${rule.key}`
+}
 
 const Template: Story<EngineProps> = (args) => {
   registerBricks()
@@ -28,7 +33,7 @@ const Template: Story<EngineProps> = (args) => {
     <div key={JSON.stringify(args.blueprint)}>
       <button onClick={handleUndo}>undo</button>
       <button onClick={handleRedo}>redo</button>
-      <Engine ref={ref} {...args} />
+      <Engine generateJssID={generateID} ref={ref} {...args} />
     </div>
   )
 }

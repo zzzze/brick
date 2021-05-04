@@ -51,8 +51,23 @@ const inputTypeOptions: IOption<InputType>[] = [
   },
 ]
 
+const valueValidatorMap = {
+  [InputType.BOOLEAN]: {
+    defaultValue: false,
+    validate: (value: unknown) => typeof value === 'boolean',
+  },
+  [InputType.STRING]: {
+    defaultValue: '',
+    validate: (value: unknown) => typeof value === 'string',
+  },
+  [InputType.CODE]: {
+    defaultValue: 'function() {}',
+    validate: (value: unknown) => typeof value === 'string' && FUNCTION_STR.test(value),
+  },
+}
+
 const Item: FC<ItemProps> = ({ value, index, label, handleChange, handleDeleteItem, ...props }: ItemProps) => {
-  const itemValue = useMemo(() => value?.[label] || '', [value, label])
+  const itemValue = useMemo(() => value?.[label] ?? '', [value, label])
   const [inputType, setInputType] = useState(InputType.STRING)
   const enterExpand = useCallback(() => props.setExpandKey(label), [label])
   const exitExpand = useCallback(() => props.setExpandKey(null), [])
@@ -73,6 +88,17 @@ const Item: FC<ItemProps> = ({ value, index, label, handleChange, handleDeleteIt
       return
     }
   }, [itemValue])
+  useEffect(() => {
+    const validator = valueValidatorMap[inputType]
+    if (!validator.validate(itemValue) && handleChange) {
+      handleChange({
+        target: {
+          name: `${index}-value`,
+          value: validator.defaultValue,
+        },
+      })
+    }
+  }, [inputType, itemValue])
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', margin: '10px 0' }} key={index}>
       <input

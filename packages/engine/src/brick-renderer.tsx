@@ -123,8 +123,12 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
     }
   }, [supply.actions])
   const render = useRender(brick, blueprint)
+  if (engineCtx.previewMode && !(data?.if ?? true)) {
+    return null
+  }
   return (
     <BrickWrapper
+      hidden={!((data?.if as boolean) ?? true)}
       key={blueprint._key}
       onRemoveItemFormParent={props.onRemoveItemFromParent}
       onAddToOrMoveInParent={props.onAddToOrMoveInParent}
