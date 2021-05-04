@@ -314,6 +314,9 @@ const isInBackwardActionTriggerAera = (rect: DOMRect, clientOffset: XYCoord) => 
 
 const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => {
   const context = useContext(EnginxContext)
+  if (context.previewMode) {
+    return props.children
+  }
   const classes = useStyles()
   const brick = useMemo(() => {
     const brick = context.bricks[props.blueprint.name]
@@ -566,9 +569,6 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         {actionArea}
       </Tag>
     )
-  }
-  if (context.previewMode) {
-    return props.children
   }
   return cloneElement<IBrickContainer>(
     child,
