@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 import { Actions } from './parse-actions'
 import { Blueprint, BrickContext, VALUE_PARAM_PATTERN, idPrefix } from '../types'
-import { interpreteParam } from '../utils'
 import parseActions from './parse-actions'
+import evalExpr from '../data/eval-data-expr'
 
 export default function useSupply(
   config: Blueprint,
@@ -14,39 +14,36 @@ export default function useSupply(
     let supplyData = {
       ...config.supply?.data,
     }
+    const result: Record<string, unknown> = {
+      $parent: supplyData,
+    }
     const dataKeys = Object.keys(supplyData)
     if (dataKeys.length <= 0) {
-      return supplyData
+      return result
     }
     supplyData = dataKeys.reduce<Record<string, unknown>>((result, key) => {
       let value = supplyData[key]
       if (typeof value === 'string' && VALUE_PARAM_PATTERN.test(value)) {
-        value = interpreteParam(value, {
-          $this: data,
-          // supply: context.data,
-          ...context.data,
-        })
+        value = evalExpr(value, data, context.data ?? {})
       }
       result[key] = value
       return result
     }, {})
+    result.$parent = supplyData
     if (config.id) {
-      supplyData = {
-        [`${idPrefix}${config.id}`]: supplyData,
-      }
-    } else {
-      supplyData = {
-        $global: supplyData,
-      }
+      result[`${idPrefix}${config.id}`] = supplyData
     }
-    return supplyData
+    return result
   }, [config, context, actions, data])
   const supplyActions = useMemo(() => {
     let supplyActions = {}
     const originActions = config.supply?.actions ?? {}
     const actionKeys = Object.keys(originActions)
+    const result: Record<string, unknown> = {
+      $parent: originActions,
+    }
     if (actionKeys.length <= 0) {
-      return originActions
+      return result
     }
     supplyActions = parseActions(originActions, {
       $this: {
@@ -54,16 +51,11 @@ export default function useSupply(
       },
       ...context.actions,
     })
+    result.$parent = supplyActions
     if (config.id) {
-      supplyActions = {
-        [`${idPrefix}${config.id}`]: supplyActions,
-      }
-    } else {
-      supplyActions = {
-        $global: supplyActions,
-      }
+      result[`${idPrefix}${config.id}`] = supplyActions
     }
-    return supplyActions
+    return result
   }, [config, context, actions])
   return useMemo(() => {
     return {

@@ -270,7 +270,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
                   <ErrorBoundary key={this.state.blueprint._key}>
                     <BrickRenderer
                       isRoot
-                      context={{ data: {}, actions: { $global: {} } }}
+                      context={{ data: { $parent: {} }, actions: { $parent: {} } }}
                       blueprint={this.state.blueprint}
                       setBlueprint={this._handleSetBlueprint}
                     />

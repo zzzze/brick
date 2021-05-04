@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useContext } from 'react'
-import { BrickInstance, Blueprint, SetBlueprint, SetBlueprintFn, BrickContext } from './types'
+import { BrickInstance, Blueprint, SetBlueprint, SetBlueprintFn, BrickContext, DataObject } from './types'
 import BrickWrapper, { createRemoveItemFromParentFn } from './brick-wrapper'
 import EnginxContext from './context'
 import useRender from './use-render'
@@ -23,6 +23,7 @@ export interface BrickRenderProps {
   onAddToOrMoveInParent?: (blueprint: Blueprint, anchorKey: string, action: string) => void
   onDrop?: (_blueprint: Blueprint) => void
   isRoot?: boolean
+  data?: DataObject
 }
 
 const BrickRenderer: React.FC<BrickRenderProps> = ({
@@ -42,7 +43,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
   const dataTypes = useMemo(() => {
     return normalizeDataType(engineCtx.dataTypes, brick.dataTypes)
   }, [engineCtx.dataTypes, brick.dataTypes])
-  const [data, setData] = useData(dataTypes, blueprint.data ?? {}, context.data ?? {})
+  const [data, setData] = useData(dataTypes, blueprint.data ?? {}, context.data ?? {}, props.data ?? {})
   const instanceHandlers = useInstanceHandlers(data, setBlueprint, setData)
   const actions = useActions(blueprint, context)
   const listeners = useListeners(blueprint, context, actions)
@@ -118,7 +119,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
       if (blueprint.id) {
         bindBrickInstance((supply.actions?.[`$${blueprint.id}`] || {}) as Record<string, Action>, brickInstance)
       } else {
-        bindBrickInstance((supply.actions?.$global || {}) as Record<string, Action>, brickInstance)
+        bindBrickInstance((supply.actions?.$parent || {}) as Record<string, Action>, brickInstance)
       }
     }
   }, [supply.actions])

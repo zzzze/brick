@@ -6,12 +6,16 @@ import parseData from './parse-data'
 export default (
   dataConfig: DataConfig,
   dataFromConfig: DataObject,
-  pSupply: DataObject
+  pSupply: DataObject,
+  dataFromParent: DataObject
 ): [DataObject, Dispatch<SetStateAction<DataObject>>] => {
   const [data, setData] = useState(parseData(dataConfig, dataFromConfig, pSupply))
   useEffect(() => {
     const newData = parseData(dataConfig, dataFromConfig, pSupply)
-    setData(newData)
+    setData({
+      ...newData,
+      ...dataFromParent,
+    })
   }, [dataConfig, pSupply])
   return [data, setData]
 }

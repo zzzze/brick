@@ -79,7 +79,7 @@ describe('supply actions', () => {
     expect(config2.children?.[0].data?.['name']).toEqual('123456')
   })
 
-  test('trigger global action from supply', async () => {
+  test('trigger parent action from supply', async () => {
     const blueprint: Blueprint = {
       name: 'View',
       _key: '001',
@@ -123,10 +123,10 @@ describe('supply actions', () => {
               name: 'TextWithOnClickEvent',
               _key: '003',
               handlers: {
-                onClick: '{{$global.onClick}}',
+                onClick: '{{$parent.onClick}}',
               },
               data: {
-                content: '{{$global.content}}',
+                content: '{{$parent.content}}',
               },
               version: '0.0.1',
             },

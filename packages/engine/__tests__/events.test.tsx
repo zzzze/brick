@@ -125,7 +125,7 @@ describe('events', () => {
             }`,
           },
           data: {
-            content: '{{$global.name}}',
+            content: '{{$parent.name}}',
           },
           version: '0.0.1',
         },
@@ -180,7 +180,7 @@ describe('events', () => {
               name: 'Text',
               _key: '003',
               data: {
-                content: '{{$global.name}}',
+                content: '{{$parent.name}}',
               },
               version: '0.0.1',
             },
@@ -248,7 +248,7 @@ describe('events', () => {
               name: 'Text',
               _key: '003',
               data: {
-                content: '{{$global.name}}',
+                content: '{{$parent.name}}',
               },
               version: '0.0.1',
             },

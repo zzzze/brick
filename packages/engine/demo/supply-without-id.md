@@ -24,7 +24,7 @@ const blueprint = {
           name: 'Text',
           _key: '003',
           data: {
-            content: '{{$global.text}}',
+            content: '{{$parent.text}}',
           },
           version: '0.0.1',
         },

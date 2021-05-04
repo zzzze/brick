@@ -111,6 +111,7 @@ const FormItem: React.FC<FormItemProps> = ({
   getOverlayContainer,
   tips,
   defaultValue,
+  canUseExpression,
   ...props
 }: FormItemProps) => {
   const classes = useStyles()
@@ -157,7 +158,6 @@ const FormItem: React.FC<FormItemProps> = ({
       name,
       ref,
       onChange,
-      defaultValue,
       style: {
         ...child.props.style,
         ...style,
@@ -207,7 +207,7 @@ const FormItem: React.FC<FormItemProps> = ({
       )}
       {isEditMode && (
         <div className={classes.itemBtnGroup}>
-          {props.canUseExpression && (
+          {canUseExpression && (
             <>
               <input checked={useExpr} type="checkbox" id={`form-item-${label}`} onChange={handleCheckboxChange} />
               <label className={classes.expressionCheckbox} htmlFor={`form-item-${label}`}>

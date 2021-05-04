@@ -83,12 +83,17 @@ describe('supply data', () => {
         {
           name: 'View',
           _key: '002',
+          supply: {
+            data: {
+              text: '{{$parent.text}}',
+            },
+          },
           children: [
             {
               name: 'Text',
               _key: '003',
               data: {
-                content: '{{$global.text}}',
+                content: '{{$parent.text}}',
               },
               version: '0.0.1',
             },
@@ -138,12 +143,17 @@ describe('supply data', () => {
         {
           name: 'View',
           _key: '002',
+          supply: {
+            data: {
+              text: '{{$parent.text}}',
+            },
+          },
           children: [
             {
               name: 'Text',
               _key: '003',
               data: {
-                content: '{{$global.text}}',
+                content: '{{$parent.text}}',
               },
               version: '0.0.1',
             },
