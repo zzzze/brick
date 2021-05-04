@@ -8,6 +8,10 @@ export interface RenderConfigurationFormOptions {
   connectDragSource: ConnectDragSource
   removeItem: () => void
   blueprint: Blueprint
+  classes: {
+    container: string
+    btnGroup: string
+  }
 }
 
 export interface RenderConfigurationForm {

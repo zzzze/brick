@@ -1,6 +1,6 @@
 import { DataObject, VALUE_PARAM_PATTERN } from '../types'
-import { interpreteParam } from '../utils'
 import { DataConfig } from './data-type'
+import evalExpr from './eval-data-expr'
 
 /**
  * Parse data of brick instance
@@ -63,12 +63,7 @@ export default function parseData(dataConfig: DataConfig, data: DataObject, pSup
           const valueOfAttr = getValueOfkey(result, attr, traversedKeys)
           dependentData[attr] = valueOfAttr
         }
-        value = interpreteParam(value, {
-          $this: {
-            ...dependentData,
-          },
-          ...pSupply,
-        })
+        value = evalExpr(value, { ...dependentData }, pSupply)
       }
       // TODO: validate value
       result[key] = value

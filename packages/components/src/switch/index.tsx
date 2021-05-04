@@ -1,10 +1,12 @@
-import React, { CSSProperties, FC, useCallback } from 'react'
+import React, { CSSProperties, FC, useCallback, useEffect, useState } from 'react'
 import { EventData } from '@brick/shared/types/form'
 
 export interface SwitchProps {
   value?: boolean
   onChange?: (value: EventData<unknown>) => void
   name?: string
+  hidden?: boolean
+  style?: CSSProperties
 }
 
 const style: CSSProperties = {
@@ -29,22 +31,35 @@ const sliderStyle: CSSProperties = {
 }
 
 const Switch: FC<SwitchProps> = (props: SwitchProps) => {
+  const [value, setValue] = useState(props.value)
+  useEffect(() => {
+    setValue(props.value)
+  }, [props.value])
   const handleClick = useCallback(() => {
+    const newValue = !value
+    setValue(newValue)
     props.onChange &&
       props.onChange({
         target: {
           name: props.name ?? '',
-          value: !props.value,
+          value: newValue,
         },
       })
-  }, [props.value])
+  }, [value])
   return (
-    <div onClick={handleClick} style={{ ...style, background: props.value ? '#999' : '#ddd' }}>
+    <div
+      onClick={handleClick}
+      style={{
+        ...style,
+        background: value ? '#999' : '#ddd',
+        display: typeof props.hidden !== 'undefined' && !props.hidden ? 'none' : 'inline-block',
+        ...props.style,
+      }}>
       <div
         style={{
           ...sliderStyle,
-          left: props.value ? '100%' : 0,
-          transform: props.value ? 'translateX(-100%)' : 'translateX(0)',
+          left: value ? '100%' : 0,
+          transform: value ? 'translateX(-100%)' : 'translateX(0)',
         }}></div>
     </div>
   )

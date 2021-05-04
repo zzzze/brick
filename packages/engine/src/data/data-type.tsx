@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
 import { InputType, ObjectKeyValueInput } from '@brick/components'
 import isPlainObject from 'lodash/isPlainObject'
+import { Switch } from '@brick/components'
 
 export interface TypeValidator {
   (value: unknown): boolean
@@ -37,7 +38,7 @@ export const NumberType: DataType<number> = {
 export const BooleanType: DataType<boolean> = {
   type: 'boolean',
   default: false,
-  formItem: (placeholder?: string) => <input type="text" className="formitem-input" placeholder={placeholder} />,
+  formItem: () => <Switch />,
   isValid: (value) => typeof value === 'boolean',
 }
 

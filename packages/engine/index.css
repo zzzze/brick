@@ -11,102 +11,102 @@
 /* ---------------------------------------------------- */
 /* style of birck with config form                      */
 /* ---------------------------------------------------- */
-.brick__with-config-form {
-  position: relative;
-  padding: 20px;
-  margin: 10px;
-  min-width: 100px;
-  min-height: 20px;
-  vertical-align: middle;
-  border: solid 1px #ccc;
-  border-radius: 5px;
-}
+/* .brick__with-config-form { */
+/*   position: relative; */
+/*   padding: 20px; */
+/*   margin: 10px; */
+/*   min-width: 100px; */
+/*   min-height: 20px; */
+/*   vertical-align: middle; */
+/*   border: solid 1px #ccc; */
+/*   border-radius: 5px; */
+/* } */
+/*  */
+/* span.brick__with-config-form { */
+/*   display: inline-block; */
+/* } */
+/*  */
+/* div.brick__with-config-form + div.brick__with-config-form { */
+/*   margin-top: 20px; */
+/* } */
 
-span.brick__with-config-form {
-  display: inline-block;
-}
+/* .brick__config-form-btn-g2 { */
+/*   text-align: right; */
+/*   margin-bottom: 10px; */
+/*   display: none; */
+/* } */
+/*  */
+/* .brick__config-form-close-btn { */
+/*   font-size: 20px; */
+/* } */
+/*  */
+/* .brick__with-config-form .brick__config-form--active .brick__config-form-btn-g2 { */
+/*   display: block; */
+/* } */
 
-div.brick__with-config-form + div.brick__with-config-form {
-  margin-top: 20px;
-}
+/* .brick__config-form-btn-g1 { */
+/*   display: none; */
+/*   padding: 5px 8px; */
+/*   color: #fff; */
+/*   border-radius: 0 4px; */
+/*   background: rgba(0, 0, 0, 0.4); */
+/* } */
+/*  */
+/* .brick__config-form-btn-g1 > * { */
+/*   margin: 0 5px; */
+/* } */
+/*  */
+/* .brick__config-form-edit-btn { */
+/*   cursor: pointer; */
+/* } */
+/*  */
+/* .brick__config-form-move-btn { */
+/*   cursor: move; */
+/* } */
+/*  */
+/* .brick__with-config-form:hover > .brick__config-form .brick__config-form-btn-g1 { */
+/*   display: flex; */
+/* } */
+/*  */
+/* .brick__config-form { */
+/*   position: absolute; */
+/*   top: 0; */
+/*   right: 0; */
+/*   z-index: 100; */
+/*   font-size: 16px; */
+/*   max-height: 80vh; */
+/*   overflow-y: auto; */
+/*   overflow-x: hidden; */
+/*   color: #333; */
+/* } */
 
-.brick__config-form-btn-g2 {
-  text-align: right;
-  margin-bottom: 10px;
-  display: none;
-}
+/* .brick__config-form--active { */
+/*   width: 500px; */
+/*   background: #fff; */
+/*   z-index: 100; */
+/*   padding: 10px 10px 20px; */
+/*   border: solid 1px #ccc; */
+/*   border-radius: 5px; */
+/*   background: #fff; */
+/* } */
 
-.brick__config-form-close-btn {
-  font-size: 20px;
-}
+/* .brick__with-config-form--dragging { */
+/*   border: dashed 1px #ccc; */
+/*   background: #fff8d1; */
+/*   color: #fff8d1; */
+/* } */
+/*  */
+/* .brick__with-config-form--dragging * { */
+/*   opacity: 0; */
+/* } */
 
-.brick__with-config-form .brick__config-form--active .brick__config-form-btn-g2 {
-  display: block;
-}
+/* .brick__with-config-form:not(.brick__with-config-form--hovered) > .brick__action-area { */
+/*   display: none; */
+/* } */
 
-.brick__config-form-btn-g1 {
-  display: none;
-  padding: 5px 8px;
-  color: #fff;
-  border-radius: 0 4px;
-  background: rgba(0, 0, 0, 0.4);
-}
-
-.brick__config-form-btn-g1 > * {
-  margin: 0 5px;
-}
-
-.brick__config-form-edit-btn {
-  cursor: pointer;
-}
-
-.brick__config-form-move-btn {
-  cursor: move;
-}
-
-.brick__with-config-form:hover > .brick__config-form .brick__config-form-btn-g1 {
-  display: flex;
-}
-
-.brick__config-form {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 100;
-  font-size: 16px;
-  max-height: 80vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  color: #333;
-}
-
-.brick__config-form--active {
-  width: 500px;
-  background: #fff;
-  z-index: 100;
-  padding: 10px 10px 20px;
-  border: solid 1px #ccc;
-  border-radius: 5px;
-  background: #fff;
-}
-
-.brick__with-config-form--dragging {
-  border: dashed 1px #ccc;
-  background: #fff8d1;
-  color: #fff8d1;
-}
-
-.brick__with-config-form--dragging * {
-  opacity: 0;
-}
-
-.brick__with-config-form:not(.brick__with-config-form--hovered) > .brick__action-area {
-  display: none;
-}
-
-.brick__with-config-form--hovered {
-  background-color: #efefef;
-}
+/* .brick__with-config-form--hovered { */
+/*   background-color: #efefef; */
+/* } */
 /* ---------------------------------------------------- */
 /* brick__with-config-form                              */
 /* ---------------------------------------------------- */
@@ -116,143 +116,89 @@ div.brick__with-config-form + div.brick__with-config-form {
 /* ---------------------------------------------------- */
 /* dragger over the area will trigger position changing */
 /* ---------------------------------------------------- */
-.brick__action-area {
-  position: absolute;
-}
-
-.brick__action-area::before {
-  position: absolute;
-  background-color: #ccc;
-  content: '';
-}
-
-.brick__action-area.brick__action-area--hovered::before {
-  background-color: #1da1ff;
-}
-
-.brick__action-area.brick__action-area-top {
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 10px;
-  border-radius: 2px;
-}
-
-.brick__action-area.brick__action-area-top::before {
-  top: 8px;
-  left: 50%;
-  width: 20px;
-  height: 2px;
-  border-radius: 2px;
-  transform: translateX(-50%);
-}
-
-.brick__action-area.brick__action-area-bottom {
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 10px;
-  border-radius: 2px;
-}
-
-.brick__action-area.brick__action-area-bottom::before {
-  bottom: 8px;
-  left: 50%;
-  width: 20px;
-  height: 2px;
-  border-radius: 2px;
-  transform: translateX(-50%);
-}
-
-.brick__action-area.brick__action-area-left {
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 10px;
-  border-radius: 2px;
-}
-
-.brick__action-area.brick__action-area-left::before {
-  left: 8px;
-  top: 50%;
-  height: 20px;
-  width: 2px;
-  border-radius: 2px;
-  transform: translateY(-50%);
-}
-
-.brick__action-area.brick__action-area-right {
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 10px;
-  border-radius: 2px;
-}
-
-.brick__action-area.brick__action-area-right::before {
-  right: 8px;
-  top: 50%;
-  height: 20px;
-  width: 2px;
-  border-radius: 2px;
-  transform: translateY(-50%);
-}
+/* .brick__action-area { */
+/*   position: absolute; */
+/* } */
+/*  */
+/* .brick__action-area::before { */
+/*   position: absolute; */
+/*   background-color: #ccc; */
+/*   content: ''; */
+/* } */
+/*  */
+/* .brick__action-area.brick__action-area--hovered::before { */
+/*   background-color: #1da1ff; */
+/* } */
+/*  */
+/* .brick__action-area.brick__action-area-top { */
+/*   top: 0; */
+/*   left: 0; */
+/*   right: 0; */
+/*   height: 10px; */
+/*   border-radius: 2px; */
+/* } */
+/*  */
+/* .brick__action-area.brick__action-area-top::before { */
+/*   top: 8px; */
+/*   left: 50%; */
+/*   width: 20px; */
+/*   height: 2px; */
+/*   border-radius: 2px; */
+/*   transform: translateX(-50%); */
+/* } */
+/*  */
+/* .brick__action-area.brick__action-area-bottom { */
+/*   bottom: 0; */
+/*   left: 0; */
+/*   right: 0; */
+/*   height: 10px; */
+/*   border-radius: 2px; */
+/* } */
+/*  */
+/* .brick__action-area.brick__action-area-bottom::before { */
+/*   bottom: 8px; */
+/*   left: 50%; */
+/*   width: 20px; */
+/*   height: 2px; */
+/*   border-radius: 2px; */
+/*   transform: translateX(-50%); */
+/* } */
+/*  */
+/* .brick__action-area.brick__action-area-left { */
+/*   left: 0; */
+/*   top: 0; */
+/*   bottom: 0; */
+/*   width: 10px; */
+/*   border-radius: 2px; */
+/* } */
+/*  */
+/* .brick__action-area.brick__action-area-left::before { */
+/*   left: 8px; */
+/*   top: 50%; */
+/*   height: 20px; */
+/*   width: 2px; */
+/*   border-radius: 2px; */
+/*   transform: translateY(-50%); */
+/* } */
+/*  */
+/* .brick__action-area.brick__action-area-right { */
+/*   right: 0; */
+/*   top: 0; */
+/*   bottom: 0; */
+/*   width: 10px; */
+/*   border-radius: 2px; */
+/* } */
+/*  */
+/* .brick__action-area.brick__action-area-right::before { */
+/*   right: 8px; */
+/*   top: 50%; */
+/*   height: 20px; */
+/*   width: 2px; */
+/*   border-radius: 2px; */
+/*   transform: translateY(-50%); */
+/* } */
 /* ---------------------------------------------------- */
 /* brick__action-area                                   */
-/* ---------------------------------------------------- */
-
-/* ---------------------------------------------------- */
-/* config-form                                          */
-/* ---------------------------------------------------- */
-.config-form__item {
-  display: flex;
-  position: relative;
-  border-bottom: solid 1px #eee;
-  border-top: solid 1px #eee;
-  padding-bottom: 10px;
-  padding-top: 10px;
-  margin-top: -1px;
-}
-
-.config-form__item-btg {
-  position: absolute;
-  right: 0;
-  display: none;
-}
-
-.config-form__item:hover .config-form__item-btg,
-.config-form__item--edit .config-form__item-btg {
-  display: block;
-}
-
-.config-form__label {
-  min-width: 120px;
-  margin-right: 10px;
-  font-weight: 500;
-  line-height: 24px;
-  border-right: solid 1px #eee;
-}
-
-.config-form__item--edit {
-  flex-wrap: wrap;
-}
-
-.config-form__item--edit .config-form__label {
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-.config-form__value {
-  word-break: break-all;
-  color: #999;
-}
-
-.config-form__item-btn {
-  margin-top: 5px;
-  margin-left: 10px;
-}
-/* ---------------------------------------------------- */
-/* config-form                                          */
 /* ---------------------------------------------------- */
 
 /* ---------------------------------------------------- */

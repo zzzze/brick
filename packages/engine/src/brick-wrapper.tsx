@@ -4,10 +4,144 @@ import ConfigurationForm from './configuration-form'
 import EnginxContext from './context'
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
 import { XYCoord } from 'dnd-core'
+import { createUseStyles } from 'react-jss'
 import clx from 'classnames'
 import debounce from 'lodash/debounce'
+import { theme } from '@brick/shared'
 
 export const ITEM_TYPE = 'brick-instance'
+
+const useStyles = createUseStyles(
+  (theme: theme.Theme) => {
+    return {
+      brickWithConfigForm: {
+        position: 'relative',
+        padding: '20px',
+        margin: '10px',
+        minWidth: '100px',
+        minHeight: '20px',
+        verticalAlign: 'middle',
+        border: `solid 1px ${theme.palette.grey[400]}`,
+        borderRadius: '5px',
+        'span&': {
+          display: 'inline-block',
+        },
+        'div&': {
+          marginTop: '20px',
+        },
+      },
+      brickDragging: {
+        border: `solid 1px ${theme.palette.grey[400]}`,
+        background: '#fff8d1',
+        color: '#fff8d1',
+        '& *': {
+          opacity: 0,
+        },
+      },
+      brickHovered: {
+        backgroundColor: '#efefef',
+      },
+      brickConfigFormActive: {},
+      brickConfigForm: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        zIndex: 100,
+        fontSize: '16px',
+        maxHeight: '80vh',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        color: '#333',
+      },
+      brickConfigFormBtnGroup: {
+        display: 'none',
+        padding: '5px 8px',
+        color: '#fff',
+        borderRadius: '0 4px',
+        background: theme.palette.mask.main,
+        '$brickWithConfigForm:hover > $brickConfigForm &': {
+          display: 'flex',
+        },
+      },
+      actionArea: {
+        position: 'absolute',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          backgroundColor: '#ccc',
+        },
+        '&$actionAreaHovered::before': {
+          backgroundColor: '#1da1ff',
+        },
+        '$brickWithConfigForm:not($brickHovered) > &': {
+          display: 'none',
+        },
+      },
+      actionAreaHovered: {},
+      actionAreaTop: {
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '10px',
+        borderRadius: '2px',
+        '&::before': {
+          top: '8px',
+          left: '50%',
+          width: '20px',
+          height: '2px',
+          borderRadius: '2px',
+          transform: 'translateX(-50%)',
+        },
+      },
+      actionAreaBottom: {
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: '10px',
+        borderRadius: '2px',
+        '&::before': {
+          bottom: '8px',
+          left: '50%',
+          width: '20px',
+          height: '2px',
+          borderRadius: '2px',
+          transform: 'translateX(-50%)',
+        },
+      },
+      actionAreaLeft: {
+        left: 0,
+        top: 0,
+        bottom: 0,
+        width: '10px',
+        borderRadius: '2px',
+        '&::before': {
+          left: '8px',
+          top: '50%',
+          height: '20px',
+          width: '2px',
+          borderRadius: '2px',
+          transform: 'translateY(-50%)',
+        },
+      },
+      actionAreaRight: {
+        right: 0,
+        top: 0,
+        bottom: 0,
+        width: '10px',
+        borderRadius: '2px',
+        '&::before': {
+          right: '8px',
+          top: '50%',
+          height: '20px',
+          width: '2px',
+          borderRadius: '2px',
+          transform: 'translateY(-50%)',
+        },
+      },
+    }
+  },
+  { name: 'BrickWrapper' }
+)
 
 interface DragOverProps {
   className?: string
@@ -86,13 +220,14 @@ export const createRemoveItemFromParentFn = (setBlueprint: SetBlueprint) => (key
 }
 
 const DragOver: React.FC<DragOverProps> = ({ className }: DragOverProps) => {
+  const classes = useStyles()
   const [hover, setHover] = useState(false)
   const handleMouseOver = useCallback(() => setHover(true), [])
   const handleMouseOut = useCallback(() => setHover(false), [])
   return (
     <div
       className={clx(className, {
-        'brick__action-area--hovered': hover,
+        [classes.actionAreaHovered]: hover,
       })}
       onDragEnter={handleMouseOver}
       onDragLeave={handleMouseOut}
@@ -175,6 +310,7 @@ const isInBackwardActionTriggerAera = (rect: DOMRect, clientOffset: XYCoord) => 
 
 const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => {
   const context = useContext(EnginxContext)
+  const classes = useStyles()
   if (context.previewMode) {
     return props.children
   }
@@ -390,22 +526,26 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       connectDragSource: drag,
       removeItem: onRemove,
       blueprint: props.blueprint,
+      classes: {
+        container: classes.brickConfigForm,
+        btnGroup: classes.brickConfigFormBtnGroup,
+      },
     }
   )
   preview(drop(brickContainer))
   const className = useMemo(() => {
-    return clx('brick', 'brick__with-config-form', {
-      'brick__with-config-form--dragging': isDragging,
-      'brick__with-config-form--hovered': isOverCurrent && !isDragging,
+    return clx('brick', classes.brickWithConfigForm, {
+      [classes.brickDragging]: isDragging,
+      [classes.brickHovered]: isOverCurrent && !isDragging,
     })
   }, [child.props.className, isDragging, isOverCurrent, isDragging])
   const actionArea = useMemo(() => {
     return !props.isRoot
       ? [
-          <DragOver key="left" className="brick__action-area brick__action-area-left" />,
-          <DragOver key="right" className="brick__action-area brick__action-area-right" />,
-          <DragOver key="top" className="brick__action-area brick__action-area-top" />,
-          <DragOver key="bottom" className="brick__action-area brick__action-area-bottom" />,
+          <DragOver key="left" className={clx(classes.actionArea, classes.actionAreaLeft)} />,
+          <DragOver key="right" className={clx(classes.actionArea, classes.actionAreaRight)} />,
+          <DragOver key="top" className={clx(classes.actionArea, classes.actionAreaTop)} />,
+          <DragOver key="bottom" className={clx(classes.actionArea, classes.actionAreaBottom)} />,
         ]
       : []
   }, [props.isRoot])

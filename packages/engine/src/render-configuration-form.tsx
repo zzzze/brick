@@ -1,14 +1,39 @@
 import React, { useState, useCallback, useEffect, useContext, useRef, useMemo } from 'react'
 import ReactDOM from 'react-dom'
 import { RenderConfigurationForm, RenderConfigurationFormOptions } from './context'
-import clx from 'classnames'
 import { FaEdit } from 'react-icons/fa'
 import { FiMove } from 'react-icons/fi'
 import { AiTwotoneDelete } from 'react-icons/ai'
 import EnginxContext from './context'
 import { Transition } from 'react-transition-group'
+import { createUseStyles } from 'react-jss'
+import { theme } from '@brick/shared'
+import clx from 'classnames'
+
+const useStyles = createUseStyles(
+  (theme: theme.Theme) => {
+    return {
+      btnGroup: {
+        '& > *': {
+          margin: `0 ${theme.spacing.Xss}px`,
+        },
+      },
+      deleteBtn: {
+        cursor: 'pointer',
+      },
+      editBtn: {
+        cursor: 'pointer',
+      },
+      moveBtn: {
+        cursor: 'move',
+      },
+    }
+  },
+  { name: 'RenderConfigurationForm' }
+)
 
 export default (node: JSX.Element, options: RenderConfigurationFormOptions): ReturnType<RenderConfigurationForm> => {
+  const classes = useStyles()
   const context = useContext(EnginxContext)
   const [style, setStyle] = useState<React.CSSProperties>({ top: -1, right: -1 })
   const configFormVisible = useMemo(() => context.selectedInstance === options.blueprint._key, [
@@ -55,23 +80,23 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
     event.stopPropagation()
   }, [])
   return (
-    <div ref={container} style={style} onClick={stopClickPropagation} className={clx('brick__config-form')}>
-      <div className="brick__config-form-btn-g1">
+    <div ref={container} style={style} onClick={stopClickPropagation} className={options.classes.container}>
+      <div className={clx(options.classes.btnGroup, classes.btnGroup)}>
         <span
-          className="brick__config-form-remove-btn"
+          className={classes.deleteBtn}
           title="remove"
           data-testid={`${options.blueprint._key}-remove-btn`}
           onClick={handleRemove}>
           <AiTwotoneDelete />
         </span>
         <span
-          className="brick__config-form-edit-btn"
+          className={classes.editBtn}
           title="edit"
           data-testid={`${options.blueprint._key}-edit-btn`}
           onClick={handleShowConfigForm}>
           <FaEdit />
         </span>
-        <span className="brick__config-form-move-btn" title="move" ref={options.connectDragSource}>
+        <span className={classes.moveBtn} title="move" ref={options.connectDragSource}>
           <FiMove />
         </span>
       </div>

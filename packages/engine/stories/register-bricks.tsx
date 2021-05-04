@@ -135,12 +135,34 @@ const TextWithAction: Brick = {
   version: '0.0.1',
 }
 
+const If: Brick = {
+  name: 'If',
+  dataTypes: {
+    visible: {
+      type: 'boolean',
+      default: false,
+    },
+  },
+  childrenType: ChildrenType.SINGLE,
+  render(instance: BrickInstance) {
+    if (instance.data.visible) {
+      return <div>{instance.children}</div>
+    }
+    return <div></div>
+  },
+  renderMenu() {
+    return <div>If</div>
+  },
+  version: '0.0.1',
+}
+
 export default (): void => {
   Engine.registerBrick(View)
   Engine.registerBrick(Text)
   Engine.registerBrick(Image)
   Engine.registerBrick(Input)
   Engine.registerBrick(TextWithAction)
+  Engine.registerBrick(If)
 
   Engine.registerDataType(StringType)
   Engine.registerDataType(NumberType)

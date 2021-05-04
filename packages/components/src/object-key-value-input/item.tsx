@@ -66,6 +66,11 @@ const Item: FC<ItemProps> = ({ value, index, label, handleChange, handleDeleteIt
   useEffect(() => {
     if (FUNCTION_STR.test(itemValue)) {
       setInputType(InputType.CODE)
+      return
+    }
+    if (typeof itemValue === 'boolean') {
+      setInputType(InputType.BOOLEAN)
+      return
     }
   }, [itemValue])
   return (
