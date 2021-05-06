@@ -78,8 +78,8 @@ describe('handlers', () => {
                 content: '{{$container.text}}',
               },
               handlers: {
-                onClick: `function(instance) {
-                  instance.setData(function(data) {
+                onClick: `function() {
+                  this.setData(function(data) {
                     return Object.assign({}, data, {
                       content: '123',
                     })
@@ -132,8 +132,8 @@ describe('handlers', () => {
                 content: '{{$container.text}}',
               },
               handlers: {
-                onClick: `function(instance) {
-                  instance.setData(function(data) {
+                onClick: `function() {
+                  this.setData(function(data) {
                     return Object.assign({}, data, {
                       content: '123',
                     })

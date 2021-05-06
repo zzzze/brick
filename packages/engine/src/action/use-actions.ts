@@ -1,12 +1,16 @@
 import { useMemo } from 'react'
 import { Actions } from './parse-actions'
-import { Action } from '../types'
+import { Action, BrickInstance } from '../types'
 import { Blueprint, BrickContext } from '../types'
 import parseActions from './parse-actions'
 
-export default function useActions(config: Blueprint, context: BrickContext): Record<string, Action> {
+export default function useActions(
+  instance: BrickInstance,
+  config: Blueprint,
+  context: BrickContext
+): Record<string, Action> {
   return useMemo<Actions>(() => {
-    return parseActions(config.actions ?? {}, {
+    return parseActions(instance, config.actions ?? {}, {
       $this: {
         supply: context.actions,
       },

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useContext } from 'react'
+import React, { useCallback, useMemo, useContext, useRef } from 'react'
 import { BrickInstance, Blueprint, SetBlueprint, SetBlueprintFn, BrickContext, DataObject } from './types'
 import BrickWrapper, { createRemoveItemFromParentFn } from './brick-wrapper'
 import EnginxContext from './context'
@@ -10,9 +10,10 @@ import useSupply from './action/use-supply'
 import useInstanceHandlers from './use-instance-handlers'
 import normalizeDataType from './data/normalize-data-type'
 import useData from './data/use-data'
-import bindBrickInstance from './action/bind-brick-instance'
 import ErrorBoundary from './error-boundary'
-import { Action } from './types'
+import evalForExpr from './data/eval-for-expr'
+import RenderCopy, { CopyWrapper } from './render-copy'
+import { cloneDeep } from 'lodash'
 
 export interface BrickRenderProps {
   blueprint: Blueprint
@@ -24,6 +25,7 @@ export interface BrickRenderProps {
   onDrop?: (_blueprint: Blueprint) => void
   isRoot?: boolean
   data?: DataObject
+  keyPrefix?: string
 }
 
 const BrickRenderer: React.FC<BrickRenderProps> = ({
@@ -45,10 +47,27 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
   }, [engineCtx.dataTypes, brick.dataTypes])
   const [data, setData] = useData(dataTypes, blueprint.data ?? {}, context.data ?? {}, props.data ?? {})
   const instanceHandlers = useInstanceHandlers(data, setBlueprint, setData)
-  const actions = useActions(blueprint, context)
-  const listeners = useListeners(blueprint, context, actions)
-  const handlers = useHandlers(brick, blueprint, context, actions)
-  const supply = useSupply(blueprint, context, data, actions)
+  const instance = useRef<BrickInstance>({
+    key: blueprint._key,
+    context,
+    listeners: {},
+    actions: {},
+    handlers: {},
+    data,
+    editing: !engineCtx.previewMode,
+    ...instanceHandlers,
+  })
+  instance.current.context = context
+  instance.current.editing = !engineCtx.previewMode
+  instance.current.data = data
+  Object.assign(instance.current, instanceHandlers)
+  const actions = useActions(instance.current, blueprint, context)
+  const listeners = useListeners(instance.current, blueprint, context, actions)
+  const handlers = useHandlers(instance.current, brick, blueprint, context, actions)
+  const supply = useSupply(instance.current, blueprint, context, data, actions)
+  instance.current.listeners = listeners
+  instance.current.actions = actions
+  instance.current.handlers = handlers
   const handleSetStateForChildren = useCallback((fn: (blueprint: Readonly<Blueprint>) => Blueprint, key: string) => {
     setBlueprint((blueprint) => {
       if (!blueprint.children || !blueprint.children.length) {
@@ -97,36 +116,49 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
       }
     })
   }, [])
-  const brickInstance: Omit<BrickInstance, 'children' | 'handlers'> = {
-    ...instanceHandlers,
-    data,
-    context,
-    actions,
-    editing: !engineCtx.previewMode,
-    key: blueprint._key,
-  }
-  useMemo(() => {
-    bindBrickInstance(actions, brickInstance)
-  }, [actions])
-  useMemo(() => {
-    bindBrickInstance(listeners, brickInstance)
-  }, [listeners])
-  useMemo(() => {
-    bindBrickInstance(handlers, brickInstance)
-  }, [handlers])
-  useMemo(() => {
-    if (Object.keys(blueprint.supply?.actions || {}).length) {
-      if (blueprint.id) {
-        bindBrickInstance((supply.actions?.[`$${blueprint.id}`] || {}) as Record<string, Action>, brickInstance)
-      } else {
-        bindBrickInstance((supply.actions?.$parent || {}) as Record<string, Action>, brickInstance)
-      }
-    }
-  }, [supply.actions])
   const render = useRender(brick, blueprint)
   if (engineCtx.previewMode && !(data?.if ?? true)) {
     return null
   }
+  const renderChildren = useCallback(
+    (item?: unknown, i?: number) => {
+      const newSupply = cloneDeep(supply)
+      if (typeof item !== 'undefined' && newSupply?.data?.$parent) {
+        newSupply.data.$parent = Object.keys((newSupply?.data?.$parent as Record<string, unknown>) ?? {}).reduce<
+          Record<string, unknown>
+        >((acc, cur) => {
+          const value = (newSupply?.data?.$parent as Record<string, unknown>)?.[cur]
+          if (typeof value === 'string' && /\b(item|index)\b/.test(value)) {
+            acc[cur] = evalForExpr(value, instance.current.data, item, i ?? 0)
+          } else {
+            acc[cur] = value
+          }
+          return acc
+        }, {})
+      }
+      if (!Array.isArray(blueprint.children)) return null
+      return blueprint.children.map((child) => {
+        const newChild = { ...child }
+        if (typeof i !== 'undefined') {
+          newChild.copy = true
+          newChild.copyID = i
+        }
+        return (
+          <ErrorBoundary key={child._key}>
+            <BrickRenderer
+              parentBlueprint={blueprint}
+              blueprint={newChild}
+              context={newSupply}
+              onAddToOrMoveInParent={handleAddToOrMoveInParent}
+              onRemoveItemFromParent={handleRemoveFromParent}
+              setBlueprint={(fn: SetBlueprintFn) => handleSetStateForChildren(fn, newChild._key)}
+            />
+          </ErrorBoundary>
+        )
+      })
+    },
+    [blueprint.children, supply.data, props.keyPrefix, data]
+  )
   return (
     <BrickWrapper
       hidden={!((data?.if as boolean) ?? true)}
@@ -137,27 +169,34 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
       isRoot={props.isRoot}
       parentBlueprint={props.parentBlueprint}
       onBlueprintChange={setBlueprint}>
-      {render({
-        ...brickInstance,
-        actions,
-        handlers,
-        children:
-          Array.isArray(blueprint.children) &&
-          blueprint.children.map((child) => {
+      {Array.isArray(data.for) ? (
+        <CopyWrapper>
+          {data.for.map((item, i) => {
+            const instanceCopied = { ...instance.current }
+            instanceCopied.data = Object.keys(instanceCopied.data).reduce<Record<string, unknown>>((acc, cur) => {
+              const value = instanceCopied.data[cur]
+              if (typeof value === 'string' && /\b(item|index)\b/.test(value)) {
+                acc[cur] = evalForExpr(value, instanceCopied.data, item, i)
+              } else {
+                acc[cur] = value
+              }
+              return acc
+            }, {})
             return (
-              <ErrorBoundary key={child._key}>
-                <BrickRenderer
-                  parentBlueprint={blueprint}
-                  blueprint={child}
-                  context={supply}
-                  onAddToOrMoveInParent={handleAddToOrMoveInParent}
-                  onRemoveItemFromParent={handleRemoveFromParent}
-                  setBlueprint={(fn: SetBlueprintFn) => handleSetStateForChildren(fn, child._key)}
-                />
-              </ErrorBoundary>
+              <RenderCopy
+                key={i}
+                render={render}
+                options={{ ...instanceCopied, actions, handlers, children: renderChildren(item, i) }}
+              />
             )
-          }),
-      })}
+          })}
+        </CopyWrapper>
+      ) : (
+        render({
+          ...instance.current,
+          children: renderChildren(),
+        })
+      )}
     </BrickWrapper>
   )
 }

@@ -36,10 +36,15 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
   const classes = useStyles()
   const context = useContext(EnginxContext)
   const [style, setStyle] = useState<React.CSSProperties>({ top: -1, right: -1 })
-  const configFormVisible = useMemo(() => context.selectedInstance === options.blueprint._key, [
-    context.selectedInstance,
-    options.blueprint._key,
-  ])
+  const configFormVisible = useMemo(() => {
+    if (context.selectedInstance !== options.blueprint._key) {
+      return false
+    }
+    if (options.blueprint.copy && options.blueprint.copyID !== 0) {
+      return false
+    }
+    return true
+  }, [context.selectedInstance, options.blueprint._key, options.blueprint.copy, options.blueprint.copyID])
   const handleShowConfigForm = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation()

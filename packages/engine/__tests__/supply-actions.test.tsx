@@ -35,8 +35,8 @@ describe('supply actions', () => {
               content: '{{$this.name}}',
             },
             actions: {
-              onClick: `function(instance) {
-                instance.setData(function(data) {
+              onClick: `function() {
+                this.setData(function(data) {
                   return Object.assign({}, data, {
                     name: '123456',
                   })
@@ -107,8 +107,8 @@ describe('supply actions', () => {
               content: '{{$this.name}}',
             },
             actions: {
-              onClick: `function(instance) {
-                instance.setData(function(data) {
+              onClick: `function() {
+                this.setData(function(data) {
                   return Object.assign({}, data, {
                     name: '123456',
                   })
@@ -165,8 +165,8 @@ describe('supply actions', () => {
           text: '{{$this.name}}',
         },
         actions: {
-          onClick: `function(instance) {
-            instance.setData(function(data) {
+          onClick: `function() {
+            this.setData(function(data) {
               return Object.assign({}, data, {
                 name: '123456',
               })
@@ -241,8 +241,8 @@ describe('supply actions', () => {
           text: '{{$this.name}}',
         },
         actions: {
-          onClick: `function(instance, name) {
-            instance.setData(function(data) {
+          onClick: `function(name) {
+            this.setData(function(data) {
               return Object.assign({}, data, {
                 name: name,
               })
@@ -261,8 +261,8 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               _key: '003',
               handlers: {
-                onClick: `function(instance) {
-                  instance.context.actions.$container.onClick(instance.data.content)
+                onClick: `function() {
+                  this.context.actions.$container.onClick(this.data.content)
                 }`,
               },
               data: {
@@ -319,8 +319,8 @@ describe('supply actions', () => {
           text: '{{$this.name}}',
         },
         actions: {
-          onClick: `function(instance, name) {
-            instance.setData(function(data) {
+          onClick: `function(name) {
+            this.setData(function(data) {
               return Object.assign({}, data, {
                 name: name,
               })
@@ -345,8 +345,8 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               _key: '003',
               handlers: {
-                onClick: `function(instance) {
-                  instance.context.actions.$container2.onClick(instance.data.content)
+                onClick: `function() {
+                  this.context.actions.$container2.onClick(this.data.content)
                 }`,
               },
               data: {
@@ -403,8 +403,8 @@ describe('supply actions', () => {
           text: '{{$this.name}}',
         },
         actions: {
-          onClick: `function(instance, name) {
-            instance.setData(function(data) {
+          onClick: `function(name) {
+            this.setData(function(data) {
               return Object.assign({}, data, {
                 name: name,
               })
@@ -429,8 +429,8 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               _key: '003',
               actions: {
-                handleClick: `function(instance) {
-                  instance.context.actions.$container2.onClick(instance.data.content)
+                handleClick: `function() {
+                  this.context.actions.$container2.onClick(this.data.content)
                 }`,
               },
               handlers: {
@@ -490,8 +490,8 @@ describe('supply actions', () => {
           text: '{{$this.name}}',
         },
         actions: {
-          onClick: `function(instance, name) {
-            instance.setData(function(data) {
+          onClick: `function(name) {
+            this.setData(function(data) {
               return Object.assign({}, data, {
                 name: name,
               })
@@ -516,11 +516,11 @@ describe('supply actions', () => {
               name: 'TextWithAction2',
               _key: '003',
               actions: {
-                click: `function(instance) {
-                  instance.context.actions.$container2.onClick(instance.data.content)
+                click: `function() {
+                  this.context.actions.$container2.onClick(this.data.content)
                 }`,
-                handleClick: `function(instance) {
-                  instance.actions.click()
+                handleClick: `function() {
+                  this.actions.click()
                 }`,
               },
               handlers: {

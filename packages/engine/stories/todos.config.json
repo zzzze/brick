@@ -1,0 +1,200 @@
+{
+  "name": "View",
+  "_key": "001",
+  "id": "container",
+  "children": [
+    {
+      "_key": "8flFbhPZmzDmJesuMAUcN",
+      "name": "Text",
+      "data": {
+        "content": "todos",
+        "style": {
+          "color": "#b83f45",
+          "fontSize": "80px",
+          "display": "block",
+          "textAlign": "center"
+        }
+      },
+      "actions": {},
+      "handlers": {},
+      "supply": {
+        "actions": {}
+      },
+      "version": "0.0.1"
+    },
+    {
+      "_key": "OYACaLO718nBJZhhcAsG0",
+      "name": "View",
+      "data": {
+        "if": true,
+        "style": {
+          "boxShadow": "0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1)",
+          "width": "550px",
+          "margin": "0 auto"
+        },
+        "styleOverride": {},
+        "dataSource": {}
+      },
+      "actions": {},
+      "handlers": {},
+      "supply": {
+        "actions": {},
+        "data": {}
+      },
+      "children": [
+        {
+          "_key": "e5qaQJBw4qW10USecmsoM",
+          "name": "View",
+          "data": {
+            "if": true,
+            "style": {
+              "display": "flex",
+              "boxShadow": "inset 0 -2px 1px rgba(0,0,0,0.03)"
+            }
+          },
+          "children": [
+            {
+              "_key": "qxChEb2MiLdL1JRvBv7q2",
+              "name": "Text",
+              "data": {
+                "content": "❯",
+                "style": {
+                  "display": "block",
+                  "padding": "10px 20px",
+                  "fontSize": "22px",
+                  "transform": "rotate(90deg)",
+                  "color": "#949494"
+                },
+                "styleOverride": {
+                  "transform": "none"
+                }
+              },
+              "actions": {},
+              "handlers": {},
+              "supply": {
+                "actions": {}
+              }
+            },
+            {
+              "_key": "aADzXprhZfpcg3E_3Whqs",
+              "name": "Input",
+              "data": {
+                "style": {
+                  "padding": "16px",
+                  "width": "100%",
+                  "boxSizing": "border-box",
+                  "border": "none",
+                  "background": "transparent",
+                  "height": "65px",
+                  "fontSize": "24px"
+                },
+                "styleOverride": {},
+                "wrapperStyle": {
+                  "width": "100%",
+                  "display": "block"
+                }
+              },
+              "actions": {},
+              "handlers": {
+                "onKeyPress": "function(event) {\n  if (event.key === 'Enter' && !!this.data._text) {\n    console.log(this.data._text)\n    this.context.actions.$container.addTodo({\n      title: this.data._text,\n      complete: false,\n    })\n    event.target.value = ''\n  }\n}",
+                "onChange": "function(event) {\n  this.data._text = event.target.value\n}"
+              },
+              "supply": {
+                "actions": {}
+              }
+            }
+          ],
+          "actions": {},
+          "handlers": {},
+          "supply": {
+            "actions": {}
+          },
+          "version": "0.0.1"
+        },
+        {
+          "_key": "iVgLWZRrbrCkJbrmzR3WC",
+          "name": "View",
+          "data": {
+            "if": true
+          },
+          "actions": {},
+          "handlers": {},
+          "supply": {
+            "actions": {}
+          },
+          "children": [
+            {
+              "_key": "huzaAMvq29ZVjdtwwGttW",
+              "name": "View",
+              "data": {
+                "if": true,
+                "for": "{{$container.dataSource}}"
+              },
+              "children": [
+                {
+                  "_key": "Sspez85t8cO0VU1LPxE1J",
+                  "name": "Text",
+                  "data": {
+                    "for": "{{}}",
+                    "content": "{{$parent.todo.title}}",
+                    "style": {
+                      "backgroundImage": "url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23949494%22%20stroke-width%3D%223%22/%3E%3C/svg%3E')",
+                      "backgroundRepeat": "no-repeat",
+                      "backgroundPosition": "15px center",
+                      "padding": "15px 15px 15px 70px",
+                      "lineHeight": "1.2",
+                      "fontWeight": "400",
+                      "fontSize": "24px",
+                      "color": "#484848",
+                      "display": "block",
+                      "borderBottom": "1px solid #ededed"
+                    }
+                  },
+                  "actions": {},
+                  "handlers": {},
+                  "supply": {
+                    "actions": {}
+                  },
+                  "copy": true,
+                  "copyID": 0,
+                  "version": "0.0.1"
+                }
+              ],
+              "actions": {},
+              "handlers": {},
+              "supply": {
+                "actions": {},
+                "data": {
+                  "todo": "{{item}}"
+                }
+              },
+              "version": "0.0.1"
+            }
+          ],
+          "version": "0.0.1"
+        }
+      ],
+      "id": "container",
+      "version": "0.0.1"
+    }
+  ],
+  "version": "0.0.1",
+  "actions": {
+    "addTodo": "function(this: BrickInstance, todo: any) {\n  this.setData(function (data) {\n    return Object.assign({}, data, {\n      dataSource: data.dataSource.concat(todo),\n    })\n  })\n}"
+  },
+  "handlers": {},
+  "supply": {
+    "actions": {
+      "addTodo": "{{$this.addTodo}}"
+    },
+    "data": {
+      "dataSource": "{{$this.dataSource}}"
+    }
+  },
+  "data": {
+    "style": {
+      "fontFamily": "'Helvetica Neue', Helvetica, Arial, sans-serif"
+    },
+    "dataSource": "{{[{title: 'hello world', complete: false}, {title: 'hello world 02', complete: false}]}}"
+  }
+}

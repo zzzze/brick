@@ -37,6 +37,7 @@ export interface EngineProps {
   getConfigurationPanelContainer?: () => HTMLElement
   theme?: types.DeepPartial<theme.Theme>
   generateJssID?: ReturnType<typeof createGenerateId>
+  debug?: boolean
 }
 
 interface EngineState {
@@ -125,6 +126,9 @@ class Engine extends React.Component<EngineProps, EngineState> {
     }
     const diff = Diff.diff(prevState.blueprint, this.state.blueprint)
     if (diff) {
+      if (this.props.debug) {
+        console.log(diff)
+      }
       this._backwardDiffs.push(diff)
     }
   }

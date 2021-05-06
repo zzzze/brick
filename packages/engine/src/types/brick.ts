@@ -8,8 +8,13 @@ export enum ChildrenType {
   NONE = 'none',
 }
 
+export enum BrickStyle {
+  INLINE = 'inline',
+  BLOCK = 'block',
+}
+
 export interface Render {
-  (args: BrickInstance): React.ReactElement
+  (instance: BrickInstance): React.ReactElement
   __source?: string
 }
 
@@ -28,6 +33,7 @@ export interface Brick {
   name: string
   dataTypes: Record<string, string | DataTypeDefinition>
   eventNames?: string[] // events triggered by brick
+  style?: BrickStyle
   defaultHandlers?: Record<string, string> // handler for event
   childrenType: ChildrenType
   render: Render

@@ -3,14 +3,20 @@
   "_key": "001",
   "id": "container",
   "data": {
-    "name": "baz"
+    "dataSource": {},
+    "name": "baz",
+    "style": {},
+    "styleOverride": {},
+    "if": true,
+    "for": ""
   },
   "actions": {
-    "onClick": "function(instance, name) {\n            instance.setData(function(data) {\n    console.log('000001', data);\n          return Object.assign({}, data, {\n                name: name,\n              })\n            }, {\n              setToBlueprint: true,\n            })\n          }"
+    "onClick": "function(name) {\n  this.setData(function (data) {\n    console.log('000001', data);\n    return Object.assign({}, data, {\n      name: name,\n    })\n  }, {\n    setToBlueprint: true,\n  })\n}"
   },
   "supply": {
     "data": {
-      "text": "{{$this.name}}"
+      "text": "{{$this.name}}",
+      "array": "{{['111', '222', '333']}}"
     },
     "actions": {
       "onClick": "{{$this.onClick}}"
@@ -49,7 +55,7 @@
       "supply": {
         "actions": {
           "onClick": "{{$container.onClick}}",
-          "onInputChange": "function(instance, value) {\n   instance.context.actions.$container.onClick(value)}"
+          "onInputChange": "function(value) {\n   this.context.actions.$container.onClick(value)}"
         }
       },
       "children": [
@@ -57,7 +63,16 @@
           "name": "Input",
           "_key": "0010",
           "handlers": {
-            "onChange": "function(instance, event) {\n             instance.context.actions.$container2.onInputChange(event.target.value)\n                }"
+            "onChange": "function(event) {\n             this.context.actions.$container2.onInputChange(event.target.value)\n                }"
+          },
+          "version": "0.0.1"
+        },
+        {
+          "name": "Text",
+          "_key": "011",
+          "data": {
+            "for": "{{$container.array}}",
+            "content": "{{item}}"
           },
           "version": "0.0.1"
         },
@@ -65,7 +80,7 @@
           "name": "TextWithAction",
           "_key": "005",
           "actions": {
-            "handleClick": "function(instance, ...args) {\n console.log('abc', instance, args)\n                  instance.context.actions.$container2.onClick(instance.data.content)\n                }"
+            "handleClick": "function(...args) {\n  this.context.actions.$container2.onClick(this.data.content)\n}"
           },
           "handlers": {
             "onClick": "{{$this.handleClick}}"
@@ -73,7 +88,10 @@
           "data": {
             "content": "123456789"
           },
-          "version": "0.0.1"
+          "version": "0.0.1",
+          "supply": {
+            "actions": {}
+          }
         }
       ],
       "version": "0.0.1"
@@ -81,12 +99,20 @@
     {
       "name": "View",
       "_key": "006",
+      "data": {
+        "for": "{{$container.array}}"
+      },
+      "supply": {
+        "data": {
+          "content": "{{item}}"
+        }
+      },
       "children": [
         {
           "name": "Text",
           "_key": "007",
           "data": {
-            "content": "{{$container.text}}"
+            "content": "{{$parent.content}}"
           },
           "version": "0.0.1"
         },
@@ -104,7 +130,10 @@
           "_key": "003",
           "data": {
             "content": "fooo",
-            "style": { "color": "blue", "fontSize": "24px" }
+            "style": {
+              "color": "blue",
+              "fontSize": "24px"
+            }
           },
           "version": "0.0.1"
         }
@@ -112,5 +141,6 @@
       "version": "0.0.1"
     }
   ],
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "handlers": {}
 }

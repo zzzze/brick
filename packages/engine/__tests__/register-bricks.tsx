@@ -67,8 +67,8 @@ const TextWithOnClickEvent: Brick = {
   childrenType: ChildrenType.NONE,
   eventNames: ['onClick'],
   defaultHandlers: {
-    onClick: `function (instance) {
-      instance.setData(function(data) {
+    onClick: `function () {
+      this.setData(function(data) {
         return Object.assign({}, data, {
           content: 'foo',
         })

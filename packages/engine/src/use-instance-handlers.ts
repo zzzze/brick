@@ -31,11 +31,10 @@ export default function useInstanceHandlers(
   const handleEmit = useCallback((event: string, ...args: unknown[]) => {
     context.ee.emit(event, ...args)
   }, [])
-  return useMemo(
-    () => ({
+  return useMemo(() => {
+    return {
       setData: handleSetData,
       emit: handleEmit,
-    }),
-    [handleSetData]
-  )
+    }
+  }, [handleSetData])
 }

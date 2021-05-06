@@ -18,6 +18,7 @@ export interface BrickContext {
 export interface Action {
   (...args: unknown[]): void
   __source?: string
+  __originAction?: Action
   binded?: boolean
   instance_key?: string
 }
@@ -33,6 +34,7 @@ export interface BrickInstance {
   data: DataObject
   actions: Record<string, Action>
   handlers: Record<string, Action>
+  listeners: Record<string, Action>
   context: BrickContext
   setData: SetData
   emit: Emit

@@ -1,5 +1,5 @@
 import parseActions, { ActionObj } from '../parse-actions'
-import { Action } from '../../types'
+import { Action, BrickInstance } from '../../types'
 
 describe('parseActions', () => {
   test('parse actions string correctly', () => {
@@ -14,7 +14,7 @@ describe('parseActions', () => {
       },
     }
     const ctx = { result: 0 }
-    const actions = parseActions(actionObj, context)
+    const actions = parseActions(({} as unknown) as BrickInstance, actionObj, context)
     actions.add(2, 4, ctx)
     expect(ctx.result).toBe(6)
     actions.sub(8, 4, ctx)

@@ -1,18 +1,28 @@
 import React, { useMemo } from 'react'
 import { Engine } from '../src/engine'
-import { Brick, ChildrenType, BrickInstance } from '../src/types'
+import { Brick, ChildrenType, BrickInstance, BrickStyle } from '../src/types'
 import { StringType, NumberType, BooleanType, ObjectType, CodeType } from '../src/data/data-type'
 import { Editor } from '@brick/components'
 
 const View: Brick = {
   name: 'View',
   dataTypes: {
+    dataSource: {
+      type: 'object',
+      default: {},
+      canUseExpression: true,
+    },
     name: 'string',
     style: 'object',
     styleOverride: 'object',
     if: {
       type: 'boolean',
       default: true,
+      canUseExpression: true,
+    },
+    for: {
+      type: 'string',
+      default: '',
       canUseExpression: true,
     },
   },
@@ -34,10 +44,16 @@ const View: Brick = {
 
 const Text: Brick = {
   name: 'Text',
+  style: BrickStyle.INLINE,
   dataTypes: {
     content: 'string',
     style: 'object',
     styleOverride: 'object',
+    for: {
+      type: 'string',
+      default: '',
+      canUseExpression: true,
+    },
   },
   childrenType: ChildrenType.NONE,
   canCustomizeRender: true,
@@ -58,6 +74,7 @@ const Text: Brick = {
 
 const Image: Brick = {
   name: 'Image',
+  style: BrickStyle.INLINE,
   dataTypes: {
     src: 'string',
     style: 'object',
@@ -87,12 +104,13 @@ const Image: Brick = {
 
 const Input: Brick = {
   name: 'Input',
+  style: BrickStyle.INLINE,
   dataTypes: {
     style: 'object',
     styleOverride: 'object',
   },
   childrenType: ChildrenType.NONE,
-  eventNames: ['onChange'],
+  eventNames: ['onChange', 'onKeyPress'],
   render(instance: BrickInstance) {
     const style = useMemo(() => {
       return {
@@ -100,7 +118,7 @@ const Input: Brick = {
         ...(instance.editing ? (instance.data.styleOverride as React.CSSProperties) : {}),
       }
     }, [instance])
-    return <input style={style} onChange={instance.handlers['onChange']} />
+    return <input style={style} onChange={instance.handlers['onChange']} onKeyPress={instance.handlers['onKeyPress']} />
   },
   renderMenu() {
     return <div>Input</div>
@@ -110,6 +128,7 @@ const Input: Brick = {
 
 const TextWithAction: Brick = {
   name: 'TextWithAction',
+  style: BrickStyle.INLINE,
   dataTypes: {
     content: 'string',
     style: 'object',

@@ -55,7 +55,7 @@ export default function parseData(dataConfig: DataConfig, data: DataObject, pSup
       }
       traversedKeys = traversedKeys.concat(key)
       let value = data[key] ?? dataConfig[key].default
-      if (typeof value === 'string' && VALUE_PARAM_PATTERN.test(value)) {
+      if (typeof value === 'string' && VALUE_PARAM_PATTERN.test(value) && !/\b(item|index)\b/.test(value)) {
         const match = /^\{\{\s*\$this\.(\w+)\.?/.exec(value)
         const dependentData: DataObject = {}
         if (match) {

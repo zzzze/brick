@@ -1,5 +1,5 @@
 import React, { Children, cloneElement, useRef, useCallback, useContext, useMemo, useState, RefObject } from 'react'
-import { ChildrenType, Blueprint, DataObject, SetBlueprint } from './types'
+import { ChildrenType, Blueprint, DataObject, SetBlueprint, BrickStyle } from './types'
 import ConfigurationForm from './configuration-form'
 import EnginxContext from './context'
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
@@ -8,6 +8,7 @@ import { createUseStyles } from 'react-jss'
 import clx from 'classnames'
 import debounce from 'lodash/debounce'
 import { theme } from '@brick/shared'
+import { CopyWrapper } from './render-copy'
 
 export const ITEM_TYPE = 'brick-instance'
 
@@ -344,7 +345,22 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       }
     })
   }, [])
-  const child: React.ReactElement<IBrickContainer> = Children.only(props.children)
+  // const child: React.ReactElement<IBrickContainer> = Children.only(props.children)
+  const child: React.ReactElement<IBrickContainer> = useMemo(() => {
+    if (React.Children.count(props.children) <= 1) {
+      if (props.children.type === CopyWrapper) {
+        let Tag: 'span' | 'div' = 'div'
+        if (brick.style === BrickStyle.INLINE) {
+          Tag = 'span'
+        }
+        return <Tag>{props.children}</Tag>
+      }
+      return props.children as React.ReactElement<IBrickContainer>
+    } else {
+      const firstChild = React.Children.toArray(props.children)[0] as React.ReactElement<IBrickContainer>
+      return cloneElement(firstChild, {}, props.children)
+    }
+  }, [props.children, brick])
   const canDrop = (item: IDragItem, monitor: DropTargetMonitor) => {
     if (!brickContainer.current) {
       return false

@@ -1,7 +1,7 @@
 import { VALUE_PARAM_PATTERN } from '../types'
 import { interpreteParam } from '../utils'
 import compileAction, { Func } from './compile-action'
-import { Action } from '../types/brick-instance'
+import { Action, BrickInstance } from '../types/brick-instance'
 
 export type Actions = Record<string, Action>
 export type ActionObj = Record<string, Func>
@@ -24,7 +24,11 @@ export type ActionObj = Record<string, Func>
  *    c: (a, b) => a + b + c,
  *  }
  */
-export default function parseActions(obj: ActionObj, context: Record<string, unknown>): Actions {
+export default function parseActions(
+  instance: BrickInstance,
+  obj: ActionObj,
+  context: Record<string, unknown>
+): Actions {
   return Object.keys(obj || {}).reduce<Actions>((result, key) => {
     const func = obj[key] || 'function(){}'
     let action: Action
@@ -36,7 +40,7 @@ export default function parseActions(obj: ActionObj, context: Record<string, unk
         return expressions
       }) as Action
     } else {
-      action = compileAction(func)
+      action = compileAction((instance as unknown) as Record<string, unknown>, func)
     }
     result[key] = action
     return result

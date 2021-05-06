@@ -1,11 +1,12 @@
 import { useMemo } from 'react'
 import { Actions } from './parse-actions'
-import { Action } from '../types'
+import { Action, BrickInstance } from '../types'
 import { Brick, Blueprint, BrickContext } from '../types'
 import { Func } from './compile-action'
 import parseActions from './parse-actions'
 
 export default function useHandlers(
+  instance: BrickInstance,
   brick: Brick,
   config: Blueprint,
   context: BrickContext,
@@ -19,7 +20,7 @@ export default function useHandlers(
       }
       return result
     }, {})
-    return parseActions(obj as Record<string, Func>, {
+    return parseActions(instance, obj as Record<string, Func>, {
       $this: {
         actions,
         supply: context.actions,

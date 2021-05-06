@@ -18,7 +18,8 @@ export type CustomRender = string | CustomRenderFn
 export interface Blueprint {
   _key: string
   name: string // brick name
-  if?: boolean
+  if?: boolean // 'if' directive
+  for?: string // 'for' directive
   version: string // brick version
   id?: string // brick instance id
   data?: DataObject // data for brick instance
@@ -27,6 +28,8 @@ export interface Blueprint {
   supply?: Supply // provide data for child brick instance
   children?: Blueprint[]
   listeners?: Record<string, Func> // listeners use for register event listeners of EventEmitter
+  copy?: boolean // copied 'for' directive
+  copyID?: number // copied 'for' directive
   render?: CustomRender // custom render
 }
 

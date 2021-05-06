@@ -1,10 +1,11 @@
 import { useMemo } from 'react'
 import { Actions } from './parse-actions'
-import { Blueprint, BrickContext, VALUE_PARAM_PATTERN, idPrefix } from '../types'
+import { Blueprint, BrickContext, VALUE_PARAM_PATTERN, idPrefix, BrickInstance } from '../types'
 import parseActions from './parse-actions'
 import evalExpr from '../data/eval-data-expr'
 
 export default function useSupply(
+  instance: BrickInstance,
   config: Blueprint,
   context: BrickContext,
   data: Record<string, unknown>,
@@ -23,7 +24,7 @@ export default function useSupply(
     }
     supplyData = dataKeys.reduce<Record<string, unknown>>((result, key) => {
       let value = supplyData[key]
-      if (typeof value === 'string' && VALUE_PARAM_PATTERN.test(value)) {
+      if (typeof value === 'string' && VALUE_PARAM_PATTERN.test(value) && !/\b(item|index)\b/.test(value)) {
         value = evalExpr(value, data, context.data ?? {})
       }
       result[key] = value
@@ -45,7 +46,7 @@ export default function useSupply(
     if (actionKeys.length <= 0) {
       return result
     }
-    supplyActions = parseActions(originActions, {
+    supplyActions = parseActions(instance, originActions, {
       $this: {
         actions,
       },

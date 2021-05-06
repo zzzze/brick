@@ -129,11 +129,12 @@ const FormItem: React.FC<FormItemProps> = ({
   )
   const ref = useRef<{ value: unknown }>(null)
   useEffect(() => {
-    if (context.autoCommit || !ref.current) {
+    if (context.autoCommit || !ref.current || !isEditMode) {
       return
     }
+    // maybe has side effects (eg: trigger 'onChange'), if not necessary (eg: exiting edit mode is not necessary), do not perform more than once.
     ref.current.value = get(context.data, name) ?? defaultValue ?? null
-  }, [context.data, name, isEditMode, ref, defaultValue])
+  }, [context.data, name, isEditMode, defaultValue])
   const value = useMemo(() => get(context.data, name), [context.data, name])
   useEffect(() => {
     if (typePredication.isString(value) && /^\{\{.*\}\}$/.test(value)) {

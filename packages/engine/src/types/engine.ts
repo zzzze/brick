@@ -1,1 +1,1 @@
-export const VALUE_PARAM_PATTERN = /^\{\{([^{}]*)\}\}$/
+export const VALUE_PARAM_PATTERN = /^\{\{(.*)\}\}$/
