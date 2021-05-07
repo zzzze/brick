@@ -80,17 +80,29 @@ export function compactBrick(bricks: Record<string, Brick>, bgm: BrickGroupMap, 
         }
       }, options)
     }
+    // FIXME
+    // eslint-disable-next-line
+    // @ts-ignore
     brickInstance.children = childrenRenders.map((render) => render(brickInstance))
     let _render = brick.render
     if (bgm.render) {
+      // FIXME
+      // eslint-disable-next-line
+      // @ts-ignore
       _render = compileCustomRender(bgm.render)
     }
+    // FIXME
+    // eslint-disable-next-line
+    // @ts-ignore
     return _render({
       ...brickInstance,
       data,
       setData: handleSetData,
     })
   }
+  // FIXME
+  // eslint-disable-next-line
+  // @ts-ignore
   return render
 }
 

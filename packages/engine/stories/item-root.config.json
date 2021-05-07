@@ -122,7 +122,7 @@
           "data": {
             "content": "hello world"
           },
-          "render": "(instance: BrickInstance) => {\n\treturn (\n\t\t<span>content: {instance.data.content}</span>\n\t)\n}",
+          "render": "function (this: BrickInstance) {\n\treturn (\n\t\t<span>content: {this.data.content}</span>\n\t)\n}",
           "version": "0.0.1"
         },
         {

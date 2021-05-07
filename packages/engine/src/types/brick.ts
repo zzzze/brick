@@ -13,8 +13,13 @@ export enum BrickStyle {
   BLOCK = 'block',
 }
 
-export interface Render {
-  (instance: BrickInstance): React.ReactElement
+export interface Render extends RenderRaw {
+  __raw: (instance: BrickInstance) => React.ReactElement
+  rebind(instance: BrickInstance): Render
+}
+
+export interface RenderRaw {
+  (): React.ReactElement
   __source?: string
 }
 
@@ -36,7 +41,7 @@ export interface Brick {
   style?: BrickStyle
   defaultHandlers?: Record<string, string> // handler for event
   childrenType: ChildrenType
-  render: Render
+  render: RenderRaw
   renderMenu?: () => React.ReactElement
   canCustomizeRender?: boolean
   version: string

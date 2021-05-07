@@ -14,8 +14,8 @@ const View: Brick = {
     },
   },
   childrenType: ChildrenType.MULTIPLE,
-  render(instance: BrickInstance) {
-    return <div>{instance.children}</div>
+  render(this: BrickInstance) {
+    return <div>{this.children}</div>
   },
   version: '0.0.1',
 }
@@ -31,8 +31,8 @@ const Text: Brick = {
     },
   },
   childrenType: ChildrenType.NONE,
-  render(instance: BrickInstance) {
-    return <span>{instance.data.content as string}</span>
+  render(this: BrickInstance) {
+    return <span>{this.data.content as string}</span>
   },
   version: '0.0.1',
 }
@@ -48,8 +48,8 @@ const TextWithDefaultValue: Brick = {
     },
   },
   childrenType: ChildrenType.NONE,
-  render(instance: BrickInstance) {
-    return <span>{instance.data.content as string}</span>
+  render(this: BrickInstance) {
+    return <span>{this.data.content as string}</span>
   },
   version: '0.0.1',
 }
@@ -75,10 +75,10 @@ const TextWithOnClickEvent: Brick = {
       })
     }`,
   },
-  render(instance: BrickInstance) {
+  render(this: BrickInstance) {
     return (
-      <span data-testid="element-with-action" onClick={instance.handlers['onClick']}>
-        {instance.data.content as string}
+      <span data-testid="element-with-action" onClick={this.handlers['onClick']}>
+        {this.data.content as string}
       </span>
     )
   },
@@ -98,24 +98,24 @@ const TextWithAction2: Brick = {
   childrenType: ChildrenType.NONE,
   eventNames: ['onClick'],
   defaultHandlers: {
-    onClick: `function (instance) {
-      instance.setData(function(data) {
+    onClick: `function () {
+      this.setData(function(data) {
         return Object.assign({}, data, {
           content: 'foo',
         })
       })
     }`,
   },
-  render(instance: BrickInstance) {
+  render(this: BrickInstance) {
     const handleClick = useCallback(() => {
-      const onClick = instance.handlers['onClick']
+      const onClick = this.handlers['onClick']
       if (onClick) {
         onClick()
       }
     }, [])
     return (
       <span data-testid="element-with-action" onClick={handleClick}>
-        {instance.data.content as string}
+        {this.data.content as string}
       </span>
     )
   },
@@ -127,8 +127,7 @@ const ViewWithCustomRender: Brick = {
   dataTypes: {},
   childrenType: ChildrenType.MULTIPLE,
   canCustomizeRender: true,
-  render(instance: BrickInstance) {
-    void instance
+  render() {
     return <></>
   },
   version: '0.0.1',

@@ -10,8 +10,8 @@ const View: Brick = {
     name: 'string',
   },
   childrenType: ChildrenType.MULTIPLE,
-  render(args: BrickInstance) {
-    return <div>{args.children}</div>
+  render(this: BrickInstance) {
+    return <div>{this.children}</div>
   },
   version: '0.0.1',
 }
@@ -22,8 +22,8 @@ const Text: Brick = {
     content: 'string',
   },
   childrenType: ChildrenType.NONE,
-  render(args: BrickInstance) {
-    return <span>{args.data.content as string}</span>
+  render(this: BrickInstance) {
+    return <span>{this.data.content as string}</span>
   },
   version: '0.0.1',
 }
@@ -33,8 +33,7 @@ const ViewWithCustomRender: Brick = {
   dataTypes: {},
   childrenType: ChildrenType.MULTIPLE,
   canCustomizeRender: true,
-  render(args: BrickInstance) {
-    void args
+  render() {
     return <></>
   },
   version: '0.0.1',

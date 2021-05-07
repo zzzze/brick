@@ -17,7 +17,7 @@ function checkFnIsAction(fn: string | Action): fn is () => Action {
  */
 export default function compileAction(instance: Record<string, unknown>, fn: Func): Action {
   let fnStr = ''
-  const action = (...args: unknown[]) => {
+  const action = function (this: typeof instance, ...args: unknown[]) {
     let _action: Action = () => {} // eslint-disable-line prefer-const, @typescript-eslint/no-empty-function
     if (checkFnIsAction(fn)) {
       _action = fn()
@@ -31,7 +31,7 @@ export default function compileAction(instance: Record<string, unknown>, fn: Fun
         }).code || ''
       eval(fn)
     }
-    _action = _action.bind(instance)
+    _action = _action.bind(this)
     return _action(...args)
   }
   if (fnStr) {

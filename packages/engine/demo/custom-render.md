@@ -4,11 +4,11 @@ import { Engine } from '@brick/engine'
 const blueprint = {
   name: 'ViewWithCustomRender',
   _key: '001',
-  render: `instance => {
+  render: `function() {
     return (
       <div>
         <span>foo</span>
-        {instance.children}
+        {this.children}
       </div>
     )
   }`,

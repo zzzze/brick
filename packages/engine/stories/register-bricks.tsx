@@ -27,14 +27,14 @@ const View: Brick = {
     },
   },
   childrenType: ChildrenType.MULTIPLE,
-  render(instance: BrickInstance) {
+  render(this: BrickInstance) {
     const style = useMemo(() => {
       return {
-        ...(instance.data.style as React.CSSProperties),
-        ...(instance.editing ? (instance.data.styleOverride as React.CSSProperties) : {}),
+        ...(this.data.style as React.CSSProperties),
+        ...(this.editing ? (this.data.styleOverride as React.CSSProperties) : {}),
       }
-    }, [instance])
-    return <div style={style}>{instance.children}</div>
+    }, [this.data, this.editing])
+    return <div style={style}>{this.children}</div>
   },
   renderMenu() {
     return <div>View</div>
@@ -57,14 +57,14 @@ const Text: Brick = {
   },
   childrenType: ChildrenType.NONE,
   canCustomizeRender: true,
-  render(instance: BrickInstance) {
+  render(this: BrickInstance) {
     const style = useMemo(() => {
       return {
-        ...(instance.data.style as React.CSSProperties),
-        ...(instance.editing ? (instance.data.styleOverride as React.CSSProperties) : {}),
+        ...(this.data.style as React.CSSProperties),
+        ...(this.editing ? (this.data.styleOverride as React.CSSProperties) : {}),
       }
-    }, [instance])
-    return <span style={style}>{instance.data.content as string}</span>
+    }, [this.data, this.editing])
+    return <span style={style}>{this.data.content as string}</span>
   },
   renderMenu() {
     return <div>Text</div>
@@ -87,14 +87,14 @@ const Image: Brick = {
   },
   childrenType: ChildrenType.NONE,
   canCustomizeRender: true,
-  render(instance: BrickInstance) {
+  render(this: BrickInstance) {
     const style = useMemo(() => {
       return {
-        ...(instance.data.style as React.CSSProperties),
-        ...(instance.editing ? (instance.data.styleOverride as React.CSSProperties) : {}),
+        ...(this.data.style as React.CSSProperties),
+        ...(this.editing ? (this.data.styleOverride as React.CSSProperties) : {}),
       }
-    }, [instance])
-    return <img style={style} src={instance.data.src as string} />
+    }, [this.data, this.editing])
+    return <img style={style} src={this.data.src as string} />
   },
   renderMenu() {
     return <div>Image</div>
@@ -111,14 +111,14 @@ const Input: Brick = {
   },
   childrenType: ChildrenType.NONE,
   eventNames: ['onChange', 'onKeyPress'],
-  render(instance: BrickInstance) {
+  render(this: BrickInstance) {
     const style = useMemo(() => {
       return {
-        ...(instance.data.style as React.CSSProperties),
-        ...(instance.editing ? (instance.data.styleOverride as React.CSSProperties) : {}),
+        ...(this.data.style as React.CSSProperties),
+        ...(this.editing ? (this.data.styleOverride as React.CSSProperties) : {}),
       }
-    }, [instance])
-    return <input style={style} onChange={instance.handlers['onChange']} onKeyPress={instance.handlers['onKeyPress']} />
+    }, [this.data, this.editing])
+    return <input style={style} onChange={this.handlers['onChange']} onKeyPress={this.handlers['onKeyPress']} />
   },
   renderMenu() {
     return <div>Input</div>
@@ -137,24 +137,24 @@ const TextWithAction: Brick = {
   childrenType: ChildrenType.NONE,
   eventNames: ['onClick'],
   defaultHandlers: {
-    onClick: `function (instance) {
-      instance.setData(function(data) {
+    onClick: `function () {
+      this.setData(function(data) {
         return Object.assign({}, data, {
           content: 'foo',
         })
       })
     }`,
   },
-  render(instance: BrickInstance) {
+  render(this: BrickInstance) {
     const style = useMemo(() => {
       return {
-        ...(instance.data.style as React.CSSProperties),
-        ...(instance.editing ? (instance.data.styleOverride as React.CSSProperties) : {}),
+        ...(this.data.style as React.CSSProperties),
+        ...(this.editing ? (this.data.styleOverride as React.CSSProperties) : {}),
       }
-    }, [instance])
+    }, [this.data, this.editing])
     return (
-      <span style={style} data-testid="element-with-action" onClick={instance.handlers['onClick']}>
-        {instance.data.content as string}
+      <span style={style} data-testid="element-with-action" onClick={this.handlers['onClick']}>
+        {this.data.content as string}
       </span>
     )
   },
