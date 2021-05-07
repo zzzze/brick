@@ -21,6 +21,7 @@ const ee = new EventEmitter()
 
 const generateId = createGenerateId()
 
+// #region type definitions
 export interface EngineProps {
   /**
    * Configuration for engine
@@ -44,14 +45,13 @@ interface EngineState {
   blueprint: Blueprint | null
   selectedInstance: string | null
 }
+// #endregion
 
 /**
  * Engine render bricks according to the blueprint.
  */
 class Engine extends React.Component<EngineProps, EngineState> {
-  /**
-   * static properties and methods
-   */
+  // #region static properties and methods
   static bricks: Record<string, Brick> = {}
   static dataTypes: Record<string, DataType> = {}
   static registerBrick(brick: Brick): void {
@@ -67,10 +67,9 @@ class Engine extends React.Component<EngineProps, EngineState> {
     }
     dataType.formItem = formItem
   }
+  // #endregion
 
-  /**
-   * constructor
-   */
+  // #region constructor
   constructor(props: EngineProps) {
     super(props)
     this.state = {
@@ -79,18 +78,16 @@ class Engine extends React.Component<EngineProps, EngineState> {
     }
     this._renderConfigurationForm = props.renderConfigurationForm || renderConfigurationForm
   }
+  // #endregion
 
-  /**
-   * state
-   */
+  // #region state
   state: EngineState = {
     blueprint: null,
     selectedInstance: null,
   }
+  // #endregion
 
-  /**
-   * inner properties
-   */
+  // #region inner properties
   private _isInTransaction = false
   private _stagingBlueprint: Blueprint | null = null
   private _backwardDiffs: Diff.Diff<Blueprint | null>[][] = []
@@ -107,10 +104,9 @@ class Engine extends React.Component<EngineProps, EngineState> {
     this.forceUpdate()
   }
   private _configurationPanel = createRef<HTMLElement>()
+  // #endregion
 
-  /**
-   * lifecycle
-   */
+  // #region lifecycle
   componentDidMount(): void {
     document.onkeydown = this._handleKeyPress
   }
@@ -132,10 +128,9 @@ class Engine extends React.Component<EngineProps, EngineState> {
       this._backwardDiffs.push(diff)
     }
   }
+  // #endregion
 
-  /**
-   * exposed methods
-   */
+  // #region exposed methods
   getBlueprint(): Blueprint | null {
     return this.state.blueprint
   }
@@ -145,10 +140,9 @@ class Engine extends React.Component<EngineProps, EngineState> {
   redo(): void {
     this._undeOrRedo(true)
   }
+  // #endregion
 
-  /**
-   * inner methods
-   */
+  // #region inner methods
   private _renderConfigurationForm: RenderConfigurationForm
   private _handleSetBlueprint = (fn: SetBlueprintFn): void => {
     if (this._stagingBlueprint == null) {
@@ -238,10 +232,9 @@ class Engine extends React.Component<EngineProps, EngineState> {
     }
     return this._configurationPanel.current
   }
+  // #endregion
 
-  /**
-   * render
-   */
+  // #region render
   render(): React.ReactNode {
     if (!this.props.autoCommitMode) {
       this._isInTransaction = true
@@ -287,5 +280,6 @@ class Engine extends React.Component<EngineProps, EngineState> {
       </>
     )
   }
+  // #endregion
 }
 export { Engine }
