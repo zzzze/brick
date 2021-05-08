@@ -45,7 +45,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
   }, [engineCtx.dataTypes, brick.dataTypes])
 
   // #region setup instance
-  const [data, setData] = useData(dataTypes, blueprint.data ?? {}, context.data ?? {}, props.data ?? {})
+  const [data, setData] = useData(engineCtx, dataTypes, blueprint.data ?? {}, context.data ?? {}, props.data ?? {})
   const instanceHandlers = useInstanceHandlers(data, setBlueprint, setData)
   const instance = useRef<BrickInstance>({
     key: blueprint._key,

@@ -22,6 +22,15 @@ const ee = new EventEmitter()
 const generateId = createGenerateId()
 
 // #region type definitions
+export interface EngineOptions {
+  delimiters: [string, string]
+  identifiers: {
+    forItem: string
+    forIndex: string
+    idPrefix: string
+  }
+}
+
 export interface EngineProps {
   /**
    * Configuration for engine
@@ -38,6 +47,7 @@ export interface EngineProps {
   getConfigurationPanelContainer?: () => HTMLElement
   theme?: types.DeepPartial<theme.Theme>
   generateJssID?: ReturnType<typeof createGenerateId>
+  options?: types.DeepPartial<EngineOptions>
   debug?: boolean
 }
 
@@ -76,14 +86,25 @@ class Engine extends React.Component<EngineProps, EngineState> {
       ...this.state,
       blueprint: props.blueprint,
     }
+    if (props.options) {
+      this.options = merge(this.options, props.options)
+    }
     this._renderConfigurationForm = props.renderConfigurationForm || renderConfigurationForm
   }
   // #endregion
 
-  // #region state
+  // #region properties
   state: EngineState = {
     blueprint: null,
     selectedInstance: null,
+  }
+  options: EngineOptions = {
+    delimiters: ['{{', '}}'],
+    identifiers: {
+      forItem: 'item',
+      forIndex: 'index',
+      idPrefix: '$',
+    },
   }
   // #endregion
 
@@ -245,6 +266,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
           <ThemeProvider theme={merge(theme.defaultTheme, this.props.theme)}>
             <EnginxContext.Provider
               value={{
+                options: this.options,
                 renderConfigurationForm: this._renderConfigurationForm,
                 configurationFormContainerRef: createRef(),
                 bricks: Engine.bricks,

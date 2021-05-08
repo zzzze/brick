@@ -1,6 +1,8 @@
-import { DataObject, VALUE_PARAM_PATTERN } from '../types'
+import { DataObject } from '../types'
 import { DataConfig } from './data-type'
+import { ContextType } from '../context'
 import evalExpr from './eval-data-expr'
+import { captureAttrDependencies, isExpression, isForParamsExpression } from '../utils/expression'
 
 /**
  * Parse data of brick instance
@@ -43,8 +45,13 @@ import evalExpr from './eval-data-expr'
  *        age: 10,
  *    }
  */
-export default function parseData(dataConfig: DataConfig, data: DataObject, pSupply: DataObject): DataObject {
-  const keys = Object.keys(dataConfig)
+export default function parseData(
+  engineCtx: ContextType,
+  dataConfig: DataConfig,
+  data: DataObject,
+  pSupply: DataObject
+): DataObject {
+  const keys = Array.from(new Set([...Object.keys(dataConfig), ...Object.keys(data)]))
   const newData = keys.reduce<DataObject>((result, key) => {
     if (typeof result[key] !== 'undefined') {
       return result
@@ -55,13 +62,20 @@ export default function parseData(dataConfig: DataConfig, data: DataObject, pSup
       }
       traversedKeys = traversedKeys.concat(key)
       let value = data[key] ?? dataConfig[key].default
-      if (typeof value === 'string' && VALUE_PARAM_PATTERN.test(value) && !/\b(item|index)\b/.test(value)) {
-        const match = /^\{\{\s*\$this\.(\w+)\.?/.exec(value)
+      if (
+        isExpression(value, engineCtx.options.delimiters) &&
+        !isForParamsExpression(value, engineCtx.options.delimiters, [
+          engineCtx.options.identifiers.forItem,
+          engineCtx.options.identifiers.forIndex,
+        ])
+      ) {
+        const matches = captureAttrDependencies(value, `${engineCtx.options.identifiers.idPrefix}this`)
         const dependentData: DataObject = {}
-        if (match) {
-          const attr = match[1]
-          const valueOfAttr = getValueOfkey(result, attr, traversedKeys)
-          dependentData[attr] = valueOfAttr
+        if (matches) {
+          matches.forEach((attr) => {
+            const valueOfAttr = getValueOfkey(result, attr, traversedKeys)
+            dependentData[attr] = valueOfAttr
+          })
         }
         value = evalExpr(value, { ...dependentData }, pSupply)
       }
