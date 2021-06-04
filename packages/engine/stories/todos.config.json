@@ -33,7 +33,7 @@
           "margin": "0 auto"
         },
         "styleOverride": {},
-        "dataSource": {}
+        "others": {}
       },
       "actions": {},
       "handlers": {},
@@ -128,12 +128,12 @@
               "name": "View",
               "data": {
                 "if": true,
-                "for": "{{$container.dataSource}}"
+                "for": "{{$container.others}}"
               },
               "children": [
                 {
                   "_key": "Sspez85t8cO0VU1LPxE1J",
-                  "name": "Text",
+                  "name": "TextWithAction",
                   "data": {
                     "for": "{{}}",
                     "content": "{{$parent.todo.title}}",
@@ -151,7 +151,9 @@
                     }
                   },
                   "actions": {},
-                  "handlers": {},
+                  "handlers": {
+                    "onClick": "function () {\n  this.context.actions.$container.removeTodo(this.context.data.$parent.index)\n}"
+                  },
                   "supply": {
                     "actions": {}
                   },
@@ -165,7 +167,8 @@
               "supply": {
                 "actions": {},
                 "data": {
-                  "todo": "{{item}}"
+                  "todo": "{{item}}",
+                  "index": "{{index}}"
                 }
               },
               "version": "0.0.1"
@@ -180,21 +183,23 @@
   ],
   "version": "0.0.1",
   "actions": {
-    "addTodo": "function(this: BrickInstance, todo: any) {\n  this.setData(function (data) {\n    return Object.assign({}, data, {\n      dataSource: data.dataSource.concat(todo),\n    })\n  })\n}"
+    "addTodo": "function(this: BrickInstance, todo: any) {\n  this.setData(function (data) {\n    return Object.assign({}, data, {\n      others: data.others.concat(todo),\n    })\n  })\n}",
+    "removeTodo": "function(this: BrickInstance, index: number) {\n  this.setData(function (data) {\n    return Object.assign({}, data, {\n      others: data.others.filter((_, i) => i !== index),\n    })\n  })\n}"
   },
   "handlers": {},
   "supply": {
     "actions": {
-      "addTodo": "{{$this.addTodo}}"
+      "addTodo": "{{$this.addTodo}}",
+      "removeTodo": "{{$this.removeTodo}}"
     },
     "data": {
-      "dataSource": "{{$this.dataSource}}"
+      "others": "{{$this.others}}"
     }
   },
   "data": {
     "style": {
       "fontFamily": "'Helvetica Neue', Helvetica, Arial, sans-serif"
     },
-    "dataSource": "{{[{title: 'hello world', complete: false}, {title: 'hello world 02', complete: false}]}}"
+    "others": "{{[{title: 'hello world', complete: false}, {title: 'hello world 02', complete: false}]}}"
   }
 }

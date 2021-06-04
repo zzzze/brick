@@ -14,7 +14,6 @@ interface PropsConfigurationFormProps {
   onBlueprintChange: SetBlueprint
   onDataChange: (data: DataObject) => void
   autoCommit: boolean
-  isVoidElement: boolean
   getPopupContainer?: () => HTMLElement
 }
 
@@ -68,7 +67,6 @@ const ConfigurationForm = ({
   onBlueprintChange,
   onDataChange,
   autoCommit,
-  isVoidElement,
   getPopupContainer,
 }: PropsConfigurationFormProps): JSX.Element | null => {
   const engineCtx = useContext(EnginxContext)
@@ -83,7 +81,16 @@ const ConfigurationForm = ({
       }
     })
   }, [])
-  const defaultFormItemKeys = useMemo(() => Object.keys(defaultFormItems), [])
+  const defaultFormItemKeys = useMemo(
+    () =>
+      Object.keys(defaultFormItems).filter((key) => {
+        if (!brick.configurationForms) {
+          return false
+        }
+        return brick.configurationForms.includes(key)
+      }),
+    [brick.configurationForms]
+  )
   const defaultFormItemFullDefs = useMemo(() => {
     return defaultFormItemKeys.reduce<Record<string, DataType>>((result, key) => {
       result[key] = {
@@ -99,7 +106,7 @@ const ConfigurationForm = ({
       ...blueprint,
     }
   }, [blueprint])
-  const dataTypes = useMemo(() => {
+  const dataTypes: Record<string, DataType<unknown>> = useMemo(() => {
     return normalizeDataType(engineCtx.dataTypes, brick.dataTypes)
   }, [engineCtx.dataTypes, brick.dataTypes])
   const handleClick = useCallback(() => {
@@ -129,12 +136,6 @@ const ConfigurationForm = ({
         }}>
         {defaultFormItemKeys.map((key) => {
           const td = defaultFormItemFullDefs[key]
-          if (key === 'render' && !brick.canCustomizeRender) {
-            return null
-          }
-          if (['data.wrapperStyle'].includes(key) && !isVoidElement) {
-            return null
-          }
           return (
             <FormItem
               key={key}

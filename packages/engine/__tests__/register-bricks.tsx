@@ -17,6 +17,7 @@ const View: Brick = {
   render(this: BrickInstance) {
     return <div>{this.children}</div>
   },
+  configurationForms: ['id', 'actions', 'handlers', 'supply.data', 'supply.actions'],
   version: '0.0.1',
 }
 
@@ -34,6 +35,7 @@ const Text: Brick = {
   render(this: BrickInstance) {
     return <span>{this.data.content as string}</span>
   },
+  configurationForms: ['id', 'actions', 'handlers', 'supply.data', 'supply.actions'],
   version: '0.0.1',
 }
 
@@ -51,6 +53,7 @@ const TextWithDefaultValue: Brick = {
   render(this: BrickInstance) {
     return <span>{this.data.content as string}</span>
   },
+  configurationForms: ['id', 'actions', 'handlers', 'supply.data', 'supply.actions'],
   version: '0.0.1',
 }
 
@@ -82,6 +85,7 @@ const TextWithOnClickEvent: Brick = {
       </span>
     )
   },
+  configurationForms: ['id', 'actions', 'handlers', 'supply.data', 'supply.actions'],
   version: '0.0.1',
 }
 
@@ -119,6 +123,7 @@ const TextWithAction2: Brick = {
       </span>
     )
   },
+  configurationForms: ['id', 'actions', 'handlers', 'supply.data', 'supply.actions'],
   version: '0.0.1',
 }
 
@@ -126,10 +131,10 @@ const ViewWithCustomRender: Brick = {
   name: 'ViewWithCustomRender',
   dataTypes: {},
   childrenType: ChildrenType.MULTIPLE,
-  canCustomizeRender: true,
   render() {
     return <></>
   },
+  configurationForms: ['id', 'actions', 'handlers', 'supply.data', 'supply.actions', 'render'],
   version: '0.0.1',
 }
 

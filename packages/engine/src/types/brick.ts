@@ -43,7 +43,7 @@ export interface Brick {
   childrenType: ChildrenType
   render: RenderRaw
   renderMenu?: () => React.ReactElement
-  canCustomizeRender?: boolean
+  configurationForms?: string[]
   version: string
 }
 

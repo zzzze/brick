@@ -32,10 +32,10 @@ const ViewWithCustomRender: Brick = {
   name: 'ViewWithCustomRender',
   dataTypes: {},
   childrenType: ChildrenType.MULTIPLE,
-  canCustomizeRender: true,
   render() {
     return <></>
   },
+  configurationForms: ['render'],
   version: '0.0.1',
 }
 

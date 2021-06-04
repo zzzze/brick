@@ -56,3 +56,10 @@ export const CodeType: DataType<string> = {
   formItem: () => <textarea className="formitem-textarea" wrap="hard" />,
   isValid: (value) => typeof value === 'string',
 }
+
+export const ColorType: DataType<string> = {
+  type: 'color',
+  default: '',
+  formItem: () => <input className="formitem-input" type="color" />,
+  isValid: (value) => typeof value === 'string',
+}

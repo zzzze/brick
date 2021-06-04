@@ -540,7 +540,6 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       onBlueprintChange={props.onBlueprintChange}
       onDataChange={handleChange}
       autoCommit={context.autoCommit}
-      isVoidElement={isVoidElement}
     />,
     {
       connectDragSource: drag,

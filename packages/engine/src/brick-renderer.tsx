@@ -101,7 +101,7 @@ const BrickRenderer: React.FC<BrickRenderProps> = ({
               return acc
             }, {})
             instanceCopied.children = renderChildren(item, i)
-            return <RenderCopy key={i} render={render.rebind(instanceCopied)} />
+            return <RenderCopy key={JSON.stringify(item)} render={render.rebind(instanceCopied)} />
           })}
         </CopyWrapper>
       ) : (
