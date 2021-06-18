@@ -33,18 +33,34 @@ const Template: Story<EngineProps> = (args) => {
   const handleGetBlueprint = useCallback(() => {
     console.log(JSON.stringify(ref.current?.getBlueprint(), null, 2))
   }, [])
+  const menuBarRef = useRef<HTMLDivElement>(null)
+  const configurationPanelRef = useRef<HTMLDivElement>(null)
   return (
     <div key={JSON.stringify(args.blueprint)}>
       <button onClick={handleUndo}>undo</button>
       <button onClick={handleRedo}>redo</button>
       <button onClick={handleGetBlueprint}>blueprint</button>
-      <Engine debug generateJssID={generateID} ref={ref} {...args} />
+      <div ref={menuBarRef}></div>
+      <div style={{ display: 'flex' }}>
+        <div style={{ flex: 1 }}>
+          <Engine
+            debug
+            generateJssID={generateID}
+            ref={ref}
+            getMenuContainer={menuBarRef}
+            configurationPanelRef={configurationPanelRef}
+            {...args}
+          />
+        </div>
+        <div style={{ width: 400 }} ref={configurationPanelRef}></div>
+      </div>
     </div>
   )
 }
 
 export const Default = Template.bind({})
 Default.args = {
+  configurationPanelContentUseTransition: true,
   blueprint: {
     name: 'Text',
     _key: '001',
@@ -57,15 +73,18 @@ Default.args = {
 
 export const WithHandler = Template.bind({})
 WithHandler.args = {
+  configurationPanelContentUseTransition: false,
   blueprint: itemConfig as Blueprint,
 }
 
 export const WebPage = Template.bind({})
 WebPage.args = {
+  configurationPanelContentUseTransition: true,
   blueprint: githubStylePageConfig as Blueprint,
 }
 
 export const Todos = Template.bind({})
 Todos.args = {
+  configurationPanelContentUseTransition: true,
   blueprint: todosConfig as Blueprint,
 }

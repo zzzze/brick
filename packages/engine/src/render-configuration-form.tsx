@@ -5,10 +5,10 @@ import { FaEdit } from 'react-icons/fa'
 import { FiMove } from 'react-icons/fi'
 import { AiTwotoneDelete } from 'react-icons/ai'
 import EnginxContext from './context'
-import { Transition } from 'react-transition-group'
 import { createUseStyles } from 'react-jss'
 import { theme } from '@brick/shared'
 import clx from 'classnames'
+import { Transition } from 'react-transition-group'
 
 const useStyles = createUseStyles(
   (theme: theme.Theme) => {
@@ -105,17 +105,28 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
           <FiMove />
         </span>
       </div>
-      <Transition in={configFormVisible} timeout={300} unmountOnExit>
-        {() =>
-          configurationPanelcontainer &&
-          ReactDOM.createPortal(
-            React.cloneElement(React.Children.only(node), {
-              getPopupContainer,
-            }),
-            configurationPanelcontainer
-          )
-        }
-      </Transition>
+      {!context.configurationPanelContentUseTransition &&
+        configFormVisible &&
+        configurationPanelcontainer &&
+        ReactDOM.createPortal(
+          React.cloneElement(React.Children.only(node), {
+            getPopupContainer,
+          }),
+          configurationPanelcontainer
+        )}
+      {context.configurationPanelContentUseTransition && (
+        <Transition in={configFormVisible} timeout={300} unmountOnExit>
+          {() =>
+            configurationPanelcontainer &&
+            ReactDOM.createPortal(
+              React.cloneElement(React.Children.only(node), {
+                getPopupContainer,
+              }),
+              configurationPanelcontainer
+            )
+          }
+        </Transition>
+      )}
     </div>
   )
 }

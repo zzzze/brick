@@ -5,25 +5,22 @@ import { BrickMenuItem } from './brick-menu-item'
 
 interface BrickMenuProps {
   bricks: Brick[]
-  getContainer?: () => Element
+  getContainer?: React.RefObject<HTMLElement>
 }
 
 const BrickMenu: FC<BrickMenuProps> = (props: BrickMenuProps) => {
-  const container: Element | null = useMemo(() => {
-    if (props.getContainer) {
-      return props.getContainer()
-    }
-    return null
-  }, [props.getContainer])
   const items = useMemo(() => {
     return props.bricks.map((item) => {
       return <BrickMenuItem key={item.name} brick={item} />
     })
   }, [props.bricks])
-  if (container) {
-    return ReactDOM.createPortal(items, container)
+  if (!props.getContainer) {
+    return <div style={{ display: 'flex', margin: 10 }}>{items}</div>
   }
-  return <div style={{ display: 'flex', margin: 10 }}>{items}</div>
+  if (props.getContainer?.current) {
+    return ReactDOM.createPortal(items, props.getContainer.current)
+  }
+  return null
 }
 
 export default BrickMenu

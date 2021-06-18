@@ -1,6 +1,6 @@
 import React, { createRef, ReactElement } from 'react'
 import { Blueprint, Brick, SetBlueprintFn } from './types'
-import EnginxContext, { RenderConfigurationForm } from './context'
+import EnginxContext, { ContextPassthrouthProps, RenderConfigurationForm } from './context'
 import BrickRenderer from './brick-renderer'
 import EventEmitter from 'eventemitter3'
 import renderConfigurationForm from './render-configuration-form'
@@ -31,7 +31,7 @@ export interface EngineOptions {
   }
 }
 
-export interface EngineProps {
+export interface EngineProps extends ContextPassthrouthProps {
   /**
    * Configuration for engine
    */
@@ -43,8 +43,9 @@ export interface EngineProps {
   previewMode?: boolean
   autoCommitMode?: boolean
   dndBackend?: BackendFactory
-  getMenuContainer?: () => Element
+  getMenuContainer?: React.RefObject<HTMLElement>
   getConfigurationPanelContainer?: () => HTMLElement
+  configurationPanelRef?: React.RefObject<HTMLElement>
   theme?: types.DeepPartial<theme.Theme>
   generateJssID?: ReturnType<typeof createGenerateId>
   options?: types.DeepPartial<EngineOptions>
@@ -88,6 +89,9 @@ class Engine extends React.Component<EngineProps, EngineState> {
     }
     if (props.options) {
       this.options = merge(this.options, props.options)
+    }
+    if (props.configurationPanelRef) {
+      this._configurationPanel = props.configurationPanelRef
     }
     this._renderConfigurationForm = props.renderConfigurationForm || renderConfigurationForm
   }
@@ -280,11 +284,12 @@ class Engine extends React.Component<EngineProps, EngineState> {
                 registerBrick: this._registerBrick,
                 selectInstance: this._selectInstance,
                 selectedInstance: this.state.selectedInstance,
+                configurationPanelContentUseTransition: !!this.props.configurationPanelContentUseTransition,
                 getConfigurationPanelContainer: this._getConfigurationPanelContainer,
               }}>
               <DndProvider backend={this._dndBackend} key="dnd-provider">
                 <BrickMenu getContainer={this.props.getMenuContainer} bricks={Object.values(Engine.bricks)} />
-                <ConfigurationPanel ref={this._configurationPanel} />
+                {!this.props.configurationPanelRef && <ConfigurationPanel ref={this._configurationPanel} />}
                 {this.state.blueprint && (
                   <ErrorBoundary key={this.state.blueprint._key}>
                     <BrickRenderer

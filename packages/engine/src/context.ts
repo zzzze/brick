@@ -19,7 +19,11 @@ export interface RenderConfigurationForm {
   (node: JSX.Element, options: RenderConfigurationFormOptions): ReactElement | ReactPortal | null
 }
 
-export interface ContextType {
+export interface ContextPassthrouthProps {
+  configurationPanelContentUseTransition?: boolean // 是否在配置面板内容切换时使用动效（使用延迟动效可以使配置面板在模态框中显示的情况下，关闭模态框时，内容不会突然消失）
+}
+
+export interface ContextType extends ContextPassthrouthProps {
   renderConfigurationForm: RenderConfigurationForm
   configurationFormContainerRef: RefObject<HTMLElement>
   bricks: Record<string, Brick>
@@ -52,6 +56,7 @@ const EnginxContext = React.createContext<ContextType>({
   registerBrick: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   selectInstance: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   selectedInstance: null,
+  configurationPanelContentUseTransition: false,
   getConfigurationPanelContainer: () => null,
 })
 
