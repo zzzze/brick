@@ -35,6 +35,7 @@ const Template: Story<EngineProps> = (args) => {
   }, [])
   const menuBarRef = useRef<HTMLDivElement>(null)
   const configurationPanelRef = useRef<HTMLDivElement>(null)
+  const configurationPanelContentRef = useRef<HTMLDivElement>(null)
   return (
     <div key={JSON.stringify(args.blueprint)}>
       <button onClick={handleUndo}>undo</button>
@@ -47,12 +48,14 @@ const Template: Story<EngineProps> = (args) => {
             debug
             generateJssID={generateID}
             ref={ref}
-            getMenuContainer={menuBarRef}
-            configurationPanelRef={configurationPanelRef}
+            menuBarRef={menuBarRef}
+            configurationPanelRef={configurationPanelContentRef}
             {...args}
           />
         </div>
-        <div style={{ width: 400 }} ref={configurationPanelRef}></div>
+        <div style={{ width: 400 }} ref={configurationPanelRef}>
+          <div style={{ position: 'relative' }} ref={configurationPanelContentRef}></div>
+        </div>
       </div>
     </div>
   )

@@ -39,6 +39,9 @@ const useStyles = createUseStyles(
           opacity: 0,
         },
       },
+      brickSelected: {
+        borderColor: theme.palette.primary.main,
+      },
       brickHovered: {
         backgroundColor: '#efefef',
       },
@@ -552,13 +555,19 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     }
   )
   preview(drop(brickContainer))
+  const isSelected = useMemo(() => props.blueprint._key == context.selectedInstance, [
+    props.blueprint._key,
+    context.selectedInstance,
+  ])
+  console.log(props.blueprint._key, context.selectedInstance, props.blueprint._key == context.selectedInstance)
   const className = useMemo(() => {
     return clx('brick', classes.brickWithConfigForm, {
+      [classes.brickSelected]: isSelected,
       [classes.brickDragging]: isDragging,
       [classes.brickHovered]: isOverCurrent && !isDragging,
       [classes.brickHidden]: props.hidden,
     })
-  }, [child.props.className, isDragging, isOverCurrent, isDragging, props.hidden])
+  }, [child.props.className, isDragging, isOverCurrent, isDragging, props.hidden, isSelected])
   const actionArea = useMemo(() => {
     return !props.isRoot
       ? [

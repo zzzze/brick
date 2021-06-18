@@ -77,10 +77,10 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
     }
     setStyle(style)
   }, [configFormVisible])
-  const configurationPanelcontainer = context.getConfigurationPanelContainer()
+  const configurationPanelcontainer = context.configurationPanelRef?.current
   const getPopupContainer = useCallback(() => {
-    return context.configurationFormContainerRef.current
-  }, [context.configurationFormContainerRef])
+    return context.configurationPanelRef?.current
+  }, [context.configurationPanelRef?.current])
   const stopClickPropagation = useCallback((event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()
   }, [])

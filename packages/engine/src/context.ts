@@ -38,7 +38,7 @@ export interface ContextType extends ContextPassthrouthProps {
   registerBrick: (brick: Brick) => void
   selectInstance: (key: string | null) => void
   selectedInstance: string | null
-  getConfigurationPanelContainer: () => HTMLElement | null
+  configurationPanelRef?: React.RefObject<HTMLElement>
 }
 
 const EnginxContext = React.createContext<ContextType>({
@@ -57,7 +57,7 @@ const EnginxContext = React.createContext<ContextType>({
   selectInstance: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   selectedInstance: null,
   configurationPanelContentUseTransition: false,
-  getConfigurationPanelContainer: () => null,
+  configurationPanelRef: createRef(),
 })
 
 export default EnginxContext

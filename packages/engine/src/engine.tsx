@@ -43,8 +43,7 @@ export interface EngineProps extends ContextPassthrouthProps {
   previewMode?: boolean
   autoCommitMode?: boolean
   dndBackend?: BackendFactory
-  getMenuContainer?: React.RefObject<HTMLElement>
-  getConfigurationPanelContainer?: () => HTMLElement
+  menuBarRef?: React.RefObject<HTMLElement>
   configurationPanelRef?: React.RefObject<HTMLElement>
   theme?: types.DeepPartial<theme.Theme>
   generateJssID?: ReturnType<typeof createGenerateId>
@@ -91,7 +90,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
       this.options = merge(this.options, props.options)
     }
     if (props.configurationPanelRef) {
-      this._configurationPanel = props.configurationPanelRef
+      this._configurationPanelRef = props.configurationPanelRef
     }
     this._renderConfigurationForm = props.renderConfigurationForm || renderConfigurationForm
   }
@@ -128,7 +127,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
     Engine.bricks[brick.name] = brick
     this.forceUpdate()
   }
-  private _configurationPanel = createRef<HTMLElement>()
+  private _configurationPanelRef = createRef<HTMLElement>()
   // #endregion
 
   // #region lifecycle
@@ -251,12 +250,6 @@ class Engine extends React.Component<EngineProps, EngineState> {
       selectedInstance: key,
     })
   }
-  private _getConfigurationPanelContainer = () => {
-    if (this.props.getConfigurationPanelContainer) {
-      return this.props.getConfigurationPanelContainer()
-    }
-    return this._configurationPanel.current
-  }
   // #endregion
 
   // #region render
@@ -284,12 +277,12 @@ class Engine extends React.Component<EngineProps, EngineState> {
                 registerBrick: this._registerBrick,
                 selectInstance: this._selectInstance,
                 selectedInstance: this.state.selectedInstance,
+                configurationPanelRef: this._configurationPanelRef,
                 configurationPanelContentUseTransition: !!this.props.configurationPanelContentUseTransition,
-                getConfigurationPanelContainer: this._getConfigurationPanelContainer,
               }}>
               <DndProvider backend={this._dndBackend} key="dnd-provider">
-                <BrickMenu getContainer={this.props.getMenuContainer} bricks={Object.values(Engine.bricks)} />
-                {!this.props.configurationPanelRef && <ConfigurationPanel ref={this._configurationPanel} />}
+                <BrickMenu getContainer={this.props.menuBarRef} bricks={Object.values(Engine.bricks)} />
+                {!this.props.configurationPanelRef && <ConfigurationPanel ref={this._configurationPanelRef} />}
                 {this.state.blueprint && (
                   <ErrorBoundary key={this.state.blueprint._key}>
                     <BrickRenderer
