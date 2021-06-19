@@ -39,6 +39,7 @@ export interface ContextType extends ContextPassthrouthProps {
   selectInstance: (key: string | null) => void
   selectedInstance: string | null
   configurationPanelRef?: React.RefObject<HTMLElement>
+  overlayRef: React.RefObject<HTMLElement>
 }
 
 const EnginxContext = React.createContext<ContextType>({
@@ -58,6 +59,7 @@ const EnginxContext = React.createContext<ContextType>({
   selectedInstance: null,
   configurationPanelContentUseTransition: false,
   configurationPanelRef: createRef(),
+  overlayRef: createRef(),
 })
 
 export default EnginxContext

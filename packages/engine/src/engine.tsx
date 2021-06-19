@@ -128,6 +128,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
     this.forceUpdate()
   }
   private _configurationPanelRef = createRef<HTMLElement>()
+  private _overlayRef = createRef<HTMLDivElement>()
   // #endregion
 
   // #region lifecycle
@@ -279,9 +280,11 @@ class Engine extends React.Component<EngineProps, EngineState> {
                 selectedInstance: this.state.selectedInstance,
                 configurationPanelRef: this._configurationPanelRef,
                 configurationPanelContentUseTransition: !!this.props.configurationPanelContentUseTransition,
+                overlayRef: this._overlayRef,
               }}>
               <DndProvider backend={this._dndBackend} key="dnd-provider">
                 <BrickMenu getContainer={this.props.menuBarRef} bricks={Object.values(Engine.bricks)} />
+                <div style={{ position: 'fixed', top: 0, left: 0 }} ref={this._overlayRef}></div>
                 {!this.props.configurationPanelRef && <ConfigurationPanel ref={this._configurationPanelRef} />}
                 {this.state.blueprint && (
                   <ErrorBoundary key={this.state.blueprint._key}>

@@ -1,20 +1,32 @@
-import React, { Children, cloneElement, useRef, useCallback, useContext, useMemo, useState, RefObject } from 'react'
+import React, { Children, cloneElement, useRef, useCallback, useContext, useMemo, useEffect, MouseEvent } from 'react'
 import { ChildrenType, Blueprint, DataObject, SetBlueprint, BrickStyle } from './types'
 import ConfigurationForm from './configuration-form'
 import EnginxContext from './context'
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
-import { XYCoord } from 'dnd-core'
-import { createUseStyles } from 'react-jss'
+import { createUseStyles, useTheme } from 'react-jss'
 import clx from 'classnames'
 import debounce from 'lodash/debounce'
 import { theme } from '@brick/shared'
 import { CopyWrapper } from './render-copy'
 
+enum ActionArea {
+  TOP = 'top',
+  LEFT = 'left',
+  RIGHT = 'right',
+  BOTTOM = 'bottom',
+  PREVENT = 'prevent',
+}
+
 export const ITEM_TYPE = 'brick-instance'
+const CONTAINER_IDENTIFIER_KEY = 'data-identifier'
+const CONTAINER_IDENTIFIER_VALUE = 'brick-container'
 
 const useStyles = createUseStyles(
   (theme: theme.Theme) => {
     return {
+      brick: {
+        padding: '3px',
+      },
       brickWithConfigForm: {
         position: 'relative',
         padding: '20px',
@@ -40,10 +52,12 @@ const useStyles = createUseStyles(
         },
       },
       brickSelected: {
-        borderColor: theme.palette.primary.main,
+        outline: `dashed 1px ${theme.palette.primary.main}`,
       },
       brickHovered: {
         backgroundColor: '#efefef',
+        outline: 'none',
+        boxShadow: `0 0 0 2px ${theme.palette.grey[500]}`,
       },
       brickHidden: {
         opacity: 0.5,
@@ -85,114 +99,14 @@ const useStyles = createUseStyles(
         },
       },
       actionAreaHovered: {},
-      actionAreaTop: {
-        top: 0,
-        left: 0,
-        right: 0,
-        height: '10px',
-        borderRadius: '2px',
-        '&::before': {
-          top: '8px',
-          left: '50%',
-          width: '20px',
-          height: '2px',
-          borderRadius: '2px',
-          transform: 'translateX(-50%)',
-        },
-      },
-      actionAreaBottom: {
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: '10px',
-        borderRadius: '2px',
-        '&::before': {
-          bottom: '8px',
-          left: '50%',
-          width: '20px',
-          height: '2px',
-          borderRadius: '2px',
-          transform: 'translateX(-50%)',
-        },
-      },
-      actionAreaLeft: {
-        left: 0,
-        top: 0,
-        bottom: 0,
-        width: '10px',
-        borderRadius: '2px',
-        '&::before': {
-          left: '8px',
-          top: '50%',
-          height: '20px',
-          width: '2px',
-          borderRadius: '2px',
-          transform: 'translateY(-50%)',
-        },
-      },
-      actionAreaRight: {
-        right: 0,
-        top: 0,
-        bottom: 0,
-        width: '10px',
-        borderRadius: '2px',
-        '&::before': {
-          right: '8px',
-          top: '50%',
-          height: '20px',
-          width: '2px',
-          borderRadius: '2px',
-          transform: 'translateY(-50%)',
-        },
-      },
     }
   },
   { name: 'BrickWrapper' }
 )
 
-interface DragOverProps {
-  className?: string
-}
-
 function isTypeString(obj: unknown): obj is string {
   return typeof obj === 'string'
 }
-
-const blockLevelElement = [
-  'address',
-  'article',
-  'aside',
-  'blockquote',
-  'details',
-  'dialog',
-  'dd',
-  'div',
-  'dl',
-  'dt',
-  'fieldset',
-  'figcaption',
-  'figure',
-  'footer',
-  'form',
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
-  'header',
-  'hgroup',
-  'hr',
-  'li',
-  'main',
-  'nav',
-  'ol',
-  'p',
-  'pre',
-  'section',
-  'table',
-  'ul',
-]
 
 const voidElements = [
   'area',
@@ -226,23 +140,6 @@ export const createRemoveItemFromParentFn = (setBlueprint: SetBlueprint) => (key
   })
 }
 
-const DragOver: React.FC<DragOverProps> = ({ className }: DragOverProps) => {
-  const classes = useStyles()
-  const [hover, setHover] = useState(false)
-  const handleMouseOver = useCallback(() => setHover(true), [])
-  const handleMouseOut = useCallback(() => setHover(false), [])
-  return (
-    <div
-      className={clx(className, {
-        [classes.actionAreaHovered]: hover,
-      })}
-      onDragEnter={handleMouseOver}
-      onDragLeave={handleMouseOut}
-      onDrop={handleMouseOut}
-    />
-  )
-}
-
 interface BrickWrapperProps {
   hidden?: boolean
   children: React.ReactElement<React.PropsWithChildren<unknown>>
@@ -263,6 +160,7 @@ export interface IDragItem {
 }
 
 interface IBrickContainer extends React.PropsWithChildren<React.HTMLAttributes<HTMLElement>> {
+  [CONTAINER_IDENTIFIER_KEY]?: string
   ref?: React.RefObject<HTMLElement>
 }
 
@@ -276,51 +174,11 @@ const isHoverOnDragItemOrItsChild = (blueprint: Blueprint, key: string): boolean
   return false
 }
 
-const offset = 12
-
-// The area trigger insert item to the hovered element
-const isInAdditionActionTriggerAera = (rect: DOMRect, clientOffset: XYCoord) => {
-  return (
-    clientOffset.x > rect.x + offset &&
-    clientOffset.x < rect.x + rect.width - offset &&
-    clientOffset.y > rect.y + offset &&
-    clientOffset.y < rect.y + rect.height - offset
-  )
-}
-
-// The area trigger move item in front of the hovered element
-const isInForwardActionTriggerAera = (rect: DOMRect, clientOffset: XYCoord) => {
-  return (
-    (clientOffset.x > rect.x &&
-      clientOffset.x < rect.x + rect.width &&
-      clientOffset.y > rect.y &&
-      clientOffset.y < rect.y + offset) || // top
-    (clientOffset.y > rect.y &&
-      clientOffset.y < rect.y + rect.height &&
-      clientOffset.x > rect.x &&
-      clientOffset.x < rect.x + offset) // left
-  )
-}
-
-// The area trigger move item after the hovered element
-const isInBackwardActionTriggerAera = (rect: DOMRect, clientOffset: XYCoord) => {
-  return (
-    (clientOffset.x > rect.x &&
-      clientOffset.x < rect.x + rect.width &&
-      clientOffset.y > rect.y + rect.height - offset &&
-      clientOffset.y < rect.y + rect.height) || // bottom
-    (clientOffset.y > rect.y &&
-      clientOffset.y < rect.y + rect.height &&
-      clientOffset.x > rect.x + rect.width - offset &&
-      clientOffset.x < rect.x + rect.width) // right
-  )
-}
+const offset = 5
 
 const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => {
   const context = useContext(EnginxContext)
-  if (context.previewMode) {
-    return props.children
-  }
+  const hoveredAreaRef = useRef<ActionArea | null>(null)
   const classes = useStyles()
   const brick = useMemo(() => {
     const brick = context.bricks[props.blueprint.name]
@@ -329,16 +187,6 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     }
     return brick
   }, [context.bricks, props.blueprint])
-  const parentBrick = useMemo(() => {
-    if (!props.parentBlueprint) {
-      return null
-    }
-    const brick = context.bricks[props.parentBlueprint.name]
-    if (!brick) {
-      throw Error(`brick (${props.parentBlueprint.name}) not found`)
-    }
-    return brick
-  }, [context.bricks, props.parentBlueprint])
   const brickContainer = useRef<HTMLElement>(null)
   const handleChange = useCallback((newProps: DataObject) => {
     props.onBlueprintChange((blueprint: Blueprint) => {
@@ -348,7 +196,6 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       }
     })
   }, [])
-  // const child: React.ReactElement<IBrickContainer> = Children.only(props.children)
   const child: React.ReactElement<IBrickContainer> = useMemo(() => {
     if (React.Children.count(props.children) <= 1) {
       if (props.children.type === CopyWrapper) {
@@ -364,64 +211,21 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       return cloneElement(firstChild, {}, props.children)
     }
   }, [props.children, brick])
-  const canDrop = (item: IDragItem, monitor: DropTargetMonitor) => {
-    if (!brickContainer.current) {
-      return false
-    }
-    if (!monitor.isOver({ shallow: true })) {
-      return false
-    }
-    if (isHoverOnDragItemOrItsChild(item.blueprint, props.blueprint._key)) {
-      // drag and hover on itself or its children
-      return false
-    }
-    const hoverBoundingRect = brickContainer.current.getBoundingClientRect()
-    const clientOffset = monitor.getClientOffset()
-    const inAdditionActionTriggerAera = isInAdditionActionTriggerAera(
-      hoverBoundingRect,
-      clientOffset || { x: -1, y: -1 }
-    )
-    if (inAdditionActionTriggerAera) {
-      if (
-        Array.isArray(props.blueprint.children) &&
-        props.blueprint.children.some((c) => c._key === item.blueprint._key)
-      ) {
-        // item is in the container already
+  const canDrop = useCallback(
+    (item: IDragItem, monitor: DropTargetMonitor) => {
+      if (!brickContainer.current) {
         return false
       }
-      if (brick.childrenType === ChildrenType.NONE) {
+      if (!monitor.isOver({ shallow: true })) {
         return false
       }
-      if (
-        brick.childrenType === ChildrenType.SINGLE &&
-        Array.isArray(props.blueprint.children) &&
-        props.blueprint.children.length > 0
-      ) {
+      if (isHoverOnDragItemOrItsChild(item.blueprint, props.blueprint._key)) {
+        // drag and hover on itself or its children
         return false
       }
-    }
-    const inForwardActionTriggerAera = isInForwardActionTriggerAera(hoverBoundingRect, clientOffset || { x: -1, y: -1 })
-    const inBackwardActionTriggerAera = isInBackwardActionTriggerAera(
-      hoverBoundingRect,
-      clientOffset || { x: -1, y: -1 }
-    )
-    if (inForwardActionTriggerAera || inBackwardActionTriggerAera) {
-      if (
-        parentBrick?.childrenType === ChildrenType.SINGLE &&
-        props?.parentBlueprint &&
-        Array.isArray(props?.parentBlueprint?.children) &&
-        props?.parentBlueprint.children.length > 0
-      ) {
-        return false
-      }
-    }
-    return true
-  }
-  const handleRemoveFromParent = useCallback(
-    (key: string) => {
-      createRemoveItemFromParentFn(props.onBlueprintChange)(key)
+      return true
     },
-    [props.onBlueprintChange]
+    [brickContainer.current]
   )
   const handleAddChild = useCallback(
     (_blueprint: Blueprint) => {
@@ -461,71 +265,34 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     },
     [props]
   )
+  useEffect(() => {
+    if (brickContainer.current) {
+      drag(brickContainer.current)
+    }
+  }, [drag, brickContainer.current])
   const [{ isOverCurrent }, drop] = useDrop(
     {
       accept: ITEM_TYPE,
-      hover: debounce((item: IDragItem, monitor: DropTargetMonitor) => {
-        /**
-         * Must remove item before insert it, otherwise item can't insert to container due to same key item exists.
-         * And then the item will lost.
-         */
-        if (!brickContainer.current) {
-          return
-        }
+      drop: (item: IDragItem, monitor: DropTargetMonitor) => {
         if (!canDrop(item, monitor)) {
           return
-        }
-        const hoverBoundingRect = brickContainer.current.getBoundingClientRect()
-        const clientOffset = monitor.getClientOffset()
-        const inAdditionActionTriggerAera = isInAdditionActionTriggerAera(
-          hoverBoundingRect,
-          clientOffset || { x: -1, y: -1 }
-        )
-        if (
-          inAdditionActionTriggerAera &&
-          item.lastAction !== `addition-${props.blueprint._key}-${item.blueprint._key}`
-        ) {
-          context.transactionBegin()
-          item.onRemove && item.onRemove(item.blueprint._key)
-          handleAddChild(item.blueprint)
-          context.transactionCommit()
-          item.onRemove = handleRemoveFromParent
-          item.lastAction = `addition-${props.blueprint._key}-${item.blueprint._key}`
         }
         if (props.isRoot) {
           return
         }
-        const inForwardActionTriggerAera = isInForwardActionTriggerAera(
-          hoverBoundingRect,
-          clientOffset || { x: -1, y: -1 }
-        )
-        if (
-          inForwardActionTriggerAera &&
-          item.lastAction !== `forward-${props.blueprint._key}-${item.blueprint._key}`
-        ) {
-          context.transactionBegin()
+        context.transactionBegin()
+        if (hoveredAreaRef.current && [ActionArea.TOP, ActionArea.LEFT].includes(hoveredAreaRef.current)) {
           item.onRemove && item.onRemove(item.blueprint._key)
           props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.blueprint, props.blueprint._key, 'forward')
-          context.transactionCommit()
-          item.onRemove = props.onRemoveItemFormParent
-          item.lastAction = `forward-${props.blueprint._key}-${item.blueprint._key}`
-        }
-        const inBackwardActionTriggerAera = isInBackwardActionTriggerAera(
-          hoverBoundingRect,
-          clientOffset || { x: -1, y: -1 }
-        )
-        if (
-          inBackwardActionTriggerAera &&
-          item.lastAction !== `backward-${props.blueprint._key}-${item.blueprint._key}`
-        ) {
-          context.transactionBegin()
+        } else if (hoveredAreaRef.current && [ActionArea.RIGHT, ActionArea.BOTTOM].includes(hoveredAreaRef.current)) {
           item.onRemove && item.onRemove(item.blueprint._key)
           props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.blueprint, props.blueprint._key, 'backward')
-          context.transactionCommit()
-          item.onRemove = props.onRemoveItemFormParent
-          item.lastAction = `backward-${props.blueprint._key}-${item.blueprint._key}`
+        } else if (hoveredAreaRef.current !== ActionArea.PREVENT) {
+          item.onRemove && item.onRemove(item.blueprint._key)
+          handleAddChild(item.blueprint)
         }
-      }, 20),
+        context.transactionCommit()
+      },
       collect: (monitor: DropTargetMonitor) => ({
         isOverCurrent: monitor.isOver({ shallow: true }),
       }),
@@ -559,50 +326,159 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     props.blueprint._key,
     context.selectedInstance,
   ])
-  console.log(props.blueprint._key, context.selectedInstance, props.blueprint._key == context.selectedInstance)
+  useEffect(() => {
+    if (!brickContainer.current) {
+      return
+    }
+    brickContainer.current.querySelectorAll('input').forEach((item) => {
+      item.readOnly = true
+    })
+    return () => {
+      if (!brickContainer.current) {
+        return
+      }
+      brickContainer.current.querySelectorAll('input').forEach((item) => {
+        item.readOnly = false
+      })
+    }
+  }, [])
+  const _theme: theme.Theme = useTheme()
+  const handleMouseMove = useCallback(
+    debounce((event: globalThis.MouseEvent) => {
+      if (!brickContainer.current || isDragging || (!isDragging && !isOverCurrent)) {
+        return
+      }
+      const hoverBoundingRect = brickContainer.current.getBoundingClientRect()
+      const isTop =
+        event.x > hoverBoundingRect.x &&
+        event.x < hoverBoundingRect.x + hoverBoundingRect.width &&
+        event.y > hoverBoundingRect.y &&
+        event.y < hoverBoundingRect.y + offset
+      const isLeft =
+        event.y > hoverBoundingRect.y &&
+        event.y < hoverBoundingRect.y + hoverBoundingRect.height &&
+        event.x > hoverBoundingRect.x &&
+        event.x < hoverBoundingRect.x + offset
+      const isRight =
+        event.y > hoverBoundingRect.y &&
+        event.y < hoverBoundingRect.y + hoverBoundingRect.height &&
+        event.x > hoverBoundingRect.x + hoverBoundingRect.width - offset &&
+        event.x < hoverBoundingRect.x + hoverBoundingRect.width
+      const isBottom =
+        event.x > hoverBoundingRect.x &&
+        event.x < hoverBoundingRect.x + hoverBoundingRect.width &&
+        event.y > hoverBoundingRect.y + hoverBoundingRect.height - offset &&
+        event.y < hoverBoundingRect.y + hoverBoundingRect.height
+      if (isTop) {
+        brickContainer.current.style.boxShadow = `0px -2px 0px 0px ${_theme.palette.primary.dark}`
+        hoveredAreaRef.current = ActionArea.TOP
+      } else if (isLeft) {
+        brickContainer.current.style.boxShadow = `-2px 0px 0px 0px ${_theme.palette.primary.dark}`
+        hoveredAreaRef.current = ActionArea.LEFT
+      } else if (isRight) {
+        brickContainer.current.style.boxShadow = `2px 0px 0px 0px ${_theme.palette.primary.dark}`
+        hoveredAreaRef.current = ActionArea.RIGHT
+      } else if (isBottom) {
+        brickContainer.current.style.boxShadow = `0px 2px 0px 0px ${_theme.palette.primary.dark}`
+        hoveredAreaRef.current = ActionArea.BOTTOM
+      } else {
+        if (
+          Array.isArray(props.blueprint.children) &&
+          props.blueprint.children.some((c) => c._key === props.blueprint._key)
+        ) {
+          // item is in the container already
+          hoveredAreaRef.current = ActionArea.PREVENT
+          brickContainer.current.style.boxShadow = `0px 0px 0px 2px ${_theme.palette.grey[500]}`
+        } else if (brick.childrenType === ChildrenType.NONE) {
+          hoveredAreaRef.current = ActionArea.PREVENT
+          brickContainer.current.style.boxShadow = `0px 0px 0px 2px ${_theme.palette.grey[500]}`
+        } else if (
+          brick.childrenType === ChildrenType.SINGLE &&
+          Array.isArray(props.blueprint.children) &&
+          props.blueprint.children.length > 0
+        ) {
+          hoveredAreaRef.current = ActionArea.PREVENT
+          brickContainer.current.style.boxShadow = `0px 0px 0px 2px ${_theme.palette.grey[500]}`
+        } else {
+          hoveredAreaRef.current = null
+          brickContainer.current.style.boxShadow = `0px 0px 0px 2px ${_theme.palette.primary.dark}`
+        }
+      }
+    }, 1),
+    [isDragging, isOverCurrent]
+  )
+  useEffect(() => {
+    if (!isOverCurrent) {
+      handleMouseLeave()
+    }
+  }, [isOverCurrent])
+  const handleMouseLeave = useCallback(() => {
+    if (!brickContainer.current) {
+      return
+    }
+    brickContainer.current.style.boxShadow = 'none'
+    hoveredAreaRef.current = null
+  }, [])
+  useEffect(() => {
+    if (!brickContainer.current) {
+      return
+    }
+    brickContainer.current.addEventListener('dragover', handleMouseMove)
+    brickContainer.current.addEventListener('dragleave', handleMouseLeave)
+    return () => {
+      if (!brickContainer.current) {
+        return
+      }
+      brickContainer.current.removeEventListener('dragover', handleMouseMove)
+      brickContainer.current.removeEventListener('dragleave', handleMouseLeave)
+    }
+  }, [handleMouseMove])
   const className = useMemo(() => {
-    return clx('brick', classes.brickWithConfigForm, {
+    return clx(classes.brick, 'brick', {
       [classes.brickSelected]: isSelected,
       [classes.brickDragging]: isDragging,
       [classes.brickHovered]: isOverCurrent && !isDragging,
       [classes.brickHidden]: props.hidden,
     })
   }, [child.props.className, isDragging, isOverCurrent, isDragging, props.hidden, isSelected])
-  const actionArea = useMemo(() => {
-    return !props.isRoot
-      ? [
-          <DragOver key="left" className={clx(classes.actionArea, classes.actionAreaLeft)} />,
-          <DragOver key="right" className={clx(classes.actionArea, classes.actionAreaRight)} />,
-          <DragOver key="top" className={clx(classes.actionArea, classes.actionAreaTop)} />,
-          <DragOver key="bottom" className={clx(classes.actionArea, classes.actionAreaBottom)} />,
-        ]
-      : []
-  }, [props.isRoot])
-  if (isTypeString(child.type) && isVoidElement) {
-    let Tag: 'span' | 'div' = 'span'
-    if (blockLevelElement.includes(child.type)) {
-      Tag = 'div'
-    }
-    return (
-      <Tag
-        ref={brickContainer as RefObject<HTMLDivElement>}
-        style={(props.blueprint.data?.wrapperStyle as React.CSSProperties) ?? {}}
-        className={className}>
-        {cloneElement<IBrickContainer>(child)}
-        {configurationForm}
-        {actionArea}
-      </Tag>
-    )
-  }
-  return cloneElement<IBrickContainer>(
-    child,
-    {
-      ref: brickContainer,
-      className: clx(child.props.className, className),
+  const onSelect = useCallback(
+    (event: MouseEvent<HTMLElement>) => {
+      let node: HTMLElement | null = event.target as HTMLElement
+      if (event.currentTarget !== node) {
+        while (node && node.dataset[CONTAINER_IDENTIFIER_KEY.replace('data-', '')] !== CONTAINER_IDENTIFIER_VALUE) {
+          node = node.parentElement
+        }
+        if (node !== event.currentTarget) {
+          return
+        }
+      }
+      context.selectInstance(props.blueprint._key)
+      event.preventDefault()
+      event.stopPropagation()
     },
-    configurationForm,
-    ...Children.toArray(child.props.children),
-    ...actionArea
+    [context.selectInstance]
+  )
+  const newProps = useMemo(() => {
+    return {
+      ref: brickContainer,
+      [CONTAINER_IDENTIFIER_KEY]: CONTAINER_IDENTIFIER_VALUE,
+      onClickCapture: onSelect,
+      className: clx(child.props.className, className),
+      readOnly: typeof child.type === 'string' && ['input'].includes(child.type),
+    }
+  }, [child.type, child.props.className, className, onSelect])
+  if (context.previewMode) {
+    return props.children
+  }
+  return (
+    <>
+      {configurationForm}
+      {cloneElement<IBrickContainer>(
+        child,
+        newProps,
+        ...(isTypeString(child.type) && isVoidElement ? Children.toArray(child.props.children) : [])
+      )}
+    </>
   )
 }
 

@@ -126,6 +126,34 @@ const Input: Brick = {
   version: '0.0.1',
 }
 
+const Button: Brick = {
+  name: 'Button',
+  style: BrickStyle.INLINE,
+  dataTypes: {
+    style: 'object',
+    styleOverride: 'object',
+  },
+  childrenType: ChildrenType.NONE,
+  eventNames: ['onClick'],
+  render(this: BrickInstance) {
+    const style = useMemo(() => {
+      return {
+        ...(this.data.style as React.CSSProperties),
+        ...(this.editing ? (this.data.styleOverride as React.CSSProperties) : {}),
+      }
+    }, [this.data, this.editing])
+    return (
+      <button style={style} onClick={() => console.log('xxxxx')}>
+        button
+      </button>
+    )
+  },
+  renderMenu() {
+    return <div>Button</div>
+  },
+  version: '0.0.1',
+}
+
 const TextWithAction: Brick = {
   name: 'TextWithAction',
   style: BrickStyle.INLINE,
@@ -224,6 +252,9 @@ const TitleBlock: Brick = {
               </>
             ))}
           </section>
+          <input type="text" />
+          <button onClick={() => console.log('yyyyy')}>xxxx</button>
+          <div onClick={() => console.log('yyyyy')}>div</div>
           <p style={{ fontWeight: 'bold', fontSize: '12px', margin: '0px', fontFamily: 'Arial' }}>
             vol.{this.data.code as number}
           </p>
@@ -242,6 +273,7 @@ export default (): void => {
   Engine.registerBrick(Text)
   Engine.registerBrick(Image)
   Engine.registerBrick(Input)
+  Engine.registerBrick(Button)
   Engine.registerBrick(TextWithAction)
 
   Engine.registerBrick(TitleBlock)
