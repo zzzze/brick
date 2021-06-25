@@ -28,8 +28,6 @@ export interface Blueprint {
   supply?: Supply // provide data for child brick instance
   children?: Blueprint[]
   listeners?: Record<string, Func> // listeners use for register event listeners of EventEmitter
-  copy?: boolean // copied 'for' directive
-  copyID?: number // copied 'for' directive
   render?: CustomRender // custom render
 }
 

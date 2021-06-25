@@ -5,7 +5,7 @@ import { BrickMenuItem } from './brick-menu-item'
 
 interface BrickMenuProps {
   bricks: Brick[]
-  getContainer?: React.RefObject<HTMLElement>
+  containerRef?: React.RefObject<HTMLElement>
 }
 
 const BrickMenu: FC<BrickMenuProps> = (props: BrickMenuProps) => {
@@ -14,11 +14,11 @@ const BrickMenu: FC<BrickMenuProps> = (props: BrickMenuProps) => {
       return <BrickMenuItem key={item.name} brick={item} />
     })
   }, [props.bricks])
-  if (!props.getContainer) {
+  if (!props.containerRef) {
     return <div style={{ display: 'flex', margin: 10 }}>{items}</div>
   }
-  if (props.getContainer?.current) {
-    return ReactDOM.createPortal(items, props.getContainer.current)
+  if (props.containerRef?.current) {
+    return ReactDOM.createPortal(items, props.containerRef.current)
   }
   return null
 }

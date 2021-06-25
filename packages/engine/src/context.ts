@@ -9,6 +9,8 @@ export interface RenderConfigurationFormOptions {
   connectDragSource: ConnectDragSource
   removeItem: () => void
   blueprint: Blueprint
+  prevSelectedID: string | null
+  setPrevSelectID: (id: string | null) => void
   classes: {
     container: string
     btnGroup: string

@@ -10,11 +10,12 @@ export default (node: JSX.Element, options: RenderConfigurationFormOptions): Ret
     if (context.selectedInstance !== options.blueprint._key) {
       return false
     }
-    if (options.blueprint.copy && options.blueprint.copyID !== 0) {
+    if (context.selectedInstance === options.prevSelectedID) {
       return false
     }
+    options.setPrevSelectID(context.selectedInstance)
     return true
-  }, [context.selectedInstance, options.blueprint._key, options.blueprint.copy, options.blueprint.copyID])
+  }, [context.selectedInstance, options.blueprint._key])
   const configurationPanelcontainer = context.configurationPanelRef?.current
   const getPopupContainer = useCallback(() => {
     return context.configurationPanelRef?.current

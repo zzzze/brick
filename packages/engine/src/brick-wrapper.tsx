@@ -8,6 +8,11 @@ import clx from 'classnames'
 import debounce from 'lodash/debounce'
 import { theme } from '@brick/shared'
 import { CopyWrapper } from './render-copy'
+let prevSelectedID: string | null = null
+
+const setPrevSelectID = (id: string | null) => {
+  prevSelectedID = id
+}
 
 enum ActionArea {
   TOP = 'top',
@@ -270,6 +275,9 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         lastAction: '',
         onRemove: props.onRemoveItemFormParent,
       },
+      begin: () => {
+        setPrevSelectID(null)
+      },
       canDrag() {
         return true
       },
@@ -369,6 +377,8 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       connectDragSource: drag,
       removeItem: onRemove,
       blueprint: props.blueprint,
+      prevSelectedID,
+      setPrevSelectID,
       classes: {
         container: classes.brickConfigForm,
         btnGroup: classes.brickConfigFormBtnGroup,

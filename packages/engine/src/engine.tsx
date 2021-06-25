@@ -135,6 +135,9 @@ class Engine extends React.Component<EngineProps, EngineState> {
   // #region lifecycle
   componentDidMount(): void {
     document.onkeydown = this._handleKeyPress
+    if (this.props.menuBarRef) {
+      this.forceUpdate() // should force update, other wise the menu bar will not visible
+    }
   }
   componentWillUnmount(): void {
     document.onkeydown = null
@@ -285,7 +288,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
                 moveOnHover: this.props.options?.moveOnHover,
               }}>
               <DndProvider backend={this._dndBackend} key="dnd-provider">
-                <BrickMenu getContainer={this.props.menuBarRef} bricks={Object.values(Engine.bricks)} />
+                <BrickMenu containerRef={this.props.menuBarRef} bricks={Object.values(Engine.bricks)} />
                 <div style={{ position: 'fixed', top: 0, left: 0 }} ref={this._overlayRef}></div>
                 {!this.props.configurationPanelRef && <ConfigurationPanel ref={this._configurationPanelRef} />}
                 {this.state.blueprint && (

@@ -85,10 +85,6 @@ const useRenderChildren = (
       if (!Array.isArray(blueprint.children)) return null
       return blueprint.children.map((child) => {
         const newChild = { ...child }
-        if (typeof i !== 'undefined') {
-          newChild.copy = true
-          newChild.copyID = i
-        }
         return (
           <ErrorBoundary key={child._key}>
             <BrickRenderer
