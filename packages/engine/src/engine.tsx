@@ -1,5 +1,5 @@
 import React, { createRef, ReactElement } from 'react'
-import { Blueprint, Brick, SetBlueprintFn } from './types'
+import { Blueprint, Brick, SetBlueprintFn, MoveOnHover } from './types'
 import EnginxContext, { ContextPassthrouthProps, RenderConfigurationForm } from './context'
 import BrickRenderer from './brick-renderer'
 import EventEmitter from 'eventemitter3'
@@ -29,6 +29,7 @@ export interface EngineOptions {
     forIndex: string
     idPrefix: string
   }
+  moveOnHover?: MoveOnHover
 }
 
 export interface EngineProps extends ContextPassthrouthProps {
@@ -48,7 +49,6 @@ export interface EngineProps extends ContextPassthrouthProps {
   theme?: types.DeepPartial<theme.Theme>
   generateJssID?: ReturnType<typeof createGenerateId>
   options?: types.DeepPartial<EngineOptions>
-  moveOnDropOnly?: boolean
   debug?: boolean
 }
 
@@ -282,7 +282,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
                 configurationPanelRef: this._configurationPanelRef,
                 configurationPanelContentUseTransition: !!this.props.configurationPanelContentUseTransition,
                 overlayRef: this._overlayRef,
-                moveOnDropOnly: !!this.props.moveOnDropOnly,
+                moveOnHover: this.props.options?.moveOnHover,
               }}>
               <DndProvider backend={this._dndBackend} key="dnd-provider">
                 <BrickMenu getContainer={this.props.menuBarRef} bricks={Object.values(Engine.bricks)} />

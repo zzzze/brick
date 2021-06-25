@@ -1,4 +1,4 @@
-import { Brick, Blueprint } from './types'
+import { Brick, Blueprint, MoveOnHover } from './types'
 import React, { createRef, ReactElement, ReactPortal, RefObject } from 'react'
 import EventEmitter from 'eventemitter3'
 import { ConnectDragSource } from 'react-dnd'
@@ -40,7 +40,7 @@ export interface ContextType extends ContextPassthrouthProps {
   selectedInstance: string | null
   configurationPanelRef?: React.RefObject<HTMLElement>
   overlayRef: React.RefObject<HTMLElement>
-  moveOnDropOnly: boolean
+  moveOnHover: MoveOnHover
 }
 
 const EnginxContext = React.createContext<ContextType>({
@@ -61,7 +61,7 @@ const EnginxContext = React.createContext<ContextType>({
   configurationPanelContentUseTransition: false,
   configurationPanelRef: createRef(),
   overlayRef: createRef(),
-  moveOnDropOnly: false,
+  moveOnHover: false,
 })
 
 export default EnginxContext

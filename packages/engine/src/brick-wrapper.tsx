@@ -14,7 +14,7 @@ enum ActionArea {
   LEFT = 'left',
   RIGHT = 'right',
   BOTTOM = 'bottom',
-  PREVENT = 'prevent',
+  CENTER = 'center',
 }
 
 export const ITEM_TYPE = 'brick-instance'
@@ -291,13 +291,10 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     {
       accept: ITEM_TYPE,
       drop: (item: IDragItem, monitor: DropTargetMonitor) => {
-        if (!context.moveOnDropOnly) {
+        if (context.moveOnHover) {
           return
         }
         if (!canDrop(item, monitor)) {
-          return
-        }
-        if (props.isRoot) {
           return
         }
         context.transactionBegin()
@@ -307,7 +304,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         } else if (hoveredAreaRef.current && [ActionArea.RIGHT, ActionArea.BOTTOM].includes(hoveredAreaRef.current)) {
           item.onRemove && item.onRemove(item.blueprint._key)
           props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.blueprint, props.blueprint._key, 'backward')
-        } else if (hoveredAreaRef.current !== ActionArea.PREVENT) {
+        } else if (hoveredAreaRef.current === ActionArea.CENTER) {
           item.onRemove && item.onRemove(item.blueprint._key)
           handleAddChild(item.blueprint)
         }
@@ -319,7 +316,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
          * Must remove item before insert it, otherwise item can't insert to container due to same key item exists.
          * And then the item will lost.
          */
-        if (context.moveOnDropOnly) {
+        if (!context.moveOnHover) {
           return
         }
         if (!brickContainer.current) {
@@ -328,7 +325,9 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         if (!canDrop(item, monitor)) {
           return
         }
-        context.transactionBegin()
+        if (!hoveredAreaRef.current) {
+          return
+        }
         if (hoveredAreaRef.current && [ActionArea.TOP, ActionArea.LEFT].includes(hoveredAreaRef.current)) {
           item.onRemove && item.onRemove(item.blueprint._key)
           props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.blueprint, props.blueprint._key, 'forward')
@@ -339,7 +338,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.blueprint, props.blueprint._key, 'backward')
           item.onRemove = props.onRemoveItemFormParent
           item.lastAction = `backward-${props.blueprint._key}-${item.blueprint._key}`
-        } else if (hoveredAreaRef.current !== ActionArea.PREVENT) {
+        } else if (hoveredAreaRef.current === ActionArea.CENTER) {
           item.onRemove && item.onRemove(item.blueprint._key)
           handleAddChild(item.blueprint)
           item.onRemove = handleRemoveFromParent
@@ -398,6 +397,18 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     }
   }, [])
   const _theme: theme.Theme = useTheme()
+  const moveVertical = useMemo(
+    () =>
+      !context.moveOnHover ||
+      (context.moveOnHover && (typeof context.moveOnHover === 'boolean' || context.moveOnHover.vertical)),
+    [context.moveOnHover]
+  )
+  const moveHorizontal = useMemo(
+    () =>
+      !context.moveOnHover ||
+      (context.moveOnHover && (typeof context.moveOnHover === 'boolean' || context.moveOnHover.horizontal)),
+    [context.moveOnHover]
+  )
   const handleMouseMove = useCallback(
     debounce((event: globalThis.MouseEvent) => {
       if (!brickContainer.current || isDragging || (!isDragging && !isOverCurrent)) {
@@ -405,26 +416,30 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       }
       const hoverBoundingRect = brickContainer.current.getBoundingClientRect()
       const isTop =
+        moveVertical &&
         event.x > hoverBoundingRect.x &&
         event.x < hoverBoundingRect.x + hoverBoundingRect.width &&
         event.y > hoverBoundingRect.y &&
         event.y < hoverBoundingRect.y + offset
       const isLeft =
+        moveHorizontal &&
         event.y > hoverBoundingRect.y &&
         event.y < hoverBoundingRect.y + hoverBoundingRect.height &&
         event.x > hoverBoundingRect.x &&
         event.x < hoverBoundingRect.x + offset
       const isRight =
+        moveHorizontal &&
         event.y > hoverBoundingRect.y &&
         event.y < hoverBoundingRect.y + hoverBoundingRect.height &&
         event.x > hoverBoundingRect.x + hoverBoundingRect.width - offset &&
         event.x < hoverBoundingRect.x + hoverBoundingRect.width
       const isBottom =
+        moveVertical &&
         event.x > hoverBoundingRect.x &&
         event.x < hoverBoundingRect.x + hoverBoundingRect.width &&
         event.y > hoverBoundingRect.y + hoverBoundingRect.height - offset &&
         event.y < hoverBoundingRect.y + hoverBoundingRect.height
-      if (isTop) {
+      if (isTop && !props.isRoot) {
         if (
           parentBrick?.childrenType === ChildrenType.SINGLE &&
           props?.parentBlueprint &&
@@ -436,7 +451,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           brickContainer.current.style.boxShadow = `0px -2px 0px 0px ${_theme.palette.primary.dark}`
           hoveredAreaRef.current = ActionArea.TOP
         }
-      } else if (isLeft) {
+      } else if (isLeft && !props.isRoot) {
         if (
           parentBrick?.childrenType === ChildrenType.SINGLE &&
           props?.parentBlueprint &&
@@ -448,7 +463,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           brickContainer.current.style.boxShadow = `-2px 0px 0px 0px ${_theme.palette.primary.dark}`
           hoveredAreaRef.current = ActionArea.LEFT
         }
-      } else if (isRight) {
+      } else if (isRight && !props.isRoot) {
         if (
           parentBrick?.childrenType === ChildrenType.SINGLE &&
           props?.parentBlueprint &&
@@ -460,7 +475,7 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           brickContainer.current.style.boxShadow = `2px 0px 0px 0px ${_theme.palette.primary.dark}`
           hoveredAreaRef.current = ActionArea.RIGHT
         }
-      } else if (isBottom) {
+      } else if (isBottom && !props.isRoot) {
         if (
           parentBrick?.childrenType === ChildrenType.SINGLE &&
           props?.parentBlueprint &&
@@ -478,25 +493,25 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           props.blueprint.children.some((c) => c._key === props.blueprint._key)
         ) {
           // item is in the container already
-          hoveredAreaRef.current = ActionArea.PREVENT
+          hoveredAreaRef.current = null
           brickContainer.current.style.boxShadow = `0px 0px 0px 2px ${_theme.palette.grey[500]}`
         } else if (brick.childrenType === ChildrenType.NONE) {
-          hoveredAreaRef.current = ActionArea.PREVENT
+          hoveredAreaRef.current = null
           brickContainer.current.style.boxShadow = `0px 0px 0px 2px ${_theme.palette.grey[500]}`
         } else if (
           brick.childrenType === ChildrenType.SINGLE &&
           Array.isArray(props.blueprint.children) &&
           props.blueprint.children.length > 0
         ) {
-          hoveredAreaRef.current = ActionArea.PREVENT
+          hoveredAreaRef.current = null
           brickContainer.current.style.boxShadow = `0px 0px 0px 2px ${_theme.palette.grey[500]}`
         } else {
-          hoveredAreaRef.current = null
+          hoveredAreaRef.current = ActionArea.CENTER
           brickContainer.current.style.boxShadow = `0px 0px 0px 2px ${_theme.palette.primary.dark}`
         }
       }
     }, delay),
-    [isDragging, isOverCurrent, props?.parentBlueprint, parentBrick]
+    [isDragging, isOverCurrent, props?.parentBlueprint, props.isRoot, parentBrick, moveVertical, moveHorizontal]
   )
   useEffect(() => {
     if (!isOverCurrent) {
