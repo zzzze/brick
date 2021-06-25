@@ -175,6 +175,7 @@ const isHoverOnDragItemOrItsChild = (blueprint: Blueprint, key: string): boolean
 }
 
 const offset = 5
+const delay = 10
 
 const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => {
   const context = useContext(EnginxContext)
@@ -211,6 +212,16 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       return cloneElement(firstChild, {}, props.children)
     }
   }, [props.children, brick])
+  const parentBrick = useMemo(() => {
+    if (!props.parentBlueprint) {
+      return null
+    }
+    const brick = context.bricks[props.parentBlueprint.name]
+    if (!brick) {
+      throw Error(`brick (${props.parentBlueprint.name}) not found`)
+    }
+    return brick
+  }, [context.bricks, props.parentBlueprint])
   const canDrop = useCallback(
     (item: IDragItem, monitor: DropTargetMonitor) => {
       if (!brickContainer.current) {
@@ -225,7 +236,13 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
       }
       return true
     },
-    [brickContainer.current]
+    [brickContainer.current, props.blueprint]
+  )
+  const handleRemoveFromParent = useCallback(
+    (key: string) => {
+      createRemoveItemFromParentFn(props.onBlueprintChange)(key)
+    },
+    [props.onBlueprintChange]
   )
   const handleAddChild = useCallback(
     (_blueprint: Blueprint) => {
@@ -274,6 +291,9 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
     {
       accept: ITEM_TYPE,
       drop: (item: IDragItem, monitor: DropTargetMonitor) => {
+        if (!context.moveOnDropOnly) {
+          return
+        }
         if (!canDrop(item, monitor)) {
           return
         }
@@ -293,10 +313,45 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         }
         context.transactionCommit()
       },
+
+      hover: debounce((item: IDragItem, monitor: DropTargetMonitor) => {
+        /**
+         * Must remove item before insert it, otherwise item can't insert to container due to same key item exists.
+         * And then the item will lost.
+         */
+        if (context.moveOnDropOnly) {
+          return
+        }
+        if (!brickContainer.current) {
+          return
+        }
+        if (!canDrop(item, monitor)) {
+          return
+        }
+        context.transactionBegin()
+        if (hoveredAreaRef.current && [ActionArea.TOP, ActionArea.LEFT].includes(hoveredAreaRef.current)) {
+          item.onRemove && item.onRemove(item.blueprint._key)
+          props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.blueprint, props.blueprint._key, 'forward')
+          item.onRemove = props.onRemoveItemFormParent
+          item.lastAction = `forward-${props.blueprint._key}-${item.blueprint._key}`
+        } else if (hoveredAreaRef.current && [ActionArea.RIGHT, ActionArea.BOTTOM].includes(hoveredAreaRef.current)) {
+          item.onRemove && item.onRemove(item.blueprint._key)
+          props.onAddToOrMoveInParent && props.onAddToOrMoveInParent(item.blueprint, props.blueprint._key, 'backward')
+          item.onRemove = props.onRemoveItemFormParent
+          item.lastAction = `backward-${props.blueprint._key}-${item.blueprint._key}`
+        } else if (hoveredAreaRef.current !== ActionArea.PREVENT) {
+          item.onRemove && item.onRemove(item.blueprint._key)
+          handleAddChild(item.blueprint)
+          item.onRemove = handleRemoveFromParent
+          item.lastAction = `addition-${props.blueprint._key}-${item.blueprint._key}`
+        }
+        context.transactionCommit()
+      }, delay),
       collect: (monitor: DropTargetMonitor) => ({
         isOverCurrent: monitor.isOver({ shallow: true }),
       }),
     },
+
     [props]
   )
   const onRemove = useCallback(() => {
@@ -370,17 +425,53 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
         event.y > hoverBoundingRect.y + hoverBoundingRect.height - offset &&
         event.y < hoverBoundingRect.y + hoverBoundingRect.height
       if (isTop) {
-        brickContainer.current.style.boxShadow = `0px -2px 0px 0px ${_theme.palette.primary.dark}`
-        hoveredAreaRef.current = ActionArea.TOP
+        if (
+          parentBrick?.childrenType === ChildrenType.SINGLE &&
+          props?.parentBlueprint &&
+          Array.isArray(props?.parentBlueprint?.children) &&
+          props?.parentBlueprint.children.length > 0
+        ) {
+          brickContainer.current.style.boxShadow = `0px -2px 0px 0px ${_theme.palette.grey[500]}`
+        } else {
+          brickContainer.current.style.boxShadow = `0px -2px 0px 0px ${_theme.palette.primary.dark}`
+          hoveredAreaRef.current = ActionArea.TOP
+        }
       } else if (isLeft) {
-        brickContainer.current.style.boxShadow = `-2px 0px 0px 0px ${_theme.palette.primary.dark}`
-        hoveredAreaRef.current = ActionArea.LEFT
+        if (
+          parentBrick?.childrenType === ChildrenType.SINGLE &&
+          props?.parentBlueprint &&
+          Array.isArray(props?.parentBlueprint?.children) &&
+          props?.parentBlueprint.children.length > 0
+        ) {
+          brickContainer.current.style.boxShadow = `-2px 0px 0px 0px ${_theme.palette.grey[500]}`
+        } else {
+          brickContainer.current.style.boxShadow = `-2px 0px 0px 0px ${_theme.palette.primary.dark}`
+          hoveredAreaRef.current = ActionArea.LEFT
+        }
       } else if (isRight) {
-        brickContainer.current.style.boxShadow = `2px 0px 0px 0px ${_theme.palette.primary.dark}`
-        hoveredAreaRef.current = ActionArea.RIGHT
+        if (
+          parentBrick?.childrenType === ChildrenType.SINGLE &&
+          props?.parentBlueprint &&
+          Array.isArray(props?.parentBlueprint?.children) &&
+          props?.parentBlueprint.children.length > 0
+        ) {
+          brickContainer.current.style.boxShadow = `-2px 0px 0px 0px ${_theme.palette.grey[500]}`
+        } else {
+          brickContainer.current.style.boxShadow = `2px 0px 0px 0px ${_theme.palette.primary.dark}`
+          hoveredAreaRef.current = ActionArea.RIGHT
+        }
       } else if (isBottom) {
-        brickContainer.current.style.boxShadow = `0px 2px 0px 0px ${_theme.palette.primary.dark}`
-        hoveredAreaRef.current = ActionArea.BOTTOM
+        if (
+          parentBrick?.childrenType === ChildrenType.SINGLE &&
+          props?.parentBlueprint &&
+          Array.isArray(props?.parentBlueprint?.children) &&
+          props?.parentBlueprint.children.length > 0
+        ) {
+          brickContainer.current.style.boxShadow = `-2px 0px 0px 0px ${_theme.palette.grey[500]}`
+        } else {
+          brickContainer.current.style.boxShadow = `0px 2px 0px 0px ${_theme.palette.primary.dark}`
+          hoveredAreaRef.current = ActionArea.BOTTOM
+        }
       } else {
         if (
           Array.isArray(props.blueprint.children) &&
@@ -404,33 +495,40 @@ const BrickWrapper: React.FC<BrickWrapperProps> = (props: BrickWrapperProps) => 
           brickContainer.current.style.boxShadow = `0px 0px 0px 2px ${_theme.palette.primary.dark}`
         }
       }
-    }, 1),
-    [isDragging, isOverCurrent]
+    }, delay),
+    [isDragging, isOverCurrent, props?.parentBlueprint, parentBrick]
   )
   useEffect(() => {
     if (!isOverCurrent) {
       handleMouseLeave()
     }
   }, [isOverCurrent])
-  const handleMouseLeave = useCallback(() => {
-    if (!brickContainer.current) {
-      return
-    }
-    brickContainer.current.style.boxShadow = 'none'
-    hoveredAreaRef.current = null
-  }, [])
+  const handleMouseLeave = useCallback(
+    debounce(() => {
+      if (!brickContainer.current) {
+        return
+      }
+      brickContainer.current.style.boxShadow = 'none'
+      hoveredAreaRef.current = null
+    }, delay),
+    []
+  )
   useEffect(() => {
     if (!brickContainer.current) {
       return
     }
     brickContainer.current.addEventListener('dragover', handleMouseMove)
     brickContainer.current.addEventListener('dragleave', handleMouseLeave)
+    brickContainer.current.addEventListener('drop', handleMouseLeave)
+    window.addEventListener('click', handleMouseLeave)
     return () => {
       if (!brickContainer.current) {
         return
       }
       brickContainer.current.removeEventListener('dragover', handleMouseMove)
       brickContainer.current.removeEventListener('dragleave', handleMouseLeave)
+      brickContainer.current.removeEventListener('drop', handleMouseLeave)
+      window.removeEventListener('click', handleMouseLeave)
     }
   }, [handleMouseMove])
   const className = useMemo(() => {

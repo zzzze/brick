@@ -48,6 +48,7 @@ export interface EngineProps extends ContextPassthrouthProps {
   theme?: types.DeepPartial<theme.Theme>
   generateJssID?: ReturnType<typeof createGenerateId>
   options?: types.DeepPartial<EngineOptions>
+  moveOnDropOnly?: boolean
   debug?: boolean
 }
 
@@ -281,6 +282,7 @@ class Engine extends React.Component<EngineProps, EngineState> {
                 configurationPanelRef: this._configurationPanelRef,
                 configurationPanelContentUseTransition: !!this.props.configurationPanelContentUseTransition,
                 overlayRef: this._overlayRef,
+                moveOnDropOnly: !!this.props.moveOnDropOnly,
               }}>
               <DndProvider backend={this._dndBackend} key="dnd-provider">
                 <BrickMenu getContainer={this.props.menuBarRef} bricks={Object.values(Engine.bricks)} />
